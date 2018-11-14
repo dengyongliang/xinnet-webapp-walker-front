@@ -5,24 +5,37 @@
         img(src="../../static/img/login/logo.png")
       Form(form="login", ref="form")
         div.wrap
-          strong.t
-            span 登录
-          Alert(type="error", show-icon) An error prompt
-          FormItem
-            comp-input(name='userName',ref="userName",defaultValue="",placeholder="手机/邮箱/用户名",styles="width:100%")
-              i.font.iconleft.font-people(slot="left")
-          FormItem
-            comp-input(name='userName',ref="userName",defaultValue="",placeholder="请输入密码",type="password",styles="width:100%")
-              i.font.iconleft.font-lock1(slot="left")
-          FormItem.verificationCodeInput
-            comp-input(name='userName',ref="userName",defaultValue="",placeholder="输入验证码",type="password",styles="width:100%")
-               i.font.iconleft.font-tick1(slot="left")
-            a(href="javascript:;" @click="getVerificationCode", v-if="!verificationCode.success") 获取短信验证码
-            span.tips
-              i(v-if="verificationCode.success") 发送成功
-          FormItem
-            Button(type="primary", @click="submit", :loading="loadingBtn") 立即登录
-            a(href="javascript:;" @click="",class="forgetPw") 忘记密码
+          div(style="display:none")
+            strong.t
+              span 找回密码
+            Alert(type="error", show-icon) An error prompt
+            .setp1()
+              FormItem.mobileInput
+                comp-input(name='userName',ref="userName",defaultValue="",placeholder="输入账号绑定手机号",styles="width:100%")
+                   i.font.iconleft.font-tick1(slot="left")
+                a(href="javascript:;" @click="getVerificationCode", v-if="!verificationCode.success") 获取短信验证码
+                span.tips
+                  i(v-if="verificationCode.success") 发送成功
+              FormItem.verificationCodeInput
+                comp-input(name='userName',ref="userName",defaultValue="",placeholder="输入验证码",styles="width:100%")
+                  i.font.iconleft.font-tick1(slot="left")
+              FormItem
+                Button(type="primary", @click="submit", :loading="loadingBtn") 下一步
+            .setp2()
+              comp-re-password(defaultValue="",ref="compRePassword",:show="refresh",label1="",label2="",placeholder1="请输入新密码",placeholder2="请重复新密码",styles1="width:100%",styles2="width:100%")
+                i.font.iconleft.font-lock1(slot="left1")
+                Icon(type="ios-checkmark-circle",slot="right1",class="iconright")
+                i.font.iconleft.font-lock1(slot="left2")
+                Icon(type="ios-checkmark-circle",slot="right2",class="iconright")
+              FormItem
+                Button(type="primary", @click="submit", :loading="loadingBtn") 完成
+          .setp3
+            p.p1
+              Icon(type="ios-checkmark-circle-outline")
+            p.p2 已重置密码！
+            p.p3
+             a 请重新登录
+            Button(type="primary", @click="submit", :loading="loadingBtn") 去登录
       .footer
         span Copyright © 1993-2018<br />北京新网数码信息技术有限公司 版权所有
 
@@ -32,9 +45,11 @@
 import { mapActions, mapMutations } from 'vuex'
 import * as types from '@/store/types'
 import compInput from '@/components/compInput'
+import compRePassword from '@/components/compRePassword'
 export default {
   components: {
-    compInput
+    compInput,
+    compRePassword
   },
   data () {
     return {
@@ -249,15 +264,19 @@ export default {
   z-index:1;
   color:#bcbcbc;
 }
+.pageLogin .compInput .iconright{
+  font-size:20px;
+  right:-30px;
+  top:13px;
+  position:absolute;
+  color:#77c936;
+}
 .pageLogin .compInput input{
   height:46px;
   line-height:46px;
   padding-left:55px;
 }
-.pageLogin .verificationCodeInput{
-  margin-bottom:30px;
-}
-.pageLogin .verificationCodeInput a{
+.pageLogin .mobileInput a{
   position:absolute;
   right:10px;
   top:13px;
@@ -265,11 +284,8 @@ export default {
   text-decoration: underline;
   line-height:20px;
 }
-.forgetPw {
-  color:#2271f4;
-  position:absolute;
-  right:10px;
-  top:10px;
+.pageLogin .verificationCodeInput{
+  margin-bottom:30px;
 }
 .pageLogin .ivu-btn{
   width:180px;
@@ -292,6 +308,24 @@ export default {
 }
 .pageLogin .ivu-alert-error .ivu-alert-message{
   color:#ea7a79;
+}
+.pageLogin .setp3{
+  text-align:center;
+  padding-top:100px;
+}
+.pageLogin .setp3 .p1{
+  padding-bottom:20px;
+}
+.pageLogin .setp3 .p1 .ivu-icon{
+  font-size:50px;
+  color:#34a702;
+}
+.pageLogin .setp3 .p2{
+  font-size:24px;
+}
+.pageLogin .setp3 .p3{
+  padding:20px 0;
+  margin-bottom:30px;
 }
 .pageLogin .footer{
   text-align:center;

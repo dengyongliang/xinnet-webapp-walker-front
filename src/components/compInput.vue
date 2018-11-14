@@ -1,35 +1,40 @@
 <template lang="pug">
-    FormItem(:label="label" :status="leaveInput")
+    div(style="inline-block",class="compInput")
       slot(name="left")
       Input(
         type="text",
         v-if="type === 'text' && show",
         :name="name",
         :placeholder="placeholder",
-        style="width:240px",
+        :style="styles",
         @on-blur="onBlur",
         @on-focus="onFocus",
         ref="input",
         :maxlength = "maxLength",
-        :value = "defaultValue",
-        :v-focus = "focus",
-        :class="{ 'error': showError && show }"
+        v-model = "value",
+        :required = "required",
+        :disabled = "disabled",
+        :number = "number",
+        :class="{ 'error': showError }"
       )
       Input(
         type="text",
         v-if="type === 'password' && show",
         :name="name",
         :placeholder="placeholder",
-        style="width:240px",
+        :style="styles",
         @on-blur="onBlur",
         @on-focus="onFocus",
         ref="input",
         :maxlength = "maxLength",
-        :value = "defaultValue",
-        :class="{ 'error': showError && show }"
+        v-model = "value",
+        :required = "required",
+        :disabled = "disabled",
+        :number = "number",
+        :class="{ 'error': showError }"
       )
       slot(name="right")
-      Alert(type="error",show-icon, style="display:inline-block",v-show="showError && show",ref="msgError") {{errorText}}
+      Alert(type="error",show-icon, style="display:inline-block",v-show="showError",ref="msgError") {{errorText}}
 </template>
 
 <script>
@@ -38,22 +43,19 @@ export default {
   mixins: [mixinsInput],
   name: 'compInput',
   props: {
-
+    show: {
+      type: Boolean,
+      default: true
+    }
   },
   data () {
     return {
+      value: ''
     }
   },
   methods: {
   },
   computed: {
-    // 如果输入框不在显示范围，清除错误的相关标注
-    leaveInput () {
-      if (!this.show) {
-        this.showError = false
-        return false
-      }
-    }
   }
 }
 </script>

@@ -28,6 +28,26 @@ const RouterMain = new Router({
       }
     },
     {
+      path: '/forgetPw',
+      name: 'FORGET_PW',
+      component (resolve) {
+        return require(['@/page/forgetPw'], resolve)
+      },
+      meta: {
+        title: '找回密码'
+      }
+    },
+    {
+      path: '/activation',
+      name: 'ACTIVATION',
+      component (resolve) {
+        return require(['@/page/activation'], resolve)
+      },
+      meta: {
+        title: '账户激活'
+      }
+    },
+    {
       path: '/',
       name: 'MAIN',
       component (resolve) {

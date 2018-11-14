@@ -11,7 +11,7 @@ Vue.use(Vuex)
 export default function makeStore () {
   return new Vuex.Store({
     state: {
-      showBodySpin: true,
+      showBodySpin: false,
       maskClosable: false,
       islogin: false,
       pending: true

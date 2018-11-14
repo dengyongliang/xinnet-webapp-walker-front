@@ -1,51 +1,48 @@
 <template lang="pug">
   div
-    FormItem(:label="label1",:status="leaveInput")
+    FormItem(:label="label1",class="compInput")
+      slot(name="left1")
       Input(
         type="text",
-        v-if="type === 'text' && show",
-        name="password",
-        :placeholder="placeholder",
-        style="width:240px",
+        v-if="type === 'text'",
+        :name="name1",
+        :placeholder="placeholder1",
+        :style="styles1",
         @on-blur="onBlur",
         @on-focus="onFocus",
         ref="password",
         :maxlength = "maxLength",
-        :value = "defaultValue",
-        :class="{ 'error': showPasswordError && show }"
+        v-model = "value1",
+        :class="{ 'error': showPasswordError }"
       )
-      Alert(type="error",show-icon, style="display:inline-block",v-show="showPasswordError && show",ref="msgErrorPw") {{errorTextPassword}}
-    FormItem(:label="label2" :status="leaveInput")
+      slot(name="right1")
+      Alert(type="error",show-icon, style="display:inline-block",v-show="showPasswordError",ref="msgErrorPw") {{errorTextPassword}}
+    FormItem(:label="label2",class="compInput")
+      slot(name="left2")
       Input(
         type="text",
-        v-if="type === 'text' && show",
-        name="rePassword",
-        :placeholder="placeholder",
-        style="width:240px",
+        v-if="type === 'text'",
+        :name="name2",
+        :placeholder="placeholder2",
+        :style="styles2",
         @on-blur="onBlur",
         @on-focus="onFocus",
         ref="rePassword",
         :maxlength = "maxLength",
-        :value = "defaultValue",
-        :class="{ 'error': showRePasswordError && show }"
+        v-model = "value2",
+        :class="{ 'error': showRePasswordError }"
       )
-      Alert(type="error",show-icon, style="display:inline-block",v-show="showRePasswordError && show",ref="msgErrorRePw") {{errorTextRePassword}}
+      slot(name="right2")
+      Alert(type="error",show-icon, style="display:inline-block",v-show="showRePasswordError",ref="msgErrorRePw") {{errorTextRePassword}}
 </template>
 
 <script>
-import mixinsInput from '@/mixins/mixinsInput'
+import mixinsRePassword from '@/mixins/mixinsRePassword'
 export default {
-  mixins: [mixinsInput],
-  name: 'compInput',
+  mixins: [mixinsRePassword],
+  name: 'compRePassword',
   props: {
-    label1: {
-      type: String,
-      default: ''
-    },
-    label2: {
-      type: String,
-      default: ''
-    }
+
   },
   data () {
     return {
@@ -54,14 +51,7 @@ export default {
   methods: {
   },
   computed: {
-    // 如果输入框不在显示范围，清除错误的相关标注
-    leaveInput () {
-      if (!this.show) {
-        this.showPasswordError = false
-        this.showRePasswordError = false
-      } else {
-      }
-    }
+
   }
 }
 </script>

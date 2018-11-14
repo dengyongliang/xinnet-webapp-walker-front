@@ -64,6 +64,9 @@ export default {
 .ivu-btn span{
   color:#2271f4;
 }
+.ivu-btn-primary{
+  background: #2271f4;
+}
 .ivu-btn-primary .ivu-icon,
 .ivu-btn-primary span{
   color:#fff;
@@ -85,6 +88,7 @@ export default {
 }
 .ivu-alert{
   margin-bottom:0px;
+  border-radius:0px;
 }
 .ivu-form-item{
   margin-bottom:15px;
