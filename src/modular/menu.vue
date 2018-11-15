@@ -1,62 +1,110 @@
 <template lang="pug">
-.menuBody
+vue-scroll.menuBody(:ops="ops")
   .menuBox
     h3.menuT.lv1
-      i.font.fontL.font-lock2
-      span 账号权限
+      Icon.fontL(custom="i-icon i-icon-home" size="16")
+      router-link(to="/account/my") 首页
+  .menuBox
+    h3.menuT.lv1
+      Icon.fontL(custom="i-icon i-icon-manage" size="16")
+      router-link(to="/account/my") 域名注册
+  .menuBox
+    h3.menuT.lv1
+      Icon.fontL(custom="i-icon i-icon-manage" size="16")
+      router-link(to="/account/my") 域名推荐
+  .menuBox
+    h3.menuT.lv1
+      Icon.fontL(custom="i-icon i-icon-manage" size="16")
+      span 域名管理
     ul.menuList
       li.menuItem.lv2
-        router-link(to="/account/my") 我的账号
+        router-link(to="/account/my") 域名总览
       li.menuItem.lv2
-        router-link(to="/account/mgmt") 账号管理
+        router-link(to="/account/mgmt") 域名管理
+      li.menuItem.lv2
+        router-link(to="/account/my") 域名安全服务
+      li.menuItem.lv2
+        router-link(to="/account/mgmt") 域名转入管理
+      li.menuItem.lv2
+        router-link(to="/account/my") 域名过户
+      li.menuItem.lv2
+        router-link(to="/account/mgmt") 域名实名制管理
+      li.menuItem.lv2
+        router-link(to="/account/mgmt") 实名模板管理
+  .menuBox
+    h3.menuT.lv1
+      Icon.fontL(custom="i-icon i-icon-finance" size="16")
+      span 域名监控
+    ul.menuList
+      li.menuItem.lv2
+        router-link(to="/client/client") 自有域名监控
+      li.menuItem.lv2
+        router-link(to="/client/clientAccount") 关注域名监控
 
   .menuBox
     h3.menuT.lv1
-      i.font.fontL.font-admin
-      span 客户管理
+      Icon.fontL(custom="i-icon i-icon-bill" size="16")
+      span 财务
     ul.menuList
       li.menuItem.lv2
-        router-link(to="/client/client") 客户管理
+        router-link(to="/order/mgmt") 财务总览
       li.menuItem.lv2
-        router-link(to="/client/clientAccount") 客户账号管理
+        router-link(to="/order/entry") 账单管理
 
   .menuBox
     h3.menuT.lv1
-      i.font.fontL.font-file
-      span 订单管理
+      Icon.fontL(custom="i-icon i-icon-admin" size="16")
+      span 管理
     ul.menuList
       li.menuItem.lv2
-        router-link(to="/order/mgmt") 订单管理
+        router-link(to="/finance/add") 我的账号
       li.menuItem.lv2
-        router-link(to="/order/entry") 订单录入
-
+        router-link(to="/finance/add") 账号管理
+      li.menuItem.lv2
+        router-link(to="/finance/add") 企业管理
+      li.menuItem.lv2
+        router-link(to="/finance/add") 角色管理
+      li.menuItem.lv2
+        router-link(to="/finance/add") 工单管理
   .menuBox
     h3.menuT.lv1
-      i.font.fontL.font-bill
-      span 财务管理
+      Icon.fontL(custom="i-icon i-icon-diary" size="16")
+      span 监控日志
     ul.menuList
       li.menuItem.lv2
-        router-link(to="/finance/add") 预付款增加管理
+        router-link(to="/service/butler") 域名监控日志
       li.menuItem.lv2
-        router-link(to="/finance/query") 预付款查询
-      li.menuItem.lv2
-        router-link(to="/finance/bill") 账单结算
-
+        router-link(to="/service/worklist") 员工监控日志
   .menuBox
     h3.menuT.lv1
-      i.font.fontL.font-people
-      span 管家与客户服务
+      Icon.fontL(custom="i-icon i-icon-notice" size="16")
+      span 通知中心
     ul.menuList
       li.menuItem.lv2
-        router-link(to="/service/butler") 管家管理
+        router-link(to="/service/butler") 监控通知
       li.menuItem.lv2
-        router-link(to="/service/worklist") 工单管理
+        router-link(to="/service/worklist") 系统通知
+  .menuBox
+    h3.menuT.lv1
+      Icon.fontL(custom="i-icon i-icon-manage" size="16")
+      span 管家功能
+    ul.menuList
+      li.menuItem.lv2
+        router-link(to="/service/butler") 域名转入
+      li.menuItem.lv2
+        router-link(to="/service/worklist") 批量创建员工
 </template>
 <script>
 import { mapState } from 'vuex'
 export default {
   data () {
     return {
+      ops: {
+        bar: {
+          background: 'rgba(0,0,0,0.2)',
+          keepShow: true
+        }
+      }
     }
   },
   computed: {
@@ -78,16 +126,17 @@ export default {
   padding:50px 20px 20px 20px;
 }
 .menuBody .menuBox{
-    line-height: 46px;
-    vertical-align: middle;
+  line-height: 46px;
+  vertical-align: middle;
+  padding-left:20px;
 }
 .menuBody .menuT:hover{
-    text-decoration: none;
+  text-decoration: none;
 }
 .menuBody .menuT{
     display: block;
-    height: 46px;
-    line-height: 46px;
+    height: 42px;
+    line-height: 42px;
     position: relative;
     cursor: pointer;
 }
@@ -96,18 +145,20 @@ export default {
     background: #f7f7f7;
 }
 .menuBody .menuT:hover span,
+.menuBody .menuT:hover a,
 .menuBody .menuT:hover .font{
     color: #e50012;
 }
-.menuBody .menuT span{
+.menuBody .menuT span,
+.menuBody .menuT a{
     font-size: 14px;
     font-weight: normal;
     color: #333333;
 }
-.menuBody .menuT .font{
+.menuBody .menuT .fontL{
     color: #666;
     font-size: 14px;
-    padding-right: 15px;
+    padding-right: 10px;
 }
 .menuBody .menuItem{
     line-height: 40px;

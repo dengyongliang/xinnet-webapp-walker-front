@@ -71,7 +71,7 @@ export default {
       let name = this.name
       if (val === '' && this.required) {
         this.showError = true
-        this.errorText = '请输入' + (vm.label.substr(0,vm.label.length-1) || '') + '！'
+        this.errorText = '请输入' + (vm.label || '') + '！'
       } else {
         if (this.number && isNaN(val)) {
           this.showError = true

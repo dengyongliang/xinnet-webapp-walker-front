@@ -112,6 +112,21 @@
     padding:0 20px;
     margin-bottom: 20px;
 }
+.pageTitle .tR{
+  float:right;
+  font-size:12px;
+}
+.pageTitle .tR input{
+  height:32px;
+  line-height:32px;
+  min-height:32px;
+}
+.pageTitle .tR button{
+    margin-left: 10px;
+}
+.pageTitle .tR .ivu-input-wrapper{
+    margin:0 0 0 10px;
+}
 .secMain{
     background: #fff;
     padding:0;
@@ -198,110 +213,11 @@
     background:#fff;
     padding: 0 10px;
 }
-.secFilter .inputSelect{
-    padding-right: 0px;
-}
-.secFilter .inputDate{
-    padding-left: 32px;
-    position: relative;
-}
-.secFilter .inputDate .icon{
-    position: absolute;
-    left: 9px;
-    top: 8px;
-}
-.secFilter .xwInput{
-    width: 100%;
-    height: 32px;
-    line-height: 32px;
-    min-height: 30px;
-    color: #999;
-    padding: 0px;
-    border: none;
-}
-.secFilter .xwInput:focus{
-    outline: none;
-    border-color: #fff!important;
-    box-shadow: 0px 0px 3px #fff;
-}
-.secFilter .xwSelect{
-    width: 100%;
-    height: 32px;
-    line-height: 32px;
-    border: none;
-    color: #999;
-}
-.secFilter .xwSelect .selectLabel{
-    width: 93%;
-    height: 32px;
-    line-height: 32px;
-    /*padding: 0px 20% 0 0;*/
-    color: #999;
-    padding-left: 0px;
-}
-.secFilter .xwSelect .selectLst{
-    left: -11px;
-    padding-left: 10px;
-}
-.secFilter .xwSelect .selectLst li{
-    margin-left: -10px;
-}
-.secFilter .xwSelect .selectIcon .arrow{
-    border-top-color:#999999;
-    top: 9px;
-}
+
 .secFilter td.tdBtn{
     text-align: right;
 }
-.secFilter .btnWhite{
-    height: 32px;
-    line-height: 32px;
-    border-color: #ccc;
-}
-.secFilter .btnRed{
-    height: 32px;
-    line-height: 32px;
-}
-.secFilter .btnGray{
-    height: 32px;
-    line-height: 32px;
-}
-.secFilter .daytoday .xwInput{
-    width: 80px;
-}
-.secFilter .daytoday{
-    background: #fff;
-    border: none;
-    padding: 0px;
-}
-.secFilter .daytoday input{
-    border:1px solid #e0e0e0;
-    background:#fafafa;
-    padding: 0 10px;
-}
-.secFilter .daytoday .text{
-    padding: 0 3px;
-    color: #666;
-    display: inline-block;
-    vertical-align: middle;
-}
-.secFilter .daytoday .xwSelect{
-    width: 50px;
-    min-width:50px;
-    border:1px solid #e0e0e0;
-}
-.secFilter .daytoday .selectLabel{
-    text-align: center;
-}
-.secFilter .daytoday .selectIcon{
-    right: 2px;
-    top: 6px;
-}
-.secFilter .daytoday .selectLst{
-   left: 0px;
-   padding-left:0px;
-   text-align: center;
-}
+
 /* secOperate */
 .secOperate{
     margin-bottom: 20px;
@@ -377,4 +293,27 @@
 }
 .secTable .noData td{
     text-align: center;
+}
+/* 头部 */
+.frameTop .ivu-poptip .ivu-poptip-arrow{
+  display:none;
+}
+.frameTop .ivu-poptip-popper{
+    top:41px!important;
+}
+.frameTop .ivu-poptip-inner{
+    border-radius: 0px;
+}
+.frameTop .ivu-poptip-body,
+.frameTop .ivu-poptip-title{
+    padding-top:15px;
+    padding-bottom:15px;
+}
+.frameTop .ivu-poptip-body .btnSwitch{
+    margin-left: 100px;
+    color: #155ede;
+}
+.frameTop .ivu-poptip-title:after{
+    left:0px;
+    right:0px;
 }

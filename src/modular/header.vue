@@ -2,10 +2,22 @@
   .frameTop.clear
     .logo
       img(src="../../static/img/logo.png")
-      span 后台管理
-    .userInfo
-      router-link(class="userName",to="/account/my") {{myUserInfo.userName}}
-      a(href="javascript:;", @click="logout", class="exit") 退出
+    .right
+      Poptip(title="Title", content="content <a>sfs</a>", placement="bottom")
+        div(slot="content")
+          span 河北有限责任公司
+          a(href="javascript:;",@click="",class="btnSwitch") 切换
+        span.avatar
+          Avatar(src="https://i.loli.net/2017/08/21/599a521472424.jpg",size="small")
+          span.name HANMEIMEI
+          Icon(type="md-arrow-dropdown")
+      span.line |
+      span.email
+        Icon(type="ios-mail-outline")
+        em.num 1
+      span.line |
+      router-link(to="http://www.xinnet.com") 新网首页
+      a(href="javascript:;", @click="", class="exit") 退出
 </template>
 
 <script>
@@ -17,29 +29,8 @@ export default {
     }
   },
   computed: {
-    ...mapState({
-      myUserInfo (state) {
-        return state.user.myUserInfo
-      }
-    })
   },
   methods: {
-    logout () {
-      let vm = this
-      let params = {
-        callback: function (response) {
-          if( response.data.code === '1000' ){
-            vm.$Message.success('登出成功')
-            vm.$router.replace({ path: '/login' })
-          } else {
-          }
-        }
-      }
-      this.loginOut(params)
-    },
-    ...mapActions({
-      loginOut: types.LOGIN_OUT
-    })
   },
 
   beforeMount () {
@@ -54,35 +45,75 @@ export default {
   position:fixed;
   left:0px;
   top:0px;
-  background: #2e3254;
+  background: #fff;
   line-height: 50px;
-  vertical-align: middle;
   z-index: 999;
+  -moz-box-shadow:1px 1px 3px rgba(0,0,0,0.2);
+  -webkit-box-shadow:1px 1px rgba(0,0,0,0.2);
+  box-shadow:1px 1px 3px rgba(0,0,0,0.2);
 }
 .frameTop .logo{
-    display: inline-block;
+  width:200px;
+  text-align:center;
+  height: inherit;
+  line-height: 40px;
+  display: inline-block;
+  background:#135edb;
+  vertical-align:top;
 }
 .frameTop .logo img{
-  padding-left: 20px;
+  vertical-align:middle;
 }
-.frameTop .logo span{
-  font-size: 14px;
-  color: #fff;
-  margin-left: 20px;
+.frameTop .right{
+  float:right;
+  font-size:12px;
+  color:#666;
+  margin-right:20px;
 }
-.frameTop .userInfo{
-  float: right;
-  color:#ccc;
-  font-size: 12px;
-  padding-right: 30px;
+.frameTop .avatar{
+  cursor:pointer;
 }
-.frameTop .userInfo .userName{
+.frameTop .avatar .name{
+  display:inline-block;
+  margin:0 10px;
+}
+.frameTop .avatar .ivu-icon{
+  font-size:17px;
+}
+.frameTop .avatar .ivu-avatar{
+  width:18px;
+  height:18px;
+}
+.frameTop .email{
+  position:relative;
+}
+.frameTop .email .ivu-icon{
+  font-size:26px;
+}
+.frameTop .email .num{
+  position:absolute;
+  right:0px;
+  top:0px;
+  background:#f00;
   color:#fff;
+  font-size:12px;
+  width:16px;
+  height:16px;
+  line-height:16px;
+  display:block;
+  text-align:center;
+  border-radius:100%;
+  margin: -10px -5px 0 0;
 }
-.frameTop .userInfo .exit{
-  color:#fff;
-  border-left: solid 1px #434765;
-  padding-left: 20px;
-  margin-left: 20px;
+.frameTop .line{
+  display:inline-block;
+  color:#e5e5e5;
+  margin:0 20px;
+}
+.frameTop .exit{
+  margin-left:20px;
+}
+.frameTop .ivu-poptip-arrow{
+  display:none;
 }
 </style>

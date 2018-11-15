@@ -30,6 +30,7 @@ export default {
 
 <style>
 @import 'iview/dist/styles/iview.css';
+@import 'vuescroll/dist/vuescroll.css';
 @import 'assets/css/modal.css';
 @import 'nprogress/nprogress.css';
 @import 'assets/css/iconfont.css';
@@ -58,6 +59,7 @@ export default {
 .spinBody .ivu-spin-main .ivu-spin-dot{
   display:inline-block;
 }
+
 .ivu-btn{
   border-radius:0px;
 }

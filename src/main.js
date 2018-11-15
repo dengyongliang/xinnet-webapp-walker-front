@@ -5,6 +5,7 @@ import App from './App'
 import router from './router'
 import makeStore from './store'
 import directives from './directives'
+import vuescroll from 'vuescroll'
 // import $ from 'jquery'
 // import axios from 'axios'
 import iView from 'iview'
@@ -17,6 +18,7 @@ Vue.prototype.GLOBALS = GLOBAL
 Vue.config.productionTip = false
 Vue.use(iView)
 Vue.use(directives)
+Vue.use(vuescroll)
 
 let store = makeStore
 /* eslint-disable no-new */

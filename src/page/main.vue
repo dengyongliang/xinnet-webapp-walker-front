@@ -1,8 +1,7 @@
 <template lang="pug">
   .pageMain
-    header-body(v-if="islogin")
-
-    .frameBottom(v-if="islogin")
+    header-body()
+    .frameBottom()
       .frameMenu
         menu-body
       .frameBody
@@ -23,39 +22,15 @@ export default {
   },
   data () {
     return {
-      spinShow: true
     }
   },
   mounted () {
   },
   beforeMount () {
-    let vm = this
-    // 获取账号信息
-    this.getCurrentUser()
-    restEmitter.on('noLogin', () => {
-      vm.$Message.error('登录超时，请重新登录！')
-      setTimeout(() => {
-        vm.$router.replace({ path: '/login' })
-      },300)
-    })
-    restEmitter.on('paramError', () => {
-      vm.$Message.error('参数错误！')
-    })
-    restEmitter.on('requestError', () => {
-      vm.$Message.error('请求失败！')
-    })
   },
   methods: {
-    ...mapActions({
-      getCurrentUser: types.GET_CURRENT_USER_DATA
-    })
   },
   computed: {
-    ...mapState([
-      'pending',
-      'islogin',
-      'showBodySpin'
-    ])
   },
 }
 </script>
@@ -71,17 +46,19 @@ export default {
   min-height:100%;
 }
 .frameBottom .frameMenu{
-  width:220px;
-  min-height:100%;
+  width:200px;
+  height:100%;
   background:#f6f8f9;
   position:fixed;
   top:0px;
   left:0px;
+  border-right:1px solid #ededed;
+  padding-top:50px;
 }
 
 .frameBottom .frameBody{
   min-height:300px;
-  margin-left: 220px;
+  margin-left: 200px;
   padding-top: 70px;
 }
 

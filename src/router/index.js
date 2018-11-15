@@ -48,6 +48,16 @@ const RouterMain = new Router({
       }
     },
     {
+      path: '/selectClient',
+      name: 'SELECTCLIENT',
+      component (resolve) {
+        return require(['@/page/selectClient'], resolve)
+      },
+      meta: {
+        title: '选择客户'
+      }
+    },
+    {
       path: '/',
       name: 'MAIN',
       component (resolve) {
@@ -57,6 +67,16 @@ const RouterMain = new Router({
         // title: GLOBAL.TITLE
       },
       children: [
+        {
+          path: '/mgmt/enterprise',
+          name: 'MGMT_ENTERPRISE',
+          component (resolve) {
+            return require(['@/modular/mgmt/enterprise'], resolve)
+          },
+          meta: {
+            title: '企业管理'
+          }
+        },
         {
           path: '/',
           name: 'ACCOUNT_MY',
