@@ -35,31 +35,7 @@ export default {
 }
 </script>
 
-<style scoped>
-.pageMain{
-  height:100%;
-}
-
-.frameBottom{
-  width:100%;
-  background:#f6f8f9;
-  min-height:100%;
-}
-.frameBottom .frameMenu{
-  width:200px;
-  height:100%;
-  background:#f6f8f9;
-  position:fixed;
-  top:0px;
-  left:0px;
-  border-right:1px solid #ededed;
-  padding-top:50px;
-}
-
-.frameBottom .frameBody{
-  min-height:300px;
-  margin-left: 200px;
-  padding-top: 70px;
-}
-
+<style>
+@import '../assets/css/main.css';
+@import '../assets/css/cont.css';
 </style>

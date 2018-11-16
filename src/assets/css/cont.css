@@ -1,0 +1,7 @@
+/* 财务总览 */
+.contOverview .ivu-table-header th{
+  background:#fcfdff!important;
+  height:54px;
+  line-height: 54px;
+  font-weight: 200;
+}

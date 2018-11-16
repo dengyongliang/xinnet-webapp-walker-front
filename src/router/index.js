@@ -78,125 +78,46 @@ const RouterMain = new Router({
           }
         },
         {
-          path: '/',
-          name: 'ACCOUNT_MY',
+          path: '/mgmt/myAccount',
+          name: 'MGMT_MY_ACCOUNT',
           component (resolve) {
-            return require(['@/modular/account/accountMy'], resolve)
+            return require(['@/modular/mgmt/myAccount'], resolve)
           },
           meta: {
             title: '我的账号'
           }
         },
         {
-          path: 'account/my',
-          name: 'ACCOUNT_MY',
+          path: '/mgmt/roles',
+          name: 'MGMT_ROLES',
           component (resolve) {
-            return require(['@/modular/account/accountMy'], resolve)
+            return require(['@/modular/mgmt/roles'], resolve)
           },
           meta: {
-            title: '我的账号'
+            title: '角色管理'
           }
         },
         {
-          path: 'account/mgmt',
-          name: 'ACCOUNT_MGMT',
+          path: '/mgmt/accountMgmt',
+          name: 'MGMT_ACCOUNT',
           component (resolve) {
-            return require(['@/modular/account/accountMgmt'], resolve)
+            return require(['@/modular/mgmt/accountMgmt'], resolve)
           },
           meta: {
             title: '账号管理'
           }
         },
         {
-          path: 'client/client',
-          name: 'CLIENT_MGMT',
+          path: '/finance/overview',
+          name: 'FINANCE_OVERVIEW',
           component (resolve) {
-            return require(['@/modular/client/clientMgmt'], resolve)
+            return require(['@/modular/finance/overview'], resolve)
           },
           meta: {
-            title: '客户管理'
+            title: '财务总览'
           }
         },
-        {
-          path: 'client/clientAccount',
-          name: 'CLIENT_ACCOUNT',
-          component (resolve) {
-            return require(['@/modular/client/clientAccount'], resolve)
-          },
-          meta: {
-            title: '客户账号管理'
-          }
-        },
-        {
-          path: 'order/mgmt',
-          name: 'ORDER_MGMT',
-          component (resolve) {
-            return require(['@/modular/order/orderMgmt'], resolve)
-          },
-          meta: {
-            title: '订单管理'
-          }
-        },
-        {
-          path: 'order/entry',
-          name: 'ORDER_ENTRY',
-          component (resolve) {
-            return require(['@/modular/order/orderEntry'], resolve)
-          },
-          meta: {
-            title: '订单录入'
-          }
-        },
-        {
-          path: 'finance/add',
-          name: 'PAY_ADD',
-          component (resolve) {
-            return require(['@/modular/finance/paymentAdd'], resolve)
-          },
-          meta: {
-            title: '预付款增加管理'
-          }
-        },
-        {
-          path: 'finance/query',
-          name: 'PAY_QUERY',
-          component (resolve) {
-            return require(['@/modular/finance/paymentQuery'], resolve)
-          },
-          meta: {
-            title: '预付款查询'
-          }
-        },
-        {
-          path: 'finance/bill',
-          name: 'PAY_BILL',
-          component (resolve) {
-            return require(['@/modular/finance/billClean'], resolve)
-          },
-          meta: {
-            title: '账单结算'
-          }
-        },
-        {
-          path: 'service/butler',
-          name: 'BUTLER_MGMT',
-          component (resolve) {
-            return require(['@/modular/service/butlerMgmt'], resolve)
-          },
-          meta: {
-            title: '管家管理'
-          }
-        },
-        {
-          path: 'service/worklist',
-          name: 'WORK_LIST',
-          component (resolve) {
-            return require(['@/modular/service/worklist'], resolve)
-          },
-          meta: {
-            title: '工单管理'
-          }
-        },
+
       ]
     }
   ],

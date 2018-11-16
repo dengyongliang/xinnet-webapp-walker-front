@@ -54,5 +54,11 @@ export default {
 </script>
 
 <style scoped>
-
+.contEnterprise .secMain{
+  background:none;
+}
+.contEnterprise .ivu-page{
+  text-align:center;
+  margin:0 20px 20px 20px;
+}
 </style>

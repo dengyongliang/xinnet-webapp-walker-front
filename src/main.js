@@ -9,10 +9,11 @@ import vuescroll from 'vuescroll'
 // import $ from 'jquery'
 // import axios from 'axios'
 import iView from 'iview'
+import echarts from 'echarts'
 // 自定义方法及变量
 import GLOBAL from './global/global'
 // axios.defaults.headers.post['Content-Type'] = 'application/json; charset=utf-8'
-
+Vue.prototype.$echarts = echarts
 Vue.prototype.GLOBALS = GLOBAL
 // Vue.prototype.$ajax = axios
 Vue.config.productionTip = false

@@ -47,7 +47,7 @@ vue-scroll.menuBody(:ops="ops")
       span 财务
     ul.menuList
       li.menuItem.lv2
-        router-link(to="/order/mgmt") 财务总览
+        router-link(to="/finance/overview") 财务总览
       li.menuItem.lv2
         router-link(to="/order/entry") 账单管理
 
@@ -57,15 +57,15 @@ vue-scroll.menuBody(:ops="ops")
       span 管理
     ul.menuList
       li.menuItem.lv2
-        router-link(to="/finance/add") 我的账号
+        router-link(to="/mgmt/myAccount") 我的账号
       li.menuItem.lv2
-        router-link(to="/finance/add") 账号管理
+        router-link(to="/mgmt/accountMgmt") 账号管理
       li.menuItem.lv2
-        router-link(to="/finance/add") 企业管理
+        router-link(to="/mgmt/enterprise") 企业管理
       li.menuItem.lv2
-        router-link(to="/finance/add") 角色管理
+        router-link(to="/mgmt/roles") 角色管理
       li.menuItem.lv2
-        router-link(to="/finance/add") 工单管理
+        router-link(to="/mgmt/add") 工单管理
   .menuBox
     h3.menuT.lv1
       Icon.fontL(custom="i-icon i-icon-diary" size="16")
