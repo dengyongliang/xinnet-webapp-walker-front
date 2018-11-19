@@ -7,19 +7,13 @@
         div.wrap
           strong.t
             span 登录
-          Alert(type="error", show-icon) An error prompt
+          Alert(type="error", show-icon,v-show="showError") {{errorText}}
           FormItem
-            comp-input(name='userName',ref="userName",defaultValue="",placeholder="手机/邮箱/用户名",styles="width:100%")
-              i.font.iconleft.font-people(slot="left")
+            comp-input(name='userName',ref="userName",defaultValue="",placeholder="手机/邮箱/用户名",styles="width:100%",:on-errorparent="onShowError",:on-focusparent="onHideError",:errorInCompInput="false",label="登录名",:required="false")
+              Icon.iconleft(custom="i-icon i-icon-people",slot="left")
           FormItem
-            comp-input(name='userName',ref="userName",defaultValue="",placeholder="请输入密码",type="password",styles="width:100%")
-              i.font.iconleft.font-lock1(slot="left")
-          FormItem.verificationCodeInput
-            comp-input(name='userName',ref="userName",defaultValue="",placeholder="输入验证码",type="password",styles="width:100%")
-               i.font.iconleft.font-tick1(slot="left")
-            a(href="javascript:;" @click="getVerificationCode", v-if="!verificationCode.success") 获取短信验证码
-            span.tips
-              i(v-if="verificationCode.success") 发送成功
+            comp-input(name='userName',ref="userName",defaultValue="",placeholder="请输入密码",type="password",styles="width:100%",:on-errorparent="onShowError",:on-focusparent="onHideError",:errorInCompInput="false",label="密码",:required="false")
+              Icon.iconleft(custom="i-icon i-icon-lock1",slot="left")
           FormItem
             Button(type="primary", @click="submit", :loading="loadingBtn") 立即登录
             a(href="javascript:;" @click="",class="forgetPw") 忘记密码
@@ -38,29 +32,19 @@ export default {
   },
   data () {
     return {
-      modalAlertInfo: {
-        show: false,
-        title: '',
-        content: ''
-      },
+      errorText: '',
       loadingBtn: false,
-      account: {
-        value: '',
-        error: 0
-      },
-      password: {
-        value: '',
-        error: 0
-      },
-      verificationCode: {
-        value: '',
-        error: 0,
-        minlength: 6,
-        success: false
-      }
+      showError: false
     }
   },
   methods: {
+    onShowError (errText) {
+      this.showError = true
+      this.errorText = errText
+    },
+    onHideError () {
+      this.showError = false
+    },
     submit () {
       this.loadingBtn = true
       if (this.$refs.account.value === '') {
@@ -126,69 +110,11 @@ export default {
 
       this.loginSubmit(params)
     },
-    getVerificationCode (e) {
-      if (this.$refs.account.value === '') {
-        this.account.error = 1
-        this.loadingBtn = false
-        return false
-      }
-      let vm = this
-      let params = {
-        param: {
-          userCode: this.$refs.account.value
-        },
-        callback: function (response) {
-          let data = response.data
-          if (data.code === '1000') {
-            vm.verificationCode.success = true
-            vm.modalAlertInfo.show = true
-            vm.modalAlertInfo.title = '发送成功'
-            vm.modalAlertInfo.content = '短信口令已经发送，截止当天23:59:59有效，请注意保留！'
-          } else if (data.code === '100') {
-            vm.modalAlertInfo.show = true
-            vm.modalAlertInfo.title = '发送失败'
-            vm.modalAlertInfo.content = '手机号码错误'
-          } else if (data.code === '200') {
-            vm.modalAlertInfo.show = true
-            vm.modalAlertInfo.title = '发送失败'
-            vm.modalAlertInfo.content = '短信验证码已超上限'
-          } else if (data.code === '300') {
-            vm.modalAlertInfo.title = '提示'
-            vm.modalAlertInfo.content = '短信口令已经发送，截止当天23:59:59有效，请注意保留！'
-            vm.modalAlertInfo.show = true
-          } else if (data.code === '900') {
-            vm.verificationCode.error = 4
-          }
-        }
-      }
-      this.loginVerificationCode(params)
-    },
-    onFocus (e) {
-      this.account.error = 0
-      this.password.error = 0
-      this.verificationCode.error = 0
-    },
-    onBlur (e) {
-      let val = e.target.value
-      let name = e.target.name
-
-      if (name === 'verificationCode') {
-        if (val !== '') {
-          if (val.length < this.verificationCode.minlength) {
-            this.verificationCode.error = 2
-          }
-        }
-      }
-    },
     ...mapActions({
-      loginSubmit: types.LOGIN_SUBMIT,
-      loginVerificationCode: types.LOGIN_VERIFICATIONCODE
+      loginSubmit: types.LOGIN_SUBMIT
     })
   },
   computed: {
-    ...mapMutations([
-      'types.SHOW_BODY_SPIN'
-    ])
   },
   beforeMount () {
   },
@@ -242,9 +168,9 @@ export default {
 .pageLogin .compInput {
   position:relative;
 }
-.pageLogin .compInput .font{
+.pageLogin .compInput .iconleft{
   position:absolute;
-  top: 7px;
+  top: 15px;
   left:20px;
   z-index:1;
   color:#bcbcbc;
@@ -253,17 +179,6 @@ export default {
   height:46px;
   line-height:46px;
   padding-left:55px;
-}
-.pageLogin .verificationCodeInput{
-  margin-bottom:30px;
-}
-.pageLogin .verificationCodeInput a{
-  position:absolute;
-  right:10px;
-  top:13px;
-  color:#2271f4;
-  text-decoration: underline;
-  line-height:20px;
 }
 .forgetPw {
   color:#2271f4;

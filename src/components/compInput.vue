@@ -34,7 +34,7 @@
         :class="{ 'error': showError }"
       )
       slot(name="right")
-      Alert(type="error",show-icon, style="display:inline-block",v-show="showError",ref="msgError") {{errorText}}
+      Alert(type="error",show-icon, style="display:inline-block",v-show="showError && errorInCompInput",ref="msgError") {{errorText}}
 </template>
 
 <script>

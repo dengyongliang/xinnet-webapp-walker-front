@@ -49,7 +49,7 @@ vue-scroll.menuBody(:ops="ops")
       li.menuItem.lv2
         router-link(to="/finance/overview") 财务总览
       li.menuItem.lv2
-        router-link(to="/order/entry") 账单管理
+        router-link(to="/finance/billMgmt") 账单管理
 
   .menuBox
     h3.menuT.lv1

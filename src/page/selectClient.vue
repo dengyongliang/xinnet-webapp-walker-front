@@ -1,7 +1,33 @@
 <template lang="pug">
-.pageActivation
+.pageSelectClient
   header-body
   .mainBody
+    ul.list.clear
+      li
+        a(href="")
+          Row(type="flex", align="middle")
+            Col(span="24")
+              span.logo
+                img(src="../../static/img/img_list_none.png")
+              strong 标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题
+      li
+        a(href="")
+          Row(type="flex", align="middle")
+            Col(span="24")
+              span.logo
+              strong 标题标题标题标题标题标题
+      li
+        a(href="")
+          Row(type="flex", align="middle")
+            Col(span="24")
+              span.logo
+              strong 标题标题标题标题标题标题
+      li
+        a(href="")
+          Row(type="flex", align="middle")
+            Col(span="24")
+              span.logo
+              strong 标题标题标题标题标题标题
     comp-list-none(label="暂无管理客户")
 </template>
 
@@ -17,17 +43,6 @@ export default {
   },
   data () {
     return {
-      loadingBtn: false,
-      sexList: [
-        {
-            value: '男',
-            label: '1'
-        },
-        {
-            value: '女',
-            label: '0'
-        }
-      ]
     }
   },
   methods: {
@@ -42,105 +57,55 @@ export default {
 </script>
 
 <style scope>
-.pageActivation{
-  background:#f6f8f9;
-  padding-top:100px;
-}
-.pageActivation .mainBody{
+.mainBody{
   width:1200px;
   margin:0 auto;
+  padding-top:100px;
+}
+.list li{
+  float:left;
+  width:380px;
+  height:160px;
+  margin:0 30px 30px 0;
+}
+.list li:nth-child(2n+3){
+  margin-right:0;
+}
+.list li a{
+  height:100%;
+  display:block;
+  border:1px solid #e0e0e0;
+  border-radius: 10px;
   background:#fff;
 }
-.pageActivation .mainBody h1{
-  height:202px;
-  line-height:202px;
-  background:url(../../static/img/activation/img_01.png) no-repeat;
-  font-size:30px;
-  color:#fff;
-  font-weight:400;
-  text-align:center;
+.list li a:hover{
+  border-color:#35a7ff;
+  -moz-box-shadow:0px 0px 10px rgba(0,0,0,0.3);
+  -webkit-box-shadow:0px 0px 10px rgba(0,0,0,0.3);
+  box-shadow:0px 0px 10px rgba(0,0,0,0.3)
 }
-.pageActivation .ivu-input{
-  height:38px;
-  line-height:38px;
+.list li .ivu-row-flex{
+  height:100%;
 }
-.ivu-steps{
-  padding: 36px 225px;
-  text-align:center;
-}
-.ivu-steps .ivu-steps-tail{
-  padding:0px;
-  top:24px;
-}
-.ivu-steps .ivu-steps-tail i{
-  height:2px;
-}
-.ivu-steps .ivu-steps-head{
-  margin-bottom:5px;
-  padding-left:10px;
-  margin-left:-10px;
-}
-.ivu-steps .ivu-steps-head-inner{
-  width:50px;
-  height:50px;
-  line-height:50px;
-}
-.ivu-steps .ivu-steps-head-inner span{
-  font-size:20px!important;
-}
-.ivu-steps-item:last-child .ivu-steps-tail{
-  display:block;
-}
-.ivu-steps .ivu-steps-head-inner .ivu-icon{
-  font-size:50px!important;
-  color:#fff!important;
-}
-.ivu-steps .ivu-steps-main{
-  display:block;
-}
-.ivu-steps .ivu-steps-title{
-  font-weight:200;
-  color:#000!important;
-}
-.ivu-steps-item.ivu-steps-status-finish .ivu-steps-tail i,
-.ivu-steps-item.ivu-steps-status-process .ivu-steps-tail i{
-  background:#2271f4;
-}
-.ivu-steps-item.ivu-steps-status-finish .ivu-steps-head-inner,
-.ivu-steps-item.ivu-steps-status-process .ivu-steps-head-inner{
-  background:#2271f4;
-}
-
-.step .ivu-form-item-label{
-  width:525px;
-  height:38px;
-  line-height:38px;
-  padding-top:0px;
-  padding-bottom:0px;
-}
-.step span.text{
+.list .logo{
+  width:80px;
+  height:80px;
+  border-radius:100%;
+  overflow:hidden;
   display:inline-block;
-  line-height:38px;
+  border:5px solid #fff;
+  vertical-align:middle;
+  margin-left:30px;
+  margin-right:20px;
+  -moz-box-shadow:0px 0px 6px rgba(0,0,0,0.2);
+  -webkit-box-shadow:0px 0px 6px rgba(0,0,0,0.2);
+  box-shadow:0px 0px 6px rgba(0,0,0,0.2);
 }
-.step1 p{
-  text-align:center;
-  color:#ff7200;
-  margin-bottom:30px;
-}
-.ivu-form-item.btn{
-  padding:50px 0;
-}
-.ivu-form-item.btn button{
-  height:45px;
-  line-height:40px;
-  padding:0 50px;
-  font-size:15px;
-}
-.step4 p{
-  text-align:center;
-  font-size:30px;
-}
-.step4 .p1{
-  padding:40px 0;
+.list li strong{
+  width:220px;
+  font-size:16px;
+  display:inline-block;
+  vertical-align:middle;
+  line-height:24px;
 }
 </style>

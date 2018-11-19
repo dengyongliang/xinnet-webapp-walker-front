@@ -30,6 +30,7 @@ export default {
 </script>
 <style scoped>
 .listNone{
+  background:#fff;
   text-align:center;
   padding:160px 0;
 }

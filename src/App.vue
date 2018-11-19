@@ -36,6 +36,7 @@ export default {
 @import 'assets/css/iconfont.css';
 @import 'assets/css/xwNormalize.css';
 @import 'assets/css/xwCommon.css';
+@import 'assets/css/iviewRest.css';
 #app{
   height:100%;
 }

@@ -1,5 +1,5 @@
 <template lang="pug">
-  div(style="display:inline-block")
+  div.compSelect(style="display:inline-block")
     slot(name="left")
     Select(v-model="value",style="width:240px",:name="name",@on-change="selectChange")
       Option(v-for="item in list",:value="item.value") {{ item.label }}

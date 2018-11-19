@@ -33,6 +33,16 @@ export default {
       type: Boolean,
       default: true
     },
+    errorInCompInput: {
+      type: Boolean,
+      default: true
+    },
+    onErrorparent: {
+      type: Function
+    },
+    onFocusparent: {
+      type: Function
+    },
     defaultValue: String,
     maxLength: Number,
     placeholder: String,
@@ -57,6 +67,16 @@ export default {
     }
   },
   methods: {
+    showErrorParent (errText) {
+      if (typeof this.onErrorparent !=='undefined') {
+        this.onErrorparent(errText)
+      }
+    },
+    hideErrorParent () {
+      if (typeof this.onFocusparent !=='undefined') {
+        this.onFocusparent()
+      }
+    },
     showValidateResult (v) {
       this.showError = true
       this.errorText = v.text
@@ -64,6 +84,7 @@ export default {
     onFocus (e) {
       this.errorText = '',
       this.showError = false
+      this.hideErrorParent()
     },
     onBlur (e) {
       let vm = this
@@ -94,6 +115,9 @@ export default {
             }
           }
         }
+      }
+      if (this.errorText) {
+        this.showErrorParent(this.errorText)
       }
     }
   }

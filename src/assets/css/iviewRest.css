@@ -1,0 +1,17 @@
+.ivu-tooltip-dark .ivu-tooltip-inner{
+  background: #000;
+  border-radius: 0px;
+}
+.ivu-tooltip-dark .ivu-tooltip-arrow{
+  border-bottom-color:#000!important;
+}
+.ivu-tabs-bar{
+  border-bottom: none;
+}
+.ivu-tabs-bar .ivu-tabs-tab{
+  padding-left:10px;
+  padding-right:10px;
+}
+.ivu-select .ivu-select-selection{
+  border-radius: 0px;
+}

@@ -5,3 +5,22 @@
   line-height: 54px;
   font-weight: 200;
 }
+/* 账单管理 */
+.contPastBill .ivu-table-header th{
+  height:54px;
+  line-height: 54px;
+  font-weight: 200;
+}
+.contPastBill .ivu-page{
+  text-align:center;
+  padding: 20px 0;
+}
+.contPastBill .ivu-tabs-content{
+  overflow: visible;
+  height: 280px;
+  font-size: 12px;
+}
+
+.contPastBill .bill .ivu-select-dropdown{
+  margin-left: -58px;
+}

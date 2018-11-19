@@ -117,7 +117,16 @@ const RouterMain = new Router({
             title: '财务总览'
           }
         },
-
+        {
+          path: '/finance/billMgmt',
+          name: 'FINANCE_BILLMGMT',
+          component (resolve) {
+            return require(['@/modular/finance/billMgmt'], resolve)
+          },
+          meta: {
+            title: '账单管理'
+          }
+        },
       ]
     }
   ],
