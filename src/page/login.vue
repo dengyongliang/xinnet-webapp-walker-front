@@ -9,11 +9,17 @@
             span 登录
           Alert(type="error", show-icon,v-show="showError") {{errorText}}
           FormItem
-            comp-input(name='userName',ref="userName",defaultValue="",placeholder="手机/邮箱/用户名",styles="width:100%",:on-errorparent="onShowError",:on-focusparent="onHideError",:errorInCompInput="false",label="登录名",:required="false")
+            comp-input(name='account',ref="account",defaultValue="",placeholder="手机/邮箱/用户名",styles="width:100%",:on-errorparent="onShowError",:on-focusparent="onHideError",:errorInCompInput="false",label="登录名",)
               Icon.iconleft(custom="i-icon i-icon-people",slot="left")
           FormItem
-            comp-input(name='userName',ref="userName",defaultValue="",placeholder="请输入密码",type="password",styles="width:100%",:on-errorparent="onShowError",:on-focusparent="onHideError",:errorInCompInput="false",label="密码",:required="false")
+            comp-input(name='password',ref="password",defaultValue="",placeholder="请输入密码",type="password",styles="width:100%",:on-errorparent="onShowError",:on-focusparent="onHideError",:errorInCompInput="false",label="密码",)
               Icon.iconleft(custom="i-icon i-icon-lock1",slot="left")
+          FormItem.verificationCodeInput
+            comp-input(name='verificationCode',ref="verificationCode",defaultValue="",placeholder="请输验证码",styles="width:100%",:on-errorparent="onShowError",:on-focusparent="onHideError",:errorInCompInput="false",label="验证码",:maxLength="6",)
+              Icon.iconleft(custom="i-icon i-icon-tick1",slot="left")
+            a(href="javascript:;" @click="getVerificationCode",v-show="!success") 获取短信验证码
+            span.tips(v-show="success") 发送成功
+
           FormItem
             Button(type="primary", @click="submit", :loading="loadingBtn") 立即登录
             a(href="javascript:;" @click="",class="forgetPw") 忘记密码
@@ -26,6 +32,7 @@
 import { mapActions, mapMutations } from 'vuex'
 import * as types from '@/store/types'
 import compInput from '@/components/compInput'
+import validateFormResult from '@/global/validateForm'
 export default {
   components: {
     compInput
@@ -34,7 +41,8 @@ export default {
     return {
       errorText: '',
       loadingBtn: false,
-      showError: false
+      showError: false,
+      success: false
     }
   },
   methods: {
@@ -45,73 +53,119 @@ export default {
     onHideError () {
       this.showError = false
     },
-    submit () {
-      this.loadingBtn = true
+    getVerificationCode (e) {
       if (this.$refs.account.value === '') {
-        this.account.error = 1
+        this.$refs.account.showValidateResult({text:''})
+        this.onShowError('请输入登录名')
         this.loadingBtn = false
         return false
-      }
-      if (this.$refs.password.value === '') {
-        this.password.error = 1
-        this.loadingBtn = false
-        return false
-      }
-      if (this.$refs.verificationCode.value === '') {
-        this.verificationCode.error = 1
-        this.loadingBtn = false
-        return false
-      }
-      if (this.$refs.verificationCode.value !== '' && this.$refs.verificationCode.value.length < 6) {
-        this.verificationCode.error = 2
-        this.loadingBtn = false
-        return false
-      }
-      let param = {
-        account: this.$refs.account.value,
-        password: this.$refs.password.value,
-        verificationCode: this.$refs.verificationCode.value
       }
       let vm = this
       let params = {
         param: {
-          account: this.$refs.account.value,
-          password: this.$refs.password.value,
-          verificationCode: this.$refs.verificationCode.value
+          userCode: this.$refs.account.value
         },
         callback: function (response) {
           let data = response.data
           if (data.code === '1000') {
-            window.location.href = '/'
+            vm.success = true
+          } else if (data.code === '100') {
+            vm.$refs.account.showValidateResult({text:'手机号码不存在'})
+          } else if (data.code === '200') {
+            vm.onShowError('获取短信验证码已超上限')
+          } else if (data.code === '300') {
+            vm.onShowError('短信验证码已发送')
+          }
+        }
+      }
+      this.loginVerificationCode(params)
+    },
+    submit () {
+      this.loadingBtn = true
+      let account = this.$refs.account.value
+      let pw = this.$refs.password.value
+      let vc = this.$refs.verificationCode.value
+      if (!account) {
+        this.loadingBtn = false
+        this.$refs.account.showValidateResult({text:''})
+        this.onShowError('请输入登录名')
+        return false
+      }
+      if (!pw) {
+        this.loadingBtn = false
+        this.$refs.password.showValidateResult({text:''})
+        this.onShowError('请输入密码')
+        return false
+      }
+      if (!vc) {
+        this.loadingBtn = false
+        this.$refs.verificationCode.showValidateResult({text:''})
+        this.onShowError('请输入验证码')
+        return false
+      }
+      if (vc && vc.length < 6) {
+        this.loadingBtn = false
+        this.$refs.verificationCode.showValidateResult({text:''})
+        this.onShowError('请输入6位的数字')
+        return false
+      }
+      let vm = this
+      let params = {
+        param: {
+          account: account,
+          password: pw,
+          verificationCode: vc
+        },
+        callback: function (response) {
+          let data = response.data
+          if (data.code === '1000') {
+            vm.$Message.success('登录成功，获取账号信息！')
+            // 获取账号信息
+            setTimeout(() => {
+              vm.getCurrentUserData(function(res){
+                let data = res.data
+                console.log(res)
+                if (data.keeperFlag) {
+                  alert(1)
+                  vm.$router.replace({ path: '/selectClient' })
+                } else {
+                  alert(2)
+                }
+              })
+            },500)
           } else {
             vm.loadingBtn = false
             if (data.code === '100') {
-              vm.account.error = 2
+              vm.onShowError('用户不存在')
+              vm.$refs.account.showValidateResult({text:'用户不存在'})
             } else if (data.code === '200') {
-              vm.modalAlertInfo.show = true
-              vm.modalAlertInfo.title = '失败'
-              vm.modalAlertInfo.content = '用户已登录'
+              vm.onShowError('用户已登录')
+              vm.$refs.account.showValidateResult({text:'用户已登录'})
             } else if (data.code === '300') {
-              vm.verificationCode.error = 3
+              vm.onShowError('手机验证码错误')
+              vm.$refs.verificationCode.showValidateResult({text:'手机验证码错误'})
             } else if (data.code === '400') {
-              vm.password.error = 2
+              vm.onShowError('密码错误')
+              vm.$refs.password.showValidateResult({text:'密码错误'})
             } else if (data.code === '600') {
-              vm.modalAlertInfo.show = true
-              vm.modalAlertInfo.title = '失败'
-              vm.modalAlertInfo.content = '用户被锁定'
+              vm.onShowError('用户被锁定')
+              vm.$refs.account.showValidateResult({text:'用户被锁定'})
             } else if (data.code === '700') {
-              vm.modalAlertInfo.show = true
-              vm.modalAlertInfo.title = '失败'
-              vm.modalAlertInfo.content = '用户权限异常'
+              vm.onShowError('用户权限异常')
+              vm.$refs.account.showValidateResult({text:'用户权限异常'})
+            } else if (data.code === '800') {
+              vm.onShowError('非法登录')
+              vm.$refs.account.showValidateResult({text:'非法登录'})
             }
           }
         }
       }
-
       this.loginSubmit(params)
     },
     ...mapActions({
-      loginSubmit: types.LOGIN_SUBMIT
+      loginSubmit: types.LOGIN_SUBMIT,
+      loginVerificationCode: types.LOGIN_VERIFICATIONCODE,
+      getCurrentUserData: types.GET_CURRENT_USER_DATA
     })
   },
   computed: {
@@ -119,7 +173,6 @@ export default {
   beforeMount () {
   },
   mounted(){
-    this.$store.commit(types.SHOW_BODY_SPIN)
   }
 }
 </script>
@@ -179,6 +232,23 @@ export default {
   height:46px;
   line-height:46px;
   padding-left:55px;
+}
+-.pageLogin .verificationCodeInput{
+  margin-bottom:30px;
+}
+.pageLogin .verificationCodeInput a{
+  position:absolute;
+  right:10px;
+  top:13px;
+  color:#2271f4;
+  text-decoration: underline;
+  line-height:20px;
+}
+.pageLogin .verificationCodeInput .tips{
+  position:absolute;
+  right:10px;
+  top:13px;
+  line-height:20px;
 }
 .forgetPw {
   color:#2271f4;

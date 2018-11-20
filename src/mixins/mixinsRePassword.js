@@ -86,16 +86,7 @@ export default {
       let val = e.target.value
       let name = e.target.name
       console.log(val)
-      if (val === '' && this.required) {
-        if (name === 'password') {
-          this.showPasswordError = true
-          this.errorTextPassword = '请输入密码！'
-        }
-        if (name === 'rePassword') {
-          this.showRePasswordError = true
-          this.errorTextRePassword = '请再次输入密码！'
-        }
-      } else {
+      if (val !== '') {
         if (name === 'password') {
           if (!this.GLOBALS.regPw.test(val)) {
             this.showPasswordError = true

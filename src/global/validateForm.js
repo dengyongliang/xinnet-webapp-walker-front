@@ -10,22 +10,22 @@ export default function validateFormResult (validateArray) {
       let required = v.required
       let label = v.label
       if (value === '' && required) {
-        v.showValidateResult({text:'请输入' + (label.substr(0,label.length-1) || '') + '！'})
+        v.showValidateResult({text:'请输入' + (label || '') + '！'})
         flag = false
-        break
+        // break
       } else {
         if (name === 'userEmail') {
           if (value !== '' && !GLOBAL.IS_EMAIL_AVAILABLE(value)) {
             v.showValidateResult({text:'请输入正确的邮件地址，如xinnet@xinnet.com！'})
             flag = false
-            break
+            // break
           }
         }
         if (name === 'userMobile') {
           if (value !== '' && !GLOBAL.IS_PHONE_AVAILABLE(value)) {
             v.showValidateResult({text:'请输入11位的手机号码！'})
             flag = false
-            break
+            // break
           }
         }
       }
@@ -34,21 +34,21 @@ export default function validateFormResult (validateArray) {
       if (value === '') {
         v.showValidateResult()
         flag = false
-        break
+        // break
       }
     } else if (v.type === 'upload') {
       let value = v.$refs.upload.fileList
       if (!value.length) {
         v.showValidateResult()
         flag = false
-        break
+        // break
       }
     } else if (v.type === 'radio') {
       let value = v.value
       if (!value.length) {
         v.showValidateResult()
         flag = false
-        break
+        // break
       }
     }
   }

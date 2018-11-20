@@ -3,80 +3,69 @@
   header-body
   .mainBody
     h1 欢迎使用行者数字资产管理系统，请按要求激活账户
-    Steps(:current="1")
+    Steps(:current="step")
       Step(title="验证姓名")
       Step(title="设置个人信息")
       Step(title="设置密码")
 
-    Form.step.step1(form="", ref="form1")
-      p 管理员已为您设置姓名，为了账号安全，请输入您的真实姓名进行验证。
-      FormItem(label="姓名：")
-        comp-input(name='userName',label="姓名",ref="userName",defaultValue="",placeholder="请输入姓名",)
-      FormItem.btn(label=" ")
-        Button(type="primary", @click="", :loading="loadingBtn") 下一步
-    Form.step.step2(form="", ref="form2")
-      FormItem(label="用户名：")
-        span.text 用户名
-      FormItem(label="姓名：")
-        span.text 姓名
-      FormItem(label="邮箱：")
-        span.text 邮箱
-      FormItem(label="所属企业：")
-        span.text 所属企业
-      FormItem(label="性别：")
-        comp-radio(name="sex",:list="sexList",ref="sex")
-      FormItem(label="座机：")
-        comp-input(name='userName',label="用户名",ref="userName",defaultValue="",placeholder="请输入座机",)
-      FormItem(label="手机号：")
-        comp-input(name='userName',label="用户名",ref="userName",defaultValue="",placeholder="请输入手机号",)
-      FormItem(label="短信验证码：")
-        comp-input(name='userName',label="用户名",ref="userName",defaultValue="",placeholder="请输入短信验证码",)
-      FormItem.btn(label=" ")
-        Button(type="primary", @click="", :loading="loadingBtn") 下一步
-    Form.step.step3(form="", ref="form3",)
-      comp-re-password(defaultValue="",ref="compRePassword",label1="请输入密码：",label2="请重复密码：",placeholder1="",placeholder2="",)
-      FormItem.btn(label=" ")
-        Button(type="primary", @click="", :loading="loadingBtn") 下一步
-    Form.step.step4(ref="form4")
-      p.p1
-        img(src="../../static/img/activation/img_02.png")
-      p.p2 激活完成，请登录
-      FormItem.btn(label=" ")
-        Button(type="primary", @click="", :loading="loadingBtn") 去登录
+    comp-activation-step1(v-if="step===0",ref="form1",:userCode="userCode",@submitStep="submitStep1",)
+    button(@click="submitStep1") next
+    comp-activation-step2(v-if="step===1",ref="form2",:userCode="userCode",@submitStep="submitStep2")
+    comp-activation-step3(v-if="step===2",ref="form3",:userCode="userCode")
+    comp-activation-step4(v-if="step===3",ref="form4",:userCode="userCode")
 </template>
 
 <script>
-import { mapActions, mapMutations } from 'vuex'
+import { mapState, mapActions, mapMutations } from 'vuex'
 import * as types from '@/store/types'
-import compInput from '@/components/compInput'
-import compRadio from '@/components/compRadio'
-import compRePassword from '@/components/compRePassword'
 import headerBody from '../modular/header'
+import compActivationStep1 from '@/components/compActivationStep1'
+import compActivationStep2 from '@/components/compActivationStep2'
+import compActivationStep3 from '@/components/compActivationStep3'
+import compActivationStep4 from '@/components/compActivationStep4'
 export default {
   components: {
-    compInput,
-    compRadio,
-    compRePassword,
-    headerBody
+    headerBody,
+    compActivationStep1,
+    compActivationStep2,
+    compActivationStep3,
+    compActivationStep4
+  },
+  props: {
+    userCode: ''
   },
   data () {
     return {
-      loadingBtn: false,
-      sexList: [
-        {
-            value: '男',
-            label: '1'
-        },
-        {
-            value: '女',
-            label: '0'
-        }
-      ]
+      step: 2
     }
   },
   methods: {
+    submitStep1 () {
+      this.step = 1
+      let data = {
+        "msg":"completed is success",
+        "code":"1000",
+        "email":"baiyu@xinnet.com",
+        "keeperFlag":0,
+        "companyId":12,
+        "companyName":"新网数码"
+      }
+      data.userName = '邓永亮'
+      data.userCode = '邓永亮Code78787987'
+      this.$store.commit(types.SET_ACTIVATION_DATA, data)
+      console.log(this.activation)
+    },
+    submitStep2 () {
+      this.step = 2
+    },
+    submitStep3 () {
+      this.step = 3
+    }
   },
   computed: {
+    ...mapState([
+      'activation'
+    ])
   },
   beforeMount () {
   },

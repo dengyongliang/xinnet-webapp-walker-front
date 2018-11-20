@@ -17,7 +17,7 @@
         em.num 1
       span.line |
       router-link(to="http://www.xinnet.com") 新网首页
-      a(href="javascript:;", @click="", class="exit") 退出
+      a(href="javascript:;", @click="logout", class="exit") 退出
 </template>
 
 <script>
@@ -31,8 +31,23 @@ export default {
   computed: {
   },
   methods: {
+    logout () {
+      let vm = this
+      let params = {
+        callback: function (response) {
+          if( response.data.code === '1000' ){
+            vm.$Message.success('登出成功')
+            vm.$router.replace({ path: '/login' })
+          } else {
+          }
+        }
+      }
+      this.loginOut(params)
+    },
+    ...mapActions({
+      loginOut: types.LOGIN_OUT
+    })
   },
-
   beforeMount () {
   }
 }

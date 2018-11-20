@@ -50,25 +50,14 @@ export default {
     }
   },
   actions: {
-    [types.GET_CURRENT_USER_DATA] ({ commit, rootState }) {
+    [types.GET_CURRENT_USER_DATA] ({ commit, rootState }, callback) {
       //NProgress.start()
       rest.get(links.GET_CURRENT_USER_DATA,'',function(response){
         // NProgress.done()
         if( response.data.code === '1000' ){
           rootState.islogin = true
           commit(types.SET_CURRENT_USER_DATA, response.data)
-          // 获取角色数据
-          rest.get(links.GET_ROLES_DATA,'',function(response){
-            if( response.data.code === '1000' ){
-              commit(types.SET_ROLES_DATA, response.data)
-            } else {
-
-            }
-          })
-          setTimeout( () => {
-            rootState.pending = false
-            rootState.showBodySpin = false
-          },350 )
+          callback(response.data)
         } else {
           rootState.islogin = false
           rootState.showBodySpin = false

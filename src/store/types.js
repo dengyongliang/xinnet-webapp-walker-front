@@ -2,6 +2,10 @@ export const LOGIN_VERIFICATIONCODE = 'loginVerificationCode'
 export const LOGIN_SUBMIT = 'loginSubmit'
 export const LOGIN_OUT = 'loginOut'
 export const SHOW_BODY_SPIN = 'showBodySpin'
+// 激活
+export const CHECK_VALID_USER = 'checkValidUser'
+export const SET_ACTIVATION_DATA = 'setActivationData'
+export const ACTIVATION_VERIFICATIONCODE = 'activationVerificationCode'
 // 账号管理
 export const GET_CURRENT_USER_DATA = 'getCurrentUserData'
 export const SET_CURRENT_USER_DATA = 'setCurrentUserData'

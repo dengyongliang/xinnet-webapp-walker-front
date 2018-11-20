@@ -5,7 +5,9 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapActions, mapMutations } from 'vuex'
+import * as types from '@/store/types'
+import { emitter as restEmitter } from '@/global/rest'
 export default {
   name: 'App',
   data () {
@@ -15,8 +17,47 @@ export default {
   mounted () {
   },
   beforeMount () {
+    const notNeedLoginPaths = ['login', 'forgetPw', 'account_activation']
+    const path = location.pathname
+    if (path !== '' && notNeedLoginPaths.some(p => path.indexOf(p) === 1)) {
+      // 无需登录
+    } else {
+      // 需要登录
+      // 校验登录
+      if (!this.islogin) {
+        this.getCurrentUserData()
+      }
+    }
+    let vm = this
+    restEmitter.on('noLogin', () => {
+      vm.$Message.error('登录超时，请重新登录！')
+      setTimeout(() => {
+        vm.$router.replace({ path: '/login' })
+      },300)
+    })
+    restEmitter.on('noPermission', () => {
+      vm.$Message.error('权限错误！')
+      setTimeout(() => {
+        vm.$router.replace({ path: '/' })
+      },300)
+    })
+    restEmitter.on('paramError', () => {
+      vm.$Message.error('参数错误！')
+    })
+    restEmitter.on('requestError', () => {
+      vm.$Message.error('请求失败！')
+    })
+    restEmitter.on('errorOther', () => {
+      vm.$Message.error('连接错误！')
+    })
+    restEmitter.on('errorServer', () => {
+      vm.$Message.error('连接到服务器失败！')
+    })
   },
   methods: {
+    ...mapActions({
+      getCurrentUserData: types.GET_CURRENT_USER_DATA
+    })
   },
   computed: {
     ...mapState([

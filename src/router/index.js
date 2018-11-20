@@ -1,8 +1,9 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import NProgress from 'nprogress'
-
+import Event from '@/global/event'
 Vue.use(Router)
+export const emitter = new Event()
 
 const RouterMain = new Router({
   mode: 'history',
@@ -38,11 +39,12 @@ const RouterMain = new Router({
       }
     },
     {
-      path: '/activation',
+      path: '/account_activation/:userCode',
       name: 'ACTIVATION',
       component (resolve) {
         return require(['@/page/activation'], resolve)
       },
+      props: true,
       meta: {
         title: '账户激活'
       }

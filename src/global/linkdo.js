@@ -1,14 +1,19 @@
 'use strict'
 const api = process.env.NODE_ENV === 'production' ? '' : '/api'
 
+// 激活-step1
+export const CHECK_VALID_USER = api + '/client-api/account/user/validUser'
+// 激活验证码
+export const ACTIVATION_VERIFICATIONCODE = api + '/client-api/server/message/send/keeperactivation'
+
 // 登出
-export const LOGIN_OUT = api + '/admin-api/admin/logout'
+export const LOGIN_OUT = api + '/client-api/user/logout'
 // 登录
-export const LOGIN_SUBMIT = api + '/admin-api/admin/login'
+export const LOGIN_SUBMIT = api + '/client-api/user/login'
 // 登录_获取验证码
-export const LOGIN_VERIFICATIONCODE = api + '/admin-api/server/message/send/admlogin'
+export const LOGIN_VERIFICATIONCODE = api + '/client-api/server/message/send/clientLogin'
 // 获取当前账号信息
-export const GET_CURRENT_USER_DATA = api + '/admin-api/manage/user/myUserInfo'
+export const GET_CURRENT_USER_DATA = api + '/client-api/account/user/myUserInfo'
 // 获取角色信息
 export const GET_ROLES_DATA = api + '/admin-api/manage/user/adminRoles'
 // 修改密码

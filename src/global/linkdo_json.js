@@ -1,5 +1,9 @@
 'use strict'
 
+// 激活-step1
+export const CHECK_VALID_USER = 'http://localhost:4400/static/data/myUserInfo.js'
+// 激活验证码
+export const ACTIVATION_VERIFICATIONCODE = 'http://localhost:4400/static/data/myUserInfo.js'
 // 登出
 export const LOGIN_OUT = 'http://localhost:4400/static/data/myUserInfo.js'
 // 登录

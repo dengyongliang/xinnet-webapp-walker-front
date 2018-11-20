@@ -90,10 +90,7 @@ export default {
       let vm = this
       let val = this.value
       let name = this.name
-      if (val === '' && this.required) {
-        this.showError = true
-        this.errorText = '请输入' + (vm.label || '') + '！'
-      } else {
+      if (val !== '') {
         if (this.number && isNaN(val)) {
           this.showError = true
           this.errorText = '只允许输入数字！'
