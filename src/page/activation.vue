@@ -9,9 +9,8 @@
       Step(title="设置密码")
 
     comp-activation-step1(v-if="step===0",ref="form1",:userCode="userCode",@submitStep="submitStep1",)
-    button(@click="submitStep1") next
     comp-activation-step2(v-if="step===1",ref="form2",:userCode="userCode",@submitStep="submitStep2")
-    comp-activation-step3(v-if="step===2",ref="form3",:userCode="userCode")
+    comp-activation-step3(v-if="step===2",ref="form3",:userCode="userCode",@submitStep="submitStep3")
     comp-activation-step4(v-if="step===3",ref="form4",:userCode="userCode")
 </template>
 
@@ -36,24 +35,12 @@ export default {
   },
   data () {
     return {
-      step: 2
+      step: 0
     }
   },
   methods: {
     submitStep1 () {
       this.step = 1
-      let data = {
-        "msg":"completed is success",
-        "code":"1000",
-        "email":"baiyu@xinnet.com",
-        "keeperFlag":0,
-        "companyId":12,
-        "companyName":"新网数码"
-      }
-      data.userName = '邓永亮'
-      data.userCode = '邓永亮Code78787987'
-      this.$store.commit(types.SET_ACTIVATION_DATA, data)
-      console.log(this.activation)
     },
     submitStep2 () {
       this.step = 2
@@ -83,6 +70,7 @@ export default {
   width:1200px;
   margin:0 auto;
   background:#fff;
+  padding-top:0px;
 }
 .pageActivation .mainBody h1{
   height:202px;
@@ -169,11 +157,5 @@ export default {
   padding:0 50px;
   font-size:15px;
 }
-.step4 p{
-  text-align:center;
-  font-size:30px;
-}
-.step4 .p1{
-  padding:40px 0;
-}
+
 </style>

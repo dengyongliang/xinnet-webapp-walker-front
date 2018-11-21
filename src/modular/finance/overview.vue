@@ -10,6 +10,7 @@
         .r
           span.text 统计日期
           DatePicker(type="daterange",placeholder="",v-model="time",format="yyyy-MM-dd",@on-change="time=$event",placement="bottom-end")
+          Button(type="primary", @click="",:loading="loadingBtn") 查询
       div.c
         Row
           Col.data(span="12")
@@ -17,29 +18,33 @@
               table
                 tr
                   td.col1 信用消费：
-                  td.col2 5,125.12元
+                  td.col2 {{creditMoney}} 元
                 tr
                   td.col1 预付费消费：
-                  td.col2 5,125.12元
+                  td.col2 {{payMoney}} 元
               Divider(dashed)
               table
                 tr
                   td.col1 消费总额：
-                  td.col2 <em>5,125.12</em>元
+                  td.col2 <em>{{totalMoney}}</em> 元
           Col.chart(span="12")
             .colWrap
               div.chartCount(id="myChart",style="width:450px;height:300px;")
-      <Table :columns="columns" :data="clientList" :loading="loadingTable"></Table>
+      .secTable
+        Table(:columns="columns", :data="list", :loading="loadingTable")
     div.sec.trend
       div.t.clear
         span.text 消费趋势
         .r
           span.text 统计日期
           DatePicker(type="daterange",placeholder="",v-model="time2",format="yyyy-MM-dd",@on-change="time=$event",placement="bottom-end")
+          Button(type="primary", @click="",:loading="loadingBtn") 查询
       compChartSpendTrend()
 </template>
 
 <script>
+import { mapState, mapActions } from 'vuex'
+import * as types from '@/store/types'
 import compChartSpendTrend from '@/components/compChartSpendTrend'
 export default {
   components: {
@@ -53,34 +58,42 @@ export default {
       loadingBtn: false,
       columns: [
         {
-          title: '创建时间',
-          key: 'createTime',
+          title: '产品名称',
+          key: 'orderGoodsType',
           className: 'col1'
         },
         {
-          title: '企业名称',
-          key: 'name',
-          className: 'col2'
+          title: '消费金额',
+          key: 'orderTotalMoney',
+          className: 'col2',
+          render: (h, params) => {
+            return h('div', [
+              h('span', {
+              }, this.list[params.index].orderTotalMoney + ' 元')
+            ])
+          }
         },
         {
-          title: '客户ID',
-          key: 'customerUserId',
-          className: 'col3'
+          title: '信用消费',
+          key: 'orderCreditMoney',
+          className: 'col3',
+          render: (h, params) => {
+            return h('div', [
+              h('span', {
+              }, this.list[params.index].orderCreditMoney + ' 元')
+            ])
+          }
         },
         {
-          title: '账期',
-          key: 'accountPeriod',
-          className: 'col4'
-        },
-        {
-          title: '额度',
-          key: 'creditBalance',
-          className: 'col5'
-        },
-        {
-          title: '状态',
-          key: 'status',
-          className: 'col6'
+          title: '预付费消费',
+          key: 'orderPayMoney',
+          className: 'col4',
+          render: (h, params) => {
+            return h('div', [
+              h('span', {
+              }, this.list[params.index].orderPayMoney + ' 元')
+            ])
+          }
         },
         {
           title: '操作',
@@ -94,21 +107,17 @@ export default {
                 },
                 on: {
                   click: () => {
-                    let param = {
-                      client: this.clientList[params.index].name,
-                      money: this.clientList[params.index].orgCode,
-                      cycle: this.clientList[params.index].customerUserId,
-                      balance: this.clientList[params.index].accountPeriod
-                    }
-                    this.showDrawerBillConfirm(param)
                   }
                 }
-              }, '结算')
+              }, '详情')
             ])
           }
         }
       ],
-      clientList: [],
+      list: [],
+      creditMoney: '0.00',
+      payMoney: '0.00',
+      totalMoney: '0.00'
     }
   },
   methods: {
@@ -164,11 +173,40 @@ export default {
           }
         ]
       })
-    }
+    },
+    getFinancePayStatisticsParam (obj) {
+      this.loadingTable = true
+      let vm = this
+      let params = {
+        param: {
+          startTime: 20,
+          endTime: 30
+        },
+        callback: function(response){
+          vm.loadingTable = false
+          console.log(response.data)
+          if (response.data.code === '1000'){
+            vm.creditMoney = response.data.data.creditMoney
+            vm.payMoney = response.data.data.payMoney
+            vm.totalMoney = response.data.data.totalMoney
+            vm.list = response.data.data.list
+          } else {
+            if (response.data.code === '900') {
+              vm.$Message.error('查询失败')
+            }
+          }
+        }
+      }
+      return params
+    },
+    ...mapActions({
+      financePayStatistics: types.FINANCE_PAY_STATISTICS
+    })
   },
   computed: {
   },
   beforeMount () {
+    this.financePayStatistics(this.getFinancePayStatisticsParam())
   },
   mounted(){
     this.drawLine()
@@ -206,6 +244,9 @@ export default {
   border:none;
   color:#666;
   margin-right:10px;
+}
+.contOverview .sec .r button{
+  margin-left:10px;
 }
 .contOverview .sec.count .colWrap{
   padding: 0 15%;

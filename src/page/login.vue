@@ -119,19 +119,13 @@ export default {
         callback: function (response) {
           let data = response.data
           if (data.code === '1000') {
-            vm.$Message.success('登录成功，获取账号信息！')
-            // 获取账号信息
+            vm.$Message.success('登录成功！')
             setTimeout(() => {
-              vm.getCurrentUserData(function(res){
-                let data = res.data
-                console.log(res)
-                if (data.keeperFlag) {
-                  alert(1)
-                  vm.$router.replace({ path: '/selectClient' })
-                } else {
-                  alert(2)
-                }
-              })
+              if (data.keeperFlag) {
+                vm.$router.replace({ path: '/selectClient' })
+              } else {
+                alert(2)
+              }
             },500)
           } else {
             vm.loadingBtn = false

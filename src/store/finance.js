@@ -8,20 +8,8 @@ export default {
   mutations: {
   },
   actions: {
-    [types.GET_BILL_LIST] ({ commit, rootState }, params) {
-      rest.get(links.GET_BILL_LIST, params.param,params.callback)
-    },
-    [types.CONFIRM_BILL_CLEAN] ({ commit, rootState }, params) {
-      rest.get(links.CONFIRM_BILL_CLEAN, params.param,params.callback)
-    },
-    [types.GET_CLIENT_BALANCE_LIST] ({ commit, rootState }, params) {
-      rest.get(links.CONFIRM_BILL_CLEAN, params.param,params.callback)
-    },
-    [types.GET_PAYMENT_LIST] ({ commit, rootState }, params) {
-      rest.get(links.GET_PAYMENT_LIST, params.param,params.callback)
-    },
-    [types.QUERY_CLIENT] ({ commit, rootState }, params) {
-      rest.get(links.QUERY_CLIENT, params.param,params.callback)
+    [types.FINANCE_PAY_STATISTICS] ({ commit, rootState }, params) {
+      rest.get(links.FINANCE_PAY_STATISTICS, params.param,params.callback)
     }
   }
 }

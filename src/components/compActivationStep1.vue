@@ -33,7 +33,7 @@ export default {
       ])
       if (result) {
         let vm = this
-        let params = {
+        var params = {
           param: {
             userCode: this.userCode,
             userName: this.$refs.userName.value
@@ -41,23 +41,15 @@ export default {
           callback: function (response) {
             vm.loadingBtn = false
             if( response.data.code === '1000' ){
-              // 重置账号列表
-              let data = {
-                "msg":"completed is success",
-                "code":"1000",
-                "email":"baiyu@xinnet.com",
-                "keeperFlag":0,
-                "companyId":12,
-                "companyName":"新网数码"
-              }
-
-              this.$store.commit(types.SET_ACTIVATION_DATA, data)
+              vm.$Message.success('验证成功')
+              vm.$store.commit(types.SET_ACTIVATION_DATA, response.data)
+              vm.$store.commit(types.SET_ACTIVATION_DATA, params.param)
               vm.$emit('submitStep')
             } else {
               if (response.data.code === '200') {
                 vm.$Message.error('用户不存在')
               } else {
-                vm.$Message.error('操作失败')
+                vm.$Message.error('验证失败')
               }
             }
           }

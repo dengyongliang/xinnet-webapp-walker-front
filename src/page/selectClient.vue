@@ -2,33 +2,15 @@
 .pageSelectClient
   header-body
   .mainBody
-    ul.list.clear
-      li
+    ul.list.clear(v-show="list.length")
+      li(v-for="item in list")
         a(href="")
           Row(type="flex", align="middle")
             Col(span="24")
               span.logo
-                img(src="../../static/img/img_list_none.png")
-              strong 标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题
-      li
-        a(href="")
-          Row(type="flex", align="middle")
-            Col(span="24")
-              span.logo
-              strong 标题标题标题标题标题标题
-      li
-        a(href="")
-          Row(type="flex", align="middle")
-            Col(span="24")
-              span.logo
-              strong 标题标题标题标题标题标题
-      li
-        a(href="")
-          Row(type="flex", align="middle")
-            Col(span="24")
-              span.logo
-              strong 标题标题标题标题标题标题
-    comp-list-none(label="暂无管理客户")
+                img(:src="item.orgFile")
+              strong {{item.name}}
+    comp-list-none(label="暂无管理客户",v-show="!list.length")
 </template>
 
 <script>
@@ -43,20 +25,28 @@ export default {
   },
   data () {
     return {
+      list: []
     }
   },
   methods: {
+    ...mapActions({
+      queryUserCustomersList: types.QUERY_USER_CUSTOMERS_LIST
+    })
   },
   computed: {
   },
   beforeMount () {
+    this.queryUserCustomersList((response) => {
+      console.log(response)
+      this.list = response.data.data
+    })
   },
   mounted(){
   }
 }
 </script>
 
-<style scope>
+<style scoped>
 .mainBody{
   width:1200px;
   margin:0 auto;

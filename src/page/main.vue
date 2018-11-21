@@ -36,6 +36,5 @@ export default {
 </script>
 
 <style>
-@import '../assets/css/main.css';
 @import '../assets/css/cont.css';
 </style>

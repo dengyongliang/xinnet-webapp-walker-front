@@ -52,18 +52,7 @@ export default {
   actions: {
     [types.GET_CURRENT_USER_DATA] ({ commit, rootState }, callback) {
       //NProgress.start()
-      rest.get(links.GET_CURRENT_USER_DATA,'',function(response){
-        // NProgress.done()
-        if( response.data.code === '1000' ){
-          rootState.islogin = true
-          commit(types.SET_CURRENT_USER_DATA, response.data)
-          callback(response.data)
-        } else {
-          rootState.islogin = false
-          rootState.showBodySpin = false
-        }
-        return response
-      })
+      rest.get(links.GET_CURRENT_USER_DATA, '', callback)
     },
     [types.SET_USER_PASSWORD] ({ commit, rootState },params) {
       rest.post(links.SET_USER_PASSWORD, JSON.stringify(params.param),params.callback)

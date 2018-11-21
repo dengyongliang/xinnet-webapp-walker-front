@@ -50,6 +50,32 @@ export default function validateFormResult (validateArray) {
         flag = false
         // break
       }
+    } else if (v.type === 'rePassword') {
+      let password = v.$refs.password.value
+      let rePassword = v.$refs.rePassword.value
+      console.log(v.$refs.password)
+      if (password === '') {
+        v.showValidateResult1({text:'请输入密码！'})
+        flag = false
+      } else {
+        if (!GLOBAL.regPw.test(password)) {
+          flag = false
+          v.showValidateResult1({text:'密码由8-16位字母、数字、符号组成，区分大小写，且至少包含有字母、数字、符号、大小写中的两种组合！'})
+        }
+      }
+      if (rePassword === '') {
+        flag = false
+        v.showValidateResult2({text:'请输入密码！'})
+      } else {
+        if (!GLOBAL.regPw.test(rePassword)) {
+          flag = false
+          v.showValidateResult2({text:'密码由8-16位字母、数字、符号组成，区分大小写，且至少包含有字母、数字、符号、大小写中的两种组合！'})
+        }
+        if (GLOBAL.regPw.test(rePassword) && password !== rePassword) {
+          flag = false
+          v.showValidateResult2({text:'重复输入密码与新密码不一致！'})
+        }
+      }
     }
   }
   return flag

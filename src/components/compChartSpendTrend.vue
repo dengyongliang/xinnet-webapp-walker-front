@@ -1,5 +1,7 @@
 <template lang="pug">
-  div.chartTrend(id="myChart2",style="height:400px;")
+  div
+    div.chartTrend(id="myChart2",style="height:400px;")
+    a(@click="show") show
 </template>
 
 <script>
@@ -10,9 +12,14 @@ export default {
   },
   data () {
     return {
+      xAxis_list: [],
+      obj: []
     }
   },
   methods: {
+    show () {
+      console.log(this.obj)
+    },
     drawLine2 (param) {
       let myChart = this.$echarts.init(document.getElementById('myChart2'))
       // 绘制图表
@@ -36,7 +43,7 @@ export default {
         },
         xAxis:  {
             type: 'category',
-            data: ['周一','周二','周三','周四','周五','周六','周日']
+            data: this.xAxis_list
         },
         yAxis: {
           type: 'value'
@@ -52,7 +59,7 @@ export default {
                         position: 'insideRight'
                     }
                 },
-                data: [320, 302, 301, 334, 390, 330, 320]
+                data: [320, 302]
             },
             {
                 name: '邮件营销',
@@ -64,7 +71,7 @@ export default {
                         position: 'insideRight'
                     }
                 },
-                data: [120, 132, 101, 134, 90, 230, 210]
+                data: [120, 132]
             },
             {
                 name: '联盟广告',
@@ -76,7 +83,7 @@ export default {
                         position: 'insideRight'
                     }
                 },
-                data: [220, 182, 191, 234, 290, 330, 310]
+                data: [220, 182]
             },
             {
                 name: '视频广告',
@@ -88,7 +95,7 @@ export default {
                         position: 'insideRight'
                     }
                 },
-                data: [150, 212, 201, 154, 190, 330, 410]
+                data: [150, 212]
             },
             {
                 name: '搜索引擎',
@@ -100,13 +107,88 @@ export default {
                         position: 'insideRight'
                     }
                 },
-                data: [820, 832, 901, 934, 1290, 1330, 1320]
+                data: [820, 832]
             }
         ]
       })
     }
   },
   beforeMount () {
+    var result = {
+      "2018-11": [
+        {
+          "orderGoodsType": 1,
+          "orderCreditMoney": 0,
+          "orderPayMoney": 0,
+          "orderTotalMoney": 200
+        },
+        {
+          "orderGoodsType": 2,
+          "orderCreditMoney": 0,
+          "orderPayMoney": 0,
+          "orderTotalMoney": 0
+        },
+        {
+          "orderGoodsType": 3,
+          "orderCreditMoney": 0,
+          "orderPayMoney": 0,
+          "orderTotalMoney": 100
+        },
+        {
+          "orderGoodsType": 4,
+          "orderCreditMoney": 0,
+          "orderPayMoney": 0,
+          "orderTotalMoney": 0
+        },
+        {
+          "orderGoodsType": 5,
+          "orderCreditMoney": 0,
+          "orderPayMoney": 0,
+          "orderTotalMoney": 0
+        }
+      ],
+      "2018-12": [
+        {
+          "orderGoodsType": 1,
+          "orderCreditMoney": 0,
+          "orderPayMoney": 0,
+          "orderTotalMoney": 200
+        },
+        {
+          "orderGoodsType": 2,
+          "orderCreditMoney": 0,
+          "orderPayMoney": 0,
+          "orderTotalMoney": 0
+        },
+        {
+          "orderGoodsType": 3,
+          "orderCreditMoney": 0,
+          "orderPayMoney": 0,
+          "orderTotalMoney": 100
+        },
+        {
+          "orderGoodsType": 4,
+          "orderCreditMoney": 0,
+          "orderPayMoney": 0,
+          "orderTotalMoney": 0
+        },
+        {
+          "orderGoodsType": 5,
+          "orderCreditMoney": 0,
+          "orderPayMoney": 0,
+          "orderTotalMoney": 0
+        }
+      ]
+    }
+    this.xAxis_list = Object.keys(result)
+    var obj = []
+
+    Object.values(result).map(function(val,idx,array){
+      obj[idx] = {}
+
+      obj[idx].name = name
+    })
+    this.obj = obj
 
   },
   mounted () {

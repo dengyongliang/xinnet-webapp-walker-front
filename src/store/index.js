@@ -5,8 +5,8 @@ import user from './user.js'
 import account from './account.js'
 import finance from './finance.js'
 import rest from '../global/rest.js'
-// import * as links from '../global/linkdo.js'
-import * as links from '../global/linkdo_json.js'
+import * as links from '../global/linkdo.js'
+// import * as links from '../global/linkdo_json.js'
 Vue.use(Vuex)
 export default function makeStore () {
   return new Vuex.Store({
@@ -23,6 +23,9 @@ export default function makeStore () {
       },
       [types.SET_ACTIVATION_DATA] (state,payload) {
         Object.assign(state.activation, payload)
+      },
+      [types.CLEAR_ACTIVATION_DATA] (state,payload) {
+        state.activation = {}
       }
     },
     actions: {
@@ -36,10 +39,19 @@ export default function makeStore () {
         rest.post(links.LOGIN_OUT, '',params.callback)
       },
       [types.CHECK_VALID_USER] ({ commit, rootState }, params) {
-        rest.get(links.CHECK_VALID_USER, JSON.stringify(params.param),params.callback)
+        rest.post(links.CHECK_VALID_USER, JSON.stringify(params.param),params.callback)
       },
       [types.ACTIVATION_VERIFICATIONCODE] ({ commit, rootState }, params) {
         rest.post(links.ACTIVATION_VERIFICATIONCODE, JSON.stringify(params.param),params.callback)
+      },
+      [types.SUBMIT_ACTIVATION_USER_INFO] ({ commit, rootState }, params) {
+        rest.post(links.SUBMIT_ACTIVATION_USER_INFO, JSON.stringify(params.param),params.callback)
+      },
+      [types.SUBMIT_ACTIVATION_USER_PWD] ({ commit, rootState }, params) {
+        rest.post(links.SUBMIT_ACTIVATION_USER_PWD, JSON.stringify(params.param),params.callback)
+      },
+      [types.QUERY_USER_CUSTOMERS_LIST] ({ commit, rootState }, callback) {
+        rest.post(links.QUERY_USER_CUSTOMERS_LIST, '',callback)
       }
     },
     getters: {

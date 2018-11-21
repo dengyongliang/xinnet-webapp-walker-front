@@ -6,7 +6,7 @@
       span.text {{activation.userName}}
     FormItem(label="邮箱：")
       span.text {{activation.email}}
-    FormItem(label="所属企业：",v-if="activation.keeperFlag")
+    FormItem(label="所属企业：",v-if="!activation.keeperFlag")
       span.text {{activation.companyName}}
     FormItem(label="性别：")
       comp-radio(name="userSex",:list="sexList",ref="userSex")
@@ -81,19 +81,39 @@ export default {
       if (result) {
         let vm = this
         let params = {
-          userCode: this.userCode,
-          userSex: this.$refs.userSex.value,
-          userTel: this.$refs.userTel.value,
-          userMobile: this.$refs.userMobile.value,
-          verificationCode: this.$refs.verificationCode.value
+          param: {
+            userCode: this.userCode,
+            userSex: this.$refs.userSex.value,
+            userTel: this.$refs.userTel.value,
+            userMobile: this.$refs.userMobile.value,
+            verificationCode: this.$refs.verificationCode.value
+          },
+          callback: function (response) {
+            vm.loadingBtn = false
+            if( response.data.code === '1000' ){
+              vm.$Message.success('设置个人信息成功')
+              vm.$store.commit(types.CLEAR_ACTIVATION_DATA)
+              vm.$emit('submitStep')
+            } else {
+              if (response.data.code === '100') {
+                vm.$refs.verificationCode.showValidateResult({text:'验证码错误或已失效'})
+              } else if (response.data.code === '200') {
+                vm.$Message.error('用户不存在')
+              } else if (response.data.code === '300') {
+                vm.$Message.error('用户已激活')
+              } else if (response.data.code === '400') {
+                vm.$Message.error('手机号码已存在')
+              } else {
+                vm.$Message.error('发送失败')
+              }
+            }
+          }
         }
         if (this.activation.keeperFlag) {
-          params.qq = this.$refs.qq.value
-          params.wx = this.$refs.wx.value
+          params.param.qq = this.$refs.qq.value
+          params.param.wx = this.$refs.wx.value
         }
-        this.$store.commit(types.SET_ACTIVATION_DATA, params)
-        vm.$emit('submitStep')
-        console.log(this.activation)
+        this.submitActivationUserInfo(params)
       } else {
         this.loadingBtn = false
       }
@@ -130,6 +150,7 @@ export default {
       }
     },
     ...mapActions({
+      submitActivationUserInfo: types.SUBMIT_ACTIVATION_USER_INFO,
       getActivationVerificationCode: types.ACTIVATION_VERIFICATIONCODE
     })
   },
@@ -148,5 +169,6 @@ export default {
 .verificationCode{
   font-size:12px;
   height:38px;
+  margin-right:5px;
 }
 </style>

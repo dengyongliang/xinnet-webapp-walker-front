@@ -31,5 +31,11 @@ export default {
 }
 </script>
 <style scoped>
-
+.step4 p{
+  text-align:center;
+  font-size:30px;
+}
+.step4 .p1{
+  padding:40px 0;
+}
 </style>
