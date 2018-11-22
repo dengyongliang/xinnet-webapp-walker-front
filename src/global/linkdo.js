@@ -20,3 +20,18 @@ export const LOGIN_VERIFICATIONCODE = api + '/client-api/server/message/send/cli
 export const GET_CURRENT_USER_DATA = api + '/client-api/client/user/myUserInfo'
 // 财务-消费统计
 export const FINANCE_PAY_STATISTICS = api + '/client-api/client/finance/payStatistics'
+// 财务-消费趋势
+export const FINANCE_PAY_STATISTICS_TREND = api + '/client-api/client/finance/payStatisticsTrend'
+// 财务-账单流水
+export const QUERY_FINANCE_CUSTOMER_FLOW_LIST = api + '/client-api/client/finance/getCustomerFlowList'
+// 财务-账单流水导出
+export const EXPORT_FINANCE_CUSTOMER_FLOW_LIST = api + '/client-api/client/finance/exportCustomerFlow'
+// 财务-信用额度统计
+export const QUERY_PAY_STATISTICS_BALANCE = api + '/client-api/client/finance/payStatisticsBalance'
+// 财务-未出账单
+export const PAY_STATISTICS_UNBILLED = api + '/client-api/client/finance/payStatisticsUnBilled'
+// 财务-往期账单
+export const PAY_STATISTICS_HISTORY_BILL = api + '/client-api/client/finance/payStatisticsHistoryBill'
+// 管家切换管理的客户
+export const CHANGE_CUSTOMERS = api + '/client-api/account/user/changeCustomers'
+

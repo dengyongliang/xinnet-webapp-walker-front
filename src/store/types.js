@@ -12,6 +12,13 @@ export const SUBMIT_ACTIVATION_USER_INFO = 'submitActivationUserInfo'
 export const SUBMIT_ACTIVATION_USER_PWD = 'submitActivationUserPwd'
 // 管家管理的客户列表
 export const QUERY_USER_CUSTOMERS_LIST = 'queryUserCustomersList'
+export const CHANGE_CUSTOMERS = 'changeCustomers'
 
 // 财务管理
 export const FINANCE_PAY_STATISTICS = 'financePayStatistics'
+export const FINANCE_PAY_STATISTICS_TREND = 'financePayStatisticsTrend'
+export const QUERY_FINANCE_CUSTOMER_FLOW_LIST = 'queryFinanceCustomerFlowList'
+export const QUERY_PAY_STATISTICS_BALANCE = 'queryPayStatisticsBalance'
+export const PAY_STATISTICS_UNBILLED = 'payStatisticsUnBilled'
+export const PAY_STATISTICS_HISTORY_BILL = 'payStatisticsHistoryBill'
+

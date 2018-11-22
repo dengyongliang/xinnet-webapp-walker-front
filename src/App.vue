@@ -17,17 +17,6 @@ export default {
   mounted () {
   },
   beforeMount () {
-    const notNeedLoginPaths = ['login', 'forgetPw', 'account_activation']
-    const path = location.pathname
-    if (path !== '' && notNeedLoginPaths.some(p => path.indexOf(p) === 1)) {
-      // 无需登录
-    } else {
-      // 需要登录
-      // 校验登录
-      if (!this.islogin) {
-        this.getCurrentUserData()
-      }
-    }
     let vm = this
     restEmitter.on('noLogin', () => {
       vm.$Message.error('登录超时，请重新登录！')
@@ -55,9 +44,7 @@ export default {
     })
   },
   methods: {
-    ...mapActions({
-      getCurrentUserData: types.GET_CURRENT_USER_DATA
-    })
+
   },
   computed: {
     ...mapState([
@@ -197,28 +184,6 @@ export default {
 }
 .ivu-modal-confirm .ivu-icon{
   color:#f90;
-}
-.ivu-page{
-  text-align:right;
-  margin:0 20px 20px 20px;
-}
-.ivu-page,
-.ivu-page *{
-  font-size:12px!important;
-}
-.ivu-page .ivu-page-item,
-.ivu-page .ivu-page-custom-text{
-  border-color:#f6f8f9;
-  background:none;
-}
-.ivu-page .ivu-page-item-active{
-  background:#2271f4;
-}
-.ivu-page .ivu-page-item-active a{
-  color:#fff;
-}
-.ivu-page .ivu-page-options-elevator input{
-  text-align:center;
 }
 .ivu-drawer-body .ivu-form-item span.text{
   line-height:18px;

@@ -15,3 +15,25 @@
 .ivu-select .ivu-select-selection{
   border-radius: 0px;
 }
+.ivu-page{
+  text-align:right;
+  margin:20px;
+}
+.ivu-page,
+.ivu-page *{
+  font-size:12px!important;
+}
+.ivu-page .ivu-page-item,
+.ivu-page .ivu-page-custom-text{
+  border-color:#f6f8f9;
+  background:none;
+}
+.ivu-page .ivu-page-item-active{
+  background:#2271f4;
+}
+.ivu-page .ivu-page-item-active a{
+  color:#fff;
+}
+.ivu-page .ivu-page-options-elevator input{
+  text-align:center;
+}

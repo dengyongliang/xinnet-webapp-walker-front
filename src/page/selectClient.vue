@@ -4,7 +4,7 @@
   .mainBody
     ul.list.clear(v-show="list.length")
       li(v-for="item in list")
-        a(href="")
+        a(href="javascript:;",$click="changeCustomers(item.id)")
           Row(type="flex", align="middle")
             Col(span="24")
               span.logo
@@ -29,8 +29,15 @@ export default {
     }
   },
   methods: {
+    changeCustomers (id) {
+      let param = {
+        customerId: id
+      }
+      this.changeCustomers(param)
+    },
     ...mapActions({
-      queryUserCustomersList: types.QUERY_USER_CUSTOMERS_LIST
+      queryUserCustomersList: types.QUERY_USER_CUSTOMERS_LIST,
+      changeCustomers: types.CHANGE_CUSTOMERS
     })
   },
   computed: {
@@ -90,6 +97,10 @@ export default {
   -moz-box-shadow:0px 0px 6px rgba(0,0,0,0.2);
   -webkit-box-shadow:0px 0px 6px rgba(0,0,0,0.2);
   box-shadow:0px 0px 6px rgba(0,0,0,0.2);
+}
+.list .logo img{
+  width:100%;
+  height:100%;
 }
 .list li strong{
   width:220px;

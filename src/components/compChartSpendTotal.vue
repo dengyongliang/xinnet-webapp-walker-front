@@ -1,12 +1,10 @@
 <template lang="pug">
-  .creditQuota
-    div(id="myChart",style="width:450px;height:260px;")
-    p.text 剩余额度：{{charData.unUsedCreditBalance}} 元　　总额度：{{charData.totalCreditBalance}} 元　　已用额度：{{charData.usedCreditBalance}} 元
+  div.chartCount(id="myChart",style="width:450px;height:300px;")
 </template>
 
 <script>
 export default {
-  name: 'compChartCreditQuota',
+  name: 'compChartSpendTotal',
   props: {
     charData: {
       type: Object,
@@ -33,30 +31,32 @@ export default {
         },
         tooltip : {
           trigger: 'item',
-          formatter: "{b} : {c} ({d}%)"
+          formatter: "{a} <br/>{b} : {c} ({d}%)"
         },
         legend: {
           orient: 'vertical',
           right: '12%',
           top: 'center',
-          data: ['信用消费','剩余额度']
+          data: ['域名注册','域名续费','域名回购','域名安全保护']
         },
         series : [
           {
             name: '访问来源',
             type: 'pie',
-            radius : '60%',
+            radius : '70%',
             center: ['30%', '50%'],
             data:[
-              {value:datas.usedCreditPercentage, name:'信用消费'},
-              {value:datas.unUsedCreditPercentage, name:'剩余额度'}
+              {value:1032, name:'域名注册'},
+              {value:325, name:'域名续费'},
+              {value:500, name:'域名回购'},
+              {value:13654, name:'域名安全保护'}
             ],
             label: {
-              normal: {
-                show: true,
-                position: 'inner',
-                formatter: '{d}%'
-              }
+                normal: {
+                  show: true,
+                  position: 'inner',
+                  formatter: '{d}%'
+                }
             },
             labelLine: {
                 normal: {
@@ -76,9 +76,9 @@ export default {
     }
   },
   beforeMount () {
-
   },
   mounted () {
+    this.drawChart()
   },
   computed: {
   },
@@ -90,11 +90,5 @@ export default {
 }
 </script>
 <style scoped>
-.creditQuota{
-  margin:0 auto;
-}
-.creditQuota p.text{
-  color:#666;
-  font-size:12px;
-}
+
 </style>

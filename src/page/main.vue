@@ -27,8 +27,12 @@ export default {
   mounted () {
   },
   beforeMount () {
+    this.getCurrentUserData()
   },
   methods: {
+    ...mapActions({
+      getCurrentUserData: types.GET_CURRENT_USER_DATA
+    })
   },
   computed: {
   },

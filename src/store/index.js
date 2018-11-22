@@ -52,6 +52,9 @@ export default function makeStore () {
       },
       [types.QUERY_USER_CUSTOMERS_LIST] ({ commit, rootState }, callback) {
         rest.post(links.QUERY_USER_CUSTOMERS_LIST, '',callback)
+      },
+      [types.CHANGE_CUSTOMERS] ({ commit, rootState }, param) {
+        rest.post(links.CHANGE_CUSTOMERS, JSON.stringify(param),function () {})
       }
     },
     getters: {

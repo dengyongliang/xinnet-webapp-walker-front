@@ -1,26 +1,27 @@
 <template lang="pug">
   div
     div.chartTrend(id="myChart2",style="height:400px;")
-    a(@click="show") show
 </template>
 
 <script>
 export default {
   name: 'compChartSpendTrend',
   props: {
-
+    charData: {
+      type: Object,
+      default: function () {
+        return {
+          data: []
+        }
+      }
+    }
   },
   data () {
     return {
-      xAxis_list: [],
-      obj: []
     }
   },
   methods: {
-    show () {
-      console.log(this.obj)
-    },
-    drawLine2 (param) {
+    drawChart (datas) {
       let myChart = this.$echarts.init(document.getElementById('myChart2'))
       // 绘制图表
       myChart.setOption({
@@ -33,7 +34,7 @@ export default {
         legend: {
           x : 'center',
           y : 'bottom',
-          data: ['直接访问', '邮件营销','联盟广告','视频广告','搜索引擎']
+          data: ['域名注册', '域名续费','域名回购','域名安全保护']
         },
         grid: {
             left: '3%',
@@ -43,158 +44,74 @@ export default {
         },
         xAxis:  {
             type: 'category',
-            data: this.xAxis_list
+            data: this.charData.data
         },
         yAxis: {
           type: 'value'
         },
         series: [
-            {
-                name: '直接访问',
-                type: 'bar',
-                stack: '总量',
-                label: {
-                    normal: {
-                        show: true,
-                        position: 'insideRight'
-                    }
-                },
-                data: [320, 302]
+          {
+            name: '域名注册',
+            type: 'bar',
+            stack: '总量',
+            label: {
+                normal: {
+                    show: true,
+                    position: 'insideRight'
+                }
             },
-            {
-                name: '邮件营销',
-                type: 'bar',
-                stack: '总量',
-                label: {
-                    normal: {
-                        show: true,
-                        position: 'insideRight'
-                    }
-                },
-                data: [120, 132]
+            data: [320, 302]
+          },
+          {
+            name: '域名续费',
+            type: 'bar',
+            stack: '总量',
+            label: {
+                normal: {
+                    show: true,
+                    position: 'insideRight'
+                }
             },
-            {
-                name: '联盟广告',
-                type: 'bar',
-                stack: '总量',
-                label: {
-                    normal: {
-                        show: true,
-                        position: 'insideRight'
-                    }
-                },
-                data: [220, 182]
+            data: [120, 132]
+          },
+          {
+            name: '域名回购',
+            type: 'bar',
+            stack: '总量',
+            label: {
+                normal: {
+                    show: true,
+                    position: 'insideRight'
+                }
             },
-            {
-                name: '视频广告',
-                type: 'bar',
-                stack: '总量',
-                label: {
-                    normal: {
-                        show: true,
-                        position: 'insideRight'
-                    }
-                },
-                data: [150, 212]
+            data: [220, 182]
+          },
+          {
+            name: '域名安全保护',
+            type: 'bar',
+            stack: '总量',
+            label: {
+                normal: {
+                    show: true,
+                    position: 'insideRight'
+                }
             },
-            {
-                name: '搜索引擎',
-                type: 'bar',
-                stack: '总量',
-                label: {
-                    normal: {
-                        show: true,
-                        position: 'insideRight'
-                    }
-                },
-                data: [820, 832]
-            }
+            data: [150, 212]
+          }
         ]
       })
     }
   },
   beforeMount () {
-    var result = {
-      "2018-11": [
-        {
-          "orderGoodsType": 1,
-          "orderCreditMoney": 0,
-          "orderPayMoney": 0,
-          "orderTotalMoney": 200
-        },
-        {
-          "orderGoodsType": 2,
-          "orderCreditMoney": 0,
-          "orderPayMoney": 0,
-          "orderTotalMoney": 0
-        },
-        {
-          "orderGoodsType": 3,
-          "orderCreditMoney": 0,
-          "orderPayMoney": 0,
-          "orderTotalMoney": 100
-        },
-        {
-          "orderGoodsType": 4,
-          "orderCreditMoney": 0,
-          "orderPayMoney": 0,
-          "orderTotalMoney": 0
-        },
-        {
-          "orderGoodsType": 5,
-          "orderCreditMoney": 0,
-          "orderPayMoney": 0,
-          "orderTotalMoney": 0
-        }
-      ],
-      "2018-12": [
-        {
-          "orderGoodsType": 1,
-          "orderCreditMoney": 0,
-          "orderPayMoney": 0,
-          "orderTotalMoney": 200
-        },
-        {
-          "orderGoodsType": 2,
-          "orderCreditMoney": 0,
-          "orderPayMoney": 0,
-          "orderTotalMoney": 0
-        },
-        {
-          "orderGoodsType": 3,
-          "orderCreditMoney": 0,
-          "orderPayMoney": 0,
-          "orderTotalMoney": 100
-        },
-        {
-          "orderGoodsType": 4,
-          "orderCreditMoney": 0,
-          "orderPayMoney": 0,
-          "orderTotalMoney": 0
-        },
-        {
-          "orderGoodsType": 5,
-          "orderCreditMoney": 0,
-          "orderPayMoney": 0,
-          "orderTotalMoney": 0
-        }
-      ]
-    }
-    this.xAxis_list = Object.keys(result)
-    var obj = []
-
-    Object.values(result).map(function(val,idx,array){
-      obj[idx] = {}
-
-      obj[idx].name = name
-    })
-    this.obj = obj
-
   },
   mounted () {
-    this.drawLine2()
   },
   computed: {
+  },
+  watch: {
+    charData: function (val, oldVal) {
+      this.drawChart(val)
+    }
   }
 }
 </script>

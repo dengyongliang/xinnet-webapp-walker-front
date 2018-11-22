@@ -1,7 +1,7 @@
 import * as types from './types'
 import rest from '../global/rest.js'
-import * as links from '../global/linkdo.js'
-// import * as links from '../global/linkdo_json.js'
+// import * as links from '../global/linkdo.js'
+import * as links from '../global/linkdo_json.js'
 export default {
   state: {
   },
@@ -9,7 +9,22 @@ export default {
   },
   actions: {
     [types.FINANCE_PAY_STATISTICS] ({ commit, rootState }, params) {
-      rest.get(links.FINANCE_PAY_STATISTICS, params.param,params.callback)
+      rest.get(links.FINANCE_PAY_STATISTICS, JSON.stringify(params.param),params.callback)
+    },
+    [types.FINANCE_PAY_STATISTICS_TREND] ({ commit, rootState }, params) {
+      rest.get(links.FINANCE_PAY_STATISTICS_TREND, JSON.stringify(params.param),params.callback)
+    },
+    [types.QUERY_FINANCE_CUSTOMER_FLOW_LIST] ({ commit, rootState }, params) {
+      rest.get(links.QUERY_FINANCE_CUSTOMER_FLOW_LIST, JSON.stringify(params.param),params.callback)
+    },
+    [types.QUERY_PAY_STATISTICS_BALANCE] ({ commit, rootState }, callback) {
+      rest.get(links.QUERY_PAY_STATISTICS_BALANCE, '',callback)
+    },
+    [types.PAY_STATISTICS_UNBILLED] ({ commit, rootState }, callback) {
+      rest.get(links.PAY_STATISTICS_UNBILLED, '',callback)
+    },
+    [types.PAY_STATISTICS_HISTORY_BILL] ({ commit, rootState }, params) {
+      rest.get(links.PAY_STATISTICS_HISTORY_BILL, JSON.stringify(params.param),params.callback)
     }
   }
 }

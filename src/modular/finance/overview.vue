@@ -9,8 +9,8 @@
         span.text 消费统计
         .r
           span.text 统计日期
-          DatePicker(type="daterange",placeholder="",v-model="time",format="yyyy-MM-dd",@on-change="time=$event",placement="bottom-end")
-          Button(type="primary", @click="",:loading="loadingBtn") 查询
+          DatePicker(type="daterange",placeholder="",v-model="time1",format="yyyy-MM-dd",@on-change="time=$event",placement="bottom-end")
+          Button(type="primary", @click="queryPayStatistics",:loading="loadingBtn") 查询
       div.c
         Row
           Col.data(span="12")
@@ -29,7 +29,7 @@
                   td.col2 <em>{{totalMoney}}</em> 元
           Col.chart(span="12")
             .colWrap
-              div.chartCount(id="myChart",style="width:450px;height:300px;")
+              comp-chart-spend-total(:charData="payStatisticsTotalData")
       .secTable
         Table(:columns="columns", :data="list", :loading="loadingTable")
     div.sec.trend
@@ -38,21 +38,23 @@
         .r
           span.text 统计日期
           DatePicker(type="daterange",placeholder="",v-model="time2",format="yyyy-MM-dd",@on-change="time=$event",placement="bottom-end")
-          Button(type="primary", @click="",:loading="loadingBtn") 查询
-      compChartSpendTrend()
+          Button(type="primary", @click="queryPayStatisticsTrend",:loading="loadingBtn") 查询
+      comp-chart-spend-trend(:charData="payStatisticsTrendData")
 </template>
 
 <script>
 import { mapState, mapActions } from 'vuex'
 import * as types from '@/store/types'
 import compChartSpendTrend from '@/components/compChartSpendTrend'
+import compChartSpendTotal from '@/components/compChartSpendTotal'
 export default {
   components: {
-    compChartSpendTrend
+    compChartSpendTrend,
+    compChartSpendTotal
   },
   data () {
     return {
-      time: '',
+      time1: '',
       time2: '',
       loadingTable: false,
       loadingBtn: false,
@@ -117,70 +119,19 @@ export default {
       list: [],
       creditMoney: '0.00',
       payMoney: '0.00',
-      totalMoney: '0.00'
+      totalMoney: '0.00',
+      payStatisticsTrendData: {},
+      payStatisticsTotalData: {}
     }
   },
   methods: {
-    drawLine (param) {
-      let myChart = this.$echarts.init(document.getElementById('myChart'))
-      // 绘制图表
-      myChart.setOption({
-        title : {
-          text: '',
-          subtext: '',
-          x:'center'
-        },
-        tooltip : {
-          trigger: 'item',
-          formatter: "{a} <br/>{b} : {c} ({d}%)"
-        },
-        legend: {
-          orient: 'vertical',
-          right: '12%',
-          top: 'center',
-          data: ['域名注册','域名续费','域名回购','域名安全保护']
-        },
-        series : [
-          {
-            name: '访问来源',
-            type: 'pie',
-            radius : '70%',
-            center: ['30%', '50%'],
-            data:[
-              {value:1032, name:'域名注册'},
-              {value:325, name:'域名续费'},
-              {value:500, name:'域名回购'},
-              {value:13654, name:'域名安全保护'}
-            ],
-            label: {
-                normal: {
-                  show: false,
-                  position: 'inner'
-                }
-            },
-            labelLine: {
-                normal: {
-                    show: false
-                }
-            },
-            itemStyle: {
-              emphasis: {
-                shadowBlur: 10,
-                shadowOffsetX: 0,
-                shadowColor: 'rgba(0, 0, 0, 0.5)'
-              }
-            }
-          }
-        ]
-      })
-    },
     getFinancePayStatisticsParam (obj) {
       this.loadingTable = true
       let vm = this
       let params = {
         param: {
-          startTime: 20,
-          endTime: 30
+          startTime: this.time1[0] !== '' ? this.GLOBALS.CRT_TIME_FORMAT(this.time1[0]) : '',
+          endTime: this.time1[1] !== '' ? this.GLOBALS.CRT_TIME_FORMAT(this.time1[1]) : ''
         },
         callback: function(response){
           vm.loadingTable = false
@@ -199,17 +150,49 @@ export default {
       }
       return params
     },
+    getFinancePayStatisticsTrendParam (obj) {
+      this.loadingBtn = true
+      let vm = this
+      let params = {
+        param: {
+          startTime: this.time2[0] !== '' ? this.GLOBALS.CRT_TIME_FORMAT(this.time2[0]) : '',
+          endTime: this.time2[1] !== '' ? this.GLOBALS.CRT_TIME_FORMAT(this.time2[1]) : ''
+        },
+        callback: function(response){
+          vm.loadingBtn = false
+          console.log(response)
+          if (response.data.code === '1000'){
+            vm.payStatisticsTrendData = {
+              data: ['2017-10','2017-12']
+            }
+          } else {
+            if (response.data.code === '900') {
+              vm.$Message.error('查询失败')
+            }
+          }
+        }
+      }
+      return params
+    },
+    queryPayStatistics () {
+      this.financePayStatistics(this.getFinancePayStatisticsParam())
+    },
+    queryPayStatisticsTrend () {
+      this.financePayStatisticsTrend(this.getFinancePayStatisticsTrendParam())
+    },
     ...mapActions({
-      financePayStatistics: types.FINANCE_PAY_STATISTICS
+      financePayStatistics: types.FINANCE_PAY_STATISTICS,
+      financePayStatisticsTrend: types.FINANCE_PAY_STATISTICS_TREND
     })
   },
   computed: {
   },
   beforeMount () {
     this.financePayStatistics(this.getFinancePayStatisticsParam())
+    this.financePayStatisticsTrend(this.getFinancePayStatisticsTrendParam())
   },
   mounted(){
-    this.drawLine()
+
   }
 }
 </script>

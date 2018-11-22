@@ -1,7 +1,7 @@
 <template lang="pug">
   div.compSelect(style="display:inline-block")
     slot(name="left")
-    Select(v-model="value",style="width:240px",:name="name",@on-change="selectChange")
+    Select(v-model="value",:style="styles",:name="name",@on-change="selectChange",:placeholder="placeholder")
       Option(v-for="item in list",:value="item.value") {{ item.label }}
     slot(name="right")
     Alert(type="error",show-icon, style="display:inline-block",v-show="showError") {{errorText}}
@@ -30,6 +30,14 @@ export default {
     type: {
       type: String,
       default: 'select'
+    },
+    styles: {
+      type: String,
+      default: 'width:240px'
+    },
+    placeholder: {
+      type: String,
+      default: '请选择'
     },
     defaultValue: {
       type: String,
