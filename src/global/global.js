@@ -25,11 +25,42 @@ const CRT_TIME_FORMAT = (val) => {
     return ''
   }
 }
+const BUSINESS_LIST = {
+  register: '域名注册',
+  renew: '域名续费',
+  repurchase: '域名回购',
+  protection: '域名保护',
+  transferIn: '域名转入'
+}
+const ORDER_GOODS_TYPE = {
+  1: '域名注册',
+  2: '域名续费',
+  3: '域名回购',
+  4: '域名保护',
+  5: '域名转入'
+}
+const PAY_TYPE = {
+  1: '预付款存入',
+  2: '信用消费',
+  3: '预付款消费',
+  4: '退款',
+  5: '结款',
+  6: '信用额度增加'
+}
+function ADD_DAY (day) {
+  var now = new Date
+  now.setDate(now.getDate() - day)
+  return now
+}
 export default
 {
   TITLE,
   regPw,
   IS_PHONE_AVAILABLE,
   IS_EMAIL_AVAILABLE,
-  CRT_TIME_FORMAT
+  CRT_TIME_FORMAT,
+  BUSINESS_LIST,
+  ORDER_GOODS_TYPE,
+  PAY_TYPE,
+  ADD_DAY
 }

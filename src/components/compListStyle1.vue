@@ -1,75 +1,32 @@
 <template lang="pug">
 ul.listStyle1
-  li
-    h3.clear 主体公司
+  li(v-for="item in list")
+    h3.clear(v-text='item.type?"下属公司":"主体公司"')
       span.right
         a 修改
         a 删除企业
     Row
       Col.col1(span="6")
         span.logo
-          img(src="../../static/img/img_list_none.png")
+          img(:src='item.logoFile')
       Col.col2(span="8")
-        strong.clear  河北天翼实业集团有限公司
+        strong.clear  {{item.name}}
         .col2Cont
           .row1.clear
-            span.left 员工数量：<em>12</em>个
+            span.left 员工数量：<em>{{item.userCount}}</em>个
             a 员工详情
           .row2.clear
-            span.left 联系人：12人
+            span.left 联系人：{{item.contactor}}
           .row3.clear
-            span.left 手机：12人
+            span.left 手机：{{item.mobile}}
           .row4.clear
-            span.left 固话：12人
+            span.left 固话：{{item.tel}}
           .row5.clear
-            span.left 邮箱：12人
+            span.left 邮箱：{{item.email}}
       Col.col3(span="10")
         .col3Cont
           .row1.clear
-            span.left 域名总数：12人
-            a.right 域名详情
-          .row2.clear
-            span.left <i></i>云主机部：
-            span.right 12人
-          .row3.clear
-            span.left <i></i>云主机部
-            span.right 12人
-          .row4.clear
-            span.left <i></i>云主机部
-            span.right 12人
-          .row5.clear
-            span.left <i></i>邮局部
-            span.right 12人
-          .row6.clear
-            span.left <i></i>...
-            a.right 全部分组
-  li
-    h3.clear 主体公司
-      span.right
-        a 修改
-        a 删除企业
-    Row
-      Col.col1(span="6")
-        span.logo
-          img(src="../../static/img/img_list_none.png")
-      Col.col2(span="8")
-        strong.clear  河北天翼实业集团有限公司
-        .col2Cont
-          .row1.clear
-            span.left 员工数量：<em>12</em>个
-            a 员工详情
-          .row2.clear
-            span.left 联系人：12人
-          .row3.clear
-            span.left 手机：12人
-          .row4.clear
-            span.left 固话：12人
-          .row5.clear
-            span.left 邮箱：12人
-      Col.col3(span="10")
-        .col3Cont
-          .row1.clear
-            span.left 域名总数：12人
+            span.left 域名总数：{{item.domainCount}} 个
             a.right 域名详情
           .row2.clear
             span.left <i></i>云主机部：
@@ -92,7 +49,14 @@ ul.listStyle1
 export default {
   name: 'compListStyle1',
   props: {
-
+    list: {
+      type: Array,
+      default: function () {
+        return {
+          data: []
+        }
+      }
+    }
   },
   data () {
     return {
@@ -105,6 +69,10 @@ export default {
   mounted () {
   },
   computed: {
+  },
+  watch: {
+    list: function (val, oldVal) {
+    }
   }
 }
 </script>

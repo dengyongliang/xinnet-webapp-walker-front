@@ -8,8 +8,8 @@ export default {
   mutations: {
   },
   actions: {
-    [types.QUERY_USER_LIST] ({ commit, rootState }, params) {
-      rest.get(links.QUERY_USER_LIST, JSON.stringify(params.param),params.callback)
+    [types.QUERY_ROLE_LIST] ({ commit, rootState }, params) {
+      rest.get(links.QUERY_ROLE_LIST, JSON.stringify(params.param), params.callback)
     }
   }
 }

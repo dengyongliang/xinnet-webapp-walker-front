@@ -34,7 +34,7 @@ export default {
         legend: {
           x : 'center',
           y : 'bottom',
-          data: ['域名注册', '域名续费','域名回购','域名安全保护']
+          data: this.charData.legend
         },
         grid: {
             left: '3%',
@@ -44,61 +44,16 @@ export default {
         },
         xAxis:  {
             type: 'category',
-            data: this.charData.data
+            data: this.charData.xAxis,
+            axisLabel: {
+              interval: 0,
+              rotate: 30
+            }
         },
         yAxis: {
           type: 'value'
         },
-        series: [
-          {
-            name: '域名注册',
-            type: 'bar',
-            stack: '总量',
-            label: {
-                normal: {
-                    show: true,
-                    position: 'insideRight'
-                }
-            },
-            data: [320, 302]
-          },
-          {
-            name: '域名续费',
-            type: 'bar',
-            stack: '总量',
-            label: {
-                normal: {
-                    show: true,
-                    position: 'insideRight'
-                }
-            },
-            data: [120, 132]
-          },
-          {
-            name: '域名回购',
-            type: 'bar',
-            stack: '总量',
-            label: {
-                normal: {
-                    show: true,
-                    position: 'insideRight'
-                }
-            },
-            data: [220, 182]
-          },
-          {
-            name: '域名安全保护',
-            type: 'bar',
-            stack: '总量',
-            label: {
-                normal: {
-                    show: true,
-                    position: 'insideRight'
-                }
-            },
-            data: [150, 212]
-          }
-        ]
+        series: this.charData.series
       })
     }
   },

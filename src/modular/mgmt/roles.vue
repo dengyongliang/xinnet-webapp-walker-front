@@ -7,12 +7,14 @@
   .secMain
     <!-- 列表主体 -->
     .secTable
-      <Table :columns="columns" :data="clientList" :loading="loadingTable"></Table>
+      <Table :columns="columns" :data="list" :loading="loadingTable"></Table>
   <!-- 翻页区 -->
   Page(:total="page.pageItems",:current="page.pageNo",show-elevator,show-total,prev-text="上一页",next-text="下一页",@on-change="pageChange",:page-size=20)
 </template>
 
 <script>
+import { mapState, mapActions } from 'vuex'
+import * as types from '@/store/types'
 export default {
   components: {
   },
@@ -22,13 +24,19 @@ export default {
       columns: [
         {
           title: '角色名称',
-          key: 'createTime',
+          key: 'roleName',
           className: 'col1'
         },
         {
           title: '人数',
-          key: 'name',
-          className: 'col2'
+          key: 'userCount',
+          className: 'col2',
+          render: (h, params) => {
+            return h('div', [
+              h('span', {
+              }, this.list[params.index].userCount + ' 人')
+            ])
+          }
         },
         {
           title: '操作',
@@ -60,8 +68,8 @@ export default {
           }
         }
       ],
-      clientList: [],
-      loadingTable: false,
+      list: [],
+      loadingTable: true,
       page: {
         pageNo: 1,
         pagePages: 1,
@@ -70,10 +78,41 @@ export default {
     }
   },
   methods: {
+    pageChange: function (curPage) {
+      // 根据当前页获取数据
+      this.queryRoleList(this.queryParam({pageNum:curPage}))
+    },
+    queryParam (obj) {
+      this.page.pageNo = obj.pageNum
+      this.loadingTable = true
+      let vm = this
+      let params = {
+        param: {
+          pageNum: obj.pageNum,
+          pageSize: 20
+        },
+        callback: function(response){
+          vm.loadingTable = false
+          if (response.data.code === '1000'){
+            vm.list = response.data.data.list
+            vm.page.pageItems = response.data.data.totalNum
+          } else {
+            if (response.data.code === '900') {
+              vm.$Message.error('查询失败')
+            }
+          }
+        }
+      }
+      return params
+    },
+    ...mapActions({
+      queryRoleList: types.QUERY_ROLE_LIST
+    })
   },
   computed: {
   },
   beforeMount () {
+    this.queryRoleList(this.queryParam({pageNum:1}))
   },
   watch: {
   }

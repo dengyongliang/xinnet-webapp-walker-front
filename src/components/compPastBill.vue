@@ -131,6 +131,7 @@ td{
   line-height:29px;
   border-bottom:1px dashed #eee;
   padding:0 20px;
+  font-size:12px;
 }
 td .v{
   float:right;

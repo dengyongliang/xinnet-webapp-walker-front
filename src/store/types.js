@@ -22,3 +22,11 @@ export const QUERY_PAY_STATISTICS_BALANCE = 'queryPayStatisticsBalance'
 export const PAY_STATISTICS_UNBILLED = 'payStatisticsUnBilled'
 export const PAY_STATISTICS_HISTORY_BILL = 'payStatisticsHistoryBill'
 
+// 角色管理
+export const QUERY_ROLE_LIST = 'queryRoleList'
+
+// 企业管理
+export const QUERY_COMPANY_LIST = 'queryCompanyList'
+
+// 账号管理
+export const QUERY_USER_LIST = 'queryUserList'

@@ -78,14 +78,26 @@ export default {
         {
           title: '交易类型',
           key: 'flowType',
-          className: 'col4'
+          className: 'col4',
+          render: (h, params) => {
+            return h('div', [
+              h('span', {
+              }, this.GLOBALS.PAY_TYPE[this.list[params.index].flowType])
+            ])
+          }
         },
         {
           title: '金额(元)',
           key: 'flowMoney',
           className: 'col5',
           sortable: true,
-          sortMethod:function(a,b,type){}
+          sortMethod:function(a,b,type){},
+          render: (h, params) => {
+            return h('div', [
+              h('span', {
+              }, this.list[params.index].flowMoney + '元')
+            ])
+          }
         }
       ],
       list: [],

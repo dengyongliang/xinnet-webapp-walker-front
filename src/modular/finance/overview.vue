@@ -54,15 +54,27 @@ export default {
   },
   data () {
     return {
-      time1: '',
-      time2: '',
+      time1: [
+        this.GLOBALS.ADD_DAY(30),
+        new Date()
+      ],
+      time2: [
+        this.GLOBALS.ADD_DAY(30*12),
+        new Date()
+      ],
       loadingTable: false,
       loadingBtn: false,
       columns: [
         {
           title: '产品名称',
           key: 'orderGoodsType',
-          className: 'col1'
+          className: 'col1',
+          render: (h, params) => {
+            return h('div', [
+              h('span', {
+              }, this.GLOBALS.ORDER_GOODS_TYPE[this.list[params.index].orderGoodsType])
+            ])
+          }
         },
         {
           title: '消费金额',
@@ -141,6 +153,17 @@ export default {
             vm.payMoney = response.data.data.payMoney
             vm.totalMoney = response.data.data.totalMoney
             vm.list = response.data.data.list
+            let charData = {}
+            charData.legend = []
+            charData.series = response.data.data.businessList.map((value,idx,arr) => {
+              let name = vm.GLOBALS.BUSINESS_LIST[Object.keys(value)]
+              charData.legend.push(name)
+              return {
+                name: name,
+                value: value[Object.keys(value)]
+              }
+            })
+            vm.payStatisticsTotalData = charData
           } else {
             if (response.data.code === '900') {
               vm.$Message.error('查询失败')
@@ -163,8 +186,39 @@ export default {
           console.log(response)
           if (response.data.code === '1000'){
             vm.payStatisticsTrendData = {
-              data: ['2017-10','2017-12']
+              legend: [],
+              xAxis: [],
+              series: []
             }
+            vm.payStatisticsTrendData.xAxis = response.data.data.dateList
+            vm.payStatisticsTrendData.series = response.data.data.goodTypeList.map((value,idx,arr) => {
+              vm.payStatisticsTrendData.legend.push(vm.GLOBALS.ORDER_GOODS_TYPE[value])
+              var arrs = []
+              response.data.data.dateList.forEach((item1,index1) => {
+                if (response.data.data.result[item1]) {
+                  response.data.data.result[item1].forEach((item2,index2)=>{
+                    if (item2.orderGoodsType === parseInt(value)) {
+                      arrs.push(item2.orderTotalMoney)
+                    }
+                  })
+                } else {
+                  return arrs.push(0)
+                }
+              })
+              return {
+                name: vm.GLOBALS.ORDER_GOODS_TYPE[value],
+                type: 'bar',
+                stack: '总量',
+                label: {
+                  normal: {
+                    show: true,
+                    position: 'insideRight'
+                  }
+                },
+                data: arrs
+              }
+            })
+            // console.log(vm.payStatisticsTrendData.series)
           } else {
             if (response.data.code === '900') {
               vm.$Message.error('查询失败')

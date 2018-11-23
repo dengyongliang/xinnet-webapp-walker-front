@@ -48,8 +48,8 @@ export default {
             radius : '60%',
             center: ['30%', '50%'],
             data:[
-              {value:datas.usedCreditPercentage, name:'信用消费'},
-              {value:datas.unUsedCreditPercentage, name:'剩余额度'}
+              {value:datas.usedCreditBalance, name:'信用消费'},
+              {value:datas.unUsedCreditBalance, name:'剩余额度'}
             ],
             label: {
               normal: {

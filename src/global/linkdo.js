@@ -33,5 +33,11 @@ export const PAY_STATISTICS_UNBILLED = api + '/client-api/client/finance/payStat
 // 财务-往期账单
 export const PAY_STATISTICS_HISTORY_BILL = api + '/client-api/client/finance/payStatisticsHistoryBill'
 // 管家切换管理的客户
-export const CHANGE_CUSTOMERS = api + '/client-api/account/user/changeCustomers'
+export const CHANGE_CUSTOMERS = api + '/client-api/client/user/changeCustomers'
+// 角色列表
+export const QUERY_ROLE_LIST = api + '/client-api/client/role/roleList'
+// 企业列表
+export const QUERY_COMPANY_LIST = api + '/client-api/client/company/companyList'
+// 账号列表
+export const QUERY_USER_LIST = api + '/client-api/client/user/userList'
 

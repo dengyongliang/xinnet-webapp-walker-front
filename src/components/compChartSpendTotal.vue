@@ -37,7 +37,7 @@ export default {
           orient: 'vertical',
           right: '12%',
           top: 'center',
-          data: ['域名注册','域名续费','域名回购','域名安全保护']
+          data: this.charData.legend
         },
         series : [
           {
@@ -45,12 +45,7 @@ export default {
             type: 'pie',
             radius : '70%',
             center: ['30%', '50%'],
-            data:[
-              {value:1032, name:'域名注册'},
-              {value:325, name:'域名续费'},
-              {value:500, name:'域名回购'},
-              {value:13654, name:'域名安全保护'}
-            ],
+            data: this.charData.series,
             label: {
                 normal: {
                   show: true,
@@ -78,7 +73,6 @@ export default {
   beforeMount () {
   },
   mounted () {
-    this.drawChart()
   },
   computed: {
   },

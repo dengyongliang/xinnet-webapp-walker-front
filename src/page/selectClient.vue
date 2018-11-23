@@ -4,7 +4,7 @@
   .mainBody
     ul.list.clear(v-show="list.length")
       li(v-for="item in list")
-        a(href="javascript:;",$click="changeCustomers(item.id)")
+        a(href="javascript:;",@click="changeCustomersEv(item.id)")
           Row(type="flex", align="middle")
             Col(span="24")
               span.logo
@@ -29,7 +29,7 @@ export default {
     }
   },
   methods: {
-    changeCustomers (id) {
+    changeCustomersEv (id) {
       let param = {
         customerId: id
       }
