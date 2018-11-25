@@ -41,34 +41,26 @@ export default {
     rolesList: []
   },
   mutations: {
-    [types.SET_CURRENT_USER_DATA] (state,payload) {
+    [types.SET_CURRENT_USER_DATA] (state, payload) {
       state.myUserInfo = payload.data
     },
-    [types.SET_ROLES_DATA] (state,payload) {
-      state.rolesList = payload.data
-      console.log(state.rolesList)
+    [types.UPDATE_USER_TEL] (state, payload) {
+      state.myUserInfo.userTel = payload
     }
   },
   actions: {
-    [types.GET_CURRENT_USER_DATA] ({ commit, rootState }, callback) {
-      //NProgress.start()
-      rest.get(links.GET_CURRENT_USER_DATA, '', callback)
+    [types.GET_CURRENT_USER_DATA] ({ commit, rootState }) {
+      rest.get(links.GET_CURRENT_USER_DATA, '', function (response) {
+        if (response.data.code === '1000') {
+          rootState.islogin = true
+          commit(types.SET_CURRENT_USER_DATA, response.data)
+        } else {
+        }
+        return response
+      })
     },
-    [types.SET_USER_PASSWORD] ({ commit, rootState },params) {
-      rest.post(links.SET_USER_PASSWORD, JSON.stringify(params.param),params.callback)
-    },
-    [types.SET_USER_INFO] ({ commit, rootState },params) {
-      // /manage/user/updateUserInfo
-      rest.post(links.SET_USER_INFO, JSON.stringify(params.param),params.callback)
-    },
-    [types.DEL_USER] ({ dispatch, commit, rootState },params) {
-      rest.post(links.DEL_USER, JSON.stringify(params.param),params.callback)
-    },
-    [types.CREAT_NEW_ACCOUNT] ({ dispatch, commit, rootState },params) {
-      rest.post(links.CREAT_NEW_ACCOUNT, JSON.stringify(params.param),params.callback)
-    },
-    [types.GET_USER_LIST_DATA] ({ commit, rootState }, params) {
-      rest.post(links.GET_USER_LIST_DATA, JSON.stringify(params.param),params.callback)
-    },
+    [types.UPDATE_USER_INFO] ({ commit, rootState },params) {
+      rest.get(links.UPDATE_USER_INFO, JSON.stringify(params.param),params.callback)
+    }
   }
 }

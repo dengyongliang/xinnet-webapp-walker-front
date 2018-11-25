@@ -61,7 +61,24 @@ export default {
         {
           title: '状态',
           key: 'status',
-          className: 'col4'
+          className: 'col4',
+          render: (h, params) => {
+            if (this.list[params.index].status === 1) {
+              return h('div', [
+                h('span', {}, '已激活')
+              ])
+            }
+            if (this.list[params.index].status === 2) {
+              return h('div', [
+                h('span', {}, '未激活')
+              ])
+            }
+            if (this.list[params.index].status === 3) {
+              return h('div', [
+                h('span', {}, '已停用')
+              ])
+            }
+          }
         },
         {
           title: '操作',

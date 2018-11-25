@@ -158,8 +158,7 @@ export default {
     },
     ...mapActions({
       loginSubmit: types.LOGIN_SUBMIT,
-      loginVerificationCode: types.LOGIN_VERIFICATIONCODE,
-      getCurrentUserData: types.GET_CURRENT_USER_DATA
+      loginVerificationCode: types.LOGIN_VERIFICATIONCODE
     })
   },
   computed: {

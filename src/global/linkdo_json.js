@@ -39,3 +39,7 @@ export const QUERY_ROLE_LIST = 'http://localhost:5500/static/data/roleList.js'
 export const QUERY_COMPANY_LIST = 'http://localhost:5500/static/data/companyList.js'
 // 账号列表
 export const QUERY_USER_LIST = 'http://localhost:5500/static/data/userList.js'
+// 修改账号信息
+export const UPDATE_USER_INFO = 'http://localhost:5500/static/data/userList.js'
+// 查询权限列表
+export const QUERY_JURISDICTION_LIST = 'http://localhost:5500/static/data/roles.js'

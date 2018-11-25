@@ -3,37 +3,37 @@
   <!-- 标题区 -->
   h1.pageTitle.clear 我的账号
     .tR
-      Button(@click="") 修改登录密码
+      Button(@click="drawerModifyPw=true") 修改登录密码
   .secMain
     h3 基本信息
       i
     table
       tr
-        td.col1(colspan="2") 姓名：李雷
+        td.col1(colspan="2") 姓名：{{myUserInfo.userName}}
       tr
-        td.col1(colspan="2") 性别：李雷
+        td.col1(colspan="2", v-text="'性别：' + (myUserInfo.userSex ? '男' : '女')") 
       tr
-        td.col1(colspan="2") 用户名：李雷
+        td.col1(colspan="2") 用户名：{{myUserInfo.userCode}}
       tr
-        td.col1(colspan="2") 所属企业：李雷
+        td.col1(colspan="2") 所属企业：{{myUserInfo.manageCustomerName}}
     h3 联系人信息
       i
     table
       tr
-        td.col1 手机：李雷
+        td.col1 手机：{{myUserInfo.userMobile}}
         td.col2
-          a 修改
+          a(href="javascript:;", @click="drawerModifyMobile=true") 修改
       tr
-        td.col1 座机：李雷
+        td.col1 座机：{{myUserInfo.userTel}}
         td.col2
-          a 修改
+          a(href="javascript:;", @click="drawerModifyTel=true") 修改
       tr
-        td.col1(colspan="2") 邮箱：李雷
+        td.col1(colspan="2") 邮箱：{{myUserInfo.userEmail}}
     h3 管理信息
       i
     table
       tr
-        td.col1(colspan="2") 员工角色：李雷
+        td.col1(colspan="2") 员工角色：{{myUserInfo.userRoles[0].roleName}}
         td
       tr
         td(colspan="2")
@@ -43,20 +43,67 @@
             ul
               li <i></i> A组
               li <i></i> B组
+  <!-- 修改座机 抽屉 -->
+  Drawer(:closable="true", width="640", v-model="drawerModifyTel", @on-close="", title="修改座机号码", :mask-closable="maskClosable", @on-visible-change="drawerChange")
+    comp-account-tel-modify(
+      v-if="refresh",
+      :defaultValue="myUserInfo.userTel",
+      :on-close="closeDrawer"
+    )
+  <!-- 修改手机 抽屉 -->
+  Drawer(:closable="true", width="640", v-model="drawerModifyMobile", @on-close="", title="修改绑定手机号码", :mask-closable="maskClosable", @on-visible-change="drawerChange")
+    comp-account-mobile-modify(
+      v-if="refresh",
+      :on-close="closeDrawer"
+    )
+  <!-- 修改登录密码 抽屉 -->
+  Drawer(:closable="true", width="640", v-model="drawerModifyPw", @on-close="", title="修改登录密码", :mask-closable="maskClosable", @on-visible-change="drawerChange")
+    comp-account-password-modify(
+      v-if="refresh",
+      :on-close="closeDrawer"
+    )
 </template>
 
 <script>
+import { mapState, mapActions } from 'vuex'
+import * as types from '@/store/types'
+import compAccountTelModify from '@/components/compAccountTelModify'
+import compAccountMobileModify from '@/components/compAccountMobileModify'
+import compAccountPasswordModify from '@/components/compAccountPasswordModify'
 export default {
   components: {
+    compAccountTelModify,
+    compAccountMobileModify,
+    compAccountPasswordModify
   },
   data () {
     return {
-      loadingBtn: false
+      refresh: false,
+      loadingBtn: false,
+      drawerModifyTel: false,
+      drawerModifyMobile: false,
+      drawerModifyPw: false
     }
   },
   methods: {
+    closeDrawer () {
+      this.drawerModifyTel = false
+      this.drawerModifyMobile = false
+      this.drawerModifyPw = false
+    },
+    drawerChange () {
+      this.refresh = (this.drawerModifyTel || this.drawerModifyMobile || this.drawerModifyPw) ? true : false
+    }
   },
   computed: {
+    ...mapState({
+      myUserInfo (state) {
+        return state.user.myUserInfo
+      },
+      maskClosable (state) {
+        return state.maskClosable
+      }
+    })
   },
   beforeMount () {
   },

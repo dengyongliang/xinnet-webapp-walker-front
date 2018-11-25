@@ -52,6 +52,37 @@ function ADD_DAY (day) {
   now.setDate(now.getDate() - day)
   return now
 }
+/**
+ * tree 数据转换
+ * @param  {Array} tree 待转换的 tree
+ * @param  {Object} map  键值对映射
+ * @return {Array}      转换后的 tree
+ */
+function CONVERT_TREE (tree, map) {
+  const result = []
+  // 遍历 tree
+  tree.forEach((item) => {
+    // 读取 map 的键值映射
+    const title = item[ map.title ]
+    const label = item[ map.label ]
+    const checked = item[ map.checked ] ? true : false
+    let children = item[ map.children ]
+
+    // 如果有子节点，递归
+    if (children) {
+        children = CONVERT_TREE(children, map)
+    }
+
+    result.push({
+      title,
+      label,
+      expand: true,
+      checked,
+      children
+    })
+  })
+  return result
+}
 export default
 {
   TITLE,
@@ -62,5 +93,6 @@ export default
   BUSINESS_LIST,
   ORDER_GOODS_TYPE,
   PAY_TYPE,
-  ADD_DAY
+  ADD_DAY,
+  CONVERT_TREE
 }

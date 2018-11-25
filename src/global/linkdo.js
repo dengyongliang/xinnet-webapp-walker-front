@@ -40,4 +40,7 @@ export const QUERY_ROLE_LIST = api + '/client-api/client/role/roleList'
 export const QUERY_COMPANY_LIST = api + '/client-api/client/company/companyList'
 // 账号列表
 export const QUERY_USER_LIST = api + '/client-api/client/user/userList'
-
+// 修改账号信息
+export const UPDATE_USER_INFO = api + '/client-api/client/user/updateUserInfo'
+// 查询权限列表
+export const QUERY_JURISDICTION_LIST = api + '/client-api/client/role/menus'

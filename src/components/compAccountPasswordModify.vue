@@ -1,10 +1,17 @@
 <template lang="pug">
   Form(:label-width="150")
-    comp-input(name='oldPassword',label="请输入原密码：",:show="refresh",ref="oldPassword",defaultValue="")
-    comp-re-password(defaultValue="",ref="compRePassword",:show="refresh",label1="请输入新密码：",label2="请重复输入新密码：")
-    input(type="hidden",:value="userCode",ref="userCode")
-    FormItem(label="")
-      Button(type="primary",@click="btnModifyPw",:loading="loadingBtn") 修改
+    .step1
+      FormItem(label="")
+        p.tips 请使用账号航妹妹（uidfui）绑定手机号<em>112382783728</em> <br />接收短信验证码
+      FormItem(label="")
+        comp-input(name='verificationCode',label="短信验证码",ref="verificationCode",defaultValue="",placeholder="短信验证码",styles="width:118px",:maxLength="6")
+          Button.verificationCode(@click="getVerificationCode", :loading="loadingBtn",slot="right") 获取短信验证码
+      FormItem(label="")
+        Button(type="primary",@click="updateForm",:loading="loadingBtn") 下一步
+    .step2
+      comp-re-password(defaultValue="",ref="compRePassword",label1="请输入新密码：",label2="请重复输入新密码：")
+      FormItem(label="")
+        Button(type="primary",@click="updateForm",:loading="loadingBtn") 完成
 </template>
 
 <script>
@@ -18,14 +25,6 @@ export default {
     compRePassword
   },
   props: {
-    refresh: {
-      type: Boolean,
-      default: false
-    },
-    userCode: {
-      type: String,
-      default: ''
-    }
   },
   data () {
     return {
@@ -33,7 +32,10 @@ export default {
     }
   },
   methods: {
-    btnModifyPw () {
+    getVerificationCode () {
+
+    },
+    updateForm () {
       // console.log(this.$refs)
       // this.$refs.oldPassword.$refs.msgError.$el.style.display="inline-block"
       // this.$refs.oldPassword.$refs.msgError.$el.children[1].innerHTML="JSAALJFSKFK"
@@ -123,3 +125,14 @@ export default {
   }
 }
 </script>
+<style scoped>
+form{
+  padding:50px 0 0 0;
+}
+form .tips{
+  font-size:15px;
+}
+form .tips em{
+  color:#ff7101;
+}
+</style>
