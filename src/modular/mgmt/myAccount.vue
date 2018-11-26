@@ -44,23 +44,30 @@
               li <i></i> A组
               li <i></i> B组
   <!-- 修改座机 抽屉 -->
-  Drawer(:closable="true", width="640", v-model="drawerModifyTel", @on-close="", title="修改座机号码", :mask-closable="maskClosable", @on-visible-change="drawerChange")
+  Drawer(:closable="true", width="640", v-model="drawerModifyTel", title="修改座机号码", :mask-closable="maskClosable", @on-visible-change="drawerChange")
     comp-account-tel-modify(
       v-if="refresh",
       :defaultValue="myUserInfo.userTel",
-      :on-close="closeDrawer"
+      :on-close="closeDrawer",
+      :userCode="myUserInfo.userCode"
     )
   <!-- 修改手机 抽屉 -->
-  Drawer(:closable="true", width="640", v-model="drawerModifyMobile", @on-close="", title="修改绑定手机号码", :mask-closable="maskClosable", @on-visible-change="drawerChange")
+  Drawer(:closable="true", width="640", v-model="drawerModifyMobile", title="修改绑定手机号码", :mask-closable="maskClosable", @on-visible-change="drawerChange")
     comp-account-mobile-modify(
       v-if="refresh",
-      :on-close="closeDrawer"
+      :on-close="closeDrawer",
+      :userName = "myUserInfo.userName",
+      :userCode = "myUserInfo.userCode",
+      :userMobile = "myUserInfo.userMobile"
     )
   <!-- 修改登录密码 抽屉 -->
-  Drawer(:closable="true", width="640", v-model="drawerModifyPw", @on-close="", title="修改登录密码", :mask-closable="maskClosable", @on-visible-change="drawerChange")
+  Drawer(:closable="true", width="640", v-model="drawerModifyPw", title="修改登录密码", :mask-closable="maskClosable", @on-visible-change="drawerChange")
     comp-account-password-modify(
       v-if="refresh",
-      :on-close="closeDrawer"
+      :on-close="closeDrawer",
+      :userName = "myUserInfo.userName",
+      :userCode = "myUserInfo.userCode",
+      :userMobile = "myUserInfo.userMobile"
     )
 </template>
 

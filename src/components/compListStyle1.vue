@@ -113,6 +113,11 @@ export default {
   -webkit-box-shadow:0px 0px 6px rgba(0,0,0,0.2);
   box-shadow:0px 0px 6px rgba(0,0,0,0.2);
 }
+.listStyle1 .logo img{
+  width: 100%;
+  height: 100%;
+  vertical-align: top;
+}
 .listStyle1 .col1{
   text-align:center;
   height:178px;

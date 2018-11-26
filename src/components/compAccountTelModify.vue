@@ -2,6 +2,7 @@
   Form(:label-width="150")
     FormItem(label="座机：")
       comp-input(name='userTel',label="座机",ref="userTel",:defaultValue="defaultValue")
+      input(type="hidden",ref="userCode",:value="userCode")
     FormItem(label="")
       Button(type="primary",@click="updateForm",:loading="loadingBtn") 确定
 </template>
@@ -22,6 +23,10 @@ export default {
     },
     onClose: {
       type: Function
+    },
+    userCode: {
+      type: String,
+      default: ''
     }
   },
   data () {
@@ -42,6 +47,7 @@ export default {
         let vm = this
         var params = {
           param: {
+            userCode: this.$refs.userCode.value,
             userTel: this.$refs.userTel.value
           },
           callback: function (response) {
@@ -56,7 +62,7 @@ export default {
               } else if (response.data.code === '300') {
                 vm.$Message.error('用户被锁定')
               } else {
-                vm.$Message.error('验证失败')
+                vm.$Message.error('更新失败')
               }
             }
           }

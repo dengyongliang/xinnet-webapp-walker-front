@@ -4,6 +4,10 @@ export const LOGIN_OUT = 'loginOut'
 export const SHOW_BODY_SPIN = 'showBodySpin'
 export const GET_CURRENT_USER_DATA = 'getCurrentUserData'
 export const SET_CURRENT_USER_DATA = 'setCurrentUserData'
+export const GET_OLD_PHONE_CODE = 'getOldPhoneCode'
+export const GET_UPDATE_PHONE_CODE = 'getUpdatePhoneCode'
+export const CHECK_OLD_PHONE_CODE = 'checkOldPhoneCode'
+
 // 激活
 export const CHECK_VALID_USER = 'checkValidUser'
 export const SET_ACTIVATION_DATA = 'setActivationData'
@@ -25,7 +29,10 @@ export const PAY_STATISTICS_HISTORY_BILL = 'payStatisticsHistoryBill'
 
 // 角色管理
 export const QUERY_ROLE_LIST = 'queryRoleList'
-export const QUERY_JURISDICTION_LIST = 'queryJurisdictionList'
+export const QUERY_ROLE_MENUS = 'queryRoleMenus'
+export const ROLE_CREATE = 'roleCreate'
+export const ROLE_UPDATE = 'roleUpdate'
+export const ROLE_DELETE = 'roleDelete'
 
 // 企业管理
 export const QUERY_COMPANY_LIST = 'queryCompanyList'
@@ -34,3 +41,5 @@ export const QUERY_COMPANY_LIST = 'queryCompanyList'
 export const QUERY_USER_LIST = 'queryUserList'
 export const UPDATE_USER_INFO = 'updateUserInfo'
 export const UPDATE_USER_TEL = 'updateUserTel'
+export const UPDATE_USER_MOBILE = 'updateUserMobile'
+export const UPDATE_USER_PASSWORD = 'updateUserPassword'

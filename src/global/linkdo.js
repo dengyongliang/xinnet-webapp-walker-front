@@ -43,4 +43,18 @@ export const QUERY_USER_LIST = api + '/client-api/client/user/userList'
 // 修改账号信息
 export const UPDATE_USER_INFO = api + '/client-api/client/user/updateUserInfo'
 // 查询权限列表
-export const QUERY_JURISDICTION_LIST = api + '/client-api/client/role/menus'
+export const QUERY_ROLE_MENUS = api + '/client-api/client/role/menus'
+// 创建角色
+export const ROLE_CREATE = api + '/client-api/client/role/roleCreate'
+// 修改角色
+export const ROLE_UPDATE = api + '/client-api/client/role/roleUpdate'
+// 删除角色
+export const ROLE_DELETE = api + '/client-api/client/role/roleDelete'
+// 发送原手机号的验证码
+export const GET_OLD_PHONE_CODE = api + '/client-api/server/message/send/oldPhoneCode'
+// 发送修改手机号码验证码
+export const GET_UPDATE_PHONE_CODE = api + '/client-api/server/message/send/updatePhoneCode'
+// 验证原手机号的验证码
+export const CHECK_OLD_PHONE_CODE = api + '/client-api/server/message/check/oldPhoneCode'
+// 修改密码
+export const UPDATE_USER_PASSWORD = api + '/client-api/client/user/updateUserPassword'

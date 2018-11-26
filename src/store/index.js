@@ -7,8 +7,8 @@ import finance from './finance.js'
 import role from './role.js'
 import company from './company.js'
 import rest from '../global/rest.js'
-// import * as links from '../global/linkdo.js'
-import * as links from '../global/linkdo_json.js'
+import * as links from '../global/linkdo.js'
+// import * as links from '../global/linkdo_json.js'
 Vue.use(Vuex)
 export default function makeStore () {
   return new Vuex.Store({
@@ -57,6 +57,15 @@ export default function makeStore () {
       },
       [types.CHANGE_CUSTOMERS] ({ commit, rootState }, param) {
         rest.post(links.CHANGE_CUSTOMERS, JSON.stringify(param),function () {})
+      },
+      [types.GET_OLD_PHONE_CODE] ({ commit, rootState }, params) {
+        rest.post(links.GET_OLD_PHONE_CODE, JSON.stringify(params.param), params.callback)
+      },
+      [types.GET_UPDATE_PHONE_CODE] ({ commit, rootState }, params) {
+        rest.post(links.GET_UPDATE_PHONE_CODE, JSON.stringify(params.param), params.callback)
+      },
+      [types.CHECK_OLD_PHONE_CODE] ({ commit, rootState }, params) {
+        rest.post(links.CHECK_OLD_PHONE_CODE, JSON.stringify(params.param), params.callback)
       }
     },
     getters: {

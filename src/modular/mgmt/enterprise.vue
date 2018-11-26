@@ -57,7 +57,7 @@ export default {
         },
         callback: function(response){
           if (response.data.code === '1000'){
-            vm.list = response.data.data.list
+            vm.list = response.data.data
             vm.page.pageItems = response.data.data.totalNum
           } else {
             if (response.data.code === '900') {

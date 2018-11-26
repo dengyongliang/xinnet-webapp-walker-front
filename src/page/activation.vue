@@ -85,73 +85,73 @@ export default {
   height:38px;
   line-height:38px;
 }
-.ivu-steps{
+.pageActivation .ivu-steps{
   padding: 36px 225px;
   text-align:center;
 }
-.ivu-steps .ivu-steps-tail{
+.pageActivation .ivu-steps .ivu-steps-tail{
   padding:0px;
   top:24px;
 }
-.ivu-steps .ivu-steps-tail i{
+.pageActivation .ivu-steps .ivu-steps-tail i{
   height:2px;
 }
-.ivu-steps .ivu-steps-head{
+.pageActivation .ivu-steps .ivu-steps-head{
   margin-bottom:5px;
   padding-left:10px;
   margin-left:-10px;
 }
-.ivu-steps .ivu-steps-head-inner{
+.pageActivation .ivu-steps .ivu-steps-head-inner{
   width:50px;
   height:50px;
   line-height:50px;
 }
-.ivu-steps .ivu-steps-head-inner span{
+.pageActivation .ivu-steps .ivu-steps-head-inner span{
   font-size:20px!important;
 }
-.ivu-steps-item:last-child .ivu-steps-tail{
+.pageActivation .ivu-steps-item:last-child .ivu-steps-tail{
   display:block;
 }
-.ivu-steps .ivu-steps-head-inner .ivu-icon{
+.pageActivation .ivu-steps .ivu-steps-head-inner .ivu-icon{
   font-size:50px!important;
   color:#fff!important;
 }
-.ivu-steps .ivu-steps-main{
+.pageActivation .ivu-steps .ivu-steps-main{
   display:block;
 }
-.ivu-steps .ivu-steps-title{
+.pageActivation .ivu-steps .ivu-steps-title{
   font-weight:200;
   color:#000!important;
 }
-.ivu-steps-item.ivu-steps-status-finish .ivu-steps-tail i,
-.ivu-steps-item.ivu-steps-status-process .ivu-steps-tail i{
+.pageActivation .ivu-steps-item.ivu-steps-status-finish .ivu-steps-tail i,
+.pageActivation .ivu-steps-item.ivu-steps-status-process .ivu-steps-tail i{
   background:#2271f4;
 }
-.ivu-steps-item.ivu-steps-status-finish .ivu-steps-head-inner,
-.ivu-steps-item.ivu-steps-status-process .ivu-steps-head-inner{
+.pageActivation .ivu-steps-item.ivu-steps-status-finish .ivu-steps-head-inner,
+.pageActivation .ivu-steps-item.ivu-steps-status-process .ivu-steps-head-inner{
   background:#2271f4;
 }
 
-.step .ivu-form-item-label{
+.pageActivation .step .ivu-form-item-label{
   width:525px;
   height:38px;
   line-height:38px;
   padding-top:0px;
   padding-bottom:0px;
 }
-.step span.text{
+.pageActivation .step span.text{
   display:inline-block;
   line-height:38px;
 }
-.step1 p{
+.pageActivation .step1 p{
   text-align:center;
   color:#ff7200;
   margin-bottom:30px;
 }
-.ivu-form-item.btn{
+.pageActivation .ivu-form-item.btn{
   padding:50px 0;
 }
-.ivu-form-item.btn button{
+.pageActivation .ivu-form-item.btn button{
   height:45px;
   line-height:40px;
   padding:0 50px;

@@ -42,4 +42,18 @@ export const QUERY_USER_LIST = 'http://localhost:5500/static/data/userList.js'
 // 修改账号信息
 export const UPDATE_USER_INFO = 'http://localhost:5500/static/data/userList.js'
 // 查询权限列表
-export const QUERY_JURISDICTION_LIST = 'http://localhost:5500/static/data/roles.js'
+export const QUERY_ROLE_MENUS = 'http://localhost:5500/static/data/roles.js'
+// 创建角色
+export const ROLE_CREATE = 'http://localhost:5500/static/data/userList.js'
+// 修改角色
+export const ROLE_UPDATE = 'http://localhost:5500/static/data/userList.js'
+// 删除角色
+export const ROLE_DELETE = 'http://localhost:5500/static/data/userList.js'
+// 发送原手机号的验证码
+export const GET_OLD_PHONE_CODE = 'http://localhost:5500/static/data/roleList.js'
+// 发送修改手机号码验证码
+export const GET_UPDATE_PHONE_CODE = 'http://localhost:5500/static/data/roleList.js'
+// 验证原手机号的验证码
+export const CHECK_OLD_PHONE_CODE = 'http://localhost:5500/static/data/roleList.js'
+// 修改密码
+export const UPDATE_USER_PASSWORD = 'http://localhost:5500/static/data/roleList.js'

@@ -3,7 +3,7 @@
   <!-- 标题区 -->
   h1.pageTitle.clear 角色管理
     .tR
-      Button(@click="showDrawerRole('new')") + 新建角色
+      Button(@click="showDrawerRole({type:'new'})") + 新建角色
   .secMain
     <!-- 列表主体 -->
     .secTable
@@ -14,6 +14,7 @@
   <!-- 权限 抽屉 -->
   Drawer(:closable="true", width="640", v-model="drawerRolesSet", @on-close="", :title="drawerT", :mask-closable="maskClosable", @on-visible-change="drawerChange")
     comp-roles-set(
+      @refreshData="searchListData",
       v-if="refresh",
       :on-close="closeDrawer",
       :roleData = 'rolesData'
@@ -63,7 +64,11 @@ export default {
                 },
                 on: {
                   click: () => {
-                    this.showDrawerRole('modify')
+                    this.showDrawerRole({
+                      type: 'modify',
+                      roleName: this.list[params.index].roleName,
+                      roleId: this.list[params.index].id,
+                    })
                   }
                 }
               }, '修改权限'),
@@ -73,7 +78,7 @@ export default {
                 },
                 on: {
                   click: () => {
-
+                    this.showDelRole(this.list[params.index].id)
                   }
                 }
               }, '删除角色')
@@ -92,13 +97,55 @@ export default {
     }
   },
   methods: {
+    searchListData () {
+      this.drawerRolesSet = false
+      this.queryRoleList(this.queryParam({pageNum:1}))
+    },
     pageChange: function (curPage) {
       // 根据当前页获取数据
       this.queryRoleList(this.queryParam({pageNum:curPage}))
     },
-    showDrawerRole (type) {
-      if (type === 'new') {
+    showDelRole (roleId) {
+      this.$Modal.confirm({
+        title: '确认',
+        content: '<p>请确认是否要删除此角色！</p>',
+        loading: true,
+        onOk: () => {
+          let vm = this
+          let params = {
+            param: {
+              roleId: roleId
+            },
+            callback: function (response) {
+              vm.$Modal.remove()
+              if( response.data.code === '1000' ){
+                vm.$Message.success('删除成功')
+                // 删除成功，重新加载用户列表数据
+                vm.page.pageNo = 1
+                vm.loadingTable = true
+                vm.searchListData()
+              } else {
+                if (response.data.code === '100') {
+                  vm.$Message.error('角色下有用户，不可删除')
+                } else if (response.data.code === '200') {
+                  vm.$Message.error('角色不存在')
+                } else {
+                  vm.$Message.error('删除失败')
+                }
+              }
+            }
+          }
+          this.roleDelete(params)
+        },
+        onCancel: () => {
+        }
+      })
+    },
+    showDrawerRole (paramObj) {
+      if (paramObj.type === 'new') {
         this.drawerT = '新建角色'
+        paramObj.roleName = ''
+        paramObj.roleId = ''
       } else {
         this.drawerT = '修改角色'
       }
@@ -108,9 +155,12 @@ export default {
         },
         callback: function (response) {
           let obj = {
-            list: vm.GLOBALS.CONVERT_TREE(response.data.data, 
+            type: paramObj.type,
+            roleName: paramObj.roleName,
+            roleId: paramObj.roleId,
+            list: vm.GLOBALS.CONVERT_TREE(response.data.data,
               {
-                title: 'menuCode',
+                title: 'id',
                 label: 'menuName',
                 children: 'subMenus',
                 checked: 'checked'
@@ -118,10 +168,14 @@ export default {
             )
           }
           vm.rolesData = obj
+          vm.drawerRolesSet = true
         }
       }
-      this.queryJurisdictionList(params)
-      this.drawerRolesSet = true
+      if (paramObj.roleId) {
+        params.param.roleId = paramObj.roleId
+      }
+      console.log(params.param)
+      this.queryRoleMenus(params)
     },
     drawerChange () {
       if (this.drawerRolesSet) {
@@ -159,7 +213,8 @@ export default {
     },
     ...mapActions({
       queryRoleList: types.QUERY_ROLE_LIST,
-      queryJurisdictionList: types.QUERY_JURISDICTION_LIST
+      queryRoleMenus: types.QUERY_ROLE_MENUS,
+      roleDelete: types.ROLE_DELETE,
     })
   },
   computed: {

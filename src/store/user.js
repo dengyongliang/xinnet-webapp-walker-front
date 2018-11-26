@@ -1,7 +1,7 @@
 import * as types from './types'
 import rest from '../global/rest.js'
-// import * as links from '../global/linkdo.js'
-import * as links from '../global/linkdo_json.js'
+import * as links from '../global/linkdo.js'
+// import * as links from '../global/linkdo_json.js'
 const api = process.env.NODE_ENV === 'production' ? '' : '/api'
 export default {
   state: {
@@ -46,6 +46,9 @@ export default {
     },
     [types.UPDATE_USER_TEL] (state, payload) {
       state.myUserInfo.userTel = payload
+    },
+    [types.UPDATE_USER_MOBILE] (state, payload) {
+      state.myUserInfo.userMobile = payload
     }
   },
   actions: {
@@ -60,7 +63,10 @@ export default {
       })
     },
     [types.UPDATE_USER_INFO] ({ commit, rootState },params) {
-      rest.get(links.UPDATE_USER_INFO, JSON.stringify(params.param),params.callback)
+      rest.post(links.UPDATE_USER_INFO, JSON.stringify(params.param),params.callback)
+    },
+    [types.UPDATE_USER_PASSWORD] ({ commit, rootState },params) {
+      rest.post(links.UPDATE_USER_PASSWORD, JSON.stringify(params.param),params.callback)
     }
   }
 }
