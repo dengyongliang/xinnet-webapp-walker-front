@@ -50,7 +50,13 @@ vue-scroll.menuBody(:ops="ops")
         router-link(to="/finance/overview") 财务总览
       li.menuItem.lv2
         router-link(to="/finance/billMgmt") 账单管理
-
+  .menuBox
+    h3.menuT.lv1
+      Icon.fontL(custom="i-icon i-icon-bill" size="16")
+      span 订单
+    ul.menuList
+      li.menuItem.lv2
+        router-link(to="/order/orderMgmt") 订单管理
   .menuBox
     h3.menuT.lv1
       Icon.fontL(custom="i-icon i-icon-admin" size="16")

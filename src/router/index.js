@@ -129,6 +129,16 @@ const RouterMain = new Router({
             title: '账单管理'
           }
         },
+        {
+          path: '/order/orderMgmt',
+          name: 'ORDER_MGMT',
+          component (resolve) {
+            return require(['@/modular/order/orderMgmt'], resolve)
+          },
+          meta: {
+            title: '订单管理'
+          }
+        }
       ]
     }
   ],

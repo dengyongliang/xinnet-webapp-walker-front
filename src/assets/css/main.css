@@ -81,7 +81,7 @@
     font-size: 12px;
 }
 .secFilter .filterWrap{
-    padding: 17px 0 26px 0;
+    padding: 17px 20px 26px 20px;
 }
 .secFilter .xwSelect .selectIcon{
     height: 20px;
@@ -123,17 +123,15 @@
     color: #666;
     font-size: 12px;
     float: left;
-    width: 100px;
+    width: 80px;
     text-align: right;
 }
 .secFilter .n.line{
     text-align: center;
 }
 .secFilter .inputWrap{
-    margin-left: 110px;
-    border:1px solid #e0e0e0;
+    margin-left: 90px;
     background:#fff;
-    padding: 0 10px;
 }
 
 .secFilter td.tdBtn{
