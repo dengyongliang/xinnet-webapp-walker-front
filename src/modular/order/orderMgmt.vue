@@ -268,22 +268,7 @@ export default {
       this.queryOrderList(this.queryOrderListParam({pageNum: curPage}))
     },
     exportOrder () {
-      let params = {
-        param: {
-          createTimeBegin: this.param.createTime[0] !== '' ? this.GLOBALS.CRT_TIME_FORMAT(this.param.createTime[0]) : '',
-          createTimeEnd: this.param.createTime[1] !== '' ? this.GLOBALS.CRT_TIME_FORMAT(this.param.createTime[1]) : '',
-          orderGoodsInfo: this.param.orderGoodsInfo,
-          orderGoodsType: this.param.orderGoodsType,
-          orderMode: this.param.orderMode,
-          orderPayType: this.param.orderPayType,
-          orderType: this.param.orderType
-        },
-        callback: function (response) {
-
-        }
-      }
-      // 导出
-      this.exportOrderList(params)
+      this.$refs.exportForm.submit()
     },
     queryOrderListParam (obj) {
       this.page.pageNo = obj.pageNum

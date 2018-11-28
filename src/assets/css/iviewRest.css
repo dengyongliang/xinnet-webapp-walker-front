@@ -165,3 +165,8 @@
   position: absolute;
   width: calc(100% - 40px);
 }
+
+
+.ivu-radio-wrapper{
+  padding: 0 0 10px 0;
+}

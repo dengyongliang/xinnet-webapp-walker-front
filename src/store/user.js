@@ -1,7 +1,7 @@
 import * as types from './types'
 import rest from '../global/rest.js'
-import * as links from '../global/linkdo.js'
-// import * as links from '../global/linkdo_json.js'
+// import * as links from '../global/linkdo.js'
+import * as links from '../global/linkdo_json.js'
 const api = process.env.NODE_ENV === 'production' ? '' : '/api'
 export default {
   state: {
@@ -38,7 +38,10 @@ export default {
         "createTime": 1540343160000
       }]
     },
-    rolesList: []
+    userRoles: [],
+    users: [],
+    companys: [],
+    userAuthGroups: []
   },
   mutations: {
     [types.SET_CURRENT_USER_DATA] (state, payload) {
@@ -49,6 +52,18 @@ export default {
     },
     [types.UPDATE_USER_MOBILE] (state, payload) {
       state.myUserInfo.userMobile = payload
+    },
+    [types.SET_USER_ROLES] (state, payload) {
+      state.userRoles = payload.data
+    },
+    [types.SET_USERS] (state, payload) {
+      state.users = payload.data
+    },
+    [types.SET_COMPANYS] (state, payload) {
+      state.companys = payload.data
+    },
+    [types.SET_USER_AUTH_GROUPS] (state, payload) {
+      state.userAuthGroups = payload.data
     }
   },
   actions: {
@@ -67,6 +82,42 @@ export default {
     },
     [types.UPDATE_USER_PASSWORD] ({ commit, rootState },params) {
       rest.post(links.UPDATE_USER_PASSWORD, JSON.stringify(params.param),params.callback)
+    },
+    [types.GET_USER_ROLES] ({ commit, rootState }) {
+      rest.get(links.GET_USER_ROLES, '', function (response) {
+        if (response.data.code === '1000') {
+          commit(types.SET_USER_ROLES, response.data)
+        } else {
+        }
+        return response
+      })
+    },
+    [types.GET_USERS] ({ commit, rootState }) {
+      rest.get(links.GET_USERS, '', function (response) {
+        if (response.data.code === '1000') {
+          commit(types.SET_USERS, response.data)
+        } else {
+        }
+        return response
+      })
+    },
+    [types.GET_COMPANYS] ({ commit, rootState }) {
+      rest.get(links.GET_COMPANYS, '', function (response) {
+        if (response.data.code === '1000') {
+          commit(types.SET_COMPANYS, response.data)
+        } else {
+        }
+        return response
+      })
+    },
+    [types.GET_USER_AUTH_GROUPS] ({ commit, rootState }) {
+      rest.get(links.GET_USER_AUTH_GROUPS, '', function (response) {
+        if (response.data.code === '1000') {
+          commit(types.SET_USER_AUTH_GROUPS, response.data)
+        } else {
+        }
+        return response
+      })
     }
   }
 }

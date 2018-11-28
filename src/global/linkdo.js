@@ -58,3 +58,15 @@ export const GET_UPDATE_PHONE_CODE = api + '/client-api/server/message/send/upda
 export const CHECK_OLD_PHONE_CODE = api + '/client-api/server/message/check/oldPhoneCode'
 // 修改密码
 export const UPDATE_USER_PASSWORD = api + '/client-api/client/user/updateUserPassword'
+// 订单管理
+export const QUERY_ORDER_LIST = api + '/client-api/client/order/orderManage'
+// 导出订单管理
+export const EXPORT_ORDER_LIST = api + '/client-api/client/order/exportOrder'
+// 客户可用角色列表
+export const GET_USER_ROLES = api + '/client-api/client/user/userRoles'
+// 客户可用用户列表
+export const GET_USERS = api + '/client-api/client/user/users'
+// 客户可用企业列表
+export const GET_COMPANYS = api + '/client-api/client/user/companys'
+// 账号管理-按域名管理权筛选
+export const GET_USER_AUTH_GROUPS = api + '/client-api/client/user/userAuthGroups'

@@ -57,3 +57,15 @@ export const GET_UPDATE_PHONE_CODE = 'http://localhost:5500/static/data/roleList
 export const CHECK_OLD_PHONE_CODE = 'http://localhost:5500/static/data/roleList.js'
 // 修改密码
 export const UPDATE_USER_PASSWORD = 'http://localhost:5500/static/data/roleList.js'
+// 订单管理
+export const QUERY_ORDER_LIST = 'http://localhost:5500/static/data/orderList.js'
+// 导出订单管理
+export const EXPORT_ORDER_LIST = 'http://localhost:5500/static/data/orderList.js'
+// 客户可用角色列表
+export const GET_USER_ROLES = 'http://localhost:5500/static/data/userRoles.js'
+// 客户可用用户列表
+export const GET_USERS = 'http://localhost:5500/static/data/users.js'
+// 客户可用企业列表
+export const GET_COMPANYS = 'http://localhost:5500/static/data/companys.js'
+// 账号管理-按域名管理权筛选
+export const GET_USER_AUTH_GROUPS = 'http://localhost:5500/static/data/userAuthGroups.js'

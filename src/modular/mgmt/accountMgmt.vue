@@ -23,19 +23,30 @@
       <Table :columns="columns" :data="list" :loading="loadingTable"></Table>
       <!-- 翻页区 -->
       Page(:total="page.pageItems",:current="page.pageNo",show-elevator,show-total,prev-text="上一页",next-text="下一页",@on-change="pageChange",:page-size=20)
+
+  <!-- 添加员工 抽屉 -->
+  Drawer(:closable="true", width="640", v-model="drawerAddStaff", title="添加员工", :mask-closable="maskClosable", @on-visible-change="drawerChange")
+    comp-account-add-staff(
+      v-if="refresh",
+      :on-close="closeDrawer"
+    )
 </template>
 
 <script>
 import { mapState, mapActions } from 'vuex'
 import * as types from '@/store/types'
+import compAccountAddStaff from '@/components/compAccountAddStaff'
 export default {
   components: {
+    compAccountAddStaff
   },
   data () {
     return {
+      refresh: true,
       value: '',
       colllapseValue: '',
       loadingBtn: false,
+      drawerAddStaff: true,
       columns: [
         {
           title: '姓名',
@@ -192,6 +203,12 @@ export default {
     getSelectedNodes(){
       console.log(this.$refs.Tree.getSelectedNodes());
     },
+    closeDrawer () {
+
+    },
+    drawerChange () {
+
+    },
     queryParam (obj) {
       this.page.pageNo = obj.pageNum
       let vm = this
@@ -219,6 +236,14 @@ export default {
     })
   },
   computed: {
+    ...mapState({
+      myUserInfo (state) {
+        return state.user.myUserInfo
+      },
+      maskClosable (state) {
+        return state.maskClosable
+      }
+    })
   },
   beforeMount () {
     this.queryUserList(this.queryParam({pageNum:1}))

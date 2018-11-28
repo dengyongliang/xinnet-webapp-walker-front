@@ -5,7 +5,7 @@
       .frameMenu
         menu-body
       .frameBody
-        router-view
+        router-view(v-if="islogin")
 </template>
 
 <script>
@@ -28,13 +28,24 @@ export default {
   },
   beforeMount () {
     this.getCurrentUserData()
+    this.getUserRoles()
+    this.getUsers()
+    this.getCompanys()
+    this.getUserAuthGroups()
   },
   methods: {
     ...mapActions({
-      getCurrentUserData: types.GET_CURRENT_USER_DATA
+      getCurrentUserData: types.GET_CURRENT_USER_DATA,
+      getUserRoles: types.GET_USER_ROLES,
+      getUsers: types.GET_USERS,
+      getCompanys: types.GET_COMPANYS,
+      getUserAuthGroups: types.GET_USER_AUTH_GROUPS
     })
   },
   computed: {
+    ...mapState([
+      'islogin'
+    ])
   },
 }
 </script>

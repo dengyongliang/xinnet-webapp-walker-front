@@ -59,6 +59,9 @@ function ADD_DAY (day) {
  * @return {Array}      转换后的 tree
  */
 function CONVERT_TREE (tree, map) {
+  if (typeof map.checked === 'undefined') {
+    map.checked = false
+  }
   const result = []
   // 遍历 tree
   tree.forEach((item) => {
@@ -83,6 +86,27 @@ function CONVERT_TREE (tree, map) {
   })
   return result
 }
+/**
+ * roles 数据转换
+ * @param  {Array} roles 待转换的 roles
+ * @param  {Object} map  键值对映射
+ * @return {Array}      转换后的 roles
+ */
+function CONVERT_ROLES (roles, map) {
+  const result = []
+  // 遍历 roles
+  roles.forEach((item) => {
+    // 读取 map 的键值映射
+    const label = item[ map.label ]
+    const value = item[ map.value ]
+
+    result.push({
+      label,
+      value
+    })
+  })
+  return result
+}
 export default
 {
   TITLE,
@@ -94,5 +118,6 @@ export default
   ORDER_GOODS_TYPE,
   PAY_TYPE,
   ADD_DAY,
-  CONVERT_TREE
+  CONVERT_TREE,
+  CONVERT_ROLES
 }

@@ -7,7 +7,14 @@ export const SET_CURRENT_USER_DATA = 'setCurrentUserData'
 export const GET_OLD_PHONE_CODE = 'getOldPhoneCode'
 export const GET_UPDATE_PHONE_CODE = 'getUpdatePhoneCode'
 export const CHECK_OLD_PHONE_CODE = 'checkOldPhoneCode'
-
+export const GET_USER_ROLES = 'getUserRoles'
+export const GET_USERS = 'getUsers'
+export const GET_COMPANYS = 'getCompanys'
+export const GET_USER_AUTH_GROUPS = 'getUserAuthGroups'
+export const SET_USER_ROLES = 'setUserRoles'
+export const SET_USERS = 'setUsers'
+export const SET_COMPANYS = 'setCompanys'
+export const SET_USER_AUTH_GROUPS = 'setUserAuthGroups'
 // 激活
 export const CHECK_VALID_USER = 'checkValidUser'
 export const SET_ACTIVATION_DATA = 'setActivationData'
@@ -43,3 +50,7 @@ export const UPDATE_USER_INFO = 'updateUserInfo'
 export const UPDATE_USER_TEL = 'updateUserTel'
 export const UPDATE_USER_MOBILE = 'updateUserMobile'
 export const UPDATE_USER_PASSWORD = 'updateUserPassword'
+
+// 订单管理
+export const QUERY_ORDER_LIST = 'queryOrderList'
+export const EXPORT_ORDER_LIST = 'exportOrderList'

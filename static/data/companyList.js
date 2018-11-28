@@ -1,10 +1,7 @@
 {
   "msg": "query is success",
   "code": "1000",
-  "data": {
-    "totalNum": 100,
-    "totalPage": 1,
-    "list": [
+  "data": [
       {
         "id": 2,
         "name": "还是数码集团",
@@ -31,6 +28,5 @@
         "domainCount": 0,
         "groups": []
       }
-    ]
-  }
+  ]
 }
