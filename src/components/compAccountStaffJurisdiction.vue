@@ -1,11 +1,13 @@
 <template lang="pug">
-div.compStaffJurisdiction()
-  .t 选择员工角色：{{baseInfoData.userName}}
-  comp-radio(name="roleId",:list="userRoles",ref="roleId")
+Form.compStaffJurisdiction(:label-width="0")
+  .t 选择员工角色：
+  FormItem()
+    comp-radio(name="roleId",:list="rolesList",ref="roleId",:on-parentmethod="isSuper",)
   .t 请勾选此员工可管理的域名：
-  .scrollList
-    vue-scroll(:ops="ops",ref="vs")
-      Tree(:data="userAuthGroups", show-checkbox, ref="Tree",:render="renderContent",)
+  FormItem()
+    .scrollList
+      vue-scroll(:ops="ops",ref="vs")
+        Tree(:data="userAuthGroupsList", show-checkbox, ref="Tree",:render="renderContent")
   Button(type="primary",@click="saveForm",:loading="loadingBtn") 保存
 </template>
 
@@ -27,6 +29,22 @@ export default {
           data: []
         }
       }
+    },
+    rolesList: {
+      type: Array,
+      default: function () {
+        return {
+          data: []
+        }
+      }
+    },
+    userAuthGroupsList: {
+      type: Array,
+      default: function () {
+        return {
+          data: []
+        }
+      }
     }
   },
   data () {
@@ -41,6 +59,15 @@ export default {
     }
   },
   methods: {
+    isSuper (value) {
+      let data = {}
+      if (value.indexOf("super")<0) {
+        data.data = this.GLOBALS.CONVERT_TREE_CHECKED_FALSE(this.userAuthGroups, 'groups')
+      } else {
+        data.data = this.GLOBALS.CONVERT_TREE_CHECKED_TRUE(this.userAuthGroups, 'groups')
+      }
+      this.$store.commit(types.SET_USER_AUTH_GROUPS, data)
+    },
     renderContent(h, { root, node, data }){
       return h(
         'span', {
@@ -76,18 +103,38 @@ export default {
       if (result) {
         let params = {
           param: {
-            roleId: this.$refs.roleId.value,
-            groups: this.getCheckedNodes().join(",")
+            roleId: this.$refs.roleId.value.split("_")[0],
+            groups: this.getCheckedNodes().slice(1).join(",")
+          },
+          callback: function (response) {
+            vm.loadingBtn = false
+            if( response.data.code === '1000' ){
+              vm.$Message.success('账号创建成功!')
+              vm.$emit("closeDrawer")
+            } else {
+              if (response.data.code === '100') {
+                vm.$Message.error('角色编码错误')
+              } else if (response.data.code === '200') {
+                vm.$Message.error('用户已存在')
+              } else if (response.data.code === '300') {
+                vm.$Message.error('企业不存在')
+              } else if (response.data.code === '400') {
+                vm.$Message.error('超级管理员只允许存在一个')
+              } else {
+                vm.$Message.error('发送失败')
+              }
+            }
           }
         }
         Object.assign(params.param, this.baseInfoData)
         console.log(params.param)
+        this.addUser(params)
       } else {
         this.loadingBtn = false
       }
     },
     ...mapActions({
-      payStatisticsHistoryBill: types.PAY_STATISTICS_HISTORY_BILL
+      addUser: types.ADD_USER
     })
   },
   beforeMount () {
@@ -96,26 +143,8 @@ export default {
   },
   computed: {
     ...mapState({
-      userRoles (state) {
-        return this.GLOBALS.CONVERT_ROLES(state.user.userRoles, {
-          label: 'roleCode',
-          value: 'roleName'
-        })
-      },
       userAuthGroups (state) {
-        let arrGroups = [{
-          title: '0',
-          label: '全部',
-          expand: true,
-          checked: false,
-          children: []
-        }]
-        arrGroups[0].children = this.GLOBALS.CONVERT_TREE(state.user.userAuthGroups.splice(1,1), {
-          title: 'id',
-          label: 'name',
-          children: 'groups'
-        })
-        return arrGroups
+        return state.user.userAuthGroups
       }
     })
   }
@@ -126,7 +155,7 @@ export default {
   display:block;
   font-weight:200;
   color:#000;
-  padding:20px 0;
+  padding:0 0 20px 0;
 }
 .compStaffJurisdiction .scrollList{
   height:300px;

@@ -3,7 +3,7 @@
   <!-- 标题区 -->
   h1.pageTitle.clear 订单管理
   .secFilter
-    form.filterWrap
+    form.filterWrap(ref="exportForm",target="_blank" method="post" accept-charset="utf-8" :action="exportLink")
       table
         tr.row1
           td.td1
@@ -53,11 +53,13 @@
 <script>
 import { mapState, mapActions } from 'vuex'
 import * as types from '@/store/types'
+import * as links from '@/global/linkdo.js'
 export default {
   components: {
   },
   data () {
     return {
+      exportLink: links.EXPORT_ORDER_LIST,
       searchUserId: '',
       time: '',
       param: {

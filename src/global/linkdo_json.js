@@ -69,3 +69,5 @@ export const GET_USERS = 'http://localhost:5500/static/data/users.js'
 export const GET_COMPANYS = 'http://localhost:5500/static/data/companys.js'
 // 账号管理-按域名管理权筛选
 export const GET_USER_AUTH_GROUPS = 'http://localhost:5500/static/data/userAuthGroups.js'
+// 新建账号
+export const ADD_USER = 'http://localhost:5500/static/data/userAuthGroups.js'

@@ -50,6 +50,7 @@ export const UPDATE_USER_INFO = 'updateUserInfo'
 export const UPDATE_USER_TEL = 'updateUserTel'
 export const UPDATE_USER_MOBILE = 'updateUserMobile'
 export const UPDATE_USER_PASSWORD = 'updateUserPassword'
+export const ADD_USER = 'addUser'
 
 // 订单管理
 export const QUERY_ORDER_LIST = 'queryOrderList'

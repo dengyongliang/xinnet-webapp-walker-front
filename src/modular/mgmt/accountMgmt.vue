@@ -5,8 +5,8 @@
     .tR
       span 搜索
       Input(style="width:200px",placeholder="姓名/用户名/手机/邮箱",name="",ref="",v-model.trim="value")
-      Button(type="primary", @click="",:loading="loadingBtn") 查询
-      Button(@click="") + 添加员工
+      Button(type="primary", @click="searchUserData",:loading="loadingBtn") 查询
+      Button(@click="addStaff") + 添加员工
   .secMain.clear
     .filter
       Collapse(v-model="colllapseValue")
@@ -28,7 +28,10 @@
   Drawer(:closable="true", width="640", v-model="drawerAddStaff", title="添加员工", :mask-closable="maskClosable", @on-visible-change="drawerChange")
     comp-account-add-staff(
       v-if="refresh",
-      :on-close="closeDrawer"
+      :on-close="closeDrawer",
+      :type = "type",
+      :rolesList="rolesList",
+      :userAuthGroupsList="userAuthGroupsList"
     )
 </template>
 
@@ -42,11 +45,14 @@ export default {
   },
   data () {
     return {
-      refresh: true,
+      refresh: false,
+      type: 'new',
       value: '',
       colllapseValue: '',
       loadingBtn: false,
-      drawerAddStaff: true,
+      drawerAddStaff: false,
+      rolesList: [],
+      userAuthGroupsList: [],
       columns: [
         {
           title: '姓名',
@@ -195,7 +201,19 @@ export default {
     }
   },
   methods: {
-    pageChange () {
+    searchUserData () {
+      this.queryUserList(this.queryParam({pageNum:1}))
+    },
+    addStaff () {
+      console.log(this.userAuthGroups)
+      this.type = 'new'
+      this.rolesList = this.userRoles
+      this.userAuthGroupsList = this.userAuthGroups
+      this.drawerAddStaff = true
+    },
+    pageChange: function (curPage) {
+      // 根据当前页获取数据
+      this.queryUserList(this.queryParam({pageNum:curPage}))
     },
     getCheckedNodes(){
       console.log(this.$refs.Tree.getCheckedNodes());
@@ -204,10 +222,11 @@ export default {
       console.log(this.$refs.Tree.getSelectedNodes());
     },
     closeDrawer () {
-
+      this.drawerAddStaff = false
     },
     drawerChange () {
-
+      this.searchUserData()
+      this.refresh = (this.drawerAddStaff) ? true : false
     },
     queryParam (obj) {
       this.page.pageNo = obj.pageNum
@@ -215,7 +234,8 @@ export default {
       let params = {
         param: {
           pageNum: obj.pageNum,
-          pageSize: 20
+          pageSize: 20,
+          userCode: this.value
         },
         callback: function(response){
           if (response.data.code === '1000'){
@@ -242,6 +262,30 @@ export default {
       },
       maskClosable (state) {
         return state.maskClosable
+      },
+      userRoles (state) {
+        return this.GLOBALS.CONVERT_ROLES(state.user.userRoles, {
+          label: 'id',
+          code: 'roleCode',
+          value: 'roleName',
+          checked: 'checked'
+        })
+      },
+      userAuthGroups (state) {
+        let arrGroups = [{
+          title: '0',
+          label: '全部',
+          expand: true,
+          checked: false,
+          children: []
+        }]
+        arrGroups[0].children = this.GLOBALS.CONVERT_TREE(state.user.userAuthGroups.slice(1), {
+          title: 'id',
+          label: 'name',
+          checked: 'checked',
+          children: 'groups'
+        })
+        return arrGroups
       }
     })
   },
@@ -249,6 +293,12 @@ export default {
     this.queryUserList(this.queryParam({pageNum:1}))
   },
   watch: {
+    userAuthGroups: {
+      handler (newValue, oldValue) {
+        this.userAuthGroupsList = newValue
+      },
+      deep: true
+    }
   }
 }
 </script>

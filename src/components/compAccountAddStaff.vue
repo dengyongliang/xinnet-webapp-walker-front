@@ -1,10 +1,10 @@
 <template lang="pug">
 .compAccountAddStaff
-  Tabs(value="name1",:animated="false")
+  Tabs(v-model="value",:animated="false")
     TabPane.tabPane1(label="基本资料",name="name1")
       comp-account-staff-info(@getBaseInfo="baseInfo")
     TabPane.tabPane2(label="权限",name="name2",:disabled="tabDisabled")
-      comp-account-staff-jurisdiction(:baseInfoData="baseInfoData")
+      comp-account-staff-jurisdiction(:baseInfoData="baseInfoData",:rolesList="rolesList",:userAuthGroupsList="userAuthGroupsList",@closeDrawer="onClose")
 </template>
 
 <script>
@@ -21,21 +21,36 @@ export default {
   props: {
     onClose: {
       type: Function
+    },
+    rolesList: {
+      type: Array,
+      default: function () {
+        return {
+          data: []
+        }
+      }
+    },
+    userAuthGroupsList: {
+      type: Array,
+      default: function () {
+        return {
+          data: []
+        }
+      }
     }
   },
   data () {
     return {
+      value:'',
       loadingBtn: false,
       tabDisabled: true,
       baseInfoData: {}
     }
   },
   methods: {
-    close () {
-      this.onClose();
-    },
     baseInfo (obj) {
       this.tabDisabled = false
+      this.value = 'name2'
       this.baseInfoData = obj
     },
     ...mapActions({
@@ -43,8 +58,11 @@ export default {
     })
   },
   computed: {
+
   },
   beforeMount () {
+  },
+  mounted () {
   },
   watch: {
   }

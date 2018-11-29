@@ -110,8 +110,8 @@ export default {
         return response
       })
     },
-    [types.GET_USER_AUTH_GROUPS] ({ commit, rootState }) {
-      rest.get(links.GET_USER_AUTH_GROUPS, '', function (response) {
+    [types.GET_USER_AUTH_GROUPS] ({ commit, rootState },params) {
+      rest.get(links.GET_USER_AUTH_GROUPS, JSON.stringify(params.param), function (response) {
         if (response.data.code === '1000') {
           commit(types.SET_USER_AUTH_GROUPS, response.data)
         } else {

@@ -1,7 +1,7 @@
 <template lang="pug">
   div(style="display:inline-block")
     RadioGroup(v-model="value",@on-change="onChange",ref="radio",:name="name")
-      Radio(v-for="item in list",:label="item.label") {{item.value}}
+      Radio(v-for="item in list",:label="item.label",:disabled="typeof(item.checked)!=='undefined'?!item.checked:isDisabled") {{item.value}}
     Alert(type="error",show-icon, style="display:inline-block",v-show="showError") {{errorText}}
 </template>
 
@@ -9,9 +9,16 @@
 export default {
   name: 'compSelect',
   props: {
+    onParentmethod: {
+      type: Function
+    },
     name: {
       type: String,
       default: ''
+    },
+    isDisabled: {
+      type: Boolean,
+      default: false
     },
     label: {
       type: String,
@@ -41,8 +48,9 @@ export default {
     showValidateResult (v) {
       this.showError = true
     },
-    onChange () {
+    onChange (v) {
       this.showError = false
+      this.onParentmethod(this.value)
     }
   },
   beforeMount () {

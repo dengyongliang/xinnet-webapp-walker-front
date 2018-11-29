@@ -52,16 +52,41 @@ function ADD_DAY (day) {
   now.setDate(now.getDate() - day)
   return now
 }
+function CONVERT_TREE_CHECKED_TRUE (tree, key) {
+  const result = []
+  // 遍历 tree
+  tree.forEach((item) => {
+    item.checked = true
+    let children = item[ key ]
+    // 如果有子节点，递归
+    if (children) {
+      CONVERT_TREE_CHECKED_TRUE(children, key)
+    }
+    result.push(item)
+  })
+  return result
+}
+function CONVERT_TREE_CHECKED_FALSE (tree, key) {
+  const result = []
+  // 遍历 tree
+  tree.forEach((item) => {
+    item.checked = false
+    let children = item[ key ]
+    // 如果有子节点，递归
+    if (children) {
+      CONVERT_TREE_CHECKED_FALSE(children, key)
+    }
+    result.push(item)
+  })
+  return result
+}
 /**
  * tree 数据转换
  * @param  {Array} tree 待转换的 tree
  * @param  {Object} map  键值对映射
  * @return {Array}      转换后的 tree
  */
-function CONVERT_TREE (tree, map) {
-  if (typeof map.checked === 'undefined') {
-    map.checked = false
-  }
+function CONVERT_TREE (tree, map, callback) {
   const result = []
   // 遍历 tree
   tree.forEach((item) => {
@@ -70,12 +95,10 @@ function CONVERT_TREE (tree, map) {
     const label = item[ map.label ]
     const checked = item[ map.checked ] ? true : false
     let children = item[ map.children ]
-
     // 如果有子节点，递归
     if (children) {
-        children = CONVERT_TREE(children, map)
+      children = CONVERT_TREE(children, map)
     }
-
     result.push({
       title,
       label,
@@ -97,12 +120,13 @@ function CONVERT_ROLES (roles, map) {
   // 遍历 roles
   roles.forEach((item) => {
     // 读取 map 的键值映射
-    const label = item[ map.label ]
+    const label = item[ map.label ]+'_'+item[ map.code ]
     const value = item[ map.value ]
-
+    const checked = item[ map.checked ] ? true : false
     result.push({
       label,
-      value
+      value,
+      checked
     })
   })
   return result
@@ -119,5 +143,7 @@ export default
   PAY_TYPE,
   ADD_DAY,
   CONVERT_TREE,
-  CONVERT_ROLES
+  CONVERT_ROLES,
+  CONVERT_TREE_CHECKED_TRUE,
+  CONVERT_TREE_CHECKED_FALSE
 }

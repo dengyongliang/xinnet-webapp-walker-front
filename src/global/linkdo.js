@@ -70,3 +70,5 @@ export const GET_USERS = api + '/client-api/client/user/users'
 export const GET_COMPANYS = api + '/client-api/client/user/companys'
 // 账号管理-按域名管理权筛选
 export const GET_USER_AUTH_GROUPS = api + '/client-api/client/user/userAuthGroups'
+// 新建账号
+export const ADD_USER = api + '/client-api/client/user/addUser'

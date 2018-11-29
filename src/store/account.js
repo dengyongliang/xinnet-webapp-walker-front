@@ -10,6 +10,9 @@ export default {
   actions: {
     [types.QUERY_USER_LIST] ({ commit, rootState }, params) {
       rest.get(links.QUERY_USER_LIST, JSON.stringify(params.param),params.callback)
+    },
+    [types.ADD_USER] ({ commit, rootState }, params) {
+      rest.get(links.ADD_USER, JSON.stringify(params.param),params.callback)
     }
   }
 }

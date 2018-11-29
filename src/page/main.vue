@@ -31,7 +31,12 @@ export default {
     this.getUserRoles()
     this.getUsers()
     this.getCompanys()
-    this.getUserAuthGroups()
+    let params = {
+      param: {
+        userId: ''
+      }
+    }
+    this.getUserAuthGroups(params)
   },
   methods: {
     ...mapActions({
