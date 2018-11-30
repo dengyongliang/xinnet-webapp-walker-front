@@ -1,7 +1,7 @@
 <template lang="pug">
   div.compSelect(style="display:inline-block")
     slot(name="left")
-    Select(v-model="value",:style="styles",:name="name",@on-change="selectChange",:placeholder="placeholder")
+    Select(v-model="value",:style="styles",:name="name",@on-change="selectChange",:placeholder="placeholder",:class="{ 'error': showError }")
       Option(v-for="item in list",:value="item.value") {{ item.label }}
     slot(name="right")
     Alert(type="error",show-icon, style="display:inline-block",v-show="showError") {{errorText}}
@@ -11,6 +11,9 @@
 export default {
   name: 'compSelect',
   props: {
+    onParentmethod: {
+      type: Function
+    },
     name: {
       type: String,
       default: ''
@@ -57,6 +60,9 @@ export default {
     },
     selectChange () {
       this.showError = false
+      if (this.onParentmethod && typeof this.onParentmethod === 'function') {
+        this.onParentmethod(this.value)
+      }
     }
   },
   beforeMount () {

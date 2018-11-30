@@ -66,6 +66,7 @@ export default {
 @import 'assets/css/xwNormalize.css';
 @import 'assets/css/xwCommon.css';
 @import 'assets/css/iviewRest.css';
+@import 'assets/css/ivu_drawer.css';
 #app{
   height:100%;
 }

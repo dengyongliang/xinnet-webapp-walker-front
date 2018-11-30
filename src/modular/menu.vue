@@ -71,7 +71,7 @@ vue-scroll.menuBody(:ops="ops")
       li.menuItem.lv2
         router-link(to="/mgmt/roles") 角色管理
       li.menuItem.lv2
-        router-link(to="/mgmt/add") 工单管理
+        router-link(to="/workorder/order") 工单管理
   .menuBox
     h3.menuT.lv1
       Icon.fontL(custom="i-icon i-icon-diary" size="16")

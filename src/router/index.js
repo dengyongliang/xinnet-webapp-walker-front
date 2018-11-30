@@ -138,6 +138,16 @@ const RouterMain = new Router({
           meta: {
             title: '订单管理'
           }
+        },
+        {
+          path: '/workorder/order',
+          name: 'WORKORDER',
+          component (resolve) {
+            return require(['@/modular/workorder/order'], resolve)
+          },
+          meta: {
+            title: '工单管理'
+          }
         }
       ]
     }

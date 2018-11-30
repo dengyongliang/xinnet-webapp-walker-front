@@ -71,3 +71,9 @@ export const GET_COMPANYS = 'http://localhost:5500/static/data/companys.js'
 export const GET_USER_AUTH_GROUPS = 'http://localhost:5500/static/data/userAuthGroups.js'
 // 新建账号
 export const ADD_USER = 'http://localhost:5500/static/data/userAuthGroups.js'
+// 工单管理
+export const QUERY_WORK_ORDER_MANAGE_LIST = 'http://localhost:5500/static/data/workOrderManage.js'
+// 工单提交
+export const SUBMIT_WORK_ORDER = 'http://localhost:5500/static/data/workOrderManage.js'
+// 工单详情
+export const QUERY_WORK_ORDER_DETAIL = 'http://localhost:5500/static/data/workOrderDetail.js'

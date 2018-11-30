@@ -33,24 +33,41 @@
       :rolesList="rolesList",
       :userAuthGroupsList="userAuthGroupsList"
     )
+
+  <!-- 员工详情 抽屉 -->
+  Drawer(:closable="true", width="640", v-model="drawerDetailStaff", title="添加员工", :mask-closable="maskClosable", @on-visible-change="drawerChange", class-name="drawerDetailStaff")
+    div(slot="header")
+      strong 李雷
+        span （dfdfd）
+      p 管理员-河北有限公司
+    comp-account-detail-staff(
+      v-if="refresh",
+      :on-close="closeDrawer",
+      :rolesList="rolesList",
+      :userAuthGroupsList="userAuthGroupsList"
+    )
 </template>
 
 <script>
 import { mapState, mapActions } from 'vuex'
 import * as types from '@/store/types'
 import compAccountAddStaff from '@/components/compAccountAddStaff'
+import compAccountDetailStaff from '@/components/compAccountDetailStaff'
+
 export default {
   components: {
-    compAccountAddStaff
+    compAccountAddStaff,
+    compAccountDetailStaff
   },
   data () {
     return {
-      refresh: false,
+      refresh: true,
       type: 'new',
       value: '',
       colllapseValue: '',
       loadingBtn: false,
       drawerAddStaff: false,
+      drawerDetailStaff: true,
       rolesList: [],
       userAuthGroupsList: [],
       columns: [
@@ -226,7 +243,7 @@ export default {
     },
     drawerChange () {
       this.searchUserData()
-      this.refresh = (this.drawerAddStaff) ? true : false
+      this.refresh = (this.drawerAddStaff || this.drawerDetailStaff) ? true : false
     },
     queryParam (obj) {
       this.page.pageNo = obj.pageNum
@@ -321,4 +338,5 @@ export default {
 .contAccountMgmt .ivu-page{
   padding-top:20px;
 }
+
 </style>

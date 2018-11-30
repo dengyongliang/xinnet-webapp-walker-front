@@ -72,3 +72,9 @@ export const GET_COMPANYS = api + '/client-api/client/user/companys'
 export const GET_USER_AUTH_GROUPS = api + '/client-api/client/user/userAuthGroups'
 // 新建账号
 export const ADD_USER = api + '/client-api/client/user/addUser'
+// 工单管理
+export const QUERY_WORK_ORDER_MANAGE_LIST = api + '/client-api/client/workOrder/workOrderManage'
+// 工单提交
+export const SUBMIT_WORK_ORDER = api + '/client-api/client/workOrder/workOrderSubmit'
+// 工单详情
+export const QUERY_WORK_ORDER_DETAIL = api + '/client-api/client/workOrder/workOrderDetail'

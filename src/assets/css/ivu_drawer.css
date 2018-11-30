@@ -1,0 +1,20 @@
+.drawerDetailStaff .ivu-drawer-header{
+  line-height:30px;
+
+}
+.drawerDetailStaff .ivu-drawer-header strong{
+  font-weight:200;
+  font-size: 18px;
+  color: #fff;
+  display: block;
+  padding-top: 20px;
+}
+.drawerDetailStaff .ivu-drawer-header strong span{
+  font-size: 12px;
+  color: #fff;
+}
+.drawerDetailStaff .ivu-drawer-header p{
+  font-size: 12px;
+  color: #fff;
+  font-weight:200;
+}

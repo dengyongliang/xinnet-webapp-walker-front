@@ -12,6 +12,12 @@
   padding-left:10px;
   padding-right:10px;
 }
+.ivu-select{
+  margin-right: 5px;
+}
+.ivu-select.error .ivu-select-selection{
+  border:1px solid #f00;
+}
 .ivu-select .ivu-select-selection{
   border-radius: 0px;
 }
@@ -62,6 +68,12 @@
   display:inline-block;
   padding:7px 10px;
 }
+.ivu-drawer-body .ivu-form-item pre.text,
+.ivu-drawer-body .ivu-form-item div.text{
+  line-height:18px;
+  padding:7px 10px;
+}
+
 .ivu-btn{
   height: 32px;
   border-radius:0px;
@@ -79,6 +91,9 @@
 
 .ivu-input-wrapper{
   margin-right:5px;
+}
+.ivu-input-wrapper textarea{
+  height: 100px;
 }
 .ivu-input-wrapper .unit{
   margin-right:5px;

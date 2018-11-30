@@ -55,3 +55,8 @@ export const ADD_USER = 'addUser'
 // 订单管理
 export const QUERY_ORDER_LIST = 'queryOrderList'
 export const EXPORT_ORDER_LIST = 'exportOrderList'
+
+// 工单管理
+export const QUERY_WORK_ORDER_MANAGE_LIST = 'queryWorkOrderManageList'
+export const SUBMIT_WORK_ORDER = 'submitWorkOrder'
+export const QUERY_WORK_ORDER_DETAIL = 'queryWorkOrderDetail'

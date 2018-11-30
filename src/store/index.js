@@ -8,8 +8,8 @@ import role from './role.js'
 import company from './company.js'
 import order from './order.js'
 import rest from '../global/rest.js'
-// import * as links from '../global/linkdo.js'
-import * as links from '../global/linkdo_json.js'
+import * as links from '../global/linkdo.js'
+// import * as links from '../global/linkdo_json.js'
 Vue.use(Vuex)
 export default function makeStore () {
   return new Vuex.Store({

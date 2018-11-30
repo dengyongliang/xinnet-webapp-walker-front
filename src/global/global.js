@@ -47,6 +47,30 @@ const PAY_TYPE = {
   5: '结款',
   6: '信用额度增加'
 }
+const QUESTION_TYPE = {
+  1: '委托注册',
+  2: '域名回购',
+  3: '安全问题',
+  4: '财务问题',
+  5: '托管域名信息修改及续费',
+  6: '域名赎回',
+  7: '注册局锁',
+  8: '其它问题'
+}
+const QUESTION_MODIFY_TYPE = {
+  1: '续费',
+  2: '解析设置',
+  3: '修改DNS',
+  4: '修改域名信息',
+  5: '过户',
+  6: '其它'
+}
+const SECURITY_TYPE = {
+  1: '域名解析被篡改',
+  2: '账号登录异常',
+  3: '域名过期未续费',
+  4: '其他问题'
+}
 function ADD_DAY (day) {
   var now = new Date
   now.setDate(now.getDate() - day)
@@ -145,5 +169,8 @@ export default
   CONVERT_TREE,
   CONVERT_ROLES,
   CONVERT_TREE_CHECKED_TRUE,
-  CONVERT_TREE_CHECKED_FALSE
+  CONVERT_TREE_CHECKED_FALSE,
+  QUESTION_TYPE,
+  QUESTION_MODIFY_TYPE,
+  SECURITY_TYPE
 }

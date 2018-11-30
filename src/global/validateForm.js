@@ -4,16 +4,21 @@ export default function validateFormResult (validateArray) {
   let flag = true
   for (var i = 0; i < len; i++) {
     let v = validateArray[i]
-    if (v.type === 'text') {
+    if (v.type === 'text' || v.type === 'textarea') {
       let name = v.name
       let value = v.value
       let required = v.required
       let label = v.label
+      let number = v.number
       if (value === '' && required) {
         v.showValidateResult({text:'请输入' + (label || '') + '！'})
         flag = false
         // break
       } else {
+        if (number && isNaN(value)){
+          v.showValidateResult({text:'只允许输入数字！'})
+          flag = false
+        }
         if (name === 'userEmail') {
           if (value !== '' && !GLOBAL.IS_EMAIL_AVAILABLE(value)) {
             v.showValidateResult({text:'请输入正确的邮件地址，如xinnet@xinnet.com！'})

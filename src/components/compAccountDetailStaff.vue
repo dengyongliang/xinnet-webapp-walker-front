@@ -1,21 +1,21 @@
 <template lang="pug">
-.compAccountAddStaff
+.compAccountDetailStaff
   Tabs(v-model="value",:animated="false")
     TabPane.tabPane1(label="基本资料",name="name1")
-      comp-account-staff-info(@getBaseInfo="baseInfo")
-    TabPane.tabPane2(label="权限",name="name2",:disabled="tabDisabled")
-      comp-account-staff-jurisdiction(:baseInfoData="baseInfoData",:rolesList="rolesList",:userAuthGroupsList="userAuthGroupsList",@closeDrawer="onClose")
+      comp-account-staff-info-for-detail(@getBaseInfo="baseInfo")
+    TabPane.tabPane2(label="权限",name="name2")
+      comp-account-staff-jurisdiction-for-detail(:baseInfoData="baseInfoData",:rolesList="rolesList",:userAuthGroupsList="userAuthGroupsList",@closeDrawer="onClose")
 </template>
 
 <script>
 import { mapState, mapActions } from 'vuex'
 import * as types from '@/store/types'
-import compAccountStaffInfo from './compAccountStaffInfo'
-import compAccountStaffJurisdiction from './compAccountStaffJurisdiction'
+import compAccountStaffInfoForDetail from './compAccountStaffInfoForDetail'
+import compAccountStaffJurisdictionForDetail from './compAccountStaffJurisdictionForDetail'
 export default {
   components: {
-    compAccountStaffInfo,
-    compAccountStaffJurisdiction
+    compAccountStaffInfoForDetail,
+    compAccountStaffJurisdictionForDetail
   },
   props: {
     onClose: {
@@ -42,7 +42,6 @@ export default {
     return {
       value:'',
       loadingBtn: false,
-      tabDisabled: true,
       baseInfoData: {}
     }
   },
@@ -67,7 +66,7 @@ export default {
 }
 </script>
 <style scoped>
-.compAccountAddStaff{
+.compAccountDetailStaff{
   padding:0 30px;
 }
 </style>
