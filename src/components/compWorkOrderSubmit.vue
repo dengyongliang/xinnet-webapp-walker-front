@@ -55,84 +55,36 @@ export default {
       loadingBtn: false,
       domainNameRequired: true,
       descriptionRequired: false,
-      safeTypeList: [
-        {
-          label: '域名解析被篡改',
-          value: 1
-        },
-        {
-          label: '账号登录异常',
-          value: 2
-        },
-        {
-          label: '域名过期未续费',
-          value: 3
-        },
-        {
-          label: '其他问题',
-          value: 4
+      safeTypeList: function (vm) {
+        let array = []
+        for (var i in vm.GLOBALS.SECURITY_TYPE) {
+          array.push({
+            label: vm.GLOBALS.SECURITY_TYPE[i],
+            value: parseInt(i)
+          })
         }
-      ],
-      questionTypeList: [
-        {
-          label: '委托注册',
-          value: 1
-        },
-        {
-          label: '域名回购',
-          value: 2
-        },
-        {
-          label: '安全问题',
-          value: 3
-        },
-        {
-          label: '财务问题',
-          value: 4
-        },
-        {
-          label: '托管域名信息修改及续费',
-          value: 5
-        },
-        {
-          label: '域名赎回',
-          value: 6
-        },
-        {
-          label: '注册局锁',
-          value: 7
-        },
-        {
-          label: '其它问题',
-          value: 8
+        return array
+      }(this),
+      questionTypeList: function (vm) {
+        let array = []
+        for (var i in vm.GLOBALS.QUESTION_TYPE) {
+          array.push({
+            label: vm.GLOBALS.QUESTION_TYPE[i],
+            value: parseInt(i)
+          })
         }
-      ],
-      updateTypeList: [
-        {
-          label: '续费',
-          value: 1
-        },
-        {
-          label: '解析设置',
-          value: 2
-        },
-        {
-          label: '修改DNS',
-          value: 3
-        },
-        {
-          label: '修改域名信息',
-          value: 4
-        },
-        {
-          label: '过户',
-          value: 5
-        },
-        {
-          label: '其它',
-          value: 6
+        return array
+      }(this),
+      updateTypeList: function (vm) {
+        let array = []
+        for (var i in vm.GLOBALS.QUESTION_MODIFY_TYPE) {
+          array.push({
+            label: vm.GLOBALS.QUESTION_MODIFY_TYPE[i],
+            value: parseInt(i)
+          })
         }
-      ]
+        return array
+      }(this)
     }
   },
   methods: {
