@@ -1,7 +1,7 @@
 import * as types from './types'
 import rest from '../global/rest.js'
-import * as links from '../global/linkdo.js'
-// import * as links from '../global/linkdo_json.js'
+// import * as links from '../global/linkdo.js'
+import * as links from '../global/linkdo_json.js'
 const api = process.env.NODE_ENV === 'production' ? '' : '/api'
 export default {
   state: {
@@ -67,15 +67,8 @@ export default {
     }
   },
   actions: {
-    [types.GET_CURRENT_USER_DATA] ({ commit, rootState }) {
-      rest.get(links.GET_CURRENT_USER_DATA, '', function (response) {
-        if (response.data.code === '1000') {
-          rootState.islogin = true
-          commit(types.SET_CURRENT_USER_DATA, response.data)
-        } else {
-        }
-        return response
-      })
+    [types.GET_CURRENT_USER_DATA] ({ commit, rootState }, callback) {
+      rest.get(links.GET_CURRENT_USER_DATA, '', callback)
     },
     [types.UPDATE_USER_INFO] ({ commit, rootState },params) {
       rest.post(links.UPDATE_USER_INFO, JSON.stringify(params.param),params.callback)
@@ -110,8 +103,8 @@ export default {
         return response
       })
     },
-    [types.GET_USER_AUTH_GROUPS] ({ commit, rootState },params) {
-      rest.post(links.GET_USER_AUTH_GROUPS, JSON.stringify(params.param), function (response) {
+    [types.GET_USER_AUTH_GROUPS] ({ commit, rootState }) {
+      rest.get(links.GET_USER_AUTH_GROUPS, JSON.stringify({userId:''}), function (response) {
         if (response.data.code === '1000') {
           commit(types.SET_USER_AUTH_GROUPS, response.data)
         } else {

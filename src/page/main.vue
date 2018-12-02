@@ -27,24 +27,29 @@ export default {
   mounted () {
   },
   beforeMount () {
-    this.getCurrentUserData()
-    this.getUserRoles()
-    this.getUsers()
-    this.getCompanys()
-    let params = {
-      param: {
-        userId: ''
+    let vm = this
+    this.getCurrentUserData(function (response) {
+      if (response.data.code === '1000') {
+        vm.$store.commit(types.SET_LOGINED)
+        vm.$store.commit(types.SET_CURRENT_USER_DATA, response.data)
+        Promise.all([
+          vm.$store.dispatch(types.GET_USER_ROLES),
+          vm.$store.dispatch(types.GET_USERS),
+          vm.$store.dispatch(types.GET_COMPANYS),
+          vm.$store.dispatch(types.GET_USER_AUTH_GROUPS)
+        ]).then((response) => {
+          // 获取信息成功
+        }).catch((error) => {
+          console.log(error)
+        })
+      } else {
+        vm.$router.replace({ path: '/login' })
       }
-    }
-    this.getUserAuthGroups(params)
+    })
   },
   methods: {
     ...mapActions({
-      getCurrentUserData: types.GET_CURRENT_USER_DATA,
-      getUserRoles: types.GET_USER_ROLES,
-      getUsers: types.GET_USERS,
-      getCompanys: types.GET_COMPANYS,
-      getUserAuthGroups: types.GET_USER_AUTH_GROUPS
+      getCurrentUserData: types.GET_CURRENT_USER_DATA
     })
   },
   computed: {

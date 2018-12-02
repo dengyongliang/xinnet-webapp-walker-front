@@ -15,6 +15,7 @@ export const SET_USER_ROLES = 'setUserRoles'
 export const SET_USERS = 'setUsers'
 export const SET_COMPANYS = 'setCompanys'
 export const SET_USER_AUTH_GROUPS = 'setUserAuthGroups'
+export const SET_LOGINED = 'setLogined'
 // 激活
 export const CHECK_VALID_USER = 'checkValidUser'
 export const SET_ACTIVATION_DATA = 'setActivationData'

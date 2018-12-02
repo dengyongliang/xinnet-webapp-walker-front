@@ -5,7 +5,13 @@ import Event from './event'
 
 export const emitter = new Event()
 let cancel, promiseArr = {}
-const CancelToken = axios.CancelToken;
+const CancelToken = axios.CancelToken
+
+axios.defaults.baseURL = '/'
+axios.defaults.headers = {
+  'Content-Type': 'application/json; charset=utf-8'
+}
+axios.defaults.timeout = 5000
 // 请求拦截器
 axios.interceptors.request.use(config => {
   // 发起请求时，取消掉当前正在进行的相同请求
@@ -60,13 +66,6 @@ axios.interceptors.response.use(response => {
   return Promise.resolve(err.response)
 })
 
-axios.defaults.baseURL = '/'
-  // 设置默认请求头
-axios.defaults.headers = {
-  'Content-Type': 'application/json; charset=utf-8'
-}
-axios.defaults.timeout = 5000
-
 export default {
   // get请求
   get(url, param, callback) {
@@ -80,7 +79,7 @@ export default {
           cancel = c
         })
       }).then(res => {
-        resolve(res)
+        // resolve(res)
         NProgress.done()
         if (callback && typeof callback === 'function') {
           callback(res)
@@ -100,7 +99,7 @@ export default {
           cancel = c
         })
       }).then(res => {
-        resolve(res)
+        // resolve(res)
         NProgress.done()
         if (callback && typeof callback === 'function') {
           callback(res)

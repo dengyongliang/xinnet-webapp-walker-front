@@ -8,8 +8,8 @@ import role from './role.js'
 import company from './company.js'
 import order from './order.js'
 import rest from '../global/rest.js'
-import * as links from '../global/linkdo.js'
-// import * as links from '../global/linkdo_json.js'
+// import * as links from '../global/linkdo.js'
+import * as links from '../global/linkdo_json.js'
 Vue.use(Vuex)
 export default function makeStore () {
   return new Vuex.Store({
@@ -21,6 +21,9 @@ export default function makeStore () {
       activation: {}
     },
     mutations: {
+      [types.SET_LOGINED] (state, payload) {
+        state.islogin = true
+      },
       [types.SHOW_BODY_SPIN] (state,payload) {
         state.showBodySpin = false
       },
