@@ -70,6 +70,8 @@ export const GET_USERS = api + '/client-api/client/user/users'
 export const GET_COMPANYS = api + '/client-api/client/user/companys'
 // 账号管理-按域名管理权筛选
 export const GET_USER_AUTH_GROUPS = api + '/client-api/client/user/userAuthGroups'
+// 账号管理-按公司筛选
+export const QUERY_USER_COMPANYS = api + '/client-api/client/user/userCompanys'
 // 新建账号
 export const ADD_USER = api + '/client-api/client/user/addUser'
 // 工单管理
@@ -78,3 +80,7 @@ export const QUERY_WORK_ORDER_MANAGE_LIST = api + '/client-api/client/workOrder/
 export const SUBMIT_WORK_ORDER = api + '/client-api/client/workOrder/workOrderSubmit'
 // 工单详情
 export const QUERY_WORK_ORDER_DETAIL = api + '/client-api/client/workOrder/workOrderDetail'
+// 删除账号
+export const DELETE_USER_INFO = api + '/client-api/client/user/deleteUserInfo'
+// 账号详情
+export const QUERY_USER_INFO = api + '/client-api/client/user/userInfo'

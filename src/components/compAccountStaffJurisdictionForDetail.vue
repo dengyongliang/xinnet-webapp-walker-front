@@ -2,12 +2,11 @@
 Form.compStaffJurisdiction(:label-width="0")
   .t 选择员工角色：
   FormItem()
-    comp-radio(name="roleId",:list="rolesList",ref="roleId",:on-parentmethod="isSuper",)
+    comp-radio(name="roleId",:list="rolesList",ref="roleId",:on-parentmethod="isSuper",:defaultValue="roleChecked")
   .t 请勾选此员工可管理的域名：
   FormItem()
     .scrollList
-      vue-scroll(:ops="ops",ref="vs")
-        Tree(:data="userAuthGroupsList", show-checkbox, ref="Tree",:render="renderContent")
+      Tree(:data="userAuthGroupsList", show-checkbox, ref="Tree",:render="renderContent")
   Button(type="primary",@click="saveForm",:loading="loadingBtn") 保存
 </template>
 
@@ -45,16 +44,14 @@ export default {
           data: []
         }
       }
+    },
+    roleChecked: {
+      type: String,
+      default: ''
     }
   },
   data () {
     return {
-      ops: {
-        bar: {
-          background: 'rgba(0,0,0,0.2)',
-          keepShow: true
-        }
-      },
       loadingBtn: false,
     }
   },

@@ -69,6 +69,8 @@ export const GET_USERS = 'http://localhost:5500/static/data/users.js'
 export const GET_COMPANYS = 'http://localhost:5500/static/data/companys.js'
 // 账号管理-按域名管理权筛选
 export const GET_USER_AUTH_GROUPS = 'http://localhost:5500/static/data/userAuthGroups.js'
+// 账号管理-按公司筛选
+export const QUERY_USER_COMPANYS = 'http://localhost:5500/static/data/userCompanys.js'
 // 新建账号
 export const ADD_USER = 'http://localhost:5500/static/data/userAuthGroups.js'
 // 工单管理
@@ -77,3 +79,7 @@ export const QUERY_WORK_ORDER_MANAGE_LIST = 'http://localhost:5500/static/data/w
 export const SUBMIT_WORK_ORDER = 'http://localhost:5500/static/data/workOrderManage.js'
 // 工单详情
 export const QUERY_WORK_ORDER_DETAIL = 'http://localhost:5500/static/data/workOrderDetail.js'
+// 删除账号
+export const DELETE_USER_INFO = 'http://localhost:5500/static/data/workOrderDetail.js'
+// 账号详情
+export const QUERY_USER_INFO = 'http://localhost:5500/static/data/userInfo.js'

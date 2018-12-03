@@ -155,6 +155,18 @@ function CONVERT_ROLES (roles, map) {
   })
   return result
 }
+function CONVERT_SELECT (data, map) {
+  const result = []
+  data.forEach((item) => {
+    const label = item[ map.label ]
+    const value = item[ map.value ]+'_'+item[ map.code ]
+    result.push({
+      label,
+      value
+    })
+  })
+  return result
+}
 export default
 {
   TITLE,
@@ -172,5 +184,6 @@ export default
   CONVERT_TREE_CHECKED_FALSE,
   QUESTION_TYPE,
   QUESTION_MODIFY_TYPE,
-  SECURITY_TYPE
+  SECURITY_TYPE,
+  CONVERT_SELECT
 }

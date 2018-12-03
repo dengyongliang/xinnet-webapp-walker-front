@@ -173,9 +173,6 @@
 .ivu-modal-confirm .ivu-icon{
   color:#f90;
 }
-.ivu-tree ul li{
-  margin:2px 0;
-}
 .ivu-tree .ivu-checkbox-wrapper{
   position: absolute;
   width: calc(100% - 40px);

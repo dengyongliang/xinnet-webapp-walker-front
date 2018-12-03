@@ -41,7 +41,8 @@ export default {
     userRoles: [],
     users: [],
     companys: [],
-    userAuthGroups: []
+    userAuthGroups: [],
+    userAuthGroupsOriginal: []
   },
   mutations: {
     [types.SET_CURRENT_USER_DATA] (state, payload) {
@@ -64,6 +65,9 @@ export default {
     },
     [types.SET_USER_AUTH_GROUPS] (state, payload) {
       state.userAuthGroups = payload.data
+    },
+    [types.SET_USER_AUTH_GROUPS_ORIGINAL] (state, payload) {
+      state.userAuthGroupsOriginal = payload.data
     }
   },
   actions: {
@@ -107,6 +111,7 @@ export default {
       rest.get(links.GET_USER_AUTH_GROUPS, JSON.stringify({userId:''}), function (response) {
         if (response.data.code === '1000') {
           commit(types.SET_USER_AUTH_GROUPS, response.data)
+          commit(types.SET_USER_AUTH_GROUPS_ORIGINAL, response.data)
         } else {
         }
         return response

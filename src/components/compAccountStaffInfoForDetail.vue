@@ -1,19 +1,19 @@
 <template lang="pug">
   Form(:label-width="80")
     FormItem(label="行者账号：")
-      span.text fdjkl
+      span.text {{getBaseInfo.userCode}}
     FormItem(label="姓名：")
-      span.text 韩梅梅
+      span.text {{getBaseInfo.userName}}
     FormItem(label="手机：")
-      comp-input(name='userMobile',label="手机",ref="userMobile")
+      comp-input(name='userMobile',label="手机",ref="userMobile", :defaultValue="getBaseInfo.userMobile")
     FormItem(label="座机：")
-      comp-input(name='userTel',label="座机",ref="userTel")
+      comp-input(name='userTel',label="座机",ref="userTel",:defaultValue="getBaseInfo.tel")
     FormItem(label="电子邮件：")
-      comp-input(name='userEmail',label="电子邮件",ref="userEmail")
+      comp-input(name='userEmail',label="电子邮件",ref="userEmail",:defaultValue="getBaseInfo.userEmail")
     FormItem(label="所属企业：")
       comp-select(name="companyId",:list="companysList",ref="companyId",styles="width:240px")
     FormItem(label="")
-      Button(type="primary",@click="nextForm",:loading="loadingBtn") 下一步
+      Button(type="primary",@click="nextForm",:loading="loadingBtn") 保存
 </template>
 
 <script>
@@ -29,7 +29,14 @@ export default {
     compSelect
   },
   props: {
-
+    getBaseInfo: {
+      type: Object,
+      default: function () {
+        return {
+          data: []
+        }
+      }
+    }
   },
   data () {
     return {
@@ -67,7 +74,7 @@ export default {
   computed: {
     ...mapState({
       companysList (state) {
-        return this.GLOBALS.CONVERT_ROLES(state.user.companys, {
+        return this.GLOBALS.CONVERT_SELECT(state.user.companys, {
           label: 'name',
           value: 'id'
         })

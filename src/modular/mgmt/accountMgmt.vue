@@ -12,12 +12,10 @@
       Collapse(v-model="colllapseValue")
         Panel(name="1") 按公司筛选
           div(slot="content")
-            Tree(:data="data1", show-checkbox, ref="Tree")
+            Tree(:data="userCompanys", show-checkbox, ref="Tree", :render="renderContent",@on-check-change="companyChange")
         Panel(name="2") 按域名管理权限筛选
           div(slot="content")
-            Tree(:data="data2", show-checkbox)
-      button(@click='getCheckedNodes') 获取被选中的节点
-      button(@click="getSelectedNodes") 获取被勾选的节点
+            Tree(:data="userAuthGroupsOriginal", show-checkbox, ref="Tree2", :render="renderContent", @on-check-change="domainGroupChange")
     <!-- 列表主体 -->
     .secTable
       <Table :columns="columns" :data="list" :loading="loadingTable"></Table>
@@ -43,8 +41,10 @@
     comp-account-detail-staff(
       v-if="refresh",
       :on-close="closeDrawer",
-      :rolesList="rolesList",
-      :userAuthGroupsList="userAuthGroupsList"
+      :rolesList="detailRolesList",
+      :userAuthGroupsList="detailUserAuthGroupsList",
+      :userBaseInfo="staffData",
+      :roleChecked = "roleChecked"
     )
 </template>
 
@@ -61,31 +61,36 @@ export default {
   },
   data () {
     return {
-      refresh: true,
+      refresh: false,
       type: 'new',
       value: '',
       colllapseValue: '',
       loadingBtn: false,
       drawerAddStaff: false,
-      drawerDetailStaff: true,
+      drawerDetailStaff: false,
       rolesList: [],
       userAuthGroupsList: [],
+      detailRolesList: [],
+      detailUserAuthGroupsList: [],
+      userCompanys: [],
+      roleChecked: '',
+      staffData: {},
       columns: [
         {
           title: '姓名',
           key: 'userName',
-          className: 'col1'
+          className: 'col1',
+          render: (h, params) => {
+            return h('div', [
+              h('span', {
+              }, this.list[params.index].userName + '(' + this.list[params.index].userCode + ')' )
+            ])
+          }
         },
         {
           title: '角色',
           key: 'roleName',
-          className: 'col2',
-          render: (h, params) => {
-            return h('div', [
-              h('span', {
-              }, this.list[params.index].roles[0].roleName)
-            ])
-          }
+          className: 'col2'
         },
         {
           title: '所属公司',
@@ -97,17 +102,17 @@ export default {
           key: 'status',
           className: 'col4',
           render: (h, params) => {
+            if (this.list[params.index].status === 0) {
+              return h('div', [
+                h('span', {}, '未激活')
+              ])
+            }
             if (this.list[params.index].status === 1) {
               return h('div', [
                 h('span', {}, '已激活')
               ])
             }
             if (this.list[params.index].status === 2) {
-              return h('div', [
-                h('span', {}, '未激活')
-              ])
-            }
-            if (this.list[params.index].status === 3) {
               return h('div', [
                 h('span', {}, '已停用')
               ])
@@ -126,20 +131,20 @@ export default {
                 },
                 on: {
                   click: () => {
-
+                    this.showAccountDetail(this.list[params.index].userCode)
                   }
                 }
-              }, '修改权限'),
+              }, '详情'),
               h('a', {
                 props: {
                   href: 'javascript:;'
                 },
                 on: {
                   click: () => {
-
+                    this.showDelAccount(this.list[params.index].userCode)
                   }
                 }
-              }, '删除角色')
+              }, '删除员工')
             ])
           }
         }
@@ -150,71 +155,7 @@ export default {
         pageNo: 1,
         pagePages: 1,
         pageItems: 1
-      },
-      data1: [
-          {
-              title: 'parent 1',
-              expand: true,
-              children: [
-                  {
-                      title: 'parent 1-1',
-                      expand: true,
-                      children: [
-                          {
-                              title: 'leaf 1-1-1'
-                          },
-                          {
-                              title: 'leaf 1-1-2'
-                          }
-                      ]
-                  },
-                  {
-                      title: 'parent 1-2',
-                      expand: true,
-                      children: [
-                          {
-                              title: 'leaf 1-2-1'
-                          },
-                          {
-                              title: 'leaf 1-2-1'
-                          }
-                      ]
-                  }
-              ]
-          }
-      ],
-      data2: [
-          {
-              title: 'parent 1',
-              expand: true,
-              children: [
-                  {
-                      title: 'parent 1-1',
-                      expand: true,
-                      children: [
-                          {
-                              title: 'leaf 1-1-1'
-                          },
-                          {
-                              title: 'leaf 1-1-2'
-                          }
-                      ]
-                  },
-                  {
-                      title: 'parent 1-2',
-                      expand: true,
-                      children: [
-                          {
-                              title: 'leaf 1-2-1'
-                          },
-                          {
-                              title: 'leaf 1-2-1'
-                          }
-                      ]
-                  }
-              ]
-          }
-      ]
+      }
     }
   },
   methods: {
@@ -232,11 +173,14 @@ export default {
       // 根据当前页获取数据
       this.queryUserList(this.queryParam({pageNum:curPage}))
     },
-    getCheckedNodes(){
-      console.log(this.$refs.Tree.getCheckedNodes());
-    },
-    getSelectedNodes(){
-      console.log(this.$refs.Tree.getSelectedNodes());
+    getCheckedNodes($tree){
+      let checkedArray = $tree.getCheckedAndIndeterminateNodes().map((val,idx,arr) => {
+        return val.title
+      })
+      if (!checkedArray.length) {
+        checkedArray = [0]
+      }
+      return checkedArray
     },
     closeDrawer () {
       this.drawerAddStaff = false
@@ -244,6 +188,22 @@ export default {
     drawerChange () {
       this.searchUserData()
       this.refresh = (this.drawerAddStaff || this.drawerDetailStaff) ? true : false
+    },
+    companyChange () {
+      let companyId = this.getCheckedNodes(this.$refs.Tree).slice(1).join(",")
+      this.queryUserList( this.queryParamCompany({pageNum:1,companyId:companyId}) )
+    },
+    domainGroupChange () {
+      let domainCompanyId = []
+      let domainGroupId = []
+      this.getCheckedNodes(this.$refs.Tree2).slice(1).forEach((item, index, array) => {
+        if (item.split("_")[1] === 'domainCompanyId') {
+          domainCompanyId.push(item.split("_")[0])
+        } else {
+          domainGroupId.push(item.split("_")[0])
+        }
+      })
+      this.queryUserList( this.queryParamDomainGroup({pageNum:1, domainCompanyId:domainCompanyId.join(","), domainGroupId:domainGroupId.join(",")}) )
     },
     queryParam (obj) {
       this.page.pageNo = obj.pageNum
@@ -256,7 +216,6 @@ export default {
         },
         callback: function(response){
           if (response.data.code === '1000'){
-
             vm.list = response.data.data.list
             vm.page.pageItems = response.data.data.totalNum
           } else {
@@ -268,8 +227,171 @@ export default {
       }
       return params
     },
+    queryParamCompany (obj) {
+      this.page.pageNo = obj.pageNum
+      let vm = this
+      let params = {
+        param: {
+          pageNum: obj.pageNum,
+          pageSize: 20,
+          companyId: obj.companyId
+        },
+        callback: function(response){
+          if (response.data.code === '1000'){
+            vm.list = response.data.data.list
+            vm.page.pageItems = response.data.data.totalNum
+          } else {
+            vm.$Message.error('查询失败')
+          }
+        }
+      }
+      return params
+    },
+    queryParamDomainGroup (obj) {
+      this.page.pageNo = obj.pageNum
+      let vm = this
+      let params = {
+        param: {
+          pageNum: obj.pageNum,
+          pageSize: 20,
+          domainCompanyId: obj.domainCompanyId,
+          domainGroupId: obj.domainGroupId
+        },
+        callback: function(response){
+          if (response.data.code === '1000'){
+            vm.list = response.data.data.list
+            vm.page.pageItems = response.data.data.totalNum
+          } else {
+            vm.$Message.error('查询失败')
+          }
+        }
+      }
+      return params
+    },
+    renderContent(h, { root, node, data }){
+      return h(
+        'span', {
+          style: {
+            display: 'inline-block',
+            margin: '0 0 0 25px',
+            'line-height': '14px'
+          },
+          on:{
+            click:(e)=>{
+            }
+          }
+        },
+        [
+          h('span', data.label + '(' + data.userCount + ')')
+        ]
+      )
+    },
+    convertTree (tree, map) {
+      const result = []
+      // 遍历 tree
+      tree.forEach((item) => {
+        var title = item[ map.title ]
+        const label = item[ map.label ]
+        const checked = false
+        const userCount = item[ map.userCount ]
+        let children = item[ map.children ]
+        // 如果有子节点，递归
+        if (children) {
+          children = this.convertTree(children, map)
+          title += '_domainCompanyId'
+        } else {
+          title += '_domainGroupId'
+        }
+        result.push({
+          title,
+          label,
+          expand: true,
+          checked,
+          children,
+          userCount
+        })
+      })
+      return result
+    },
+    showAccountDetail (userCode) {
+      let params = {
+        param: {
+          userCode: userCode
+        },
+        callback: (response) => {
+          if( response.data.code === '1000' ){
+            this.staffData = response.data.data
+            this.detailRolesList = this.GLOBALS.CONVERT_ROLES(response.data.data.roles, {
+              label: 'id',
+              code: 'roleCode',
+              value: 'roleName',
+              checked: 'checked'
+            })
+            this.detailUserAuthGroupsList = this.GLOBALS.CONVERT_TREE(response.data.data.domainAuths, {
+              title: 'id',
+              label: 'name',
+              checked: 'checked',
+              children: 'groups'
+            })
+            // 查找角色checked
+            this.detailRolesList.forEach((v) => {
+              if (v.checked) {
+                this.roleChecked = v.label
+              } else {
+              }
+            })
+            this.drawerDetailStaff = true
+          } else {
+            if (response.data.code === '100') {
+              this.$Message.error('用户不存在')
+            } else {
+              this.$Message.error('操作失败')
+            }
+          }
+        }
+      }
+      this.queryUserInfo(params)
+    },
+    showDelAccount (userCode) {
+      // console.log(userCode)
+      this.$Modal.confirm({
+        title: '确认',
+        content: '<p>请确认是否要删除此员工！</p>',
+        loading: true,
+        onOk: () => {
+          let vm = this
+          let params = {
+            param: {
+              userCode: userCode
+            },
+            callback: function (response) {
+              vm.$Modal.remove()
+              if( response.data.code === '1000' ){
+                vm.$Message.success('删除成功')
+                // 删除成功，重新加载用户列表数据
+                vm.searchUserData()
+              } else {
+                if (response.data.code === '200') {
+                  vm.$Message.error('用户不存在')
+                } else if (response.data.code === '300') {
+                  vm.$Message.error('用户被锁定')
+                } else {
+                  vm.$Message.error('操作失败')
+                }
+              }
+            }
+          }
+          this.deleteUserInfo(params)
+        },
+        onCancel: () => {
+        }
+      })
+    },
     ...mapActions({
-      queryUserList: types.QUERY_USER_LIST
+      queryUserList: types.QUERY_USER_LIST,
+      queryUserCompanys: types.QUERY_USER_COMPANYS,
+      deleteUserInfo: types.DELETE_USER_INFO,
+      queryUserInfo: types.QUERY_USER_INFO
     })
   },
   computed: {
@@ -287,6 +409,23 @@ export default {
           value: 'roleName',
           checked: 'checked'
         })
+      },
+      userAuthGroupsOriginal (state) {
+        var array = [{
+          title: '0',
+          label: '全部',
+          expand: true,
+          checked: false,
+          userCount: state.user.userAuthGroupsOriginal.length ? state.user.userAuthGroupsOriginal[0].userCount : 0,
+          children: []
+        }]
+        array[0].children = this.convertTree(state.user.userAuthGroupsOriginal.slice(1), {
+          title: 'id',
+          label: 'name',
+          children: 'groups',
+          userCount: 'userCount'
+        })
+        return array
       },
       userAuthGroups (state) {
         let arrGroups = [{
@@ -308,6 +447,35 @@ export default {
   },
   beforeMount () {
     this.queryUserList(this.queryParam({pageNum:1}))
+    let vm = this
+    let params = {
+      param: {},
+      callback: (response) => {
+        if (response.data.code === '1000'){
+          this.userCompanys.push({
+            title: response.data.data.id,
+            label: response.data.data.name,
+            expand: true,
+            checked: false,
+            userCount: response.data.data.userCount,
+            children:[]
+          })
+          response.data.data.companys.forEach((item, index, array) => {
+            this.userCompanys[0].children.push({
+              title: item.id,
+              label: item.name,
+              expand: true,
+              checked: false,
+              userCount: item.userCount,
+              children:[]
+            })
+          })
+        } else {
+          this.$Message.error('查询失败')
+        }
+      }
+    }
+    this.queryUserCompanys(params)
   },
   watch: {
     userAuthGroups: {

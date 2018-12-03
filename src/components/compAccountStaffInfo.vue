@@ -42,7 +42,7 @@ export default {
         let param = {
           userName: this.$refs.userName.value,
           userEmail: this.$refs.userEmail.value,
-          companyId: this.$refs.companyId.value
+          companyId: this.$refs.companyId.value.split("_")[0]
         }
         this.$emit('getBaseInfo',param)
         console.log(param)
@@ -61,7 +61,7 @@ export default {
   computed: {
     ...mapState({
       companysList (state) {
-        return this.GLOBALS.CONVERT_ROLES(state.user.companys, {
+        return this.GLOBALS.CONVERT_SELECT(state.user.companys, {
           label: 'name',
           value: 'id'
         })

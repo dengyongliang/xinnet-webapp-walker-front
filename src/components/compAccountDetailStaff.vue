@@ -2,9 +2,9 @@
 .compAccountDetailStaff
   Tabs(v-model="value",:animated="false")
     TabPane.tabPane1(label="基本资料",name="name1")
-      comp-account-staff-info-for-detail(@getBaseInfo="baseInfo")
+      comp-account-staff-info-for-detail(:getBaseInfo="userBaseInfo")
     TabPane.tabPane2(label="权限",name="name2")
-      comp-account-staff-jurisdiction-for-detail(:baseInfoData="baseInfoData",:rolesList="rolesList",:userAuthGroupsList="userAuthGroupsList",@closeDrawer="onClose")
+      comp-account-staff-jurisdiction-for-detail(:rolesList="rolesList",:userAuthGroupsList="userAuthGroupsList",@closeDrawer="onClose",:roleChecked="roleChecked")
 </template>
 
 <script>
@@ -36,21 +36,27 @@ export default {
           data: []
         }
       }
+    },
+    userBaseInfo: {
+      type: Object,
+      default: function () {
+        return {
+          data: []
+        }
+      }
+    },
+    roleChecked: {
+      type: String,
+      default: ''
     }
   },
   data () {
     return {
       value:'',
-      loadingBtn: false,
-      baseInfoData: {}
+      loadingBtn: false
     }
   },
   methods: {
-    baseInfo (obj) {
-      this.tabDisabled = false
-      this.value = 'name2'
-      this.baseInfoData = obj
-    },
     ...mapActions({
     })
   },
