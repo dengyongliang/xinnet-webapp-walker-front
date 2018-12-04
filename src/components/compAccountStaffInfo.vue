@@ -51,7 +51,6 @@ export default {
       }
     },
     ...mapActions({
-      payStatisticsHistoryBill: types.PAY_STATISTICS_HISTORY_BILL
     })
   },
   beforeMount () {

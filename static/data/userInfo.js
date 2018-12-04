@@ -35,7 +35,6 @@
       "name": "给API做个测试",
       "checked": 0
     }],
-    "userCompanys": [],
     "domainAuths": [{
       "id": 0,
       "name": "全部",

@@ -1,7 +1,7 @@
 <template lang="pug">
   div(style="display:inline-block")
     RadioGroup(v-model="value",@on-change="onChange",ref="radio",:name="name")
-      Radio(v-for="item in list",:label="item.label",:disabled="typeof(item.checked)!=='undefined'?!item.checked:isDisabled") {{item.value}}
+      Radio(v-for="item in list",:label="item.label",:disabled="typeof(item.disabled)!=='undefined'?!item.disabled:isDisabled") {{item.value}}
     Alert(type="error",show-icon, style="display:inline-block",v-show="showError") {{errorText}}
 </template>
 
@@ -50,7 +50,9 @@ export default {
     },
     onChange (v) {
       this.showError = false
-      this.onParentmethod(this.value)
+      if (this.onParentmethod && typeof this.onParentmethod === 'function') {
+        this.onParentmethod(this.value)
+      }
     }
   },
   beforeMount () {

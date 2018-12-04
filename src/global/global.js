@@ -146,11 +146,15 @@ function CONVERT_ROLES (roles, map) {
     // 读取 map 的键值映射
     const label = item[ map.label ]+'_'+item[ map.code ]
     const value = item[ map.value ]
-    const checked = item[ map.checked ] ? true : false
+    if (typeof map.disabled !== 'undefined') {
+      var disabled = item[ map.disabled ] ? true : false
+    } else {
+      var disabled = false
+    }
     result.push({
       label,
       value,
-      checked
+      disabled
     })
   })
   return result
@@ -159,7 +163,11 @@ function CONVERT_SELECT (data, map) {
   const result = []
   data.forEach((item) => {
     const label = item[ map.label ]
-    const value = item[ map.value ]+'_'+item[ map.code ]
+    if (typeof map.code!=='undefined') {
+      var value = item[ map.value ]+'_'+item[ map.code ]
+    } else {
+      var value = item[ map.value ] + ''
+    }
     result.push({
       label,
       value

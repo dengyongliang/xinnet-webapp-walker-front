@@ -9,11 +9,12 @@
     FormItem(label="座机：")
       comp-input(name='userTel',label="座机",ref="userTel",:defaultValue="getBaseInfo.tel")
     FormItem(label="电子邮件：")
-      comp-input(name='userEmail',label="电子邮件",ref="userEmail",:defaultValue="getBaseInfo.userEmail")
+      comp-input(name='userEmail',label="电子邮件",ref="userEmail",:defaultValue="getBaseInfo.userEmail",:disabled="!getBaseInfo.status")
     FormItem(label="所属企业：")
-      comp-select(name="companyId",:list="companysList",ref="companyId",styles="width:240px")
+      comp-select(name="companyId",:list="companysList",ref="companyId",styles="width:240px", :defaultValue="companySelected")
     FormItem(label="")
       Button(type="primary",@click="nextForm",:loading="loadingBtn") 保存
+    input(type="hidden", :value="getBaseInfo.userCode", ref="userCode")
 </template>
 
 <script>
@@ -36,6 +37,18 @@ export default {
           data: []
         }
       }
+    },
+    companysList: {
+      type: Array,
+      default: function () {
+        return {
+          data: []
+        }
+      }
+    },
+    companySelected: {
+      type: String,
+      default: ''
     }
   },
   data () {
@@ -47,24 +60,43 @@ export default {
     nextForm () {
       this.loadingBtn = true
       let result = validateFormResult([
-        this.$refs.userName,
+        this.$refs.userMobile,
+        this.$refs.userTel,
         this.$refs.userEmail,
         this.$refs.companyId
       ])
       if (result) {
-        let param = {
-          userName: this.$refs.userName.value,
-          userEmail: this.$refs.userEmail.value,
-          companyId: this.$refs.companyId.value
+        let params = {
+          param: {
+            userMobile: this.$refs.userMobile.value,
+            userCode: this.$refs.userCode.value,
+            userTel: this.$refs.userTel.value,
+            userEmail: this.$refs.userEmail.value,
+            companyId: this.$refs.companyId.value
+          },
+          callback: (response) => {
+            this.loadingBtn = false
+            if( response.data.code === '1000' ){
+              this.$Message.success('修改成功!')
+            } else {
+              if (response.data.code === '200') {
+                this.$Message.error('用户不存在')
+              } else if (response.data.code === '300') {
+                this.$Message.error('用户被锁定')
+              } else {
+                this.$Message.error('修改失败')
+              }
+            }
+          }
         }
-        this.$emit('getBaseInfo',param)
-        console.log(param)
+        console.log(params.param)
+        this.updateUser(params)
       } else {
         this.loadingBtn = false
       }
     },
     ...mapActions({
-      payStatisticsHistoryBill: types.PAY_STATISTICS_HISTORY_BILL
+      updateUser: types.UPDATE_USER
     })
   },
   beforeMount () {
@@ -72,14 +104,6 @@ export default {
   mounted () {
   },
   computed: {
-    ...mapState({
-      companysList (state) {
-        return this.GLOBALS.CONVERT_SELECT(state.user.companys, {
-          label: 'name',
-          value: 'id'
-        })
-      }
-    })
   }
 }
 </script>

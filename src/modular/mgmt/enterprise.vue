@@ -13,21 +13,35 @@
 
   <!-- 翻页区 -->
   Page(:total="page.pageItems",:current="page.pageNo",show-elevator,show-total,prev-text="上一页",next-text="下一页",@on-change="pageChange",:page-size=20)
+
+  <!-- 创建企业 抽屉 -->
+  Drawer(:closable="true", width="640", v-model="drawerCompanyCreate", title="创建企业", :mask-closable="maskClosable", @on-visible-change="drawerChange")
+    comp-company-create(
+      v-if="refresh",
+      :on-close="closeDrawer",
+      :orgFile = "orgFile"
+    )
 </template>
 
 <script>
 import { mapState, mapActions } from 'vuex'
 import * as types from '@/store/types'
 import compListStyle1 from '@/components/compListStyle1'
+import compCompanyCreate from '@/components/compCompanyCreate'
+
 export default {
   components: {
-    compListStyle1
+    compListStyle1,
+    compCompanyCreate
   },
   data () {
     return {
       value: '',
+      refresh: true,
       loadingBtn: false,
+      drawerCompanyCreate: true,
       list: [],
+      orgFile:'http://183.84.10.181/walker/customer/e59202b3-2dcb-4f14-bab9-db914400eaac.jpg',
       page: {
         pageNo: 1,
         pagePages: 1,
@@ -36,14 +50,22 @@ export default {
     }
   },
   methods: {
-    searchUserData () {
+    searchListData () {
 
     },
     pageChange: function (curPage) {
 
     },
+    closeDrawer () {
+      this.drawerCompanyCreate = false
+    },
     drawerChange () {
-
+      if (this.drawerCompanyCreate) {
+        this.refresh = true
+      } else {
+        this.refresh = false
+        this.searchListData()
+      }
     },
     queryParam (obj) {
       this.page.pageNo = obj.pageNum
@@ -72,6 +94,14 @@ export default {
     })
   },
   computed: {
+    ...mapState({
+      myUserInfo (state) {
+        return state.user.myUserInfo
+      },
+      maskClosable (state) {
+        return state.maskClosable
+      }
+    })
   },
   beforeMount () {
     this.queryCompanyList(this.queryParam({pageNum:1}))

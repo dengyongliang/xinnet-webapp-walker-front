@@ -45,6 +45,7 @@ export const ROLE_DELETE = 'roleDelete'
 
 // 企业管理
 export const QUERY_COMPANY_LIST = 'queryCompanyList'
+export const CREATE_COMPANY = 'createCompany'
 
 // 账号管理
 export const QUERY_USER_LIST = 'queryUserList'
@@ -55,6 +56,8 @@ export const UPDATE_USER_PASSWORD = 'updateUserPassword'
 export const ADD_USER = 'addUser'
 export const DELETE_USER_INFO = 'deleteUserInfo'
 export const QUERY_USER_INFO = 'queryUserInfo'
+export const UPDATE_USER_AUTH = 'updateUserAuth'
+export const UPDATE_USER = 'updateUser'
 
 // 订单管理
 export const QUERY_ORDER_LIST = 'queryOrderList'

@@ -84,3 +84,9 @@ export const QUERY_WORK_ORDER_DETAIL = api + '/client-api/client/workOrder/workO
 export const DELETE_USER_INFO = api + '/client-api/client/user/deleteUserInfo'
 // 账号详情
 export const QUERY_USER_INFO = api + '/client-api/client/user/userInfo'
+// 修改角色权限
+export const UPDATE_USER_AUTH = api + '/client-api/client/user/updateUserAuth'
+// 修改员工信息
+export const UPDATE_USER = api + '/client-api/client/user/updateUser'
+// 创建企业
+export const CREATE_COMPANY = api + '/client-api/client/company/companyCreate'

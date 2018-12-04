@@ -10,6 +10,9 @@ export default {
   actions: {
     [types.QUERY_COMPANY_LIST] ({ commit, rootState }, params) {
       rest.get(links.QUERY_COMPANY_LIST, JSON.stringify(params.param), params.callback)
+    },
+    [types.CREATE_COMPANY] ({ commit, rootState }, params) {
+      rest.get(links.CREATE_COMPANY, JSON.stringify(params.param), params.callback)
     }
   }
 }

@@ -2,9 +2,9 @@
 .compAccountDetailStaff
   Tabs(v-model="value",:animated="false")
     TabPane.tabPane1(label="基本资料",name="name1")
-      comp-account-staff-info-for-detail(:getBaseInfo="userBaseInfo")
+      comp-account-staff-info-for-detail(:getBaseInfo="userBaseInfo",:companysList="userCompanysList",:companySelected="companySelected")
     TabPane.tabPane2(label="权限",name="name2")
-      comp-account-staff-jurisdiction-for-detail(:rolesList="rolesList",:userAuthGroupsList="userAuthGroupsList",@closeDrawer="onClose",:roleChecked="roleChecked")
+      comp-account-staff-jurisdiction-for-detail(:baseInfoData="userBaseInfo",:rolesList="rolesList",:userAuthGroupsList="userAuthGroupsList",@closeDrawer="onClose",:roleChecked="roleChecked",)
 </template>
 
 <script>
@@ -37,6 +37,14 @@ export default {
         }
       }
     },
+    userCompanysList: {
+      type: Array,
+      default: function () {
+        return {
+          data: []
+        }
+      }
+    },
     userBaseInfo: {
       type: Object,
       default: function () {
@@ -46,6 +54,10 @@ export default {
       }
     },
     roleChecked: {
+      type: String,
+      default: ''
+    },
+    companySelected: {
       type: String,
       default: ''
     }

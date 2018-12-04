@@ -83,3 +83,9 @@ export const QUERY_WORK_ORDER_DETAIL = 'http://localhost:5500/static/data/workOr
 export const DELETE_USER_INFO = 'http://localhost:5500/static/data/workOrderDetail.js'
 // 账号详情
 export const QUERY_USER_INFO = 'http://localhost:5500/static/data/userInfo.js'
+// 修改角色权限
+export const UPDATE_USER_AUTH = 'http://localhost:5500/static/data/userInfo.js'
+// 修改员工信息
+export const UPDATE_USER = 'http://localhost:5500/static/data/userInfo.js'
+// 创建企业
+export const CREATE_COMPANY = 'http://localhost:5500/static/data/userInfo.js'

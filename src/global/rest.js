@@ -81,7 +81,7 @@ export default {
       }).then(res => {
         // resolve(res)
         NProgress.done()
-        if (callback && typeof callback === 'function') {
+        if (res && callback && typeof callback === 'function') {
           callback(res)
         }
       })
@@ -101,7 +101,7 @@ export default {
       }).then(res => {
         // resolve(res)
         NProgress.done()
-        if (callback && typeof callback === 'function') {
+        if (res && callback && typeof callback === 'function') {
           callback(res)
         }
       })

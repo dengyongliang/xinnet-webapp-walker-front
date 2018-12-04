@@ -35,16 +35,18 @@
   <!-- 员工详情 抽屉 -->
   Drawer(:closable="true", width="640", v-model="drawerDetailStaff", title="添加员工", :mask-closable="maskClosable", @on-visible-change="drawerChange", class-name="drawerDetailStaff")
     div(slot="header")
-      strong 李雷
-        span （dfdfd）
-      p 管理员-河北有限公司
+      strong {{staffData.userName}}
+        span （{{staffData.userCode}}）
+      p {{staffData.userTitle}}
     comp-account-detail-staff(
       v-if="refresh",
       :on-close="closeDrawer",
       :rolesList="detailRolesList",
       :userAuthGroupsList="detailUserAuthGroupsList",
+      :userCompanysList = "detailUserCompanysList",
       :userBaseInfo="staffData",
-      :roleChecked = "roleChecked"
+      :roleChecked = "roleChecked",
+      :companySelected = "companySelected"
     )
 </template>
 
@@ -72,8 +74,10 @@ export default {
       userAuthGroupsList: [],
       detailRolesList: [],
       detailUserAuthGroupsList: [],
+      detailUserCompanysList: [],
       userCompanys: [],
       roleChecked: '',
+      companySelected: '',
       staffData: {},
       columns: [
         {
@@ -186,8 +190,12 @@ export default {
       this.drawerAddStaff = false
     },
     drawerChange () {
-      this.searchUserData()
-      this.refresh = (this.drawerAddStaff || this.drawerDetailStaff) ? true : false
+      if (this.drawerAddStaff || this.drawerDetailStaff) {
+        this.refresh = true
+      } else {
+        this.refresh = false
+        this.searchUserData()
+      }
     },
     companyChange () {
       let companyId = this.getCheckedNodes(this.$refs.Tree).slice(1).join(",")
@@ -325,7 +333,7 @@ export default {
               label: 'id',
               code: 'roleCode',
               value: 'roleName',
-              checked: 'checked'
+              disabled: 'disabled'
             })
             this.detailUserAuthGroupsList = this.GLOBALS.CONVERT_TREE(response.data.data.domainAuths, {
               title: 'id',
@@ -333,13 +341,19 @@ export default {
               checked: 'checked',
               children: 'groups'
             })
-            // 查找角色checked
-            this.detailRolesList.forEach((v) => {
+            this.detailUserCompanysList = this.GLOBALS.CONVERT_SELECT(response.data.data.userCompanys, {
+              label: 'name',
+              value: 'id'
+            })
+            // 查找公司selected
+            response.data.data.userCompanys.forEach((v) => {
               if (v.checked) {
-                this.roleChecked = v.label
+                this.companySelected = v.id + ''
               } else {
               }
             })
+            // 查找角色checked
+            this.roleChecked = response.data.data.defaultRoleId
             this.drawerDetailStaff = true
           } else {
             if (response.data.code === '100') {
@@ -407,7 +421,7 @@ export default {
           label: 'id',
           code: 'roleCode',
           value: 'roleName',
-          checked: 'checked'
+          disabled: 'disabled'
         })
       },
       userAuthGroupsOriginal (state) {

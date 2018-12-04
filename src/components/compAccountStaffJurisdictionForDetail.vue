@@ -2,11 +2,12 @@
 Form.compStaffJurisdiction(:label-width="0")
   .t 选择员工角色：
   FormItem()
-    comp-radio(name="roleId",:list="rolesList",ref="roleId",:on-parentmethod="isSuper",:defaultValue="roleChecked")
+    comp-radio(name="roleId",:list="rolesList",ref="roleId",:defaultValue="roleChecked")
   .t 请勾选此员工可管理的域名：
   FormItem()
     .scrollList
       Tree(:data="userAuthGroupsList", show-checkbox, ref="Tree",:render="renderContent")
+  input(type="hidden", :value="baseInfoData.userCode", ref="userCode")
   Button(type="primary",@click="saveForm",:loading="loadingBtn") 保存
 </template>
 
@@ -56,15 +57,6 @@ export default {
     }
   },
   methods: {
-    isSuper (value) {
-      let data = {}
-      if (value.indexOf("super")<0) {
-        data.data = this.GLOBALS.CONVERT_TREE_CHECKED_FALSE(this.userAuthGroups, 'groups')
-      } else {
-        data.data = this.GLOBALS.CONVERT_TREE_CHECKED_TRUE(this.userAuthGroups, 'groups')
-      }
-      this.$store.commit(types.SET_USER_AUTH_GROUPS, data)
-    },
     renderContent(h, { root, node, data }){
       return h(
         'span', {
@@ -100,13 +92,14 @@ export default {
       if (result) {
         let params = {
           param: {
+            userCode: this.$refs.userCode.value,
             roleId: this.$refs.roleId.value.split("_")[0],
             groups: this.getCheckedNodes().slice(1).join(",")
           },
           callback: function (response) {
             vm.loadingBtn = false
             if( response.data.code === '1000' ){
-              vm.$Message.success('账号创建成功!')
+              vm.$Message.success('修改成功!')
               vm.$emit("closeDrawer")
             } else {
               if (response.data.code === '100') {
@@ -118,20 +111,19 @@ export default {
               } else if (response.data.code === '400') {
                 vm.$Message.error('超级管理员只允许存在一个')
               } else {
-                vm.$Message.error('发送失败')
+                vm.$Message.error('修改失败')
               }
             }
           }
         }
-        Object.assign(params.param, this.baseInfoData)
         console.log(params.param)
-        this.addUser(params)
+        this.updateUserAuth(params)
       } else {
         this.loadingBtn = false
       }
     },
     ...mapActions({
-      addUser: types.ADD_USER
+      updateUserAuth: types.UPDATE_USER_AUTH
     })
   },
   beforeMount () {
@@ -139,11 +131,6 @@ export default {
   mounted () {
   },
   computed: {
-    ...mapState({
-      userAuthGroups (state) {
-        return state.user.userAuthGroups
-      }
-    })
   }
 }
 </script>
