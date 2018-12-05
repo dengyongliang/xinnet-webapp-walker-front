@@ -6,7 +6,7 @@
       span 搜索
       Input(style="width:200px",placeholder="企业名称",name="",ref="",v-model.trim="value")
       Button(type="primary", @click="",:loading="loadingBtn") 查询
-      Button(@click="") + 添加企业
+      Button(@click="drawerCompanyCreate=true") + 添加企业
   .secMain
     <!-- 列表主体 -->
     comp-list-style1(:list="list")
@@ -37,9 +37,9 @@ export default {
   data () {
     return {
       value: '',
-      refresh: true,
+      refresh: false,
       loadingBtn: false,
-      drawerCompanyCreate: true,
+      drawerCompanyCreate: false,
       list: [],
       orgFile:'http://183.84.10.181/walker/customer/e59202b3-2dcb-4f14-bab9-db914400eaac.jpg',
       page: {
@@ -51,7 +51,7 @@ export default {
   },
   methods: {
     searchListData () {
-
+      this.queryCompanyList(this.queryParam({pageNum:1}))
     },
     pageChange: function (curPage) {
 

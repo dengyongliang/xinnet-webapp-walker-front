@@ -59,11 +59,20 @@ export default {
     type: {
       type: String,
       default: 'upload'
+    },
+    uploadAction: {
+      type: String,
+      default: ''
+    },
+    onSuccesscallback: {
+      type: Function
+    },
+    onBeforecallback: {
+      type: Function
     }
   },
   data () {
     return {
-      uploadAction: '',
       uploadList: [],
       defaultList: [],
       visible: false,
@@ -83,23 +92,28 @@ export default {
       this.$refs.upload.fileList.splice(fileList.indexOf(file), 1)
     },
     handleSuccess (res, file, fileList) {
+      console.log('res')
       console.log(res)
+      console.log('file')
       console.log(file)
       console.log(fileList)
       file.url = res.url
       file.name = res.name
       file.file = res.file
+      if (this.onSuccesscallback && typeof this.onSuccesscallback === 'function') {
+        this.onSuccesscallback(res)
+      }
     },
     handleFormatError (file) {
       this.$Notice.warning({
         title: '文件格式错误',
-        desc: '文件 ' + file.name + ' 格式错误, 请上传jpg、gif、png格式，2M 以内。'
+        desc: '文件 ' + file.name + ' 格式错误, 请上传jpg、gif、png格式，'+this.size+'KB 以内。'
       })
     },
     handleMaxSize (file) {
       this.$Notice.warning({
         title: '文件过大',
-        desc: '文件  ' + file.name + ' 体积大于 2M。'
+        desc: '文件  ' + file.name + ' 体积大于 '+this.size+'KB。'
       })
     },
     handleBeforeUpload (file) {
@@ -111,6 +125,10 @@ export default {
         this.$Notice.warning({
           title: 'Up to five pictures can be uploaded.'
         })
+      } else {
+        if (this.onBeforecallback && typeof this.onBeforecallback === 'function') {
+          this.onBeforecallback(file)
+        }
       }
       return check
     },

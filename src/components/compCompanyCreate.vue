@@ -29,7 +29,7 @@ export default {
   },
   data () {
     return {
-      value: 'name2',
+      value: '',
       loadingBtn: false,
       tabDisabled: true,
       baseInfoData: {}
@@ -53,69 +53,5 @@ export default {
 }
 </script>
 <style scoped>
-.compCompanyCreate{
-  padding:0 30px;
-}
-.compCompanyCreate .ivu-form-item.title .ivu-form-item-label{
-  text-align: left;
-  color: #aaa;
-  font-size: 14px;
-}
-.compCompanyCreate .ivu-upload,
-.compCompanyCreate .demo-upload-list{
-  width: 90px!important;
-  height: 90px!important;
-  border-radius: 100%!important;
-  box-shadow: 0px 0px 5px rgba(0,0,0,0.1)!important;
-  border:none!important;
-}
-.compCompanyCreate .ivu-upload-select{
-  cursor: pointer;
-  
-  background-size: 100% 100%;
-}
-.compCompanyCreate .ivu-upload-select div{
-  display: none;
-}
-.compCompanyCreate .modify .ivu-upload{
-  position: absolute;
-  left: 0px;
-  top: 0px;
-}
-.compCompanyCreate .modify .ivu-upload .ivu-upload-select{
-  background: none;
-}
-.compCompanyCreate .modify .ivu-upload .ivu-upload-select div{
-  width: 100%!important;
-  height: 100%!important;
-  text-align:center;
-  line-height: 90px!important;
-  border-radius: 100%;
-}
-.compCompanyCreate .modify .ivu-upload .ivu-upload-select:hover div{
-  display: block;
-  background: rgba(0,0,0,0.2);
-}
-.compCompanyCreate .modify .ivu-upload .ivu-upload-select:hover div span{
-  color:#fff;
-}
-.compCompanyCreate .compCompanyCreateGroup .ivu-alert{
-  padding: 10px 10px 10px 32px;
-}
-.compCompanyCreate .compCompanyCreateGroup .ivu-alert .ivu-alert-icon{
-  margin-top:-35px;
-  left: 10px;
-}
-.compCompanyCreate .compCompanyCreateGroup .ivu-alert .ivu-alert-icon i{
-  color: #ffad02;
-}
-.compCompanyCreate .compCompanyCreateGroup .ivu-alert .ivu-alert-message{
-  float: left;
-  font-size: 12px;
-  font-weight: 600;
-  color: #666;
-}
-.compCompanyCreate .compCompanyCreateGroup .ivu-alert .ivu-alert-desc{
-  overflow: hidden;
-}
+
 </style>

@@ -21,6 +21,9 @@
 .compCompanyCreate{
   padding:0 30px;
 }
+.compCompanyCreate .ivu-tabs-content{
+	padding-bottom: 200px;
+}
 .compCompanyCreate .ivu-form-item.title .ivu-form-item-label{
   text-align: left;
   color: #aaa;
@@ -95,7 +98,7 @@
 	padding-left: 5px;
 	font-size: 12px;
 }
-.compCompanyCreate .compCompanyCreateGroup li{
+.compCompanyCreate .compCompanyCreateGroup li.gItem{
 	padding: 8px 0;
 	min-height: 32px;
 }
@@ -119,6 +122,10 @@
 .compCompanyCreate .compCompanyCreateGroup li .groupName{
 	display: inline-block;
 	width: 180px;
+}
+.compCompanyCreate .compCompanyCreateGroup li span.name{
+	display: inline-block;
+	max-width: 140px;
 }
 .compCompanyCreate .compCompanyCreateGroup li .num{
 	display: inline-block;

@@ -89,3 +89,11 @@ export const UPDATE_USER_AUTH = 'http://localhost:5500/static/data/userInfo.js'
 export const UPDATE_USER = 'http://localhost:5500/static/data/userInfo.js'
 // 创建企业
 export const CREATE_COMPANY = 'http://localhost:5500/static/data/userInfo.js'
+// 企业详情
+export const QUERY_COMPANY_INFO = 'http://localhost:5500/static/data/companyInfo.js'
+// 创建分组
+export const CREATE_GROUP = 'http://localhost:5500/static/data/companyInfo.js'
+// 修改分组
+export const UPDATE_GROUP = 'http://localhost:5500/static/data/companyInfo.js'
+// 删除分组
+export const DELETE_GROUP = 'http://localhost:5500/static/data/companyInfo.js'

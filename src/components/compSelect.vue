@@ -1,7 +1,7 @@
 <template lang="pug">
   div.compSelect(style="display:inline-block")
     slot(name="left")
-    Select(v-model="value",:style="styles",:name="name",@on-change="selectChange",:placeholder="placeholder",:class="{ 'error': showError }")
+    Select(v-model="value",:filterable="filterable",:style="styles",:name="name",@on-change="selectChange",:placeholder="placeholder",:class="{ 'error': showError }", :label-in-value="labelInValue")
       Option(v-for="item in list",:value="item.value") {{ item.label }}
     slot(name="right")
     Alert(type="error",show-icon, style="display:inline-block",v-show="showError") {{errorText}}
@@ -26,6 +26,10 @@ export default {
       type: Boolean,
       default: true
     },
+    labelInValue: {
+      type: Boolean,
+      default: false
+    },
     list: {
       type: Array,
       default: []
@@ -45,6 +49,10 @@ export default {
     defaultValue: {
       type: String,
       default: ''
+    },
+    filterable: {
+      type: Boolean,
+      default: false
     }
   },
   data () {

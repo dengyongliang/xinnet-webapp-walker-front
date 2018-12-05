@@ -90,3 +90,13 @@ export const UPDATE_USER_AUTH = api + '/client-api/client/user/updateUserAuth'
 export const UPDATE_USER = api + '/client-api/client/user/updateUser'
 // 创建企业
 export const CREATE_COMPANY = api + '/client-api/client/company/companyCreate'
+// 企业详情
+export const QUERY_COMPANY_INFO = api + '/client-api/client/company/companyInfo'
+// 上传LOGO
+export const UPLOAD_COMPANY_LOGO = api + '/client-api/client/company/uploadlogo'
+// 创建分组
+export const CREATE_GROUP = api + '/client-api/client/company/groupCreate'
+// 修改分组
+export const UPDATE_GROUP = api + '/client-api/client/company/groupUpdate'
+// 删除分组
+export const DELETE_GROUP = api + '/client-api/client/company/groupDelete'

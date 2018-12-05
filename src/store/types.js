@@ -46,6 +46,11 @@ export const ROLE_DELETE = 'roleDelete'
 // 企业管理
 export const QUERY_COMPANY_LIST = 'queryCompanyList'
 export const CREATE_COMPANY = 'createCompany'
+export const QUERY_COMPANY_INFO = 'queryCompanyInfo'
+export const CREATE_GROUP = 'createGroup'
+export const UPDATE_GROUP = 'updateGroup'
+export const DELETE_GROUP = 'deleteGroup'
+
 
 // 账号管理
 export const QUERY_USER_LIST = 'queryUserList'

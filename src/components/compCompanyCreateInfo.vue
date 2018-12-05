@@ -2,7 +2,7 @@
   Form.compCompanyCreateInfo(:label-width="90")
     FormItem.title(label="企业信息")
     FormItem(label="企业LOGO：")
-      comp-img-upload(:modify="false",status="creat",ref="logoFile",name="file",:file="orgFile",errorText="请上传企业LOGO！",tips="支持jpg、gif、png格式，1M以内，建议尺寸50*50。",)
+      comp-img-upload(:status="status",ref="logoFile",name="upfile",:file="orgFile",errorText="请上传企业LOGO！",tips="支持jpg、gif、png格式，1M以内，建议尺寸50*50。",:uploadAction="uploadAction", :on-beforecallback="changeUploadStatus", :showCover="showCover", :modify="modify")
     FormItem(label="企业全称：",required)
       comp-input(name='name',label="企业全称",ref="name",:maxLength="64",styles="width:300px")
     Divider(dashed)
@@ -25,6 +25,7 @@ import * as types from '@/store/types'
 import compInput from '@/components/compInput'
 import compImgUpload from '@/components/compImgUpload'
 import validateFormResult from '@/global/validateForm'
+import * as links from '../global/linkdo.js'
 export default {
   name: 'compCompanyCreateInfo',
   components: {
@@ -39,11 +40,21 @@ export default {
   },
   data () {
     return {
-      loadingBtn: false
+      loadingBtn: false,
+      status: 'creat',
+      showCover: false,
+      modify: false,
+      uploadAction: links.UPLOAD_COMPANY_LOGO
     }
   },
   methods: {
+    changeUploadStatus () {
+      this.status = 'view'
+      this.modify = true
+    },
     nextForm () {
+      console.log('logoFile')
+      console.log(this.$refs.logoFile.$refs.upload.fileList[0])
       this.loadingBtn = true
       let result = validateFormResult([
         this.$refs.name,
@@ -54,6 +65,7 @@ export default {
       if (result) {
         let params = {
           param: {
+            logoFile: this.$refs.logoFile.$refs.upload.fileList.length ? this.$refs.logoFile.$refs.upload.fileList[0].file : '',
             name: this.$refs.name.value,
             contactor: this.$refs.contactor.value,
             mobile: this.$refs.userMobile.value,
@@ -65,6 +77,7 @@ export default {
             if (response.data.code === '1000'){
               this.loadingBtn = false
               this.$Message.success('保存成功')
+              params.param.companyId = response.data.id
               this.$emit('getBaseInfo',params.param)
             } else {
               this.$Message.error('保存失败')
