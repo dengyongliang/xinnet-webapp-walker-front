@@ -13,20 +13,20 @@
           input(:ref="'groupId'+index", :value="item.id", type="hidden")
           comp-input(name='name',label="请输入组名",:ref="'name'+index",:maxLength="30",styles="width:208px")
           Button(@click="handleMgmt", v-show="showMgmtBtn") + 添加负责人
-            Tooltip(placement="top-start")
+            Tooltip(placement="top-end")
               span(slot="content", style="color:#fff") 重点保护域名设置解析<br />及修改DNS需分组负责人授权。<br />重要域名监控消息将通知分组负责人。
               Icon(custom="i-icon i-icon-tips", size="16")
-          compSelect(styles="width:150px;",:filterable="true",:list="usersList", v-show="showMgmtSelect", :ref="'select'+index")
+          compSelect(styles="width:150px;",:filterable="true",:list="usersList", v-show="showMgmtSelect", :ref="'select'+index", :labelInValue="true")
           a.btnSave(href="javascript:;",  @click="handleSave(index, 'create')",) 保存
           a.btnDel(href="javascript:;", :ref="index", @click="handleRemove(index, 'create')", v-show="showDelBtn2") 删除
         div(v-if="item.status==='modify'")
           input(:ref="'groupId'+index", :value="item.id", type="hidden")
           comp-input(name='name',label="请输入组名",:ref="'name'+index",:maxLength="30",styles="width:208px",:defaultValue="item.name")
           Button(@click="handleMgmt", v-show="showMgmtBtn") + 添加负责人
-            Tooltip(placement="top-start")
+            Tooltip(placement="top-end")
               span(slot="content", style="color:#fff") 重点保护域名设置解析<br />及修改DNS需分组负责人授权。<br />重要域名监控消息将通知分组负责人。
               Icon(custom="i-icon i-icon-tips", size="16")
-          compSelect(styles="width:150px;",:filterable="true",:list="usersList", v-show="showMgmtSelect", :ref="'select'+index", :defaultValue="item.manageId+'_'+item.manage_code", :labelInValue="true")
+          compSelect(styles="width:150px;",:filterable="true",:list="usersList", v-show="showMgmtSelect", :ref="'select'+index", :defaultValue="item.manageId", :defaultLabel="item.manage_name",:defaultCode="item.manage_code",:labelInValue="true")
           a.btnSave(href="javascript:;",  @click="handleSave(index, 'modify')",) 保存
           a.btnCancle(href="javascript:;", @click="handleCancle(index)") 取消
           a.btnDel(href="javascript:;", :ref="index", @click="handleRemove(index, 'modify')", v-show="showDelBtn2") 删除
@@ -36,7 +36,7 @@
             span.name {{item.name}}
             em.num {{item.domainCount}}个
           div.manager 负责人：{{item.manage_name}}（{{item.manage_code}}）
-            Tooltip(placement="top-start")
+            Tooltip(placement="top-end")
               span(slot="content", style="color:#fff") 重点保护域名设置解析<br />及修改DNS需分组负责人授权。<br />重要域名监控消息将通知分组负责人。
               Icon(custom="i-icon i-icon-tips", size="16")
           a.btnModify(href="javascript:;", @click="handleModify(index)", v-show="showModifyBtn") 修改
@@ -82,17 +82,7 @@ export default {
       formDynamic: {
         items: [
         ]
-      },
-      list: [
-        {
-          label: 'name1',
-          value: 'safsdfd'
-        },
-        {
-          label: '我们的爱',
-          value: 'fdfdfd'
-        }
-      ]
+      }
     }
   },
   methods: {
@@ -105,13 +95,12 @@ export default {
       this.$set(this.formDynamic.items[index], 'status', 'view')
     },
     handleSave (index, type) {
-      console.log(this.$refs['select'+index][0].value)
       this.loadingBtn = true
       this.status = 'view'
       var resulte = true
       var text = type==='create' ? '创建' : '修改'
       let name = this.$refs['name'+index][0].$refs.input.value
-      let manageId = this.$refs['select'+index][0].value.split("_")[0]
+      let manageId = this.$refs['select'+index][0].value
       if (name === '') {
         this.$Message.error('请填写分组名称！')
         resulte = false
@@ -122,7 +111,7 @@ export default {
       if (resulte) {
         let params = {
           param: {
-            manageId: this.$refs['select'+index][0].value.split("_")[0],
+            manageId: this.$refs['select'+index][0].value,
             name: this.$refs['name'+index][0].$refs.input.value
           },
           callback: (response) => {
@@ -130,11 +119,12 @@ export default {
             if( response.data.code === '1000' ){
               this.$Message.success('分组'+text+'成功')
               this.$set(this.formDynamic.items, index, {
-                id: this.$refs['groupId'+index][0].value,
+                id: type==='create' ? response.data.id : this.$refs['groupId'+index][0].value,
                 name: this.$refs['name'+index][0].$refs.input.value,
                 domainCount: 0,
-                manage_name: this.$refs['select'+index][0].value.split("_")[2],
-                manage_code: this.$refs['select'+index][0].value.split("_")[1],
+                manageId: this.$refs['select'+index][0].value,
+                manage_name: this.$refs['select'+index][0].param.label,
+                manage_code: this.$refs['select'+index][0].param.code,
                 status: 'view'
               })
             } else {
@@ -158,6 +148,7 @@ export default {
           params.param.groupId = this.$refs['groupId'+index][0].value
           this.updateGroup(params)
         }
+        console.log('----------------------')
         console.log(params.param)
       } else {
         this.loadingBtn = false

@@ -42,7 +42,7 @@ export default {
         let param = {
           userName: this.$refs.userName.value,
           userEmail: this.$refs.userEmail.value,
-          companyId: this.$refs.companyId.value.split("_")[0]
+          companyId: this.$refs.companyId.value
         }
         this.$emit('getBaseInfo',param)
         console.log(param)

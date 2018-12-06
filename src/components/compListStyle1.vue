@@ -28,19 +28,13 @@ ul.listStyle1
           .row1.clear
             span.left 域名总数：{{item.domainCount}} 个
             a.right 域名详情
-          .row2.clear
-            span.left <i></i>云主机部：
-            span.right 12人
-          .row3.clear
-            span.left <i></i>云主机部
-            span.right 12人
-          .row4.clear
-            span.left <i></i>云主机部
-            span.right 12人
-          .row5.clear
-            span.left <i></i>邮局部
-            span.right 12人
-          .row6.clear
+          .row2.clear(v-if="!item.groups.length")
+            span.left 暂无分组
+          .row2.clear(v-else, v-for="group in item.groups")
+            span.left <i></i>{{group.name}}：
+            span.right {{group.domainCount}}人
+
+          .row6.clear(v-if="item.groups.length>4")
             span.left <i></i>...
             a.right 全部分组
 </template>

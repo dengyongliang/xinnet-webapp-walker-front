@@ -11,9 +11,6 @@
     <!-- 列表主体 -->
     comp-list-style1(:list="list")
 
-  <!-- 翻页区 -->
-  Page(:total="page.pageItems",:current="page.pageNo",show-elevator,show-total,prev-text="上一页",next-text="下一页",@on-change="pageChange",:page-size=20)
-
   <!-- 创建企业 抽屉 -->
   Drawer(:closable="true", width="640", v-model="drawerCompanyCreate", title="创建企业", :mask-closable="maskClosable", @on-visible-change="drawerChange")
     comp-company-create(
@@ -42,19 +39,11 @@ export default {
       drawerCompanyCreate: false,
       list: [],
       orgFile:'http://183.84.10.181/walker/customer/e59202b3-2dcb-4f14-bab9-db914400eaac.jpg',
-      page: {
-        pageNo: 1,
-        pagePages: 1,
-        pageItems: 1
-      }
     }
   },
   methods: {
     searchListData () {
-      this.queryCompanyList(this.queryParam({pageNum:1}))
-    },
-    pageChange: function (curPage) {
-
+      this.queryCompanyList(this.queryParam())
     },
     closeDrawer () {
       this.drawerCompanyCreate = false
@@ -67,19 +56,15 @@ export default {
         this.searchListData()
       }
     },
-    queryParam (obj) {
-      this.page.pageNo = obj.pageNum
+    queryParam () {
       let vm = this
       let params = {
         param: {
-          pageNum: obj.pageNum,
-          pageSize: 20,
           companyName: this.value
         },
         callback: function(response){
           if (response.data.code === '1000'){
             vm.list = response.data.data
-            vm.page.pageItems = response.data.data.totalNum
           } else {
             if (response.data.code === '900') {
               vm.$Message.error('查询失败')
@@ -104,7 +89,7 @@ export default {
     })
   },
   beforeMount () {
-    this.queryCompanyList(this.queryParam({pageNum:1}))
+    this.queryCompanyList(this.queryParam())
   },
   watch: {
   }
@@ -114,9 +99,5 @@ export default {
 <style scoped>
 .contEnterprise .secMain{
   background:none;
-}
-.contEnterprise .ivu-page{
-  text-align:center;
-  margin:0 20px 20px 20px;
 }
 </style>

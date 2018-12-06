@@ -163,13 +163,15 @@ function CONVERT_SELECT (data, map) {
   const result = []
   data.forEach((item) => {
     const label = item[ map.label ]
-    var value = item[ map.value ] + ''
-    if (typeof map.code!=='undefined') {
-      value = item[ map.value ]+'_'+item[ map.code ]
-    }
+    const code = item[map.code]
+    const value = item[ map.value ] + ''
+    // if (typeof map.code!=='undefined') {
+    //   value = item[ map.value ]+'_'+item[ map.code ]
+    // }
     result.push({
       label,
-      value
+      value,
+      code
     })
   })
   return result
