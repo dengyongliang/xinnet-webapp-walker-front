@@ -29,7 +29,7 @@
             Tooltip(placement="top-end")
               span(slot="content", style="color:#fff") 重点保护域名设置解析<br />及修改DNS需分组负责人授权。<br />重要域名监控消息将通知分组负责人。
               Icon(custom="i-icon i-icon-tips", size="16")
-          compSelect(styles="width:150px;",:filterable="true",:list="usersList", v-show="showMgmtSelect", :ref="'select'+index", :defaultValue="item.manageId", :defaultLabel="item.manage_name",:defaultCode="item.manage_code",:labelInValue="true")
+          compSelect(styles="width:150px;",:filterable="true",:list="usersList", v-show="showMgmtSelect", :ref="'select'+index", :defaultValue="item.manageId.toString()", :defaultLabel="item.manageName",:defaultCode="item.manageCode",:labelInValue="true")
           a.btnSave(href="javascript:;",  @click="handleSave(index, 'modify')",) 保存
           a.btnCancle(href="javascript:;", @click="handleCancle(index)") 取消
           a.btnDel(href="javascript:;", :ref="index", @click="handleRemove(index, 'modify')", v-show="showDelBtn2") 删除
@@ -38,7 +38,7 @@
           div.groupName
             span.name {{item.name}}
             em.num {{item.domainCount}}个
-          div.manager 负责人：{{item.manage_name}}（{{item.manage_code}}）
+          div.manager 负责人：{{item.manageName}}（{{item.manageCode}}）
             Tooltip(placement="top-end")
               span(slot="content", style="color:#fff") 重点保护域名设置解析<br />及修改DNS需分组负责人授权。<br />重要域名监控消息将通知分组负责人。
               Icon(custom="i-icon i-icon-tips", size="16")
@@ -63,6 +63,14 @@ export default {
   props: {
     baseInfoData: {
       type: Object,
+      default: function () {
+        return {
+          data: []
+        }
+      }
+    },
+    groupData: {
+      type: Array,
       default: function () {
         return {
           data: []
@@ -126,8 +134,8 @@ export default {
                 name: this.$refs['name'+index][0].$refs.input.value,
                 domainCount: 0,
                 manageId: this.$refs['select'+index][0].value,
-                manage_name: this.$refs['select'+index][0].param.label,
-                manage_code: this.$refs['select'+index][0].param.code,
+                manageName: this.$refs['select'+index][0].param.label,
+                manageCode: this.$refs['select'+index][0].param.code,
                 status: 'view'
               })
             } else {
@@ -170,8 +178,10 @@ export default {
       })
     },
     handleModify (index) {
+      let current = this.formDynamic.items[index]
+      current.status = "modify"
       this.status = 'edit'
-      this.$set(this.formDynamic.items[index], 'status', 'modify')
+      this.$set(this.formDynamic.items, index, current)
     },
     handleRemove (index, type) {
       this.loadingBtn = true
@@ -213,10 +223,7 @@ export default {
   beforeMount () {
   },
   mounted () {
-    if (!this.index) {
-      this.handleAdd()
-      this.showAddBtn = true
-    }
+
   },
   computed: {
     ...mapState({
@@ -264,6 +271,13 @@ export default {
             this.showMgmtSelect = false
           }
         }
+      },
+      deep: true
+    },
+    groupData: {
+      handler (newV, oldV) {
+        this.status = 'view'
+        this.$set(this.formDynamic, 'items', newV)
       },
       deep: true
     }

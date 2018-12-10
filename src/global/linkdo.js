@@ -100,3 +100,6 @@ export const CREATE_GROUP = api + '/client-api/client/company/groupCreate'
 export const UPDATE_GROUP = api + '/client-api/client/company/groupUpdate'
 // 删除分组
 export const DELETE_GROUP = api + '/client-api/client/company/groupDelete'
+// 修改企业
+export const UPDATE_COMPANY = api + '/client-api/client/company/companyUpdate'
+

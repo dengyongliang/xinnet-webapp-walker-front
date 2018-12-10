@@ -1,9 +1,10 @@
 <template lang="pug">
 ul.listStyle1
   li(v-for="item in list")
-    h3.clear(v-text='item.type?"下属公司":"主体公司"')
+    h3.clear()
+      span.left(v-text='item.type?"下属公司":"主体公司"')
       span.right
-        a 修改
+        a(@click="showCompanyDetail(item.id)") 修改
         a 删除企业
     Row
       Col.col1(span="6")
@@ -40,6 +41,9 @@ ul.listStyle1
 </template>
 
 <script>
+import { mapState, mapActions } from 'vuex'
+import * as types from '@/store/types'
+import compInput from '@/components/compInput'
 export default {
   name: 'compListStyle1',
   props: {
@@ -50,6 +54,9 @@ export default {
           data: []
         }
       }
+    },
+    onShowcompanydetail: {
+      type: Function
     }
   },
   data () {
@@ -57,6 +64,25 @@ export default {
     }
   },
   methods: {
+    showCompanyDetail (id) {
+      let params = {
+        param:{
+          companyId: id
+        },
+        callback: (response) => {
+          this.loadingBtn = false
+          if (response.data.code === '1000'){
+            this.onShowcompanydetail(response.data.data)
+          } else {
+            this.$Message.error('企业信息获取失败')
+          }
+        }
+      }
+      this.queryCompanyInfo(params)
+    },
+    ...mapActions({
+      queryCompanyInfo: types.QUERY_COMPANY_INFO
+    })
   },
   beforeMount () {
   },

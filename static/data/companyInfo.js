@@ -15,11 +15,17 @@
     "groups": [{
       "id": 3,
       "name": "测试分组1",
-      "domainCount": 0
+      "domainCount": 0,
+      "manageId": 12,
+      "manage_name": "韩梅梅",
+      "manage_code": "fd454545"
     }, {
       "id": 4,
       "name": "测试分组2",
-      "domainCount": 0
+      "domainCount": 0,
+      "manageId": 12,
+      "manage_name": "韩梅梅",
+      "manage_code": "fd454545"
     }]
   }
 }

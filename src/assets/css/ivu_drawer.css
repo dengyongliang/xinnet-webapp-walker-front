@@ -101,6 +101,8 @@
 .compCompanyCreate .compCompanyCreateGroup li.gItem{
 	padding: 8px 0;
 	min-height: 32px;
+	position: relative;
+	padding-left: 30px;
 }
 .compCompanyCreate .compCompanyCreateGroup .compInput{
 	display: inline-block;
@@ -137,4 +139,37 @@
 }
 .compCompanyCreate .compCompanyCreateGroup li .manager .ivu-icon{
 	color:#999;
+}
+.compCompanyCreate .compCompanyCreateGroup li .line{
+	width: 25px;
+    position: absolute;
+    height: 100%;
+    top: 0px;
+    left: 0px;
+}
+.compCompanyCreate .compCompanyCreateGroup li .lineT{
+	width: 100%;
+	height: 50%;
+	border-bottom: 1px solid #fff;
+	border-left: 1px solid #aaa;
+}
+.compCompanyCreate .compCompanyCreateGroup li .lineB{
+	width: 100%;
+	height: 50%;
+	border-top: 1px solid #aaa;
+	border-left: 1px solid #aaa;
+}
+.compCompanyCreate .compCompanyCreateGroup li:first-child .lineT{
+	border:1px solid #fff;
+}
+.compCompanyCreate .compCompanyCreateGroup li:first-child .lineB{
+	border-top: 1px solid #aaa;
+	border-left: 1px solid #aaa;
+}
+.compCompanyCreate .compCompanyCreateGroup li:last-child .lineT{
+	border-bottom: 1px solid #aaa;
+	border-left: 1px solid #aaa;
+}
+.compCompanyCreate .compCompanyCreateGroup li:last-child .lineB{
+	border:1px solid #fff;
 }

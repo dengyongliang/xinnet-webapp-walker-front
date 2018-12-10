@@ -25,6 +25,9 @@ export default {
     },
     [types.DELETE_GROUP] ({ commit, rootState }, params) {
       rest.post(links.DELETE_GROUP, JSON.stringify(params.param), params.callback)
+    },
+    [types.UPDATE_COMPANY] ({ commit, rootState }, params) {
+      rest.post(links.UPDATE_COMPANY, JSON.stringify(params.param), params.callback)
     }
   }
 }

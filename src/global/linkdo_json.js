@@ -97,3 +97,5 @@ export const CREATE_GROUP = 'http://localhost:5500/static/data/companyInfo.js'
 export const UPDATE_GROUP = 'http://localhost:5500/static/data/companyInfo.js'
 // 删除分组
 export const DELETE_GROUP = 'http://localhost:5500/static/data/companyInfo.js'
+// 修改企业
+export const UPDATE_COMPANY = 'http://localhost:5500/static/data/companyInfo.js'
