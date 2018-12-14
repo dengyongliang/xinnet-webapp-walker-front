@@ -91,7 +91,7 @@ export default {
       let val = this.value
       let name = this.name
       if (val !== '') {
-        if (this.number && isNaN(val)) {
+        if (this.isnumber && isNaN(val)) {
           this.showError = true
           this.errorText = '只允许输入数字！'
         } else {
@@ -116,6 +116,11 @@ export default {
       if (this.errorText) {
         this.showErrorParent(this.errorText)
       }
+    }
+  },
+  watch: {
+    defaultValue (val) {
+      this.value = val
     }
   }
 }

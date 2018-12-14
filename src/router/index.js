@@ -148,6 +148,36 @@ const RouterMain = new Router({
           meta: {
             title: '工单管理'
           }
+        },
+        {
+          path: '/domain/realname',
+          name: 'DOMAIN_REALNAME',
+          component (resolve) {
+            return require(['@/modular/domain/realNameTemplate'], resolve)
+          },
+          meta: {
+            title: '实名模板管理'
+          }
+        },
+        {
+          path: '/domain/change',
+          name: 'DOMAIN_CHANGE',
+          component (resolve) {
+            return require(['@/modular/domain/domainChange'], resolve)
+          },
+          meta: {
+            title: '域名过户'
+          }
+        },
+        {
+          path: '/domain/transferin',
+          name: 'DOMAIN_TRANSFERIN',
+          component (resolve) {
+            return require(['@/modular/domain/transferInList'], resolve)
+          },
+          meta: {
+            title: '域名转入管理'
+          }
         }
       ]
     }

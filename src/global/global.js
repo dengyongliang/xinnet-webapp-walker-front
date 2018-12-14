@@ -71,6 +71,12 @@ const SECURITY_TYPE = {
   3: '域名过期未续费',
   4: '其他问题'
 }
+const REAL_NAME_VERIFY_STATUS = {
+  0: '未提交资料',
+  1: '审核中',
+  2: '审核通过',
+  3: '审核拒绝'
+}
 function ADD_DAY (day) {
   var now = new Date
   now.setDate(now.getDate() - day)
@@ -176,6 +182,24 @@ function CONVERT_SELECT (data, map) {
   })
   return result
 }
+function CONVERT_SELECT_GROUP (data, map) {
+  const result = []
+  data.forEach((item) => {
+    const value = item[ map.value ]
+    const label = item[ map.label ]
+    let children = item[ map.children ]
+    if (children) {
+      children = CONVERT_SELECT_GROUP(children, map)
+    }
+    result.push({
+      value,
+      label,
+      children
+    })
+  })
+  return result
+}
+
 export default
 {
   TITLE,
@@ -194,5 +218,7 @@ export default
   QUESTION_TYPE,
   QUESTION_MODIFY_TYPE,
   SECURITY_TYPE,
-  CONVERT_SELECT
+  CONVERT_SELECT,
+  REAL_NAME_VERIFY_STATUS,
+  CONVERT_SELECT_GROUP
 }

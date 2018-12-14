@@ -99,3 +99,26 @@ export const UPDATE_GROUP = 'http://localhost:5500/static/data/companyInfo.js'
 export const DELETE_GROUP = 'http://localhost:5500/static/data/companyInfo.js'
 // 修改企业
 export const UPDATE_COMPANY = 'http://localhost:5500/static/data/companyInfo.js'
+// 修改企业
+export const DELETE_COMPANY = 'http://localhost:5500/static/data/companyInfo.js'
+// 模板列表
+export const QUERY_TEMPLATE_LIST = 'http://localhost:5500/static/data/templateList.js'
+// 创建模板
+export const CREATE_TEMPLATE = 'http://localhost:5500/static/data/templateList.js'
+// 提交模板资料
+export const SUBMIT_TEMPLATE = 'http://localhost:5500/static/data/templateList.js'
+// 删除模板
+export const DELETE_TEMPLATE = 'http://localhost:5500/static/data/templateList.js'
+// 修改模板
+export const UPDATE_TEMPLATE = 'http://localhost:5500/static/data/templateList.js'
+// 模板详情
+export const QUERY_TEMPLATE_INFO = 'http://localhost:5500/static/data/templateInfo.js'
+// 资料详情
+export const QUERY_VERIFY_INFO = 'http://localhost:5500/static/data/verifyInfo.js'
+// 过户域名列表
+export const QUERY_CHANGE_LIST = 'http://localhost:5500/static/data/changeList.js'
+// 转入域名列表
+export const QUERY_TRANSFER_IN_LIST = 'http://localhost:5500/static/data/transferInList.js'
+// 客户可用模板列表
+export const QUERY_TEMPLATES = 'http://localhost:5500/static/data/templates.js'
+

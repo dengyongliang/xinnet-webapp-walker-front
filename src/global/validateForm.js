@@ -9,7 +9,7 @@ export default function validateFormResult (validateArray) {
       let value = v.value
       let required = v.required
       let label = v.label
-      let number = v.number
+      let number = v.isnumber
       if (value === '' && required) {
         v.showValidateResult({text:'请输入' + (label || '') + '！'})
         flag = false
@@ -41,7 +41,15 @@ export default function validateFormResult (validateArray) {
         flag = false
         // break
       }
+    } else if (v.type === 'cascader') {
+      let value = v.value
+      if (!value.length) {
+        v.showValidateResult()
+        flag = false
+        // break
+      }
     } else if (v.type === 'upload') {
+      console.log(v)
       let value = v.$refs.upload.fileList
       if (!value.length) {
         v.showValidateResult()
@@ -81,7 +89,26 @@ export default function validateFormResult (validateArray) {
           v.showValidateResult2({text:'重复输入密码与新密码不一致！'})
         }
       }
+    } else if (v.type === 'threeInput') {
+      if (!v.value1 && !v.value2 && !v.value3) {
+        [v.showError1, v.showError2, v.showError3] = [true, true, true]
+        v.errorText = `请填写${v.label}！`
+      } else {
+        if (v.value1!=='' && v.isnumber1 &&  isNaN(v.value1)) {
+          v.showError1 = true
+          v.errorText = `${v.label1}只允许输入数字`
+        }
+        if (v.value2!=='' && v.isnumber2 &&  isNaN(v.value2)) {
+          v.showError2 = true
+          v.errorText += v.errorText.length ? ` - ${v.label2}只允许输入数字` : `${v.label2}只允许输入数字`
+        }
+        if (v.value3!=='' && v.isnumber3 &&  isNaN(v.value3)) {
+          v.showError3 = true
+          v.errorText += v.errorText.length ? ` - ${v.label3}只允许输入数字` : `${v.label3}只允许输入数字`
+        }
+      }
     }
   }
   return flag
 }
+

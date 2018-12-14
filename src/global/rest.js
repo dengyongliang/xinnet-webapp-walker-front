@@ -31,13 +31,12 @@ axios.interceptors.response.use(response => {
   // 参数错误
   if (response.data.code === '500') {
     emitter.emit('paramError')
-    return false
+    response.data.code = '100000'
   } else if (response.data.code === '900') {
     emitter.emit('requestError')
-    return false
-  } else {
-    return response
+    response.data.code = '100000'
   }
+  return response
 }, err => {
   if (err && err.response) {
     switch (err.response.status) {

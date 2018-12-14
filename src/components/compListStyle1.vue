@@ -1,50 +1,64 @@
 <template lang="pug">
-ul.listStyle1
-  li(v-for="item in list")
-    h3.clear()
-      span.left(v-text='item.type?"下属公司":"主体公司"')
-      span.right
-        a(@click="showCompanyDetail(item.id)") 修改
-        a 删除企业
-    Row
-      Col.col1(span="6")
-        span.logo
-          img(:src='item.logoFile')
-      Col.col2(span="8")
-        strong.clear  {{item.name}}
-        .col2Cont
-          .row1.clear
-            span.left 员工数量：<em>{{item.userCount}}</em>个
-            a 员工详情
-          .row2.clear
-            span.left 联系人：{{item.contactor}}
-          .row3.clear
-            span.left 手机：{{item.mobile}}
-          .row4.clear
-            span.left 固话：{{item.tel}}
-          .row5.clear
-            span.left 邮箱：{{item.email}}
-      Col.col3(span="10")
-        .col3Cont
-          .row1.clear
-            span.left 域名总数：{{item.domainCount}} 个
-            a.right 域名详情
-          .row2.clear(v-if="!item.groups.length")
-            span.left 暂无分组
-          .row2.clear(v-else, v-for="group in item.groups")
-            span.left <i></i>{{group.name}}：
-            span.right {{group.domainCount}}人
+div.list
+  ul.listStyle1
+    li(v-for="item in list")
+      h3.clear()
+        span.left(v-text='item.type?"下属公司":"主体公司"')
+        span.right
+          a(@click="showCompanyDetail(item.id)") 修改
+          a(@click="delCompany(item.id)") 删除企业
+      Row
+        Col.col1(span="6")
+          span.logo
+            img(:src='item.logoFile')
+        Col.col2(span="8")
+          strong.clear  {{item.name}}
+          .col2Cont
+            .row1.clear
+              span.left 员工数量：<em>{{item.userCount}}</em>个
+              a 员工详情
+            .row2.clear
+              span.left 联系人：{{item.contactor}}
+            .row3.clear
+              span.left 手机：{{item.mobile}}
+            .row4.clear
+              span.left 固话：{{item.tel}}
+            .row5.clear
+              span.left 邮箱：{{item.email}}
+        Col.col3(span="10")
+          .col3Cont
+            .row1.clear
+              span.left 域名总数：{{item.domainCount}} 个
+              a.right 域名详情
+            .row2.clear(v-if="!item.groups.length")
+              span.left 暂无分组
+            .row2.clear(v-else, v-for="group in item.groups")
+              span.left <i></i>{{group.name}}：
+              span.right {{group.domainCount}}人
 
-          .row6.clear(v-if="item.groups.length>4")
-            span.left <i></i>...
-            a.right 全部分组
+            .row6.clear(v-if="item.groups.length>4")
+              span.left <i></i>...
+              a.right(@click="showCompanyDetail(item.id, 'name2')") 全部分组
+
+  <!-- 修改企业 抽屉 -->
+  Drawer(:closable="true", width="640", v-model="drawerCompanyDetail", title="企业详情", :mask-closable="maskClosable", @on-visible-change="drawerChange")
+    comp-company-detail(
+      v-if="refresh",
+      :on-close="closeDrawer",
+      :detailData = "companyDetailData",
+      @resetDetailData = "resetDetailData"
+    )
 </template>
 
 <script>
 import { mapState, mapActions } from 'vuex'
 import * as types from '@/store/types'
 import compInput from '@/components/compInput'
+import compCompanyDetail from '@/components/compCompanyDetail'
 export default {
+  components: {
+    compCompanyDetail
+  },
   name: 'compListStyle1',
   props: {
     list: {
@@ -61,10 +75,28 @@ export default {
   },
   data () {
     return {
+      refresh: false,
+      drawerCompanyDetail: false,
+      companyDetailData: {}
     }
   },
   methods: {
-    showCompanyDetail (id) {
+    closeDrawer () {
+      this.drawerCompanyDetail = false
+    },
+    drawerChange () {
+      if (this.drawerCompanyDetail) {
+        this.refresh = true
+      } else {
+        this.refresh = false
+        this.$emit('refreshData')
+      }
+    },
+    resetDetailData (obj) {
+      Object.assign(this.companyDetailData, obj)
+      console.log(this.companyDetailData)
+    },
+    showCompanyDetail (id, tabIdx) {
       let params = {
         param:{
           companyId: id
@@ -72,7 +104,13 @@ export default {
         callback: (response) => {
           this.loadingBtn = false
           if (response.data.code === '1000'){
-            this.onShowcompanydetail(response.data.data)
+            this.companyDetailData = response.data.data
+            if (typeof tabIdx !== 'undefined') {
+              this.companyDetailData.tabIdx = tabIdx
+            } else {
+              this.companyDetailData.tabIdx = "name1"
+            }
+            this.drawerCompanyDetail = true
           } else {
             this.$Message.error('企业信息获取失败')
           }
@@ -80,7 +118,42 @@ export default {
       }
       this.queryCompanyInfo(params)
     },
+    delCompany (id) {
+      this.$Modal.confirm({
+        title: '确认',
+        content: '<p>请确认是否删除该企业？</p>',
+        loading: true,
+        onOk: () => {
+          let params = {
+            param: {
+              companyId: id
+            },
+            callback: (response) => {
+              this.$Modal.remove()
+              if (response.data.code === '1000'){
+                this.$Message.success('企业删除成功')
+                this.$emit('refreshData')
+              } else {
+                if (response.data.code === '100') {
+                  this.$Message.error('企业不存在！')
+                } else if (response.data.code === '200') {
+                  this.$Message.error('主体公司不允许删除！')
+                } else if (response.data.code === '300') {
+                  this.$Message.error('企业下有分组，不允许删除！')
+                } else {
+                  this.$Message.error('企业删除失败！')
+                }
+              }
+            }
+          }
+          this.deleteCompany(params)
+        },
+        onCancel: () => {
+        }
+      })
+    },
     ...mapActions({
+      deleteCompany: types.DELETE_COMPANY,
       queryCompanyInfo: types.QUERY_COMPANY_INFO
     })
   },
@@ -89,6 +162,14 @@ export default {
   mounted () {
   },
   computed: {
+    ...mapState({
+      myUserInfo (state) {
+        return state.user.myUserInfo
+      },
+      maskClosable (state) {
+        return state.maskClosable
+      }
+    })
   },
   watch: {
     list: function (val, oldVal) {

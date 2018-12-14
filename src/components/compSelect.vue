@@ -2,7 +2,10 @@
   div.compSelect(style="display:inline-block")
     slot(name="left")
     Select(v-model="value",:filterable="filterable",:style="styles",:name="name",@on-change="selectChange",:placeholder="placeholder",:class="{ 'error': showError }", :label-in-value="labelInValue")
-      Option(v-for="item in list",:value="item.value", @click.native="getMoreParams(item)") {{ item.label }}
+      Option(v-if="!optionGroup", v-for="item in list",:value="item.value", @click.native="getMoreParams(item)") {{ item.label }}
+
+      OptionGroup(v-if="optionGroup", :label="item.label", v-for="item in list")
+        Option(v-for="item2 in item.children",:value="item2.value", @click.native="getMoreParams(item2)") {{ item2.label }}
     slot(name="right")
     Alert(type="error",show-icon, style="display:inline-block",v-show="showError") {{errorText}}
 </template>
@@ -21,6 +24,10 @@ export default {
     label: {
       type: String,
       default: ''
+    },
+    optionGroup: {
+      type: Boolean,
+      default: false
     },
     show: {
       type: Boolean,
@@ -99,6 +106,11 @@ export default {
     }
   },
   computed: {
+  },
+  watch: {
+    defaultValue (val) {
+      this.value = val
+    }
   }
 }
 </script>

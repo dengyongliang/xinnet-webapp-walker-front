@@ -2,7 +2,7 @@
 .compCompanyCreate
   Tabs(v-model="value",:animated="false")
     TabPane.tabPane1(label="基本资料",name="name1",)
-      comp-company-create-info(:orgFile="orgFile",@getBaseInfo="baseInfo")
+      comp-company-create-info(@getBaseInfo="baseInfo")
     TabPane.tabPane2(label="分组管理",name="name2",:disabled="tabDisabled")
       comp-company-create-group(:baseInfoData="baseInfoData")
 </template>
@@ -21,10 +21,6 @@ export default {
     refresh: {
       type: Boolean,
       default: false
-    },
-    orgFile: {
-      type: String,
-      default: ''
     }
   },
   data () {

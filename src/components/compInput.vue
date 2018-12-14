@@ -14,7 +14,7 @@
         v-model = "value",
         :required = "required",
         :disabled = "disabled",
-        :number = "number",
+        :isnumber = "number",
         :class="{ 'error': showError }"
       )
       Input(
@@ -30,7 +30,7 @@
         v-model = "value",
         :required = "required",
         :disabled = "disabled",
-        :number = "number",
+        :isnumber = "number",
         :class="{ 'error': showError }"
       )
       Input(
@@ -46,7 +46,7 @@
         v-model = "value",
         :required = "required",
         :disabled = "disabled",
-        :number = "number",
+        :isnumber = "number",
         :class="{ 'error': showError }"
       )
       slot(name="right")

@@ -21,6 +21,13 @@
 .ivu-select .ivu-select-selection{
   border-radius: 0px;
 }
+.ivu-cascader{
+  display: inline-block;
+  margin-right: 5px;
+}
+.ivu-cascader.error input{
+  border:1px solid #f00;
+}
 .ivu-page{
   text-align:right;
   margin:20px;

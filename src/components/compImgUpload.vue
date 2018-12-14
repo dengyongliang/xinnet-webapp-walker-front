@@ -1,5 +1,5 @@
 <template lang="pug">
-  div(:class="(status==='view' && modify)?'modify':'view'")
+  div.compImgUpload(:class="(status==='view' && modify)?'modify':'view'")
     .demo-upload-list(v-for="item in uploadList")
       template(v-if="item.status === 'finished'")
         img(:src="item.url")
@@ -9,13 +9,15 @@
         Progress(v-if="item.showProgress",:percent="item.percentage",hide-info)
     Upload(v-show="(status==='view' && modify) || status==='creat'",ref="upload", :show-upload-list="false", :default-file-list="defaultList", :on-success="handleSuccess", :format="['jpg','jpeg','png']", :max-size="size", :on-format-error="handleFormatError", :on-exceeded-size="handleMaxSize", :before-upload="handleBeforeUpload", multiple, :action="uploadAction",:name="name", style="display: inline-block;width:58px;vertical-align: top;")
       div(style="width: 58px;height:58px;line-height: 58px;text-align:center;")
-        Icon(type="ios-camera",size="20",v-show="status==='creat'")
+        span(v-show="status==='creat'") {{creatText}}
         span(v-show="status==='view'") 重新上传
 
     .unit(v-show="status==='creat' || modify") {{tips}}
+      slot(name="unit")
     Modal(title="图片预览" v-model="visible",:footer-hide="true")
       img(:src="imgName",v-if="visible",style="width: 100%")
     Alert(type="error",show-icon, v-show="showError",ref="msgErrorFile") {{errorText}}
+    slot(name="last")
 </template>
 
 <script>
@@ -27,6 +29,10 @@ export default {
     modify: {
       type: Boolean,
       default: false
+    },
+    creatText: {
+      type: String,
+      default: ''
     },
     showCover: {
       type: Boolean,
@@ -143,6 +149,18 @@ export default {
     this.uploadList = this.$refs.upload.fileList
   },
   watch: {
+    file (val) {
+      this.uploadList = [
+        {
+          percentage: 100,
+          status: "finished",
+          uid: '',
+          url: val
+        }
+      ]
+    },
+    uploadList (val) {
+    }
   }
 }
 </script>

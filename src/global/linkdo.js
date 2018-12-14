@@ -102,4 +102,27 @@ export const UPDATE_GROUP = api + '/client-api/client/company/groupUpdate'
 export const DELETE_GROUP = api + '/client-api/client/company/groupDelete'
 // 修改企业
 export const UPDATE_COMPANY = api + '/client-api/client/company/companyUpdate'
-
+// 修改企业
+export const DELETE_COMPANY = api + '/client-api/client/company/companyDelete'
+// 模板列表
+export const QUERY_TEMPLATE_LIST = api + '/client-api/client/template/templateList'
+// 创建模板
+export const CREATE_TEMPLATE = api + '/client-api/client/template/createTemplate'
+// 上传模板资料
+export const UPLOAD_FILE_TEMPLATE = api + '/client-api/client/template/uploadfile'
+// 提交模板资料
+export const SUBMIT_TEMPLATE = api + '/client-api/client/template/templateVerify'
+// 删除模板
+export const DELETE_TEMPLATE = api + '/client-api/client/template/deleteTemplate'
+// 修改模板
+export const UPDATE_TEMPLATE = api + '/client-api/client/template/updateTemplate'
+// 模板详情
+export const QUERY_TEMPLATE_INFO = api + '/client-api/client/template/templateInfo'
+// 资料详情
+export const QUERY_VERIFY_INFO = api + '/client-api/client/template/verifyInfo'
+// 过户域名列表
+export const QUERY_CHANGE_LIST = api + '/client-api/client/change/changeList'
+// 转入域名列表
+export const QUERY_TRANSFER_IN_LIST = api + '/client-api/client/transferin/transferInList'
+// 客户可用模板列表
+export const QUERY_TEMPLATES = api + '/client-api/client/template/templates'

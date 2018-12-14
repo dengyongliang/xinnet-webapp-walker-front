@@ -92,7 +92,6 @@ export default {
             }
           }
         }
-        console.log(params.param)
         this.updateCompany(params)
       } else {
         this.loadingBtn = false

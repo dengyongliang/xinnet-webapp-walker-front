@@ -110,6 +110,11 @@ textarea.error{
 textarea{
     resize: none;
 }
+input[disabled],
+textarea[disabled]{
+    color: #333!important;
+    opacity: 1!important;
+}
 a {
     margin:0;
     padding:0;

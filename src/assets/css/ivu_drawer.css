@@ -69,6 +69,7 @@
 }
 .compCompanyCreate .compCompanyCreateGroup .ivu-alert{
 	padding: 10px 10px 10px 32px;
+	margin-bottom: 30px;
 }
 .compCompanyCreate .compCompanyCreateGroup .ivu-alert .ivu-alert-icon{
 	margin-top:-35px;
@@ -85,9 +86,6 @@
 }
 .compCompanyCreate .compCompanyCreateGroup .ivu-alert .ivu-alert-desc{
 	overflow: hidden;
-}
-.compCompanyCreate .compCompanyCreateGroup .ivu-alert{
-	margin-bottom: 30px;
 }
 .compCompanyCreate .compCompanyCreateGroup .companyName{
 	font-size: 14px;
@@ -173,3 +171,4 @@
 .compCompanyCreate .compCompanyCreateGroup li:last-child .lineB{
 	border:1px solid #fff;
 }
+

@@ -51,6 +51,7 @@ export const CREATE_GROUP = 'createGroup'
 export const UPDATE_GROUP = 'updateGroup'
 export const DELETE_GROUP = 'deleteGroup'
 export const UPDATE_COMPANY = 'updateCompany'
+export const DELETE_COMPANY = 'deleteCompany'
 
 // 账号管理
 export const QUERY_USER_LIST = 'queryUserList'
@@ -73,3 +74,15 @@ export const QUERY_WORK_ORDER_MANAGE_LIST = 'queryWorkOrderManageList'
 export const SUBMIT_WORK_ORDER = 'submitWorkOrder'
 export const QUERY_WORK_ORDER_DETAIL = 'queryWorkOrderDetail'
 export const QUERY_USER_COMPANYS = 'queryUserCompanys'
+
+// 域名管理
+export const QUERY_TEMPLATE_LIST = 'queryTemplateList'
+export const CREATE_TEMPLATE = 'createTemplate'
+export const UPDATE_TEMPLATE = 'updateTemplate'
+export const SUBMIT_TEMPLATE = 'submitTemplate'
+export const DELETE_TEMPLATE = 'deleteTemplate'
+export const QUERY_TEMPLATE_INFO = 'queryTemplateInfo'
+export const QUERY_VERIFY_INFO = 'queryVerifyInfo'
+export const QUERY_CHANGE_LIST = 'queryChangeList'
+export const QUERY_TRANSFER_IN_LIST = 'queryTransferInList'
+export const QUERY_TEMPLATES = 'queryTemplates'

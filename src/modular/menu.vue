@@ -24,13 +24,13 @@ vue-scroll.menuBody(:ops="ops")
       li.menuItem.lv2
         router-link(to="/account/my") 域名安全服务
       li.menuItem.lv2
-        router-link(to="/account/mgmt") 域名转入管理
+        router-link(to="/domain/transferin") 域名转入管理
       li.menuItem.lv2
-        router-link(to="/account/my") 域名过户
+        router-link(to="/domain/change") 域名过户
       li.menuItem.lv2
         router-link(to="/account/mgmt") 域名实名制管理
       li.menuItem.lv2
-        router-link(to="/account/mgmt") 实名模板管理
+        router-link(to="/domain/realname") 实名模板管理
   .menuBox
     h3.menuT.lv1
       Icon.fontL(custom="i-icon i-icon-finance" size="16")

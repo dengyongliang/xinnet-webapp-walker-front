@@ -2,9 +2,9 @@
 .compCompanyCreate
   Tabs(v-model="value",:animated="false")
     TabPane.tabPane1(label="基本资料",name="name1",)
-      comp-company-detail-info(:orgFile="orgFile",@getBaseInfo="baseInfo", :detailData="detailData")
+      comp-company-detail-info(@getBaseInfo="baseInfo", :detailData="detailData")
     TabPane.tabPane2(label="分组管理",name="name2",)
-      comp-company-detail-group(:baseInfoData="baseInfoData", :groupData="groupData")
+      comp-company-detail-group(:detailData="detailData", :groupData="groupData")
 </template>
 
 <script>
@@ -45,8 +45,7 @@ export default {
   },
   methods: {
     baseInfo (obj) {
-      this.value = 'name2'
-      this.baseInfoData = obj
+      this.$emit('resetDetailData',obj)
     }
   },
   computed: {
@@ -54,6 +53,7 @@ export default {
   beforeMount () {
   },
   mounted () {
+    this.value = this.detailData.tabIdx
     this.groupData = this.detailData.groups.map((v) => {
       v.status = "view"
       return v

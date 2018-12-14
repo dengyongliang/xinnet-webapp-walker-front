@@ -5,11 +5,11 @@
     .tR
       span 搜索
       Input(style="width:200px",placeholder="企业名称",name="",ref="",v-model.trim="value")
-      Button(type="primary", @click="",:loading="loadingBtn") 查询
+      Button(type="primary", @click="searchListData",:loading="loadingBtn") 查询
       Button(@click="drawerCompanyCreate=true") + 添加企业
   .secMain
     <!-- 列表主体 -->
-    comp-list-style1(:list="list", :on-showcompanydetail="showcompanydetail")
+    comp-list-style1(:list="list", @refreshData="searchListData")
 
   <!-- 创建企业 抽屉 -->
   Drawer(:closable="true", width="640", v-model="drawerCompanyCreate", title="创建企业", :mask-closable="maskClosable", @on-visible-change="drawerChange")
@@ -19,14 +19,6 @@
       :orgFile = "orgFile"
     )
 
-  <!-- 修改企业 抽屉 -->
-  Drawer(:closable="true", width="640", v-model="drawerCompanyDetail", title="企业详情", :mask-closable="maskClosable", @on-visible-change="drawerChange")
-    comp-company-detail(
-      v-if="refresh",
-      :on-close="closeDrawer",
-      :orgFile = "orgFile",
-      :detailData = "companyDetailData"
-    )
 </template>
 
 <script>
@@ -34,12 +26,10 @@ import { mapState, mapActions } from 'vuex'
 import * as types from '@/store/types'
 import compListStyle1 from '@/components/compListStyle1'
 import compCompanyCreate from '@/components/compCompanyCreate'
-import compCompanyDetail from '@/components/compCompanyDetail'
 export default {
   components: {
     compListStyle1,
-    compCompanyCreate,
-    compCompanyDetail
+    compCompanyCreate
   },
   data () {
     return {
@@ -47,10 +37,8 @@ export default {
       refresh: false,
       loadingBtn: false,
       drawerCompanyCreate: false,
-      drawerCompanyDetail: false,
-      companyDetailData: {},
       list: [],
-      orgFile:'http://183.84.10.181/walker/customer/e59202b3-2dcb-4f14-bab9-db914400eaac.jpg',
+      orgFile:'',
     }
   },
   methods: {
@@ -68,11 +56,6 @@ export default {
         this.searchListData()
       }
     },
-    showcompanydetail (data) {
-      this.companyDetailData = data
-      console.log(this.companyDetailData)
-      this.drawerCompanyDetail = true
-    },
     queryParam () {
       let vm = this
       let params = {
@@ -83,9 +66,7 @@ export default {
           if (response.data.code === '1000'){
             vm.list = response.data.data
           } else {
-            if (response.data.code === '900') {
-              vm.$Message.error('查询失败')
-            }
+            vm.$Message.error('查询失败')
           }
         }
       }

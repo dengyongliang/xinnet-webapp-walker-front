@@ -1,12 +1,12 @@
 <template lang="pug">
   .compCompanyCreateGroup
-    input(type="hidden", ref="companyId", :value="baseInfoData.companyId")
+    input(type="hidden", ref="companyId", :value="detailData.id")
     Alert(type="warning", show-icon) 温馨提示：
       Icon(custom="i-icon i-icon-notice_", size="16", slot="icon")
       template(slot="desc") 每个域名都会关联至企业的分组，用户可为不同分组的域名设置不同的管理人员，实现域名分权管理。
 
-    .companyName {{baseInfoData.name}}
-      span ( 域名总数：<em>0</em> 个 )
+    .companyName {{detailData.name}}
+      span ( 域名总数：<em>{{detailData.domainCount}}</em> 个 )
     ul.groupList(ref="group")
       li.gItem(v-for="(item, index) in formDynamic.items", :key="index")
         div.line
@@ -61,7 +61,7 @@ export default {
     compSelect
   },
   props: {
-    baseInfoData: {
+    detailData: {
       type: Object,
       default: function () {
         return {

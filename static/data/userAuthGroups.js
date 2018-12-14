@@ -28,6 +28,26 @@
           "userCount": 2
         }
       ]
+    },
+    {
+      "id": 1,
+      "name": "新网2222222222",
+      "checked": false,
+      "userCount": 3,
+      "groups": [
+        {
+          "id": 1,
+          "checked": false,
+          "name": "默认分组1",
+          "userCount": 1
+        },
+        {
+          "id": 2,
+          "checked": true,
+          "name": "默认分组2",
+          "userCount": 2
+        }
+      ]
     }
   ]
 }

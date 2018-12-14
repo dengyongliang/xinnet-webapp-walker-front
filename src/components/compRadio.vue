@@ -64,6 +64,11 @@ export default {
 
   },
   computed: {
+  },
+  watch: {
+    defaultValue (val) {
+      this.value = val
+    }
   }
 }
 </script>
