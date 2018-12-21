@@ -19,7 +19,13 @@ export default function makeStore () {
       maskClosable: false,
       islogin: false,
       pending: true,
-      activation: {}
+      activation: {},
+      payOrders: {
+        jsonObj: []
+      },
+      payOrdersFinish: {
+        jsonObj: []
+      }
     },
     mutations: {
       [types.SET_LOGINED] (state, payload) {
@@ -33,6 +39,16 @@ export default function makeStore () {
       },
       [types.CLEAR_ACTIVATION_DATA] (state,payload) {
         state.activation = {}
+      },
+      [types.SET_PAY_ORDERS] (state,payload) {
+        state.payOrders = payload
+      },
+      [types.SET_PAY_ORDERS_FINISH] (state,payload) {
+        state.payOrdersFinish = payload
+      },
+      [types.CLEAR_PAY_DATA] (state) {
+        state.payOrders = {jsonObj: []}
+        state.payOrdersFinish = {jsonObj: []}
       }
     },
     actions: {
@@ -61,7 +77,9 @@ export default function makeStore () {
         rest.post(links.QUERY_USER_CUSTOMERS_LIST, '',callback)
       },
       [types.CHANGE_CUSTOMERS] ({ commit, rootState }, param) {
-        rest.post(links.CHANGE_CUSTOMERS, JSON.stringify(param),function () {})
+        rest.post(links.CHANGE_CUSTOMERS, JSON.stringify(param),function () {
+          //Vue.$router.push({path: '/finance/overview'})
+        })
       },
       [types.GET_OLD_PHONE_CODE] ({ commit, rootState }, params) {
         rest.post(links.GET_OLD_PHONE_CODE, JSON.stringify(params.param), params.callback)
@@ -71,6 +89,15 @@ export default function makeStore () {
       },
       [types.CHECK_OLD_PHONE_CODE] ({ commit, rootState }, params) {
         rest.post(links.CHECK_OLD_PHONE_CODE, JSON.stringify(params.param), params.callback)
+      },
+      [types.ORDER_SETTLEMENT] ({ commit, rootState }, params) {
+        rest.post(links.ORDER_SETTLEMENT, JSON.stringify(params.param), params.callback)
+      },
+      [types.BUY_BACKEND_LOCK] ({ commit, rootState }, params) {
+        rest.post(links.BUY_BACKEND_LOCK, JSON.stringify(params.param), params.callback)
+      },
+      [types.RENEW_BACKEND_LOCK] ({ commit, rootState }, params) {
+        rest.post(links.RENEW_BACKEND_LOCK, JSON.stringify(params.param), params.callback)
       }
     },
     getters: {

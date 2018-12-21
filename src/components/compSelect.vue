@@ -5,7 +5,7 @@
       Option(v-if="!optionGroup", v-for="item in list",:value="item.value", @click.native="getMoreParams(item)") {{ item.label }}
 
       OptionGroup(v-if="optionGroup", :label="item.label", v-for="item in list")
-        Option(v-for="item2 in item.children",:value="item2.value", @click.native="getMoreParams(item2)") {{ item2.label }}
+        Option(v-if="item.children.length>0", v-for="item2 in item.children",:value="item2.value", @click.native="getMoreParams(item2)") {{ item2.label }}
     slot(name="right")
     Alert(type="error",show-icon, style="display:inline-block",v-show="showError") {{errorText}}
 </template>

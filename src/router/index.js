@@ -60,6 +60,26 @@ const RouterMain = new Router({
       }
     },
     {
+      path: '/payConfirm',
+      name: 'PAY_CONFIRM',
+      component (resolve) {
+        return require(['@/page/payConfirm'], resolve)
+      },
+      meta: {
+        title: '支付确认'
+      }
+    },
+    {
+      path: '/pay',
+      name: 'PAY',
+      component (resolve) {
+        return require(['@/page/pay'], resolve)
+      },
+      meta: {
+        title: '订单结算'
+      }
+    },
+    {
       path: '/',
       name: 'MAIN',
       component (resolve) {
@@ -177,6 +197,36 @@ const RouterMain = new Router({
           },
           meta: {
             title: '域名转入管理'
+          }
+        },
+        {
+          path: '/domain/realnameDomain',
+          name: 'DOMAIN_REALNAME_DOMAIN',
+          component (resolve) {
+            return require(['@/modular/domain/realnameDomain'], resolve)
+          },
+          meta: {
+            title: '域名实名制管理'
+          }
+        },
+        {
+          path: '/domain/security',
+          name: 'DOMAIN_SECURITY',
+          component (resolve) {
+            return require(['@/modular/domain/securityService'], resolve)
+          },
+          meta: {
+            title: '域名安全服务'
+          }
+        },
+        {
+          path: '/domain/mgmt',
+          name: 'DOMAIN_MGMT',
+          component (resolve) {
+            return require(['@/modular/domain/domainMgmt'], resolve)
+          },
+          meta: {
+            title: '域名管理'
           }
         }
       ]

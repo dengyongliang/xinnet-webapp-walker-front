@@ -36,10 +36,76 @@ const DOMAIN_TRANSFER_STATUS = {
   6: "转移成功信息更新完成",
   7: "转移成功信息更新失败"
 }
+const ORDER_TYPE = {
+  1: "新开",
+  2: "续费",
+  3: "退费",
+  4: "转入"
+}
+const DOMAIN_CHANGE_TYPE = {
+  0: "待过户",
+  1: "过户中",
+  2: "过户完成",
+  3: "过户失败"
+}
+const REAL_NAME_VERIFY_STATUS = {
+  0: "未提交资料",
+  1: "审核中",
+  2: "审核通过",
+  3: "审核拒绝"
+}
+const DOMAIN_NAME_VERIFY_STATUS = {
+  0: "未审核",
+  1: "审核中",
+  2: "审核通过",
+  3: "审核拒绝"
+}
+const IMPORTANT_FLAG = {
+  0: "一般保护",
+  1: "重点保护",
+  2: "不支持"
+}
+const RENEWFLAG = {
+  0: "未开通",
+  1: "已开通",
+  2: "不支持"
+}
+const UPDATEFLAG = {
+  0: "未开通",
+  1: "已开通",
+  2: "不支持"
+}
+const BACKENDLOCKFLAG = {
+  0: "未开通",
+  1: "已开通",
+  2: "不支持",
+  3: "未购买",
+  4: "已到期"
+}
+const SERVICE_TYPE = {
+  "renewFlag": "自动续费",
+  "updateFlag": "禁止更新",
+  "backendLockFlag": "注册局锁"
+}
+const SERVICE_STATE = {
+  0: "服务期",
+  1: "续费期",
+  2: "偿还期"
+}
 
 export default
 {
+  ORDER_TYPE,
   REGISTRANT_ID_TYPE_I,
   REGISTRANT_ID_TYPE_E,
-  DOMAIN_TRANSFER_STATUS
+  DOMAIN_TRANSFER_STATUS,
+  DOMAIN_CHANGE_TYPE,
+  REAL_NAME_VERIFY_STATUS,
+  DOMAIN_NAME_VERIFY_STATUS,
+  IMPORTANT_FLAG,
+  RENEWFLAG,
+  UPDATEFLAG,
+  BACKENDLOCKFLAG,
+  SERVICE_TYPE,
+  SERVICE_STATE
 }

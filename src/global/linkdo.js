@@ -126,3 +126,36 @@ export const QUERY_CHANGE_LIST = api + '/client-api/client/change/changeList'
 export const QUERY_TRANSFER_IN_LIST = api + '/client-api/client/transferin/transferInList'
 // 客户可用模板列表
 export const QUERY_TEMPLATES = api + '/client-api/client/template/templates'
+// 订单确认
+export const QUERY_ORDER_CONFIRM = api + '/client-api/client/order/orderConfirm'
+// 域名提交过户
+export const SUBMIT_CHANGE = api + '/client-api/client/change/submitChange'
+// 过户域名详情
+export const QUERY_CHANGE_INFO = api + '/client-api/client/change/changeInfo'
+// 订单结算
+export const ORDER_SETTLEMENT = api + '/client-api/client/order/orderSettlement'
+// 域名提交转入
+export const SUBMIT_TRANSFER_IN = api + '/client-api/client/transferin/submitTransferIn'
+// 域名实名制列表
+export const QUERY_DOMAIN_VERIFY_LIST = api + '/client-api/client/domainVerify/domainVerifyList'
+// 上传域名实名资料
+export const UPLOAD_FILE_DOMAIN_VERIFY = api + '/client-api/client/domainVerify/uploadfile'
+// 提交域名实名资料
+export const SUBMIT_DOMAIN_VERIFY = api + '/client-api/client/domainVerify/uploadDomainVerify'
+// 更新域名审核状态
+export const UPDATE_DOMAIN_AUDIT_STATUS = api + '/client-api/client/domainVerify/updateDomainAuditStatus'
+// 域名安全服务列表
+export const QUERY_DOMAIN_SAFE_LIST = api + '/client-api/client/domainSafe/domainSafeList'
+// 设置域名保护级别
+export const SET_PROTECT_LEVEL = api + '/client-api/client/domainSafe/setProtectLevel'
+// 设置域名自动续费
+export const SET_AUTO_RENEW = api + '/client-api/client/domainSafe/setAutoRenew'
+// 设置域名禁止更新
+export const SET_PROHIBIT_UPDATE = api + '/client-api/client/domainSafe/setProhibitUpdate'
+// 购买域名注册局锁定
+export const BUY_BACKEND_LOCK = api + '/client-api/client/domainSafe/buyBackendLock'
+// 续费域名注册局锁定
+export const RENEW_BACKEND_LOCK = api + '/client-api/client/domainSafe/renewBackendLock'
+// 域名管理列表
+export const QUERY_DOMAIN_LIST = api + '/client-api/client/domain/domainList'
+

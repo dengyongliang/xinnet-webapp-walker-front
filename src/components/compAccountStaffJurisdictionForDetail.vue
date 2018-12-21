@@ -143,5 +143,9 @@ export default {
 }
 .compStaffJurisdiction .scrollList{
   height:300px;
+  overflow:auto;
+}
+.compStaffJurisdiction .ivu-tree{
+  position:relative;
 }
 </style>

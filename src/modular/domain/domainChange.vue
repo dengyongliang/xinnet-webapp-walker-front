@@ -1,8 +1,10 @@
 <template lang="pug">
 .contDomainChange
   <!-- 标题区 -->
-  h1.pageTitle.clear 域名过户
-  .secFilter
+  h1.pageTitle.clear
+    <span @click="toBackList" class="backlist">域名过户</span>
+    <span v-show="showDetail"> > 过户详情</span>
+  .secFilter(v-show="!showDetail")
     form.filterWrap(ref="exportForm")
       table
         tr.row1
@@ -17,33 +19,50 @@
           td.td3
             span.n 过户状态：
             .inputWrap
-              comp-select(:list="statusList", ref="transferStatus", styles="width:100%")
+              comp-select(:list="statusList", ref="changeStatus", styles="width:100%")
           td.tdBtn
             Button(type="primary", @click="searchListData",:loading="loadingBtn") 查询
-            Button(type="primary", @click="",:loading="loadingBtn") 批量过户
-  .secMain
+            Button(type="primary", @click="drawerDomainChange=true",:loading="loadingBtn") 批量过户
+  .secMain(v-show="!showDetail")
     <!-- 列表主体 -->
     .secTable
       <Table :columns="columns" :data="list" :loading="loadingTable"></Table>
 
   <!-- 翻页区 -->
-  Page(:total="page.pageItems",:current="page.pageNo",show-elevator,show-total,prev-text="上一页",next-text="下一页",@on-change="pageChange",:page-size=20)
+  Page(v-show="!showDetail", :total="page.pageItems",:current="page.pageNo",show-elevator,show-total,prev-text="上一页",next-text="下一页",@on-change="pageChange",:page-size=20)
 
+  comp-domain-change-detail(v-show="showDetail", :detailData="detailData")
+
+  <!-- 过户提交 抽屉 -->
+  Drawer(:closable="true", width="650", v-model="drawerDomainChange", title="提交过户", :mask-closable="maskClosable", @on-visible-change="drawerChange",)
+    comp-domain-change(
+      v-if="refresh",
+      :on-close="closeDrawer",
+      @refreshData="searchListData",
+    )
 </template>
 
 <script>
 import { mapState, mapActions } from 'vuex'
 import * as types from '@/store/types'
 import compSelect from '@/components/compSelect'
+import compDomainChangeDetail from '@/components/compDomainChangeDetail'
+import compDomainChange from '@/components/compDomainChange'
 export default {
   components: {
-    compSelect
+    compSelect,
+    compDomainChange,
+    compDomainChangeDetail
   },
   data () {
     return {
       value: '',
+      refresh: false,
+      showDetail: false,
+      drawerDomainChange: false,
       times: [],
       statusList: [],
+      detailData: {},
       columns: [
         {
           title: '域名',
@@ -57,13 +76,19 @@ export default {
         },
         {
           title: '过户时间',
-          key: 'tansferInTime',
+          key: 'changeTime',
           className: 'col3'
         },
         {
           title: '过户状态',
-          key: 'transferStatus',
-          className: 'col4'
+          key: 'changeStatus',
+          className: 'col4',
+          render: (h, params) => {
+            return h('div', [
+              h('span', {
+              }, this.DATAS.DOMAIN_CHANGE_TYPE[this.list[params.index].changeStatus])
+            ])
+          }
         },
         {
           title: '操作',
@@ -77,6 +102,7 @@ export default {
                 },
                 on: {
                   click: () => {
+                    this.showDomainDetail(this.list[params.index].id)
                   }
                 }
               }, '详情')
@@ -96,7 +122,33 @@ export default {
   },
   methods: {
     searchListData () {
+      this.closeDrawer()
       this.queryChangeList(this.queryListParam({pageNum: 1}))
+    },
+    showDomainDetail (id) {
+      let params = {
+        param: {
+          changeId: id
+        },
+        callback: (response) => {
+          if (response.data.code === '1000'){
+            this.detailData = response.data.data
+          } else {
+
+          }
+        }
+      }
+      this.queryChangeInfo(params)
+      this.showDetail = true
+    },
+    closeDrawer () {
+      this.drawerDomainChange = false
+    },
+    drawerChange () {
+      this.refresh = this.drawerDomainChange ? true : false
+    },
+    toBackList () {
+      this.showDetail = false
     },
     pageChange: function (curPage) {
       // 根据当前页获取数据
@@ -112,7 +164,7 @@ export default {
           pageNum: obj.pageNum,
           pageSize: 20,
           domainName: this.value,
-          transferStatus: this.$refs.transferStatus.value,
+          changeStatus: this.$refs.changeStatus.value,
           createTimeBegin: this.times[0] !== '' ? this.GLOBALS.CRT_TIME_FORMAT(this.times[0]) : '',
           createTimeEnd: this.times[1] !== '' ? this.GLOBALS.CRT_TIME_FORMAT(this.times[1]) : ''
         },
@@ -130,20 +182,42 @@ export default {
       return params
     },
     ...mapActions({
-      queryChangeList: types.QUERY_CHANGE_LIST
+      queryChangeList: types.QUERY_CHANGE_LIST,
+      queryChangeInfo: types.QUERY_CHANGE_INFO
     })
   },
   computed: {
+    ...mapState({
+      maskClosable (state) {
+        return state.maskClosable
+      }
+    })
   },
   beforeMount () {
   },
   mounted () {
+    this.statusList = function (vm) {
+      let array = [{
+        label: '全部',
+        value: ''
+      }]
+      for (var i in vm.DATAS.DOMAIN_CHANGE_TYPE) {
+        array.push({
+          label: vm.DATAS.DOMAIN_CHANGE_TYPE[i],
+          value: parseInt(i)
+        })
+      }
+      return array
+    }(this)
     this.queryChangeList(this.queryListParam({pageNum: 1}))
   }
 }
 </script>
 
 <style scoped>
+.contDomainChange .backlist{
+  cursor: pointer;
+}
 .contDomainChange .tdBtn button{
   margin-left:20px;
 }

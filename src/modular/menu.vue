@@ -20,15 +20,15 @@ vue-scroll.menuBody(:ops="ops")
       li.menuItem.lv2
         router-link(to="/account/my") 域名总览
       li.menuItem.lv2
-        router-link(to="/account/mgmt") 域名管理
+        router-link(to="/domain/mgmt") 域名管理
       li.menuItem.lv2
-        router-link(to="/account/my") 域名安全服务
+        router-link(to="/domain/security") 域名安全服务
       li.menuItem.lv2
         router-link(to="/domain/transferin") 域名转入管理
       li.menuItem.lv2
         router-link(to="/domain/change") 域名过户
       li.menuItem.lv2
-        router-link(to="/account/mgmt") 域名实名制管理
+        router-link(to="/domain/realnameDomain") 域名实名制管理
       li.menuItem.lv2
         router-link(to="/domain/realname") 实名模板管理
   .menuBox

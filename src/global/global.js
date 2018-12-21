@@ -116,7 +116,7 @@ function CONVERT_TREE_CHECKED_FALSE (tree, key) {
  * @param  {Object} map  键值对映射
  * @return {Array}      转换后的 tree
  */
-function CONVERT_TREE (tree, map, callback) {
+function CONVERT_TREE (tree, map) {
   const result = []
   // 遍历 tree
   tree.forEach((item) => {
@@ -188,8 +188,11 @@ function CONVERT_SELECT_GROUP (data, map) {
     const value = item[ map.value ]
     const label = item[ map.label ]
     let children = item[ map.children ]
+
     if (children) {
       children = CONVERT_SELECT_GROUP(children, map)
+    } else {
+      children = []
     }
     result.push({
       value,

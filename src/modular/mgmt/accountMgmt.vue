@@ -430,15 +430,17 @@ export default {
           label: '全部',
           expand: true,
           checked: false,
-          userCount: state.user.userAuthGroupsOriginal.length ? state.user.userAuthGroupsOriginal[0].userCount : 0,
+          userCount: state.user.userAuthGroupsOriginal.userCount,
           children: []
         }]
-        array[0].children = this.convertTree(state.user.userAuthGroupsOriginal.slice(1), {
-          title: 'id',
-          label: 'name',
-          children: 'groups',
-          userCount: 'userCount'
-        })
+        if (state.user.userAuthGroupsOriginal.companys) {
+          array[0].children = this.convertTree(state.user.userAuthGroupsOriginal.companys, {
+            title: 'id',
+            label: 'name',
+            children: 'groups',
+            userCount: 'userCount'
+          })
+        }
         return array
       },
       userAuthGroups (state) {
@@ -449,12 +451,14 @@ export default {
           checked: false,
           children: []
         }]
-        arrGroups[0].children = this.GLOBALS.CONVERT_TREE(state.user.userAuthGroups.slice(1), {
-          title: 'id',
-          label: 'name',
-          checked: 'checked',
-          children: 'groups'
-        })
+        if (state.user.userAuthGroups.companys) {
+          arrGroups[0].children = this.GLOBALS.CONVERT_TREE(state.user.userAuthGroups.companys, {
+            title: 'id',
+            label: 'name',
+            checked: 'checked',
+            children: 'groups'
+          })
+        }
         return arrGroups
       }
     })

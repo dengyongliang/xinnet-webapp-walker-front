@@ -20,7 +20,7 @@
               comp-select(:list="statusList", ref="transferStatus", styles="width:100%")
           td.tdBtn
             Button(type="primary", @click="searchListData",:loading="loadingBtn") 查询
-            Button(type="primary", @click="",:loading="loadingBtn") 提交转入
+            Button(type="primary", @click="drawerTransferIn=true",:loading="loadingBtn") 提交转入
   .secMain
     <!-- 列表主体 -->
     .secTable
@@ -53,8 +53,8 @@ export default {
       value: '',
       times: [],
       statusList: [],
-      refresh: true,
-      drawerTransferIn: true,
+      refresh: false,
+      drawerTransferIn: false,
       columns: [
         {
           title: '提交时间',

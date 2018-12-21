@@ -85,17 +85,21 @@
   height: 32px;
   border-radius:0px;
 }
-.ivu-btn span{
+.ivu-btn.ivu-btn-default span{
   color:#2271f4;
 }
 .ivu-btn-primary{
   background: #2271f4;
 }
-.ivu-btn-primary .ivu-icon,
 .ivu-btn-primary span{
   color:#fff;
 }
-
+.ivu-btn.disabled>*, .ivu-btn[disabled]>* {
+  color:#c5c8ce;
+}
+.ivu-btn-primary .ivu-icon{
+  color:#fff;
+}
 .ivu-input-wrapper{
   margin-right:5px;
 }
@@ -134,6 +138,9 @@
   color:#f00;
   vertical-align:middle;
   display:inline-block;
+}
+.ivu-table:after{
+  display: none;
 }
 .ivu-table-wrapper{
   border:none;

@@ -121,4 +121,35 @@ export const QUERY_CHANGE_LIST = 'http://localhost:5500/static/data/changeList.j
 export const QUERY_TRANSFER_IN_LIST = 'http://localhost:5500/static/data/transferInList.js'
 // 客户可用模板列表
 export const QUERY_TEMPLATES = 'http://localhost:5500/static/data/templates.js'
+// 订单确认
+export const QUERY_ORDER_CONFIRM = 'http://localhost:5500/static/data/orderConfirm.js'
+// 域名提交过户
+export const SUBMIT_CHANGE = 'http://localhost:5500/static/data/orderConfirm.js'
+// 过户域名详情
+export const QUERY_CHANGE_INFO = 'http://localhost:5500/static/data/changeInfo.js'
+// 订单结算
+export const ORDER_SETTLEMENT = 'http://localhost:5500/static/data/changeInfo.js'
+// 域名提交转入
+export const SUBMIT_TRANSFER_IN = 'http://localhost:5500/static/data/changeInfo.js'
+// 域名实名制列表
+export const QUERY_DOMAIN_VERIFY_LIST = 'http://localhost:5500/static/data/domainVerifyList.js'
+// 提交域名实名资料
+export const SUBMIT_DOMAIN_VERIFY = 'http://localhost:5500/static/data/domainVerifyList.js'
+// 更新域名审核状态
+export const UPDATE_DOMAIN_AUDIT_STATUS = 'http://localhost:5500/static/data/domainVerifyList.js'
+// 域名安全服务列表
+export const QUERY_DOMAIN_SAFE_LIST = 'http://localhost:5500/static/data/domainSafeList.js'
+// 设置域名保护级别
+export const SET_PROTECT_LEVEL = 'http://localhost:5500/static/data/domainSafeList.js'
+// 设置域名自动续费
+export const SET_AUTO_RENEW = 'http://localhost:5500/static/data/domainSafeList.js'
+// 设置域名禁止更新
+export const SET_PROHIBIT_UPDATE = 'http://localhost:5500/static/data/domainSafeList.js'
+// 购买域名注册局锁定
+export const BUY_BACKEND_LOCK = 'http://localhost:5500/static/data/domainSafeList.js'
+// 续费域名注册局锁定
+export const RENEW_BACKEND_LOCK = 'http://localhost:5500/static/data/domainSafeList.js'
+// 域名管理列表
+export const QUERY_DOMAIN_LIST = 'http://localhost:5500/static/data/domainList.js'
+
 
