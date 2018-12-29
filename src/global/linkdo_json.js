@@ -151,5 +151,62 @@ export const BUY_BACKEND_LOCK = 'http://localhost:5500/static/data/domainSafeLis
 export const RENEW_BACKEND_LOCK = 'http://localhost:5500/static/data/domainSafeList.js'
 // 域名管理列表
 export const QUERY_DOMAIN_LIST = 'http://localhost:5500/static/data/domainList.js'
+// 域名管理-详情管理
+export const QUERY_DOMAIN_MANAGE_DETAIL = 'http://localhost:5500/static/data/domainManage.js'
+// 域名管理-设置域名分组
+export const SET_DOMAIN_GROUP = 'http://localhost:5500/static/data/domainManage.js'
+// 域名管理-修改所有人信息
+export const SUBMIT_MOD_DOMAIN_REG_USER = 'http://localhost:5500/static/data/domainManage.js'
+// 域名管理-修改管理人信息
+export const SUBMIT_MOD_DOMAIN_ADM_USER = 'http://localhost:5500/static/data/domainManage.js'
+// 域名管理-设置域名DNS
+export const SET_DOMAIN_DNS = 'http://localhost:5500/static/data/domainManage.js'
+// 发送验证码到域名分组管理人手机
+export const GET_DOMAIN_MGMT_V_CODE = 'http://localhost:5500/static/data/domainManage.js'
+// 域名管理-续费
+export const ORDER_PAY_DOMAIN_RENEW = 'http://localhost:5500/static/data/domainManage.js'
+// 域名总览-域名统计
+export const OVERVIEW_DOMAIN_STATISTICS = 'http://localhost:5500/static/data/domainStatistics.js'
+// 域名总览-数量变化总览
+export const OVERVIEW_DOMAIN_COUNT_STATISTICS = 'http://localhost:5500/static/data/domainCountStatistics.js'
+// 域名总览-实名模板统计
+export const OVERVIEW_TEMPLATE_STATISTICS = 'http://localhost:5500/static/data/templateStatistics.js'
+// 域名总览-注册居锁统计
+export const OVERVIEW_BACKEND_LOCK_STATISTICS = 'http://localhost:5500/static/data/backendLockStatistics.js'
+// 域名总览-实名认证统计
+export const OVERVIEW_DOMAIN_VERIFY_STATISTICS = 'http://localhost:5500/static/data/domainVerifyStatistics.js'
+// 域名总览-急需续费域名统计
+export const OVERVIEW_DOMAIN_RENEW_STATISTICS = 'http://localhost:5500/static/data/domainRenewStatistics.js'
+// 域名总览-转入中域名统计
+export const OVERVIEW_DOMAIN_TRANSFER_IN_STATISTICS = 'http://localhost:5500/static/data/domainTransferInStatistics.js'
+// 域名总览-过户中域名统计
+export const OVERVIEW_DOMAIN_CHANGE_STATISTICS = 'http://localhost:5500/static/data/domainChangeStatistics.js'
 
-
+// 首页-企业信息
+export const INDEX_MY_COMPANY = 'http://localhost:5500/static/data/indexMyCompany.js'
+// 首页-管家信息
+export const INDEX_MY_KEEPER = 'http://localhost:5500/static/data/indexMyKeeper.js'
+// 首页-域名统计
+export const INDEX_DOMAIN_STATISTICS = 'http://localhost:5500/static/data/indexDomainStatistics.js'
+// 首页-企业数量
+export const INDEX_COMPANY_STATISTICS = 'http://localhost:5500/static/data/indexCompanyStatistics.js'
+// 首页-员工数量
+export const INDEX_USER_STATISTICS = 'http://localhost:5500/static/data/indexUserStatistics.js'
+// 首页-未出账单
+export const INDEX_PAY_STATISTICS_UNBILLED = 'http://localhost:5500/static/data/indexPayStatisticsUnBilled.js'
+// 首页-已出账单
+export const INDEX_PAY_STATISTICS_HISTORY_BILL = 'http://localhost:5500/static/data/indexPayStatisticsHistoryBill.js'
+// 首页-账户额度统计
+export const INDEX_ACCOUNT_STATISTICS = 'http://localhost:5500/static/data/indexAccountStatistics.js'
+// 监控通知通知设置(新增或更新)
+export const SET_NOTIFY = 'http://localhost:5500/static/data/mailManage.js'
+// 监控通知通知设置详情
+export const QUERY_NOTIFY_DETAIL = 'http://localhost:5500/static/data/mailManage.js'
+// 监控通知管理列表
+export const QUERY_MAIL_MANAGE = 'http://localhost:5500/static/data/mailManage.js'
+// 监控通知通知标记已读
+export const SET_MAIL_RECORD_READ = 'http://localhost:5500/static/data/mailManage.js'
+// 域名监控日志管理列表
+export const QUERY_DOMAIN_MONITOR_MANAGE = 'http://localhost:5500/static/data/domainMonitorManage.js'
+// 员工监控日志管理列表
+export const QUERY_USER_MONITOR_MANAGE = 'http://localhost:5500/static/data/userMonitorManage.js'

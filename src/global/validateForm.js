@@ -36,14 +36,14 @@ export default function validateFormResult (validateArray) {
       }
     } else if (v.type === 'select') {
       let value = v.value
-      if (value === '') {
+      if (!value.length) {
         v.showValidateResult()
         flag = false
         // break
       }
     } else if (v.type === 'cascader') {
       let value = v.value
-      if (!value.length) {
+      if (!value.length || (!value[0].length && !value[1].length)) {
         v.showValidateResult()
         flag = false
         // break
@@ -90,19 +90,23 @@ export default function validateFormResult (validateArray) {
         }
       }
     } else if (v.type === 'threeInput') {
-      if (!v.value1 && !v.value2 && !v.value3) {
+      if (!v.value1 || !v.value2 || !v.value3) {
         [v.showError1, v.showError2, v.showError3] = [true, true, true]
         v.errorText = `请填写${v.label}！`
+        flag = false
       } else {
         if (v.value1!=='' && v.isnumber1 &&  isNaN(v.value1)) {
+          flag = false
           v.showError1 = true
           v.errorText = `${v.label1}只允许输入数字`
         }
         if (v.value2!=='' && v.isnumber2 &&  isNaN(v.value2)) {
+          flag = false
           v.showError2 = true
           v.errorText += v.errorText.length ? ` - ${v.label2}只允许输入数字` : `${v.label2}只允许输入数字`
         }
         if (v.value3!=='' && v.isnumber3 &&  isNaN(v.value3)) {
+          flag = false
           v.showError3 = true
           v.errorText += v.errorText.length ? ` - ${v.label3}只允许输入数字` : `${v.label3}只允许输入数字`
         }

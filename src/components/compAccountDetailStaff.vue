@@ -83,8 +83,14 @@ export default {
   }
 }
 </script>
-<style scoped>
+<style>
 .compAccountDetailStaff{
   padding:0 30px;
+}
+.compAccountDetailStaff .ivu-tabs{
+  overflow: visible!important;
+}
+.compAccountDetailStaff .ivu-tree ul li{
+  margin: 0px!important;
 }
 </style>

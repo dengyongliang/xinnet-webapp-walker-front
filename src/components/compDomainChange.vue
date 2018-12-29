@@ -5,7 +5,7 @@
     template(slot="desc") 请将域名与转移密码用空格隔开，每行一个域名，最多可同时过户100个域名。
   Form()
     FormItem(label="")
-      comp-input(name='domain',label="域名",ref="domain", type="textarea", styles="width:100%;", placeholder="域名 密码")
+      comp-input(name='domain',label="域名",ref="domain", type="textarea", styles="width:100%;", placeholder="域名", :defaultValue="defaultValueFormat")
     FormItem(label="")
       span.text 模板：
       comp-select(name='templateId',label="模板",ref="templateId", :list="templateList")
@@ -80,6 +80,9 @@ export default {
     })
   },
   computed: {
+    defaultValueFormat () {
+      return this.defaultValue.replace(/[,，]/g, '\r\n')
+    }
   },
   beforeMount () {
     let params = {

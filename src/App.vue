@@ -1,7 +1,7 @@
 <template lang="pug">
   #app
     Spin.spinBody(v-if="showBodySpin")
-    router-view
+    router-view(:key="$route.path")
 </template>
 
 <script>
@@ -60,7 +60,6 @@ export default {
 @import 'iview/dist/styles/iview.css';
 @import 'vuescroll/dist/vuescroll.css';
 @import 'assets/css/main.css';
-@import 'assets/css/modal.css';
 @import 'nprogress/nprogress.css';
 @import 'assets/css/iconfont.css';
 @import 'assets/css/xwNormalize.css';

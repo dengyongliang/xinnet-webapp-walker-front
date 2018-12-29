@@ -251,7 +251,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
 .contOverview .secMain{
   background:none;
 }
@@ -292,7 +292,7 @@ export default {
 .contOverview .sec.count td{
   line-height:35px;
 }
-.contOverview .sec.count td.col2{
+.contOverview .sec.count .data td.col2{
   text-align:right;
 }
 .contOverview .sec.count td.col2 em{
@@ -321,5 +321,10 @@ export default {
 .contOverview .sec.trend .t{
   text-align:left;
 }
-
+.contOverview .ivu-table-header th{
+  background:#fcfdff!important;
+  height:54px;
+  line-height: 54px;
+  font-weight: 200;
+}
 </style>

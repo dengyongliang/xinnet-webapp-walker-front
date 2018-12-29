@@ -1,7 +1,7 @@
 <template lang="pug">
 div(class="userGroupsPop",slot="content")
   .scroll
-    Tree(:data="groupsData")
+    Tree(:data="groupsData", ref="Tree")
   .popBtn
     Button(type="primary", @click="saveForm",:loading="loadingBtn") 保存
     Button(@click="close") 取消
@@ -28,6 +28,10 @@ export default {
           data: []
         }
       }
+    },
+    type: {
+      type: String,
+      default: 'list'
     }
   },
   data () {
@@ -38,32 +42,54 @@ export default {
   methods: {
     saveForm () {
       this.loadingBtn = true
-      let result = validateFormResult([
-        this.$refs.protectLevel
-      ])
+      let result = true
       if (result) {
         let params = {
           param: {
-            protectLevel: this.$refs.protectLevel.value,
+            groupId: this.getSelected(),
             domainIds: this.domainIds
           },
           callback: (response) => {
             this.loadingBtn = false
             if (response.data.code === '1000'){
               this.loadingBtn = false
-              this.$Message.success('设置保护等级成功')
-              this.close()
-              this.$emit('refreshData')
+              this.$Message.success('分组设置成功')
+              if (this.type==="list") {
+                this.close()
+                this.$emit('refreshData')
+              } else {
+                this.close()
+                let params = {
+                  param: {
+                    domainId: this.domainIds
+                  },
+                  callback: (response) => {
+                    if( response.data.code === '1000' ){
+                      this.$emit("refreshData", response.data.data)
+                    } else {
+
+                    }
+                  }
+                }
+                this.queryDomainManageDetail(params)
+              }
             } else {
-              // this.$Message.error('设置保护等级失败')
+              if (response.data.code === '100') {
+                this.$Message.error('分组不存在')
+              }
             }
           }
         }
         console.log(params.param)
-        this.setProtectLevel(params)
+        this.setDomainGroup(params)
       } else {
         this.loadingBtn = false
       }
+    },
+    getSelected () {
+      return this.$refs.Tree.getSelectedNodes().map((v) => {
+        return v.label
+      }).join(",")
     },
     close () {
       if (this.onParentmethod && typeof this.onParentmethod === 'function') {
@@ -71,7 +97,8 @@ export default {
       }
     },
     ...mapActions({
-      setProtectLevel: types.SET_PROTECT_LEVEL
+      setDomainGroup: types.SET_DOMAIN_GROUP,
+      queryDomainManageDetail: types.QUERY_DOMAIN_MANAGE_DETAIL
     })
   },
   computed: {
@@ -94,5 +121,9 @@ export default {
 }
 .userGroupsPop .popBtn{
   padding: 20px 0 0 0;
+  text-align:center;
+}
+.userGroupsPop .popBtn .ivu-btn{
+  margin:0 10px;
 }
 </style>

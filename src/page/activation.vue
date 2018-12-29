@@ -17,7 +17,7 @@
 <script>
 import { mapState, mapActions, mapMutations } from 'vuex'
 import * as types from '@/store/types'
-import headerBody from '../modular/header'
+import headerBody from '../modular/headerNoLogin'
 import compActivationStep1 from '@/components/compActivationStep1'
 import compActivationStep2 from '@/components/compActivationStep2'
 import compActivationStep3 from '@/components/compActivationStep3'

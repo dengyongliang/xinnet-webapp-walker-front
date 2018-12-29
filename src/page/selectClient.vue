@@ -17,7 +17,7 @@
 import { mapActions, mapMutations } from 'vuex'
 import * as types from '@/store/types'
 import compListNone from '@/components/compListNone'
-import headerBody from '../modular/header'
+import headerBody from '../modular/headerNoLogin'
 export default {
   components: {
     compListNone,
@@ -30,10 +30,13 @@ export default {
   },
   methods: {
     changeCustomersEv (id) {
-      let param = {
-        customerId: id
+      let params = {
+        param: {
+          customerId: id
+        },
+        vm: this
       }
-      this.changeCustomers(param)
+      this.changeCustomers(params)
     },
     ...mapActions({
       queryUserCustomersList: types.QUERY_USER_CUSTOMERS_LIST,

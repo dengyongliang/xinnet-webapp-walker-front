@@ -3,21 +3,7 @@
     .logo
       img(src="../../static/img/logo.png")
     .right
-      Poptip(:title="myUserInfo.userName", content="content <a>sfs</a>", placement="bottom")
-        div(slot="content")
-          span {{myUserInfo.manageCustomerName}}
-          a(href="javascript:;",@click="",class="btnSwitch") 切换
-        span.avatar
-          Avatar(src="https://i.loli.net/2017/08/21/599a521472424.jpg",size="small")
-          span.name {{myUserInfo.userName}}
-          Icon(type="md-arrow-dropdown")
-      span.line |
-      span.email
-        Icon(type="ios-mail-outline")
-        em.num 1
-      span.line |
-      router-link(to="http://www.xinnet.com") 新网首页
-      a(href="javascript:;", @click="logout", class="exit") 退出
+      a(href="http://www.xinnet.com") 新网首页
 </template>
 
 <script>
@@ -29,29 +15,8 @@ export default {
     }
   },
   computed: {
-    ...mapState({
-      myUserInfo (state) {
-        return state.user.myUserInfo
-      }
-    })
   },
   methods: {
-    logout () {
-      let vm = this
-      let params = {
-        callback: function (response) {
-          if( response.data.code === '1000' ){
-            vm.$Message.success('登出成功')
-            vm.$router.replace({ path: '/login' })
-          } else {
-          }
-        }
-      }
-      this.loginOut(params)
-    },
-    ...mapActions({
-      loginOut: types.LOGIN_OUT
-    })
   },
   beforeMount () {
   }

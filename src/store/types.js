@@ -23,7 +23,7 @@ export const CLEAR_PAY_DATA = 'clearPayData'
 export const ORDER_SETTLEMENT = 'orderSettlement'
 export const BUY_BACKEND_LOCK = 'buyBackendLock'
 export const RENEW_BACKEND_LOCK = 'renewBackendLock'
-
+export const GET_DOMAIN_MGMT_V_CODE = 'getDomainMgmtVCode'
 
 // 激活
 export const CHECK_VALID_USER = 'checkValidUser'
@@ -106,3 +106,41 @@ export const SET_PROTECT_LEVEL = 'setProtectLevel'
 export const SET_AUTO_RENEW = 'setAutoRenew'
 export const SET_PROHIBIT_UPDATE = 'setProhibitUpdate'
 export const QUERY_DOMAIN_LIST = 'queryDomainList'
+export const QUERY_DOMAIN_MANAGE_DETAIL = 'queryDomainManageDetail'
+export const SET_DOMAIN_GROUP = 'setDomainGroup'
+export const SUBMIT_MOD_DOMAIN_REG_USER = 'submitModDomainRegUser'
+export const SUBMIT_MOD_DOMAIN_ADM_USER = 'submitModDomainAdmUser'
+export const SET_DOMAIN_DNS = 'setDomainDns'
+export const ORDER_PAY_DOMAIN_RENEW = 'orderPayDomainRenew'
+export const OVERVIEW_DOMAIN_STATISTICS = 'overviewDomainStatistics'
+export const OVERVIEW_DOMAIN_COUNT_STATISTICS = 'overviewDomainCountStatistics'
+export const OVERVIEW_TEMPLATE_STATISTICS = 'overviewTemplateStatistics'
+export const OVERVIEW_BACKEND_LOCK_STATISTICS = 'overviewBackendLockStatistics'
+export const OVERVIEW_DOMAIN_VERIFY_STATISTICS = 'overviewDomainVerifyStatistics'
+export const OVERVIEW_DOMAIN_RENEW_STATISTICS = 'overviewDomainRenewStatistics'
+export const OVERVIEW_DOMAIN_TRANSFER_IN_STATISTICS = 'overviewDomainTransferInStatistics'
+export const OVERVIEW_DOMAIN_CHANGE_STATISTICS = 'overviewDomainChangeStatistics'
+
+// 首页
+export const INDEX_MY_COMPANY = 'indexMyCompany'
+export const INDEX_MY_KEEPER = 'indexMyKeeper'
+export const INDEX_DOMAIN_STATISTICS = 'indexDomainStatistics'
+export const INDEX_COMPANY_STATISTICS = 'indexCompanyStatistics'
+export const INDEX_USER_STATISTICS = 'indexUserStatistics'
+export const INDEX_PAY_STATISTICS_UNBILLED = 'indexPayStatisticsUnBilled'
+export const INDEX_PAY_STATISTICS_HISTORY_BILL = 'indexPayStatisticsHistoryBill'
+export const INDEX_ACCOUNT_STATISTICS = 'indexAccountStatistics'
+
+// 监控通知
+export const QUERY_MAIL_MANAGE = 'queryMailManage'
+// 监控通知通知标记已读
+export const SET_MAIL_RECORD_READ = 'setMailRecordRead'
+// 监控通知通知设置(新增或更新)
+export const SET_NOTIFY = 'setNotify'
+// 监控通知通知设置详情
+export const QUERY_NOTIFY_DETAIL = 'queryNotifyDetail'
+
+// 域名监控日志管理列表
+export const QUERY_DOMAIN_MONITOR_MANAGE = 'queryDomainMonitorManage'
+// 员工监控日志管理列表
+export const QUERY_USER_MONITOR_MANAGE = 'queryUserMonitorManage'

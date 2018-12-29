@@ -124,6 +124,7 @@ function CONVERT_TREE (tree, map) {
     const title = item[ map.title ]
     const label = item[ map.label ]
     const checked = item[ map.checked ] ? true : false
+    const disabled = item.lv===1 ? (map.disabled_lv1===true ? true : false) : (map.disabled_lv2===true ? true : false)
     let children = item[ map.children ]
     // 如果有子节点，递归
     if (children) {
@@ -134,6 +135,7 @@ function CONVERT_TREE (tree, map) {
       label,
       expand: true,
       checked,
+      disabled,
       children
     })
   })

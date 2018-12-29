@@ -124,7 +124,7 @@ export default {
               if (data.keeperFlag) {
                 vm.$router.replace({ path: '/selectClient' })
               } else {
-                alert(2)
+                vm.$router.replace({ path: '/home' })
               }
             },500)
           } else {

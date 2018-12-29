@@ -8,7 +8,7 @@
           span {{myUserInfo.manageCustomerName}}
           a(href="javascript:;",@click="",class="btnSwitch") 切换
         span.avatar
-          Avatar(src="https://i.loli.net/2017/08/21/599a521472424.jpg",size="small")
+          Avatar(:src="myUserInfo.companyLogoFile",size="small")
           span.name {{myUserInfo.userName}}
           Icon(type="md-arrow-dropdown")
       span.line |
@@ -16,7 +16,7 @@
         Icon(type="ios-mail-outline")
         em.num 1
       span.line |
-      router-link(to="http://www.xinnet.com") 新网首页
+      a(href="http://www.xinnet.com") 新网首页
       a(href="javascript:;", @click="logout", class="exit") 退出
 </template>
 
@@ -50,10 +50,30 @@ export default {
       this.loginOut(params)
     },
     ...mapActions({
-      loginOut: types.LOGIN_OUT
+      loginOut: types.LOGIN_OUT,
+      getCurrentUserData: types.GET_CURRENT_USER_DATA
     })
   },
   beforeMount () {
+    let vm = this
+    this.getCurrentUserData(function (response) {
+      if (response.data.code === '1000') {
+        vm.$store.commit(types.SET_LOGINED)
+        vm.$store.commit(types.SET_CURRENT_USER_DATA, response.data)
+        Promise.all([
+          vm.$store.dispatch(types.GET_USER_ROLES),
+          vm.$store.dispatch(types.GET_USERS),
+          vm.$store.dispatch(types.GET_COMPANYS),
+          vm.$store.dispatch(types.GET_USER_AUTH_GROUPS)
+        ]).then((response) => {
+          // 获取信息成功
+        }).catch((error) => {
+          console.log(error)
+        })
+      } else {
+        vm.$router.replace({ path: '/login' })
+      }
+    })
   }
 }
 </script>

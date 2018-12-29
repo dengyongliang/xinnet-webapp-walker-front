@@ -1,7 +1,7 @@
 import * as types from './types'
 import rest from '../global/rest.js'
-// import * as links from '../global/linkdo.js'
-import * as links from '../global/linkdo_json.js'
+import * as links from '../global/linkdo.js'
+// import * as links from '../global/linkdo_json.js'
 export default {
   state: {
   },
@@ -72,7 +72,49 @@ export default {
       rest.post(links.SET_PROHIBIT_UPDATE, JSON.stringify(params.param), params.callback)
     },
     [types.QUERY_DOMAIN_LIST] ({ commit, rootState }, params) {
-      rest.get(links.QUERY_DOMAIN_LIST, JSON.stringify(params.param), params.callback)
+      rest.post(links.QUERY_DOMAIN_LIST, JSON.stringify(params.param), params.callback)
+    },
+    [types.QUERY_DOMAIN_MANAGE_DETAIL] ({ commit, rootState }, params) {
+      rest.post(links.QUERY_DOMAIN_MANAGE_DETAIL, JSON.stringify(params.param), params.callback)
+    },
+    [types.SET_DOMAIN_GROUP] ({ commit, rootState }, params) {
+      rest.post(links.SET_DOMAIN_GROUP, JSON.stringify(params.param), params.callback)
+    },
+    [types.SUBMIT_MOD_DOMAIN_REG_USER] ({ commit, rootState }, params) {
+      rest.post(links.SUBMIT_MOD_DOMAIN_REG_USER, JSON.stringify(params.param), params.callback)
+    },
+    [types.SUBMIT_MOD_DOMAIN_ADM_USER] ({ commit, rootState }, params) {
+      rest.post(links.SUBMIT_MOD_DOMAIN_ADM_USER, JSON.stringify(params.param), params.callback)
+    },
+    [types.SET_DOMAIN_DNS] ({ commit, rootState }, params) {
+      rest.post(links.SET_DOMAIN_DNS, JSON.stringify(params.param), params.callback)
+    },
+    [types.ORDER_PAY_DOMAIN_RENEW] ({ commit, rootState }, params) {
+      rest.post(links.ORDER_PAY_DOMAIN_RENEW, JSON.stringify(params.param), params.callback)
+    },
+    [types.OVERVIEW_DOMAIN_STATISTICS] ({ commit, rootState }, callback) {
+      rest.post(links.OVERVIEW_DOMAIN_STATISTICS, JSON.stringify({}), callback)
+    },
+    [types.OVERVIEW_DOMAIN_COUNT_STATISTICS] ({ commit, rootState }, params) {
+      rest.post(links.OVERVIEW_DOMAIN_COUNT_STATISTICS, JSON.stringify(params.param), params.callback)
+    },
+    [types.OVERVIEW_TEMPLATE_STATISTICS] ({ commit, rootState }, callback) {
+      rest.post(links.OVERVIEW_TEMPLATE_STATISTICS, JSON.stringify({}), callback)
+    },
+    [types.OVERVIEW_BACKEND_LOCK_STATISTICS] ({ commit, rootState }, callback) {
+      rest.post(links.OVERVIEW_BACKEND_LOCK_STATISTICS, JSON.stringify({}), callback)
+    },
+    [types.OVERVIEW_DOMAIN_VERIFY_STATISTICS] ({ commit, rootState }, callback) {
+      rest.post(links.OVERVIEW_DOMAIN_VERIFY_STATISTICS, JSON.stringify({}), callback)
+    },
+    [types.OVERVIEW_DOMAIN_RENEW_STATISTICS] ({ commit, rootState }, callback) {
+      rest.post(links.OVERVIEW_DOMAIN_RENEW_STATISTICS, JSON.stringify({}), callback)
+    },
+    [types.OVERVIEW_DOMAIN_TRANSFER_IN_STATISTICS] ({ commit, rootState }, callback) {
+      rest.post(links.OVERVIEW_DOMAIN_TRANSFER_IN_STATISTICS, JSON.stringify({}), callback)
+    },
+    [types.OVERVIEW_DOMAIN_CHANGE_STATISTICS] ({ commit, rootState }, callback) {
+      rest.post(links.OVERVIEW_DOMAIN_CHANGE_STATISTICS, JSON.stringify({}), callback)
     }
   }
 }

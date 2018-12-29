@@ -335,7 +335,15 @@ export default {
               value: 'roleName',
               disabled: 'disabled'
             })
-            this.detailUserAuthGroupsList = this.GLOBALS.CONVERT_TREE(response.data.data.domainAuths, {
+            this.detailUserAuthGroupsList = [{
+              title: '0',
+              label: '全部',
+              expand: true,
+              checked: false,
+              userCount: response.data.data.domainAuths.userCount,
+              children: []
+            }]
+            this.detailUserAuthGroupsList[0].children = this.GLOBALS.CONVERT_TREE(response.data.data.domainAuths.companys, {
               title: 'id',
               label: 'name',
               checked: 'checked',

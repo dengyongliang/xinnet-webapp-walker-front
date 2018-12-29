@@ -18,7 +18,7 @@
         :class="{ 'error': showError }"
       )
       Input(
-        type="text",
+        type="password",
         v-if="type === 'password' && show",
         :name="name",
         :placeholder="placeholder",

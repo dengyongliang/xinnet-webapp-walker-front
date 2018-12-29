@@ -11,7 +11,7 @@
       tr
         td.col1(colspan="2") 姓名：{{myUserInfo.userName}}
       tr
-        td.col1(colspan="2", v-text="'性别：' + (myUserInfo.userSex ? '男' : '女')") 
+        td.col1(colspan="2", v-text="'性别：' + (myUserInfo.userSex ? '男' : '女')")
       tr
         td.col1(colspan="2") 用户名：{{myUserInfo.userCode}}
       tr
@@ -39,10 +39,10 @@
         td(colspan="2")
           span.n 域名权限：
           .v
-            p 河北XXXXX有限公司
-            ul
-              li <i></i> A组
-              li <i></i> B组
+            p(v-for="item in userAuthGroups.companys") {{item.name}}
+              ul(v-if="item.groups")
+                li(v-if="item.groups", v-for="group in item.groups") <i></i> {{group.name}}
+
   <!-- 修改座机 抽屉 -->
   Drawer(:closable="true", width="640", v-model="drawerModifyTel", title="修改座机号码", :mask-closable="maskClosable", @on-visible-change="drawerChange")
     comp-account-tel-modify(
@@ -109,6 +109,9 @@ export default {
       },
       maskClosable (state) {
         return state.maskClosable
+      },
+      userAuthGroups (state) {
+        return state.user.userAuthGroups
       }
     })
   },

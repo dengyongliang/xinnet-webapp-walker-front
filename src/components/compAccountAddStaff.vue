@@ -66,8 +66,14 @@ export default {
   }
 }
 </script>
-<style scoped>
+<style>
 .compAccountAddStaff{
   padding:0 30px;
+}
+.compAccountAddStaff .ivu-tabs{
+  overflow: visible!important;
+}
+.compAccountAddStaff .ivu-tree ul li{
+  margin: 0px!important;
 }
 </style>

@@ -3,14 +3,23 @@
   <!-- 标题区 -->
   h1.pageTitle.clear
     <span @click="toBackList" class="backlist">域名管理</span>
-    <span @click="" v-show="showDetail" class="backDetail"> > 域名详情</span>
+    <span @click="toBackDetail" v-show="showDetail || showDns" class="backDetail"> > 域名详情</span>
+    <span @click="" v-show="showDns" > > 修改DNS</span>
 
-    .tR(v-show="!showDetail")
+    form.tR(v-show="!showDetail && !showDns", ref="exportForm",target="_blank" method="post" accept-charset="utf-8" :action="exportLink")
+      input(type="hidden", value='', name="domainSuffixs")
+      input(type="hidden", value='', name="otherSuffix")
+      input(type="hidden", value='', name="allSuffix")
+      input(type="hidden", value='', name="groupIds")
+      input(type="hidden", value='', name="serviceState")
+      input(type="hidden", value='', name="createDay")
+      input(type="hidden", value='', name="expireDay")
       span 搜索
-      Input(style="width:200px",placeholder="请输入域名", name="", v-model.trim="value")
+      Input(style="width:200px",placeholder="请输入域名", name="domainName", v-model.trim="value")
       Button(type="primary", @click="searchListData",:loading="loadingBtn") 查询
-      a(href="javascript:;",class="exportOrder",@click="") 导出域名列表
-  .secMain(v-show="!showDetail")
+      a(href="javascript:;",class="exportOrder",@click="exportOrder") 导出域名列表
+
+  .secMain(v-show="!showDetail && !showDns")
     .filter
       Collapse(v-model="colllapseValue")
         Panel(name="1") 按公司筛选
@@ -20,39 +29,65 @@
           div(slot="content")
             Tree(:data="userCompanys", show-checkbox, ref="Tree2",)
     <!-- 列表主体 -->
-    .secTable(v-show="!showDetail")
+    .secTable(v-show="!showDetail && !showDns")
       <Table :columns="columns" :data="list" :loading="loadingTable" ref="selection" @on-select="tableSelectChange" @on-select-cancel="tableSelectChange" @on-select-all="tableSelectChange" @on-select-all-cancel="tableSelectChange"></Table>
       .tableTool
         a(href="javascript:;", @click="handleSelectAll(true)") 全选
         a(href="javascript:;", @click="handleSelectAll(false)") 取消全选
 
         Poptip(placement="bottom", width="350", v-model="visible")
-          Button(@click="", :disabled="disabledSafeLv", class="btnSafeLv") 移动至
-          comp-user-auth-groups(slot="content", :on-parentmethod="hidePop", :domainIds="getDomainId", @refreshData = "searchListData", :groupsData="userAuthGroups")
+          Button(@click="", :disabled="moveGroupDisabled", class="toolBtn") 移动至
+          comp-user-auth-groups(slot="content", :on-parentmethod="hidePop", :domainIds="getDomainId", @refreshData = "searchListData", :groupsData="userAuthGroups", type="list")
 
-        Button(@click="", :disabled="disabledSafeLv", class="btnSafeLv") 续费
-        Button(@click="", :disabled="disabledSafeLv", class="btnSafeLv") 过户
+        Button(@click="renewFun", :disabled="renewDisabled", class="toolBtn") 续费
+        Button(@click="domainChangeFun", :disabled="disabledSafeLv", class="toolBtn") 过户
 
 
   <!-- 翻页区 -->
-  Page(:total="page.pageItems",:current="page.pageNo",show-elevator,show-total,prev-text="上一页",next-text="下一页",@on-change="pageChange",:page-size=20, v-show="!showDetail")
+  Page(:total="page.pageItems",:current="page.pageNo",show-elevator,show-total,prev-text="上一页",next-text="下一页",@on-change="pageChange",:page-size=20, v-show="!showDetail && !showDns")
 
   <!-- 详情 -->
   comp-domain-mgmt-detail(
-    @refreshData = "searchListData"
+    @refreshData = "searchListData",
+    @showDnsFun = "showDnsFun",
+    @setVerificationCode = "setVerificationCode",
+    @setDetailFun = "setDetailFun",
+    :detailData = "detailData",
+    v-if="showDetail"
+  )
+  <!-- 修改DNS -->
+  comp-domain-modify-dns(
+    @refreshData = "searchListData",
+    @setDetailFun = "setDetailFun",
+    v-if="showDns",
+    :detailData = "detailData",
+    :verificationCode = "verificationCode"
   )
 
+  <!-- 过户提交 抽屉 -->
+  Drawer(:closable="true", width="650", v-model="drawerDomainChange", title="提交过户", :mask-closable="maskClosable", @on-visible-change="drawerChange",)
+    comp-domain-change(
+      v-if="refresh",
+      :on-close="closeDrawer",
+      @refreshData="searchListData",
+      :defaultValue="defaultValueChange"
+    )
 </template>
 
 <script>
 import { mapState, mapActions } from 'vuex'
 import * as types from '@/store/types'
+import compDomainChange from '@/components/compDomainChange'
 import compUserAuthGroups from '@/components/compUserAuthGroups'
 import compDomainMgmtDetail from '@/components/compDomainMgmtDetail'
+import compDomainModifyDns from '@/components/compDomainModifyDns'
+import * as links from '@/global/linkdo.js'
 export default {
   components: {
     compUserAuthGroups,
-    compDomainMgmtDetail
+    compDomainMgmtDetail,
+    compDomainModifyDns,
+    compDomainChange
   },
   data () {
     return {
@@ -63,7 +98,16 @@ export default {
       loadingTable: true,
       loadingBtn: false,
       showDetail: false,
+      drawerDomainChange: false,
+      verificationCode: '',
+      showDns: false,
+      domainType: 0,
       disabledSafeLv: false,
+      moveGroupDisabled: true,
+      renewDisabled: true,
+      defaultValueChange: '',
+      detailData: {},
+      exportLink: links.EXPORT_DOMAIN_LIST,
       colllapseValue: '',
       list: [],
       userCompanys: [],
@@ -145,6 +189,7 @@ export default {
                 },
                 on: {
                   click: () => {
+                    this.showDetailFun(this.list[params.index])
                   }
                 }
               }, '详情'),
@@ -165,21 +210,122 @@ export default {
   },
   methods: {
     searchListData () {
+      this.moveGroupDisabled = true
       this.queryList(this.queryListParam({pageNum: 1}))
     },
     pageChange: function (curPage) {
       this.queryList(this.queryListParam({pageNum: curPage}))
     },
+    exportOrder () {
+      this.$refs.exportForm.submit()
+    },
+    closeDrawer () {
+      this.drawerDomainChange = false
+    },
+    drawerChange () {
+      this.refresh = this.drawerDomainChange ? true : false
+    },
+    setVerificationCode (v) {
+      alert(v)
+      this.verificationCode = v
+    },
     toBackList () {
       this.searchListData()
+      this.showDns = false
       this.showDetail = false
+    },
+    toBackDetail () {
+      this.showDetail = true
+      this.showDns = false
     },
     handleSelectAll (status) {
       this.$refs.selection.selectAll(status)
     },
     tableSelectChange (selected) {
       this.selectData = selected
-      this.disabledSafeLv = selected.length ? false : true
+      this.moveGroupDisabled = selected.length ? false : true
+      this.renewDisabled = selected.length ? false : true
+    },
+    renewFun () {
+      var params = {
+        param: {
+          jsonObj: this.selectData.map((v) => {
+            return {
+              domainName: v.domainName,
+              orderGoodsType: 2,
+              orderType: 2
+            }
+          })
+        },
+        callback: (response) => {
+          this.loadingBtn = false
+          if( response.data.code === '1000' ){
+            response.data.type = '2_2'
+            response.data.jsonObj.map((v) => {
+              v.price = v.goodsNumAndPrice[0].price+"_"+v.goodsNumAndPrice[0].unit
+              v.num = v.goodsNumAndPrice[0].num
+              v.unit = v.goodsNumAndPrice[0].unit
+            })
+            this.$store.commit(types.SET_PAY_ORDERS, response.data)
+            this.$router.push({path: '/payConfirm'})
+          } else {
+            if (response.data.code === '100') {
+              this.$Message.error('模板不存在')
+            } else if (response.data.code === '200') {
+              this.$Message.error('分组不存在')
+            } else if (response.data.code === '300') {
+              this.$Message.error('账户错误')
+            } else if (response.data.code === '400') {
+              this.$Message.error('json数据错误')
+            } else {
+            }
+          }
+        }
+      }
+      console.log(params.param)
+      this.queryOrderConfirm(params)
+    },
+    domainChangeFun () {
+      let flag = true
+      let domainString = this.selectData.map((v) => {
+        if (v.depositFlag===1) {
+          flag = false
+        }
+        return v.domainName
+      }).join(",")
+      // flag===true 执行过户，否则提示 错误信息
+      if (flag) {
+        this.defaultValueChange = domainString
+        this.drawerDomainChange = true
+      } else {
+        this.$Message.error('存在托管域名，禁止过户')
+      }
+
+    },
+    showDetailFun (item) {
+      this.domainType = item.depositFlag
+      this.showDetail = true
+      let params = {
+        param: {
+          domainId: item.id
+        },
+        callback: (response) => {
+          this.loadingBtn = false
+          if( response.data.code === '1000' ){
+            this.detailData = response.data.data
+          } else {
+
+          }
+        }
+      }
+      this.queryDomainManageDetail(params)
+    },
+    setDetailFun (obj) {
+      this.detailData = obj
+    },
+    showDnsFun () {
+      this.showDetail = false
+      this.showDns = true
     },
     hidePop () {
       this.visible = false
@@ -215,7 +361,9 @@ export default {
       return params
     },
     ...mapActions({
-      queryList: types.QUERY_DOMAIN_LIST
+      queryList: types.QUERY_DOMAIN_LIST,
+      queryDomainManageDetail: types.QUERY_DOMAIN_MANAGE_DETAIL,
+      queryOrderConfirm: types.QUERY_ORDER_CONFIRM
     })
   },
   computed: {
@@ -233,10 +381,12 @@ export default {
         let arrGroups = []
         if (state.user.userAuthGroups.companys) {
           arrGroups = this.GLOBALS.CONVERT_TREE(state.user.userAuthGroups.companys, {
-            title: 'id',
-            label: 'name',
+            title: 'name',
+            label: 'id',
             checked: 'checked',
-            children: 'groups'
+            children: 'groups',
+            disabled_lv1: true,
+            disabled_lv2: false
           })
         }
         return arrGroups
@@ -290,7 +440,7 @@ export default {
 .contDomainMgmt .tableTool .ivu-btn{
   margin: 0 5px;
 }
-.contDomainMgmt .tableTool .btnSafeLv span{
+.contDomainMgmt .tableTool .toolBtn span{
   color:#333;
 }
 .contDomainMgmt .tableTool a{

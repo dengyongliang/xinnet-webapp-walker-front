@@ -176,6 +176,14 @@ export default {
             orderPayType: 1
           }
           this.renewBackendLock(params)
+        } else if (this.payFinishData.type==="2_2") {
+          params.param = {
+            domainName: v.domainName,
+            orderMoney: v.price.split("_")[0] * 1,
+            orderGoodsNum: v.num,
+            orderPayType: 1
+          }
+          this.orderPayDomainRenew(params)
         } else {
           params.param = {
             templateId: templateId,
@@ -192,7 +200,8 @@ export default {
     ...mapActions({
       submitTransferIn: types.SUBMIT_TRANSFER_IN,
       buyBackendLock: types.BUY_BACKEND_LOCK,
-      renewBackendLock: types.RENEW_BACKEND_LOCK
+      renewBackendLock: types.RENEW_BACKEND_LOCK,
+      orderPayDomainRenew: types.ORDER_PAY_DOMAIN_RENEW
     })
   },
   computed: {

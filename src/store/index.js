@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import * as types from './types'
+import home from './home.js'
 import user from './user.js'
 import account from './account.js'
 import finance from './finance.js'
@@ -8,9 +9,11 @@ import role from './role.js'
 import company from './company.js'
 import order from './order.js'
 import domain from './domain.js'
+import notice from './notice.js'
+import record from './record.js'
 import rest from '../global/rest.js'
-// import * as links from '../global/linkdo.js'
-import * as links from '../global/linkdo_json.js'
+import * as links from '../global/linkdo.js'
+// import * as links from '../global/linkdo_json.js'
 Vue.use(Vuex)
 export default function makeStore () {
   return new Vuex.Store({
@@ -76,9 +79,9 @@ export default function makeStore () {
       [types.QUERY_USER_CUSTOMERS_LIST] ({ commit, rootState }, callback) {
         rest.post(links.QUERY_USER_CUSTOMERS_LIST, '',callback)
       },
-      [types.CHANGE_CUSTOMERS] ({ commit, rootState }, param) {
-        rest.post(links.CHANGE_CUSTOMERS, JSON.stringify(param),function () {
-          //Vue.$router.push({path: '/finance/overview'})
+      [types.CHANGE_CUSTOMERS] ({ commit, rootState }, params) {
+        rest.post(links.CHANGE_CUSTOMERS, JSON.stringify(params.param),function () {
+          params.vm.$router.push({path: '/home'})
         })
       },
       [types.GET_OLD_PHONE_CODE] ({ commit, rootState }, params) {
@@ -98,6 +101,9 @@ export default function makeStore () {
       },
       [types.RENEW_BACKEND_LOCK] ({ commit, rootState }, params) {
         rest.post(links.RENEW_BACKEND_LOCK, JSON.stringify(params.param), params.callback)
+      },
+      [types.GET_DOMAIN_MGMT_V_CODE] ({ commit, rootState }, params) {
+        rest.post(links.GET_DOMAIN_MGMT_V_CODE, JSON.stringify(params.param), params.callback)
       }
     },
     getters: {
@@ -109,7 +115,10 @@ export default function makeStore () {
       finance,
       company,
       order,
-      domain
+      domain,
+      home,
+      notice,
+      record
     }
   })
 }

@@ -2,6 +2,13 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import NProgress from 'nprogress'
 import Event from '@/global/event'
+import domain from './domain'
+import mgmt from './mgmt'
+import order from './order'
+import finance from './finance'
+import workorder from './workorder'
+import notice from './notice'
+import record from './record'
 Vue.use(Router)
 export const emitter = new Event()
 
@@ -90,147 +97,34 @@ const RouterMain = new Router({
       },
       children: [
         {
-          path: '/mgmt/enterprise',
-          name: 'MGMT_ENTERPRISE',
+          path: '/',
+          name: 'HOME',
           component (resolve) {
-            return require(['@/modular/mgmt/enterprise'], resolve)
+            return require(['@/modular/home'], resolve)
           },
           meta: {
-            title: '企业管理'
+            title: '首页'
           }
         },
         {
-          path: '/mgmt/myAccount',
-          name: 'MGMT_MY_ACCOUNT',
+          path: '/home',
+          name: 'HOME',
           component (resolve) {
-            return require(['@/modular/mgmt/myAccount'], resolve)
+            return require(['@/modular/home'], resolve)
           },
           meta: {
-            title: '我的账号'
-          }
-        },
-        {
-          path: '/mgmt/roles',
-          name: 'MGMT_ROLES',
-          component (resolve) {
-            return require(['@/modular/mgmt/roles'], resolve)
-          },
-          meta: {
-            title: '角色管理'
-          }
-        },
-        {
-          path: '/mgmt/accountMgmt',
-          name: 'MGMT_ACCOUNT',
-          component (resolve) {
-            return require(['@/modular/mgmt/accountMgmt'], resolve)
-          },
-          meta: {
-            title: '账号管理'
-          }
-        },
-        {
-          path: '/finance/overview',
-          name: 'FINANCE_OVERVIEW',
-          component (resolve) {
-            return require(['@/modular/finance/overview'], resolve)
-          },
-          meta: {
-            title: '财务总览'
-          }
-        },
-        {
-          path: '/finance/billMgmt',
-          name: 'FINANCE_BILLMGMT',
-          component (resolve) {
-            return require(['@/modular/finance/billMgmt'], resolve)
-          },
-          meta: {
-            title: '账单管理'
-          }
-        },
-        {
-          path: '/order/orderMgmt',
-          name: 'ORDER_MGMT',
-          component (resolve) {
-            return require(['@/modular/order/orderMgmt'], resolve)
-          },
-          meta: {
-            title: '订单管理'
-          }
-        },
-        {
-          path: '/workorder/order',
-          name: 'WORKORDER',
-          component (resolve) {
-            return require(['@/modular/workorder/order'], resolve)
-          },
-          meta: {
-            title: '工单管理'
-          }
-        },
-        {
-          path: '/domain/realname',
-          name: 'DOMAIN_REALNAME',
-          component (resolve) {
-            return require(['@/modular/domain/realNameTemplate'], resolve)
-          },
-          meta: {
-            title: '实名模板管理'
-          }
-        },
-        {
-          path: '/domain/change',
-          name: 'DOMAIN_CHANGE',
-          component (resolve) {
-            return require(['@/modular/domain/domainChange'], resolve)
-          },
-          meta: {
-            title: '域名过户'
-          }
-        },
-        {
-          path: '/domain/transferin',
-          name: 'DOMAIN_TRANSFERIN',
-          component (resolve) {
-            return require(['@/modular/domain/transferInList'], resolve)
-          },
-          meta: {
-            title: '域名转入管理'
-          }
-        },
-        {
-          path: '/domain/realnameDomain',
-          name: 'DOMAIN_REALNAME_DOMAIN',
-          component (resolve) {
-            return require(['@/modular/domain/realnameDomain'], resolve)
-          },
-          meta: {
-            title: '域名实名制管理'
-          }
-        },
-        {
-          path: '/domain/security',
-          name: 'DOMAIN_SECURITY',
-          component (resolve) {
-            return require(['@/modular/domain/securityService'], resolve)
-          },
-          meta: {
-            title: '域名安全服务'
-          }
-        },
-        {
-          path: '/domain/mgmt',
-          name: 'DOMAIN_MGMT',
-          component (resolve) {
-            return require(['@/modular/domain/domainMgmt'], resolve)
-          },
-          meta: {
-            title: '域名管理'
+            title: '首页'
           }
         }
       ]
-    }
+    },
+    domain,
+    finance,
+    mgmt,
+    order,
+    workorder,
+    notice,
+    record
   ],
   base: '/',
   scrollBehavior (to, from, savedPosition) {

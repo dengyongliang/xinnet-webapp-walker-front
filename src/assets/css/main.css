@@ -12,23 +12,19 @@
   width:200px;
   height:100%;
   background:#f6f8f9;
-  position:fixed;
-  top:0px;
-  left:0px;
   border-right:1px solid #ededed;
-  padding-top:50px;
-  z-index:5;
+  float: left;
 }
-
 .frameBottom .frameBody{
-  min-height:300px;
+  min-height:500px;
   margin-left: 200px;
   padding-top: 70px;
+  overflow: hidden;
 }
 /* pageTitle */
 .pageTitle{
     font-size: 16px;
-    font-weight: 200;
+    font-weight: normal;
     min-height: 34px;
     line-height: 34px;
     padding:0 20px;

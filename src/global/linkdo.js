@@ -158,4 +158,71 @@ export const BUY_BACKEND_LOCK = api + '/client-api/client/domainSafe/buyBackendL
 export const RENEW_BACKEND_LOCK = api + '/client-api/client/domainSafe/renewBackendLock'
 // 域名管理列表
 export const QUERY_DOMAIN_LIST = api + '/client-api/client/domain/domainList'
+// 域名管理-详情管理
+export const QUERY_DOMAIN_MANAGE_DETAIL = api + '/client-api/client/domain/domainManage'
+// 域名管理-设置域名分组
+export const SET_DOMAIN_GROUP = api + '/client-api/client/domain/setDomainGroup'
+// 域名管理-修改所有人信息
+export const SUBMIT_MOD_DOMAIN_REG_USER = api + '/client-api/client/domain/modDomainRegUser'
+// 域名管理-修改管理人信息
+export const SUBMIT_MOD_DOMAIN_ADM_USER = api + '/client-api/client/domain/modDomainAdmUser'
+// 域名管理-设置域名DNS
+export const SET_DOMAIN_DNS = api + '/client-api/client/domain/setDomainDns'
+// 发送验证码到域名分组管理人手机
+export const GET_DOMAIN_MGMT_V_CODE = api + '/client-api/server/message/send/domainManage'
+// 域名管理-续费
+export const ORDER_PAY_DOMAIN_RENEW = api + '/client-api/client/domain/renew'
+// 域名管理-导出管理列表
+export const EXPORT_DOMAIN_LIST = api + '/client-api/client/domain/exportDomain'
+// 域名总览-域名统计
+export const OVERVIEW_DOMAIN_STATISTICS = api + '/client-api/client/domainOverview/domainStatistics'
+// 域名总览-数量变化总览
+export const OVERVIEW_DOMAIN_COUNT_STATISTICS = api + '/client-api/client/domainOverview/domainCountStatistics'
+// 域名总览-实名模板统计
+export const OVERVIEW_TEMPLATE_STATISTICS = api + '/client-api/client/domainOverview/templateStatistics'
+// 域名总览-注册居锁统计
+export const OVERVIEW_BACKEND_LOCK_STATISTICS = api + '/client-api/client/domainOverview/backendLockStatistics'
+// 域名总览-实名认证统计
+export const OVERVIEW_DOMAIN_VERIFY_STATISTICS = api + '/client-api/client/domainOverview/domainVerifyStatistics'
+// 域名总览-急需续费域名统计
+export const OVERVIEW_DOMAIN_RENEW_STATISTICS = api + '/client-api/client/domainOverview/domainRenewStatistics'
+// 域名总览-转入中域名统计
+export const OVERVIEW_DOMAIN_TRANSFER_IN_STATISTICS = api + '/client-api/client/domainOverview/domainTransferInStatistics'
+// 域名总览-过户中域名统计
+export const OVERVIEW_DOMAIN_CHANGE_STATISTICS = api + '/client-api/client/domainOverview/domainChangeStatistics'
 
+// 首页-企业信息
+export const INDEX_MY_COMPANY = api + '/client-api/client/index/myCompany'
+// 首页-管家信息
+export const INDEX_MY_KEEPER = api + '/client-api/client/index/myKeeper'
+// 首页-域名统计
+export const INDEX_DOMAIN_STATISTICS = api + '/client-api/client/index/domainStatistics'
+// 首页-企业数量
+export const INDEX_COMPANY_STATISTICS = api + '/client-api/client/index/companyStatistics'
+// 首页-员工数量
+export const INDEX_USER_STATISTICS = api + '/client-api/client/index/userStatistics'
+// 首页-未出账单
+export const INDEX_PAY_STATISTICS_UNBILLED = api + '/client-api/client/index/payStatisticsUnBilled'
+// 首页-已出账单
+export const INDEX_PAY_STATISTICS_HISTORY_BILL = api + '/client-api/client/index/payStatisticsHistoryBill'
+// 首页-账户额度统计
+export const INDEX_ACCOUNT_STATISTICS = api + '/client-api/client/index/accountStatistics'
+
+// 监控通知管理列表
+export const QUERY_MAIL_MANAGE = api + '/client-api/client/monitor/mailManage'
+// 监控通知通知标记已读
+export const SET_MAIL_RECORD_READ = api + '/client-api/client/monitor/mailRecordRead'
+
+// 监控通知通知设置(新增或更新)
+export const SET_NOTIFY = api + '/client-api/client/monitor/notifySet'
+// 监控通知通知设置详情
+export const QUERY_NOTIFY_DETAIL = api + '/client-api/client/monitor/notifySetDetail'
+
+// 域名监控日志管理列表
+export const QUERY_DOMAIN_MONITOR_MANAGE = api + '/client-api/client/monitor/domainMonitorManage'
+// 员工监控日志管理列表
+export const QUERY_USER_MONITOR_MANAGE = api + '/client-api/client/monitor/userMonitorManage'
+// 域名监控日志导出
+export const EXPORT_MONITOR_DOMAIN_LOG = api + '/client-api/client/monitor/exportDomainLog'
+// 员工监控日志导出
+export const EXPORT_MONITOR_USER_LOG = api + '/client-api/client/monitor/exportUserLog'

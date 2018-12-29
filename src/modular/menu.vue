@@ -1,16 +1,16 @@
 <template lang="pug">
-vue-scroll.menuBody(:ops="ops")
+.menuBody
   .menuBox
     h3.menuT.lv1
       Icon.fontL(custom="i-icon i-icon-home" size="16")
-      router-link(to="/account/my") 首页
-  .menuBox
+      router-link(to="/home") 首页
+  .menuBox(style="display:none")
     h3.menuT.lv1
-      Icon.fontL(custom="i-icon i-icon-manage" size="16")
+      Icon.fontL(custom="i-icon i-icon-state" size="16")
       router-link(to="/account/my") 域名注册
-  .menuBox
+  .menuBox(style="display:none")
     h3.menuT.lv1
-      Icon.fontL(custom="i-icon i-icon-manage" size="16")
+      Icon.fontL(custom="i-icon i-icon-recommend" size="16")
       router-link(to="/account/my") 域名推荐
   .menuBox
     h3.menuT.lv1
@@ -18,7 +18,7 @@ vue-scroll.menuBody(:ops="ops")
       span 域名管理
     ul.menuList
       li.menuItem.lv2
-        router-link(to="/account/my") 域名总览
+        router-link(to="/domain/overview") 域名总览
       li.menuItem.lv2
         router-link(to="/domain/mgmt") 域名管理
       li.menuItem.lv2
@@ -52,7 +52,7 @@ vue-scroll.menuBody(:ops="ops")
         router-link(to="/finance/billMgmt") 账单管理
   .menuBox
     h3.menuT.lv1
-      Icon.fontL(custom="i-icon i-icon-bill" size="16")
+      Icon.fontL(custom="i-icon i-icon-file" size="16")
       span 订单
     ul.menuList
       li.menuItem.lv2
@@ -78,21 +78,19 @@ vue-scroll.menuBody(:ops="ops")
       span 监控日志
     ul.menuList
       li.menuItem.lv2
-        router-link(to="/service/butler") 域名监控日志
+        router-link(to="/record/domain") 域名监控日志
       li.menuItem.lv2
-        router-link(to="/service/worklist") 员工监控日志
+        router-link(to="/record/staff") 员工监控日志
   .menuBox
     h3.menuT.lv1
       Icon.fontL(custom="i-icon i-icon-notice" size="16")
       span 通知中心
     ul.menuList
       li.menuItem.lv2
-        router-link(to="/service/butler") 监控通知
-      li.menuItem.lv2
-        router-link(to="/service/worklist") 系统通知
-  .menuBox
+        router-link(to="/notice/monitoring") 监控通知
+  .menuBox(style="display:none")
     h3.menuT.lv1
-      Icon.fontL(custom="i-icon i-icon-manage" size="16")
+      Icon.fontL(custom="i-icon i-icon-housekeeper2" size="16")
       span 管家功能
     ul.menuList
       li.menuItem.lv2
@@ -105,12 +103,6 @@ import { mapState } from 'vuex'
 export default {
   data () {
     return {
-      ops: {
-        bar: {
-          background: 'rgba(0,0,0,0.2)',
-          keepShow: true
-        }
-      }
     }
   },
   computed: {
@@ -173,7 +165,7 @@ export default {
     cursor: pointer;
 }
 .menuBody .lv2{
-    padding-left: 30px;
+    padding-left: 27px;
 }
 .menuBody .menuItem a{
     color: #666;
@@ -183,6 +175,9 @@ export default {
     color: #e50012;
 }
 .menuBody .menuItem .router-link-active{
+  color:#2271f4;
+}
+.menuBody .menuT a.router-link-active{
   color:#2271f4;
 }
 </style>
