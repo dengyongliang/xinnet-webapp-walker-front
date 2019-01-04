@@ -4,57 +4,57 @@
     h3
       span 域名信息修改
     FormItem(label="通知范围：",)
-      comp-radio.radioRange(name="range",:list="rangeList",ref="range3")
+      comp-radio.radioRange(name="range",:list="rangeList",ref="range3", :defaultValue="notifyDetail.length>0?notifyDetail[getIdxItem(3)].notifyRange.toString():'1'")
     FormItem(label="通知方式：",)
-      comp-select.radioWay(name="way",:list="wayList",ref="way3")
+      comp-select.radioWay(name="way",:list="wayList",ref="way3", :defaultValue="notifyDetail.length>0?notifyDetail[getIdxItem(3)].notifyWay.toString():'3'")
 
   Form(:label-width="120", ref="type4") <!-- 4,5 -->
     h3
       span 域名过户/实名认证
     FormItem(label="通知范围：",)
-      comp-radio.radioRange(name="range",:list="rangeList",ref="range4") <!-- 4,5 -->
+      comp-radio.radioRange(name="range",:list="rangeList",ref="range4", :defaultValue="notifyDetail.length>0?notifyDetail[getIdxItem(4)].notifyRange.toString():'1'") <!-- 4,5 -->
     FormItem(label="通知方式：",)
-      comp-select.radioWay(name="way",:list="wayList",ref="way4") <!-- 4,5 -->
+      comp-select.radioWay(name="way",:list="wayList",ref="way4", :defaultValue="notifyDetail.length>0?notifyDetail[getIdxItem(4)].notifyWay.toString():'3'") <!-- 4,5 -->
 
   Form(:label-width="120", ref="type8")
     h3
       span 域名安全设置
     FormItem(label="通知范围：",)
-      comp-radio.radioRange(name="range",:list="rangeList",ref="range8")
+      comp-radio.radioRange(name="range",:list="rangeList",ref="range8", :defaultValue="notifyDetail.length>0?notifyDetail[getIdxItem(8)].notifyRange.toString():'1'")
     FormItem(label="通知方式：",)
-      comp-select.radioWay(name="way",:list="wayList",ref="way8")
+      comp-select.radioWay(name="way",:list="wayList",ref="way8", :defaultValue="notifyDetail.length>0?notifyDetail[getIdxItem(8)].notifyWay.toString():'3'")
 
   Form(:label-width="120", ref="type2")
     h3
       span 域名状态变化
     FormItem(label="通知范围：",)
-      comp-radio.radioRange(name="range",:list="rangeList",ref="range2")
+      comp-radio.radioRange(name="range",:list="rangeList",ref="range2", :defaultValue="notifyDetail.length>0?notifyDetail[getIdxItem(2)].notifyRange.toString():'1'")
     FormItem(label="通知方式：",)
-      comp-select.radioWay(name="way",:list="wayList",ref="way2")
+      comp-select.radioWay(name="way",:list="wayList",ref="way2", :defaultValue="notifyDetail.length>0?notifyDetail[getIdxItem(2)].notifyWay.toString():'3'")
 
   Form(:label-width="120", ref="type6") <!-- 6,7 -->
     h3
       span 域名解析/DNS服务器修改
     FormItem(label="通知范围：",)
-      comp-radio.radioRange(name="range",:list="rangeList",ref="range6") <!-- 6,7 -->
+      comp-radio.radioRange(name="range",:list="rangeList",ref="range6", :defaultValue="notifyDetail.length>0?notifyDetail[getIdxItem(6)].notifyRange.toString():'1'") <!-- 6,7 -->
     FormItem(label="通知方式：",)
-      comp-select.radioWay(name="way",:list="wayList",ref="way6") <!-- 6,7 -->
+      comp-select.radioWay(name="way",:list="wayList",ref="way6", :defaultValue="notifyDetail.length>0?notifyDetail[getIdxItem(6)].notifyWay.toString():'3'") <!-- 6,7 -->
 
   Form(:label-width="120", ref="type1")
     h3
       span 域名到期时间通知
     FormItem(label="通知范围：",)
-      comp-radio.radioRange(name="range",:list="rangeList",ref="range1")
+      comp-radio.radioRange(name="range",:list="rangeList",ref="range1", :defaultValue="notifyDetail.length>0?notifyDetail[getIdxItem(1)].notifyRange.toString():'1'")
     FormItem(label="通知方式：",)
-      comp-select.radioWay(name="way",:list="wayList",ref="way1")
+      comp-select.radioWay(name="way",:list="wayList",ref="way1", :defaultValue="notifyDetail.length>0?notifyDetail[getIdxItem(1)].notifyWay.toString():'3'")
 
   Form(:label-width="120", ref="type9")
     h3
       span 域名转入
     FormItem(label="通知范围：",)
-      comp-radio.radioRange(name="range",:list="rangeList",ref="range9")
+      comp-radio.radioRange(name="range",:list="rangeList",ref="range9", :defaultValue="notifyDetail.length>0?notifyDetail[getIdxItem(9)].notifyRange.toString():'1'")
     FormItem(label="通知方式：",)
-      comp-select.radioWay(name="way",:list="wayList",ref="way9")
+      comp-select.radioWay(name="way",:list="wayList",ref="way9", :defaultValue="notifyDetail.length>0?notifyDetail[getIdxItem(9)].notifyWay.toString():'3'")
 
   .btn
     Button(type="primary",@click="saveForm",:loading="loadingBtn") 保存
@@ -76,32 +76,33 @@ export default {
   data () {
     return {
       loadingBtn: false,
+      notifyDetail: [],
       rangeList: [
         {
           value: '仅通知域名所在分组负责人',
-          label: 1
+          label: "1"
         },
         {
           value: '通知域名所在分组全部管理人员',
-          label: 2
+          label: "2"
         }
       ],
       wayList: [
         {
           label: '不通知',
-          value: 1
+          value: "1"
         },
         {
           label: '短信通知',
-          value: 2
+          value: "2"
         },
         {
           label: '邮件通知',
-          value: 3
+          value: "3"
         },
         {
           label: '短信和邮件通知',
-          value: 4
+          value: "4"
         }
       ]
     }
@@ -116,36 +117,60 @@ export default {
               if (i===5) {
                 arr.push({
                   type: i,
-                  way: vm.$refs.way4.value,
-                  range: vm.$refs.way4.value,
+                  way: vm.$refs.way4.value * 1,
+                  range: vm.$refs.way4.value * 1,
                 })
               } else if (i===7) {
                 arr.push({
                   type: i,
-                  way: vm.$refs.way6.value,
-                  range: vm.$refs.way6.value,
+                  way: vm.$refs.way6.value * 1,
+                  range: vm.$refs.way6.value * 1,
                 })
               } else {
                 arr.push({
                   type: i,
-                  way: vm.$refs['way'+i].value,
-                  range: vm.$refs['range'+i].value
+                  way: vm.$refs['way'+i].value * 1,
+                  range: vm.$refs['range'+i].value * 1
                 })
               }
             }
             return arr
           }(this)
+        },
+        callback: (response) => {
+          this.loadingBtn = false
+          if( response.data.code === '1000' ){
+            this.$Message.success('保存成功')
+            this.$emit("refreshData")
+          } else {
+          }
         }
       }
       console.log(params.param)
+      this.setNotify(params)
+    },
+    getIdxItem (v) {
+      return this.notifyDetail.findIndex((item)=>(item.notifyType === v))
     },
     ...mapActions({
-      setNotify: types.SET_NOTIFY
+      setNotify: types.SET_NOTIFY,
+      queryNotifyDetail: types.QUERY_NOTIFY_DETAIL
     })
   },
   computed: {
   },
   beforeMount () {
+    let params = {
+      param: {},
+      callback: (response) => {
+        this.loadingBtn = false
+        if( response.data.code === '1000' ){
+          this.notifyDetail = response.data.data.list
+        } else {
+        }
+      }
+    }
+    this.queryNotifyDetail(params)
   },
   watch: {
   }

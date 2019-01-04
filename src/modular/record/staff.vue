@@ -70,7 +70,12 @@ export default {
           title: '员工',
           width: 150,
           key: 'userId',
-          className: 'col2'
+          className: 'col2',
+          render: (h, params) => {
+            return h('div', [
+              h('span', {}, `${this.list[params.index].userName}(${this.list[params.index].userCode})` )
+            ])
+          }
         },
         {
           title: '事件类型',

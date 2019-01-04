@@ -79,7 +79,7 @@
               span.r
                 em(v-show="overviewDomainCount.ad === 0") {{overviewDomainCount.ad}}个
                 em(v-show="overviewDomainCount.ad > 0") <Icon type="ios-arrow-round-up" class="add" /> {{overviewDomainCount.ad}}个
-                em(v-show="overviewDomainCount.ad < 0") <Icon type="ios-arrow-round-up" class="del" /> {{overviewDomainCount.ad}}个
+                em(v-show="overviewDomainCount.ad < 0") <Icon type="ios-arrow-round-down" class="del" /> {{overviewDomainCount.ad}}个
         Col(span="8")
           strong 新增域名数
           em.num {{overviewDomainCount.add}}

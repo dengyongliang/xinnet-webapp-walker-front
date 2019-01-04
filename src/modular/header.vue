@@ -1,31 +1,46 @@
 <template lang="pug">
-  .frameTop.clear
-    .logo
-      img(src="../../static/img/logo.png")
-    .right
-      Poptip(:title="myUserInfo.userName", content="content <a>sfs</a>", placement="bottom")
-        div(slot="content")
-          span {{myUserInfo.manageCustomerName}}
-          a(href="javascript:;",@click="",class="btnSwitch") 切换
-        span.avatar
-          Avatar(:src="myUserInfo.companyLogoFile",size="small")
-          span.name {{myUserInfo.userName}}
-          Icon(type="md-arrow-dropdown")
-      span.line |
-      span.email
-        Icon(type="ios-mail-outline")
-        em.num 1
-      span.line |
-      a(href="http://www.xinnet.com") 新网首页
-      a(href="javascript:;", @click="logout", class="exit") 退出
+.frameTop.clear
+  .logo
+    img(src="../../static/img/logo.png")
+  .right
+    Poptip(:title="myUserInfo.userName", content="content <a>sfs</a>", placement="bottom")
+      div(slot="content")
+        span {{myUserInfo.manageCustomerName}}
+        a(href="javascript:;",@click="showModals=true",class="btnSwitch") 切换
+      span.avatar
+        Avatar(:src="myUserInfo.companyLogoFile",size="small")
+        span.name {{myUserInfo.userName}}
+        Icon(type="md-arrow-dropdown")
+    span.line |
+    span.email
+      Icon(type="ios-mail-outline")
+      em.num 1
+    span.line |
+    a(href="http://www.xinnet.com") 新网首页
+    a(href="javascript:;", @click="logout", class="exit") 退出
+
+  <!-- 切换客户 -->
+  Modal(
+    v-model="showModals",
+    title="切换客户",
+    :loading="loadingBtn",
+    :footer-hide="true"
+  )
+    comp-switch-client(:onClose="closeModal", @parentEvent="parentEvent")
 </template>
 
 <script>
 import { mapState, mapActions } from 'vuex'
 import * as types from '@/store/types'
+import compSwitchClient from '@/components/compSwitchClient'
 export default {
+  components: {
+    compSwitchClient
+  },
   data () {
     return {
+      loadingBtn: false,
+      showModals: false
     }
   },
   computed: {
@@ -48,6 +63,12 @@ export default {
         }
       }
       this.loginOut(params)
+    },
+    closeModal () {
+      this.showModals = false
+    },
+    parentEvent () {
+
     },
     ...mapActions({
       loginOut: types.LOGIN_OUT,

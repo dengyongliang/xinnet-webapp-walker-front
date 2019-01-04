@@ -210,3 +210,21 @@ export const SET_MAIL_RECORD_READ = 'http://localhost:5500/static/data/mailManag
 export const QUERY_DOMAIN_MONITOR_MANAGE = 'http://localhost:5500/static/data/domainMonitorManage.js'
 // 员工监控日志管理列表
 export const QUERY_USER_MONITOR_MANAGE = 'http://localhost:5500/static/data/userMonitorManage.js'
+// 自有监控报告数量预览
+export const QUERY_DOMAIN_MONITOR_CHANGE_REPORT = 'http://localhost:5500/static/data/domainMonitorChangeReport.js'
+// 自有监控报告域名安全
+export const QUERY_DOMAIN_MONITOR_SAFE_REPORT = 'http://localhost:5500/static/data/domainMonitorSafeReport.js'
+// 自有监控报告到期时间
+export const QUERY_DOMAIN_MONITOR_EXPIRE_REPORT = 'http://localhost:5500/static/data/domainMonitorExpireReport.js'
+// 域名资产报告(资产概况)
+export const QUERY_DOMAIN_ASSETS_VIEW_REPORT = 'http://localhost:5500/static/data/domainAssetsViewReport.js'
+// 域名资产报告(域名所属公司柱状图)
+export const QUERY_DOMAIN_COMPANY_VIEW_REPORT = 'http://localhost:5500/static/data/domainCompanyViewReport.js'
+// 域名资产报告(域名后缀分布柱状图)
+export const QUERY_DOMAIN_SUFFIX_VIEW_REPORT = 'http://localhost:5500/static/data/domainSuffixViewReport.js'
+// 域名资产报告(域名安全保护一般保护概览柱状图)
+export const QUERY_DOMAIN_SAFE_NORMAL_REPORT = 'http://localhost:5500/static/data/domainSafeNormalReport.js'
+// 域名资产报告(域名安全保护重要保护概览柱状图)
+export const QUERY_DOMAIN_SAFE_IMPORTANT_REPORT = 'http://localhost:5500/static/data/domainSafeImportantReport.js'
+// 域名资产报告(域名安全保护统计)
+export const QUERY_DOMAIN_SAFE_RATE_REPORT = 'http://localhost:5500/static/data/domainSafeRateReport.js'

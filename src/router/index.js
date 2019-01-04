@@ -9,6 +9,8 @@ import finance from './finance'
 import workorder from './workorder'
 import notice from './notice'
 import record from './record'
+import report from './report'
+import monitor from './monitor'
 Vue.use(Router)
 export const emitter = new Event()
 
@@ -124,7 +126,9 @@ const RouterMain = new Router({
     order,
     workorder,
     notice,
-    record
+    record,
+    report,
+    monitor
   ],
   base: '/',
   scrollBehavior (to, from, savedPosition) {

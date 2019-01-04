@@ -226,3 +226,22 @@ export const QUERY_USER_MONITOR_MANAGE = api + '/client-api/client/monitor/userM
 export const EXPORT_MONITOR_DOMAIN_LOG = api + '/client-api/client/monitor/exportDomainLog'
 // 员工监控日志导出
 export const EXPORT_MONITOR_USER_LOG = api + '/client-api/client/monitor/exportUserLog'
+// 自有监控报告数量预览
+export const QUERY_DOMAIN_MONITOR_CHANGE_REPORT = api + '/client-api/client/report/domainMonitorChangeReport'
+// 自有监控报告域名安全
+export const QUERY_DOMAIN_MONITOR_SAFE_REPORT = api + '/client-api/client/report/domainMonitorSafeReport'
+// 自有监控报告到期时间
+export const QUERY_DOMAIN_MONITOR_EXPIRE_REPORT = api + '/client-api/client/report/domainMonitorExpireReport'
+
+// 域名资产报告(资产概况)
+export const QUERY_DOMAIN_ASSETS_VIEW_REPORT = api + '/client-api/client/report/domainAssetsViewReport'
+// 域名资产报告(域名所属公司柱状图)
+export const QUERY_DOMAIN_COMPANY_VIEW_REPORT = api + '/client-api/client/report/domainCompanyViewReport'
+// 域名资产报告(域名后缀分布柱状图)
+export const QUERY_DOMAIN_SUFFIX_VIEW_REPORT = api + '/client-api/client/report/domainSuffixViewReport'
+// 域名资产报告(域名安全保护一般保护概览柱状图)
+export const QUERY_DOMAIN_SAFE_NORMAL_REPORT = api + '/client-api/client/report/domainSafeNormalReport'
+// 域名资产报告(域名安全保护重要保护概览柱状图)
+export const QUERY_DOMAIN_SAFE_IMPORTANT_REPORT = api + '/client-api/client/report/domainSafeImportantReport'
+// 域名资产报告(域名安全保护统计)
+export const QUERY_DOMAIN_SAFE_RATE_REPORT = api + '/client-api/client/report/domainSafeRateReport'

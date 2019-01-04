@@ -37,9 +37,9 @@
       span 域名监控
     ul.menuList
       li.menuItem.lv2
-        router-link(to="/client/client") 自有域名监控
+        router-link(to="/monitor/own") 自有域名监控
       li.menuItem.lv2
-        router-link(to="/client/clientAccount") 关注域名监控
+        router-link(to="/monitor/focus") 关注域名监控
 
   .menuBox
     h3.menuT.lv1

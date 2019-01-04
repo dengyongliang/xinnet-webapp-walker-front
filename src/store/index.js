@@ -11,6 +11,7 @@ import order from './order.js'
 import domain from './domain.js'
 import notice from './notice.js'
 import record from './record.js'
+import report from './report.js'
 import rest from '../global/rest.js'
 import * as links from '../global/linkdo.js'
 // import * as links from '../global/linkdo_json.js'
@@ -81,7 +82,8 @@ export default function makeStore () {
       },
       [types.CHANGE_CUSTOMERS] ({ commit, rootState }, params) {
         rest.post(links.CHANGE_CUSTOMERS, JSON.stringify(params.param),function () {
-          params.vm.$router.push({path: '/home'})
+          window.location.href="/home"
+          //params.vm.$router.push({path: '/home'})
         })
       },
       [types.GET_OLD_PHONE_CODE] ({ commit, rootState }, params) {
@@ -118,7 +120,8 @@ export default function makeStore () {
       domain,
       home,
       notice,
-      record
+      record,
+      report
     }
   })
 }

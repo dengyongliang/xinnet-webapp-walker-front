@@ -34,7 +34,8 @@
   Drawer(:closable="true", width="640", v-model="drawerNoticeSet", title="通知设置", :mask-closable="maskClosable", @on-visible-change="drawerChange")
     comp-notice-set(
       v-if="refresh",
-      :on-close="closeDrawer"
+      :on-close="closeDrawer",
+      @refreshData="searchListData"
     )
 </template>
 
@@ -129,6 +130,7 @@ export default {
   methods: {
     searchListData () {
       // 查询数据
+      this.drawerNoticeSet = false
       this.queryList(this.queryListParam({pageNum: 1}))
     },
     pageChange: function (curPage) {
