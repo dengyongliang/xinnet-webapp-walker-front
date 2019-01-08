@@ -112,8 +112,8 @@ export default {
     }
   },
   methods: {
-    changeRegistrantType (v) {
-      this.registrantType = v
+    changeRegistrantType (obj) {
+      this.registrantType = obj.value
     },
     changeUploadStatus () {
       this.status = 'view'

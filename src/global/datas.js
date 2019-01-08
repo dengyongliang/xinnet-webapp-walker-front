@@ -92,6 +92,10 @@ const SERVICE_STATE = {
   1: '续费期',
   2: '偿还期'
 }
+const MGMT_TYPE = {
+  0: '自主管理',
+  1: '托管管理'
+}
 const RECORD_DOMAIN_EVENT_TYPE = {
   1: '域名到期时间提醒',
   2: '域名状态修改',
@@ -116,6 +120,21 @@ const RECORD_USER_EVENT_TYPE = {
   9: '域名信息修改',
   10: '域名安全设置'
 }
+const MONITOR_LOG = {
+  0: '无日志',
+  1: '重要监控记录',
+  2: '有监控记录'
+}
+const DOMAIN_SUFFIX = {
+  '.com': '.com',
+  '.cn': '.cn',
+  '.net': '.net',
+  '.com.cn': '.com.cn',
+  '.xyz': '.xyz',
+  '.cc': '.cc',
+  'otherSuffix': '其他后缀'
+}
+
 export default
 {
   ORDER_TYPE,
@@ -132,5 +151,8 @@ export default
   SERVICE_TYPE,
   SERVICE_STATE,
   RECORD_USER_EVENT_TYPE,
-  RECORD_DOMAIN_EVENT_TYPE
+  RECORD_DOMAIN_EVENT_TYPE,
+  MGMT_TYPE,
+  MONITOR_LOG,
+  DOMAIN_SUFFIX
 }

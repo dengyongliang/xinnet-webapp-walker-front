@@ -103,8 +103,8 @@ export default {
       this.status = 'view'
       this.modify = true
     },
-    isTempChange (v) {
-      this.isTemp = v * 1
+    isTempChange (obj) {
+      this.isTemp = obj.value * 1
     },
     registrantChange (v) {
       this.registrantType = v

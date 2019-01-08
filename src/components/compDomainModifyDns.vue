@@ -71,8 +71,8 @@ export default {
     }
   },
   methods: {
-    changeRadio (v) {
-      this.dns = v
+    changeRadio (obj) {
+      this.dns = obj.value
     },
     submitXinnet () {
       this.loadingBtn = true

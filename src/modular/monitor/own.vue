@@ -21,7 +21,7 @@
         <Input v-model="value" placeholder="请输入域名" />
         Button(type="primary", @click="",:loading="loadingBtn") 查询
     .filter()
-      comp-aside-filter()
+      comp-aside-filter(:show="[3,4,5,6,7,8,9,10,11,12,13]")
     <!-- 列表主体 -->
     .secTable.secTable2
       <Table :columns="columns" :data="list" :loading="loadingTable"></Table>
