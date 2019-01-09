@@ -14,7 +14,7 @@ Collapse.compAsideFilter(v-model="colllapseValue",accordion, @on-change="colllap
       comp-aside-filter1(:filterData="dataServiceState", ref="dataServiceState")
   Panel(name="4", v-if="show.indexOf(4) >= 0") 管理公司
     div(slot="content")
-      comp-aside-filter3(:filterData="dataMgmtCompany", ref="dataMgmtCompany", @showLv2="showLv2", from="dataMgmtCompany", @changeData="changeData")
+      comp-aside-filter3(:filterData="dataMgmtCompany", ref="dataMgmtCompany", from="dataMgmtCompany", @changeData="changeData")
   Panel(name="5", v-if="show.indexOf(5) >= 0") 监控日志
     div(slot="content")
       comp-aside-filter1(:filterData="dataMonitorLog", ref="dataMonitorLog",)
@@ -29,7 +29,7 @@ Collapse.compAsideFilter(v-model="colllapseValue",accordion, @on-change="colllap
       comp-aside-filter1(:filterData="dataDomainSuffix", ref="dataDomainSuffix",)
   Panel(name="9", v-if="show.indexOf(9) >= 0") 安全服务
     div(slot="content")
-      comp-aside-filter3(:filterData="dataSafe", ref="dataSafe", @showLv2="showLv2", from="dataSafe", @changeData="changeData")
+      comp-aside-filter3(:filterData="dataSafe", ref="dataSafe", @changeData="changeData")
   Panel(name="10", v-if="show.indexOf(10) >= 0") 管理方式
     div(slot="content")
       comp-aside-filter1(:filterData="dataMgmtMethod", ref="dataMgmtMethod",)
@@ -43,34 +43,16 @@ Collapse.compAsideFilter(v-model="colllapseValue",accordion, @on-change="colllap
     div(slot="content")
       comp-aside-filter2(:filterData="dataTimeSubmit", ref="dataTimeSubmit",)
 
-  Drawer(title="", width="220", :closable="false", v-model="showDrawer", :inner="true", :transfer="false", :mask="false", :scrollable="true")
-    h3.h3T
-      a.back(@click="hideLv2") < 完成
-    .lv2
-      Checkbox.checkBoxAll(
-        :indeterminate="indeterminate",
-        :value="checkAll",
-        @click.prevent.native="handleCheckAll"
-      ) 全选
-      CheckboxGroup(v-model="valueLv2", @on-change="checkboxChange")
-        Checkbox(v-for="item in dataLv2", :label="item.label",)
-          span {{item.value}}
 </template>
 
 <script>
 import { mapState, mapActions } from 'vuex'
 import * as types from '@/store/types'
-import compCheckbox from '@/components/compCheckbox'
-import compRadio from '@/components/compRadio'
-import compTag from '@/components/compTag'
 import compAsideFilter1 from '@/components/compAsideFilter1'
 import compAsideFilter2 from '@/components/compAsideFilter2'
 import compAsideFilter3 from '@/components/compAsideFilter3'
 export default {
   components: {
-    compCheckbox,
-    compRadio,
-    compTag,
     compAsideFilter1,
     compAsideFilter2,
     compAsideFilter3
@@ -89,11 +71,6 @@ export default {
   data () {
     return {
       status: 1,
-      valueLv2: [],
-      from: '',
-      index: 0,
-      indeterminate: false,
-      checkAll: false,
       timeData: [
         {
           label: '',
@@ -162,11 +139,6 @@ export default {
           value: '保护级别',
           groups: [
             {
-              "label": '',
-              "checked": false,
-              "value": "全部"
-            },
-            {
               "label": 'normal',
               "checked": false,
               "value": "普通域名"
@@ -184,11 +156,6 @@ export default {
           checked: false,
           groups: [
             {
-              "label": '',
-              "checked": false,
-              "value": "全部"
-            },
-            {
               "label": '1',
               "checked": false,
               "value": "已开启"
@@ -205,11 +172,6 @@ export default {
           value: '注册局锁',
           checked: false,
           groups: [
-            {
-              "label": '',
-              "checked": false,
-              "value": "全部"
-            },
             {
               "label": '1',
               "checked": false,
@@ -237,11 +199,6 @@ export default {
           value: '禁止更新',
           checked: false,
           groups: [
-            {
-              "label": '',
-              "checked": false,
-              "value": "全部"
-            },
             {
               "label": '1',
               "checked": false,
@@ -324,13 +281,7 @@ export default {
       dataTimeReg: [],
       dataTimeExpire: [],
       dataTimeSubmit: [],
-      value: ['box1'],
-      showDrawer: false,
       colllapseValue: '',
-      drawerInner1: false,
-      from: '',
-      index: 0,
-      dataLv2: [],
       len: 0
     }
   },
@@ -383,47 +334,6 @@ export default {
     colllapseChange () {
       this.status = 2
     },
-    checkboxChange (data) {
-      if (data.length === this.len) {
-        this.indeterminate = false;
-        this.checkAll = true;
-      } else if (data.length > 0) {
-        this.indeterminate = true;
-        this.checkAll = false;
-      } else {
-        this.indeterminate = false;
-        this.checkAll = false;
-      }
-      this.dataLv2.map((v, i)=>{
-        if (this.valueLv2.indexOf(v.label) >= 0) {
-          this.$set(v, 'checked', true)
-        } else {
-          this.$set(v, 'checked', false)
-        }
-      })
-    },
-    handleCheckAll () {
-      if (this.indeterminate) {
-        this.checkAll = false;
-      } else {
-        this.checkAll = !this.checkAll;
-      }
-      this.indeterminate = false;
-
-      if (this.checkAll) {
-        this.valueLv2 = this.dataLv2.map((v)=>{
-          return v.label
-        })
-        this.dataLv2.map((v, i)=>{
-          this.$set(v, 'checked', true)
-        })
-      } else {
-        this.valueLv2 = []
-        this.dataLv2.map((v, i)=>{
-          this.$set(v, 'checked', false)
-        })
-      }
-    },
     changeData(obj) {
       console.log(obj.from)
       this[obj.from] = obj.data
@@ -435,34 +345,6 @@ export default {
         this.indeterminate = false
         this.checkAll = false
       }
-    },
-    hideLv2 () {
-      console.log(this[this.from])
-      this.$set(this[this.from][this.index], 'groups', this.dataLv2)
-       console.log(this[this.from])
-      this.showDrawer = false
-    },
-    showLv2 (obj) {
-      this.from = obj.from
-      this.index = obj.index
-      this.showDrawer = true
-      this.dataLv2 = this[obj.from][obj.index].groups
-      let arr = []
-      let groups = this[obj.from][obj.index].groups
-      this.len = groups.length
-      for (var i=0; i<this.len; i++) {
-        if (groups[i].checked) {
-          arr.push(groups[i].label)
-        }
-      }
-      this.valueLv2 = arr
-    },
-    getDefault (list) {
-      return list.map((v)=>{
-        if (v.checked) {
-          return v
-        }
-      })
     }
   },
   beforeMount () {
