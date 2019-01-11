@@ -1,9 +1,9 @@
 <template lang="pug">
 .compMonitorOwnDetail
   .domainName
-    h2 xxxxx.com
+    h2 {{detailData.domain?detailData.domain.domainName:''}}
       Icon(type="md-star", style="color:#f00")
-      .time 更新时间：2019-22-22 66:22
+      .time 更新时间：{{detailData.domain?detailData.domain.modifyDate:''}}
 
   .secBox.secBox1
     h3.h3T.clear
@@ -12,22 +12,22 @@
       table
         tr
           td.td1 注册商信息
-          td.td2 注册商：新网
+          td.td2 注册商：{{detailData.domain?detailData.domain.modifyDate:''}}
           td.td3
           td.td4
         tr
           td.td1 域名所有人信息
-          td.td2 域名所有人：北京网讯科技有限公司
-          td.td3 注册邮箱：app@xinnet.com
+          td.td2 域名所有人：{{detailData.domainUser?detailData.domainUser.organizeNameCn:''}}
+          td.td3 注册邮箱：{{detailData.domainUser?detailData.domainUser.userEmail:''}}
           td.td4
         tr
           td.td1 时间信息
-          td.td2 注册时间：2002-08-23
-          td.td3 到期时间：2022-08-23
-          td.td4 更新日期：2018-09-12
+          td.td2 注册时间：{{detailData.domain?detailData.domain.applyDate:''}}
+          td.td3 到期时间：{{detailData.domain?detailData.domain.expireDate:''}}
+          td.td4 更新日期：{{detailData.domain?detailData.domain.modifyDate:''}}
         tr
           td.td1 域名状态
-          td.td2 域名状态：OK（正常状态）
+          td.td2 {{detailData.domain?detailData.domain.domainStatus:''}}
             Tooltip(placement="top-start")
               span(slot="content", style="color:#fff") 解析监控列表仅记录3个月内解析修改情况，<br />详细域名解析监控日志，<br />请查看下方全部域名监控日志。
               Icon(custom="i-icon i-icon-tips", size="16")
@@ -36,11 +36,9 @@
         tr
           td.td1 DNS服务器
           td.td2(colspan="3")
-            span.dns NS19.XINCACHE.COM
-            span.dns NS19.XINCACHE.COM
-            span.dns NS19.XINCACHE.COM
+            span.dns(v-for="item in detailData.domainDnsList") {{item.dnsName}}
 
-  .secBox.secBox2
+  .secBox.secBox2(style="display:none")
     h3.h3T.clear
       span.t 解析监控
 
@@ -48,7 +46,7 @@
     h3.h3T.clear
       span.t 监控日志
     .secFilter
-      form.filterWrap
+      form.filterWrap(ref="exportForm",target="_blank" method="post" accept-charset="utf-8" :action="exportLink")
         table
           tr.row1
             td.td1
@@ -59,9 +57,13 @@
               .inputWrap
                 Select(v-model="type")
                   Option(v-for="item in typeList",:value="item.value",:key="item.value") {{ item.label }}
-              Button(type="primary", @click="",:loading="loadingBtn") 查询
+              Button(type="primary", @click="searchListData",:loading="loadingBtn") 查询
+              input(type="hidden", name="domainName", :value="domainName")
+              input(type="hidden", name="createTimeBegin", :value="time[0]")
+              input(type="hidden", name="createTimeEnd", :value="time[1]")
+
             td.tdBtn
-              a 导出日志
+              a(href="javascript:;", @click="exportOrder") 导出日志
     .secTable.secTable2
       <Table :columns="columns" :data="list" :loading="loadingTable"></Table>
     <!-- 翻页区 -->
@@ -69,46 +71,55 @@
 </template>
 
 <script>
+import { mapState, mapActions } from 'vuex'
+import * as types from '@/store/types'
+import * as links from '@/global/linkdo.js'
 export default {
   name: 'compMonitorOwnDetail',
   components: {
   },
   props: {
-    detailData: {
-      type: Object,
-      default: function () {
-        return {
-          data: []
-        }
-      }
+    domainName: {
+      type: String,
+      default: ''
     }
   },
   data () {
     return {
       type: '',
-      time: [],
+      time: ['',''],
       loadingTable: false,
       loadingBtn: false,
+      detailData: {},
+      exportLink: links.EXPORT_DOMAIN_LOG,
       columns: [
         {
-          title: '时间',
+          title: '日志记录时间',
           width: 200,
-          key: 'sendTime',
-          className: 'col1',
+          key: 'createTime',
+          className: 'col1'
+        },
+        {
+          title: '域名',
+          width: 200,
+          key: 'domainName',
+          className: 'col2'
+        },
+        {
+          title: '事件类型',
+          width: 180,
+          key: 'type',
+          className: 'col3',
           render: (h, params) => {
             return h('div', [
-              h('i', {
-                class: this.list[params.index].readFlag === 1 ? 'unRead' : ''
-              }, '●' ),
-              h('span', {
-              }, this.list[params.index].sendTime )
+              h('span', {}, this.DATAS.RECORD_DOMAIN_EVENT_TYPE[this.list[params.index].type] )
             ])
           }
         },
         {
-          title: '通知内容',
+          title: '日志详情',
           key: 'title',
-          className: 'col2',
+          className: 'content',
           render: (h, params) => {
             return h('div', [
               h('Icon', {
@@ -119,33 +130,25 @@ export default {
                 style: {
                   color: '#f00',
                   margin: '0 5px 0 0',
-                  display: this.list[params.index].sendType === 2 ? "inline-block" : "none"
+                  display: this.list[params.index].levelType === 2 ? "inline-block" : "none"
                 }
-              }, this.list[params.index].title ),
-              h('a', {
-                style: {
-                  color: '#2271f4'
-                }
-              }, this.list[params.index].title )
+              }, ),
+              h('span', {}, this.list[params.index].content )
             ])
           }
         }
       ],
       list: [],
-      typeList: [
-        {
-            value: '',
-            label: '全部'
-        },
-        {
-            value: 1,
-            label: '普通'
-        },
-        {
-            value: 2,
-            label: '重要'
+      typeList: function (vm) {
+        let array = []
+        for (var i in vm.DATAS.RECORD_DOMAIN_EVENT_TYPE) {
+          array.push({
+            label: vm.DATAS.RECORD_DOMAIN_EVENT_TYPE[i],
+            value: i
+          })
         }
-      ],
+        return array
+      }(this),
       page: {
         pageNo: 1,
         pagePages: 1,
@@ -154,14 +157,79 @@ export default {
     }
   },
   methods: {
+    searchListData () {
+      this.queryDomainMonitorLog(this.getParamLog({pageNum: 1}))
+    },
     pageChange: function (curPage) {
-    }
+    },
+    exportOrder () {
+      this.$refs.exportForm.submit()
+    },
+    getParamDetail () {
+      let params = {
+        param: {
+          domainName: this.domainName
+        },
+        callback: (response) => {
+          this.loadingBtn = false
+          this.loadingTable = false
+          if (response.data.code === '1000'){
+            this.detailData = response.data.data
+          } else {
+          }
+        }
+      }
+      return params
+    },
+    getParamLog (obj) {
+      this.page.pageNo = obj.pageNum
+      this.loadingBtn = true
+      this.loadingTable = true
+
+      let params = {
+        param: {
+          pageNum: obj.pageNum,
+          pageSize: 20,
+          domainName: this.domainName,
+          createTimeBegin: this.time[0] !== '' ? this.GLOBALS.CRT_TIME_FORMAT(this.time[0]) : '',
+          createTimeEnd: this.time[1] !== '' ? this.GLOBALS.CRT_TIME_FORMAT(this.time[1]) : '',
+          type: this.type
+        },
+        callback: (response) => {
+          this.loadingBtn = false
+          this.loadingTable = false
+          if (response.data.code === '1000'){
+            this.list = response.data.data.list
+          } else {
+          }
+        }
+      }
+      return params
+    },
+    ...mapActions({
+      queryDomainMonitorDetail: types.QUERY_DOMAIN_MONITOR_DETAIL,
+      queryDomainMonitorLog: types.QUERY_DOMAIN_MONITOR_LOG
+    })
   },
   beforeMount () {
+
   },
   mounted () {
+    if (this.domainName!=="") {
+      this.queryDomainMonitorDetail(this.getParamDetail())
+      this.queryDomainMonitorLog(this.getParamLog({pageNum: 1}))
+    }
   },
   computed: {
+  },
+  watch: {
+    domainName: function (val, oldVal) {
+      if (val!=="") {
+        this.time = ['','']
+        this.queryDomainMonitorDetail(this.getParamDetail())
+        this.queryDomainMonitorLog(this.getParamLog({pageNum: 1}))
+      }
+    }
   }
 }
 </script>

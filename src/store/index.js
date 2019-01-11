@@ -12,6 +12,7 @@ import domain from './domain.js'
 import notice from './notice.js'
 import record from './record.js'
 import report from './report.js'
+import monitor from './monitor.js'
 import rest from '../global/rest.js'
 import * as links from '../global/linkdo.js'
 // import * as links from '../global/linkdo_json.js'
@@ -78,7 +79,7 @@ export default function makeStore () {
         rest.post(links.SUBMIT_ACTIVATION_USER_PWD, JSON.stringify(params.param),params.callback)
       },
       [types.QUERY_USER_CUSTOMERS_LIST] ({ commit, rootState }, callback) {
-        rest.post(links.QUERY_USER_CUSTOMERS_LIST, '',callback)
+        rest.get(links.QUERY_USER_CUSTOMERS_LIST, '',callback)
       },
       [types.CHANGE_CUSTOMERS] ({ commit, rootState }, params) {
         rest.post(links.CHANGE_CUSTOMERS, JSON.stringify(params.param),function () {
@@ -121,7 +122,8 @@ export default function makeStore () {
       home,
       notice,
       record,
-      report
+      report,
+      monitor
     }
   })
 }

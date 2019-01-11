@@ -59,7 +59,7 @@ const RouterMain = new Router({
       }
     },
     {
-      path: '/selectClient',
+      path: '/client',
       name: 'SELECTCLIENT',
       component (resolve) {
         return require(['@/page/selectClient'], resolve)

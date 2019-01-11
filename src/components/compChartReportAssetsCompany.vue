@@ -1,7 +1,7 @@
 <template lang="pug">
   .compChartReportAssetsCompany
     div(id="myChart",style="width:688px;height:328px;")
-    p 河北天翼文化有限公司管理域名数量最多共计<em>144</em>个，占域名总数的<em>144%</em>，其余<em>144</em>家公司管理其余<em>144</em>个域名。
+    p {{charData.companyName}}管理域名数量最多共计<em>{{charData.mainDomainNumber}}</em>个，占域名总数的<em>{{charData.mainDomainRate}}</em>，其余公司管理其余<em>{{charData.otherDomainNumber}}</em>个域名。
 
 </template>
 
@@ -43,7 +43,9 @@ export default {
           y : '280',
           itemWidth: 10,
           itemHeight: 10,
-          data: Object.keys(datas)
+          data: datas.map((v)=>{
+            v.companyName
+          })
         },
         grid: {
           left: '3%',
@@ -58,9 +60,9 @@ export default {
           type: 'category',
           data: [' ']
         },
-        series: Object.values(datas).map((v)=>{
+        series: datas.map((v)=>{
           return {
-            name: v.name,
+            name: v.companyName,
             type: 'bar',
             stack: '总量',
             label: {
@@ -69,7 +71,7 @@ export default {
                 position: 'insideRight'
               }
             },
-            data: [v.value]
+            data: [v.domainNumber]
           }
         })
       })

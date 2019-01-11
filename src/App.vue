@@ -1,15 +1,17 @@
 <template lang="pug">
   #app
     Spin.spinBody(v-if="showBodySpin")
-    router-view(:key="$route.path")
+    router-view
 </template>
 
 <script>
 import { mapState, mapActions, mapMutations } from 'vuex'
 import * as types from '@/store/types'
 import { emitter as restEmitter } from '@/global/rest'
+import mixinsWebSocket from '@/mixins/mixinsWebSocket'
 export default {
   name: 'App',
+  mixins: [mixinsWebSocket],
   data () {
     return {
     }
@@ -42,6 +44,13 @@ export default {
     restEmitter.on('errorServer', () => {
       vm.$Message.error('连接到服务器失败！')
     })
+    restEmitter.on('openWebSocket', () => {
+      vm.initWebSocket()
+    })
+    restEmitter.on('closeWebSocket', () => {
+      console.log('websocket close')
+      vm.websock.close()
+    })
   },
   methods: {
 
@@ -53,6 +62,9 @@ export default {
       'showBodySpin'
     ])
   },
+  destroyed () {
+
+  }
 }
 </script>
 

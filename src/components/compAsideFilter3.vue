@@ -125,7 +125,10 @@ export default {
       })
     },
     resetCheckAllState (data) {
-      if (data.length === this.len) {
+      if (this.len === 0 && data.length === this.len) {
+        this.indeterminate = false
+        this.checkAll = false
+      } else if (this.len > 0 && data.length === this.len) {
         this.indeterminate = false
         this.checkAll = true
       } else if (data.length > 0) {

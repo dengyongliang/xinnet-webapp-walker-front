@@ -245,3 +245,13 @@ export const QUERY_DOMAIN_SAFE_NORMAL_REPORT = api + '/client-api/client/report/
 export const QUERY_DOMAIN_SAFE_IMPORTANT_REPORT = api + '/client-api/client/report/domainSafeImportantReport'
 // 域名资产报告(域名安全保护统计)
 export const QUERY_DOMAIN_SAFE_RATE_REPORT = api + '/client-api/client/report/domainSafeRateReport'
+// 自有域名监控-监控通知管理列表
+export const QUERY_MAIL_MANAGE_TOP = api + '/client-api/client/monitor/mailManageTop'
+// 自有域名监控-域名监控列表
+export const QUERY_DOMAIN_MONITOR = api + '/client-api/client/monitor/domainMonitor'
+// 自有域名监控-域名监控详情(域名信息)
+export const QUERY_DOMAIN_MONITOR_DETAIL = api + '/client-api/client/monitor/domainMonitorDetail'
+// 自有域名监控-域名监控详情(域名监控日志)
+export const QUERY_DOMAIN_MONITOR_LOG = api + '/client-api/client/monitor/domainMonitorLog'
+// 自有域名监控-域名监控详情(域名监控日志导出)
+export const EXPORT_DOMAIN_LOG = api + '/client-api/client/monitor/exportDomainLog'

@@ -38,7 +38,7 @@
     ul.menuList
       li.menuItem.lv2
         router-link(to="/monitor/own") 自有域名监控
-      li.menuItem.lv2
+      li.menuItem.lv2(style="display:none")
         router-link(to="/monitor/focus") 关注域名监控
 
   .menuBox

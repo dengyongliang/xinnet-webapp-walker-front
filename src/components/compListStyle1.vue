@@ -6,7 +6,7 @@ div.list
         span.left(v-text='item.type?"下属公司":"主体公司"')
         span.right
           a(@click="showCompanyDetail(item.id)") 修改
-          a(@click="delCompany(item.id)") 删除企业
+          a(@click="delCompany(item.id)", v-show="item.type>0") 删除企业
       Row
         Col.col1(span="6")
           span.logo
@@ -16,7 +16,7 @@ div.list
           .col2Cont
             .row1.clear
               span.left 员工数量：<em>{{item.userCount}}</em>个
-              a 员工详情
+              router-link.right(to="/mgmt/accountMgmt") 员工详情
             .row2.clear
               span.left 联系人：{{item.contactor}}
             .row3.clear
@@ -29,7 +29,7 @@ div.list
           .col3Cont
             .row1.clear
               span.left 域名总数：{{item.domainCount}} 个
-              a.right 域名详情
+              router-link.right(to="/domain/mgmt") 域名详情
             .row2.clear(v-if="!item.groups.length")
               span.left 暂无分组
             .row2.clear(v-else, v-for="group in item.groups")

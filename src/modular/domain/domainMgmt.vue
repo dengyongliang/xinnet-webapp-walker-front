@@ -21,13 +21,8 @@
 
   .secMain(v-show="!showDetail && !showDns")
     .filter
-      Collapse(v-model="colllapseValue")
-        Panel(name="1") 按公司筛选
-          div(slot="content")
-            Tree(:data="userCompanys", show-checkbox, ref="Tree",)
-        Panel(name="2") 按域名管理权限筛选
-          div(slot="content")
-            Tree(:data="userCompanys", show-checkbox, ref="Tree2",)
+      comp-aside-filter(:show="[3,4,6,7,8]", @asideFilterSubmit="asideFilterSubmit", @asideFilterReset="asideFilterReset", :total="page.pageItems", :filterTitle="filterTitle")
+
     <!-- 列表主体 -->
     .secTable(v-show="!showDetail && !showDns")
       <Table :columns="columns" :data="list" :loading="loadingTable" ref="selection" @on-select="tableSelectChange" @on-select-cancel="tableSelectChange" @on-select-all="tableSelectChange" @on-select-all-cancel="tableSelectChange"></Table>
@@ -81,17 +76,20 @@ import compDomainChange from '@/components/compDomainChange'
 import compUserAuthGroups from '@/components/compUserAuthGroups'
 import compDomainMgmtDetail from '@/components/compDomainMgmtDetail'
 import compDomainModifyDns from '@/components/compDomainModifyDns'
+import compAsideFilter from '@/components/compAsideFilter'
 import * as links from '@/global/linkdo.js'
 export default {
   components: {
     compUserAuthGroups,
     compDomainMgmtDetail,
     compDomainModifyDns,
-    compDomainChange
+    compDomainChange,
+    compAsideFilter
   },
   data () {
     return {
       value: '',
+      filterTitle: '域名管理',
       refresh: false,
       visible: false,
       selectData: [],
@@ -108,9 +106,7 @@ export default {
       defaultValueChange: '',
       detailData: {},
       exportLink: links.EXPORT_DOMAIN_LIST,
-      colllapseValue: '',
       list: [],
-      userCompanys: [],
       page: {
         pageNo: 1,
         pagePages: 1,
@@ -205,7 +201,20 @@ export default {
             ])
           }
         }
-      ]
+      ],
+      asideFilterResult: {
+        domainSuffixs: '',
+        otherSuffix: '',
+        allSuffix: '',
+        groupIds: '',
+        serviceState: '',
+        createDay: '',
+        expireDay: '',
+        createTimeBegin: '',
+        createTimeEnd: '',
+        expireTimeBegin: '',
+        expireTimeEnd: ''
+      }
     }
   },
   methods: {
@@ -330,6 +339,45 @@ export default {
     hidePop () {
       this.visible = false
     },
+    asideFilterSubmit (result) {
+      console.log(result)
+      // 返回 参数 处理
+      this.asideFilterResult.allSuffix = result.dataDomainSuffix.checkAll ? 1 : ''
+      this.asideFilterResult.otherSuffix = (!result.dataDomainSuffix.checkAll && result.dataDomainSuffix.value.indexOf('otherSuffix') >=0) ? 1 : ''
+      this.asideFilterResult.domainSuffixs = (!result.dataDomainSuffix.checkAll && result.dataDomainSuffix.value.indexOf('otherSuffix') < 0) ? result.dataDomainSuffix.value.join(",") : ''
+      this.asideFilterResult.groupIds = result.dataMgmtCompany.reduce((pre, cur)=>{
+        return pre.concat(cur)
+      }, []).join(",")
+
+      this.asideFilterResult.serviceState = result.dataServiceState.join(",")
+
+      this.asideFilterResult.createDay = result.dataTimeReg.value==='custom'?'':result.dataTimeReg.value
+      this.asideFilterResult.createTimeBegin = result.dataTimeReg.value==='custom'?result.dataTimeReg.time[0]:''
+      this.asideFilterResult.createTimeEnd = result.dataTimeReg.value==='custom'?result.dataTimeReg.time[1]:''
+
+      this.asideFilterResult.expireDay = result.dataTimeExpire.value==='custom'?'':result.dataTimeExpire.value
+      this.asideFilterResult.expireTimeBegin = result.dataTimeExpire.value==='custom'?result.dataTimeExpire.time[0]:''
+      this.asideFilterResult.expireTimeEnd = result.dataTimeExpire.value==='custom'?result.dataTimeExpire.time[1]:''
+
+      console.log(this.asideFilterResult)
+      // 加载数据
+      this.queryList(this.queryListParam({pageNum: 1}))
+    },
+    asideFilterReset () {
+      this.asideFilterResult.domainSuffixs = ''
+      this.asideFilterResult.otherSuffix = ''
+      this.asideFilterResult.allSuffix = ''
+      this.asideFilterResult.groupIds = ''
+      this.asideFilterResult.serviceState = ''
+      this.asideFilterResult.createDay = ''
+      this.asideFilterResult.expireDay = ''
+      this.asideFilterResult.createTimeBegin = ''
+      this.asideFilterResult.createTimeEnd = ''
+      this.asideFilterResult.expireTimeBegin = ''
+      this.asideFilterResult.expireTimeEnd = ''
+
+      this.queryList(this.queryListParam({pageNum: 1}))
+    },
     queryListParam (obj) {
       this.page.pageNo = obj.pageNum
       this.loadingBtn = true
@@ -340,13 +388,17 @@ export default {
           pageNum: obj.pageNum,
           pageSize: 20,
           domainName: this.value,
-          domainSuffixs: '',
-          otherSuffix: '',
-          allSuffix: '',
-          groupIds: '',
-          serviceState: '',
-          createDay: '',
-          expireDay: ''
+          domainSuffixs: this.asideFilterResult.domainSuffixs,
+          otherSuffix: this.asideFilterResult.otherSuffix,
+          allSuffix: this.asideFilterResult.allSuffix,
+          groupIds: this.asideFilterResult.groupIds,
+          serviceState: this.asideFilterResult.serviceState,
+          createDay: this.asideFilterResult.createDay,
+          expireDay: this.asideFilterResult.expireDay,
+          createTimeBegin: this.asideFilterResult.createTimeBegin,
+          createTimeEnd: this.asideFilterResult.createTimeEnd,
+          expireTimeBegin: this.asideFilterResult.expireTimeBegin,
+          expireTimeEnd: this.asideFilterResult.expireTimeEnd
         },
         callback: (response) => {
           this.loadingBtn = false

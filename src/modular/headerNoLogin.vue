@@ -3,7 +3,7 @@
     .logo
       img(src="../../static/img/logo.png")
     .right
-      a(href="http://www.xinnet.com") 新网首页
+      a(href="http://www.xinnet.com",target="_blank") 新网首页
 </template>
 
 <script>

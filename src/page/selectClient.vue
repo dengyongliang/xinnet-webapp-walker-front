@@ -7,8 +7,6 @@
         a(href="javascript:;",@click="changeCustomersEv(item.id)")
           Row(type="flex", align="middle")
             Col(span="24")
-              span.logo
-                img(:src="item.orgFile")
               strong {{item.name}}
     comp-list-none(label="暂无管理客户",v-show="!list.length")
 </template>
@@ -65,7 +63,7 @@ export default {
 .list li{
   float:left;
   width:380px;
-  height:160px;
+  height:120px;
   margin:0 30px 30px 0;
 }
 .list li:nth-child(2n+3){
@@ -77,39 +75,25 @@ export default {
   border:1px solid #e0e0e0;
   border-radius: 10px;
   background:#fff;
+  -moz-box-shadow:0px 0px 10px rgba(0,0,0,0.2);
+  -webkit-box-shadow:0px 0px 10px rgba(0,0,0,0.2);
+  box-shadow:0px 0px 10px rgba(0,0,0,0.2)
 }
 .list li a:hover{
-  border-color:#35a7ff;
-  -moz-box-shadow:0px 0px 10px rgba(0,0,0,0.3);
-  -webkit-box-shadow:0px 0px 10px rgba(0,0,0,0.3);
-  box-shadow:0px 0px 10px rgba(0,0,0,0.3)
+  background:#fff url(../../static/img/img_client_hover.png) no-repeat 100% 0;
+}
+.list li a:hover strong{
+  color:#35a7ff;
 }
 .list li .ivu-row-flex{
-  height:100%;
-}
-.list .logo{
-  width:80px;
-  height:80px;
-  border-radius:100%;
-  overflow:hidden;
-  display:inline-block;
-  border:5px solid #fff;
-  vertical-align:middle;
-  margin-left:30px;
-  margin-right:20px;
-  -moz-box-shadow:0px 0px 6px rgba(0,0,0,0.2);
-  -webkit-box-shadow:0px 0px 6px rgba(0,0,0,0.2);
-  box-shadow:0px 0px 6px rgba(0,0,0,0.2);
-}
-.list .logo img{
-  width:100%;
   height:100%;
 }
 .list li strong{
   width:220px;
   font-size:16px;
-  display:inline-block;
+  display:block;
   vertical-align:middle;
   line-height:24px;
+  padding: 0 40px;
 }
 </style>

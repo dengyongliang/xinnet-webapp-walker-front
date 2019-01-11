@@ -228,3 +228,11 @@ export const QUERY_DOMAIN_SAFE_NORMAL_REPORT = 'http://localhost:5500/static/dat
 export const QUERY_DOMAIN_SAFE_IMPORTANT_REPORT = 'http://localhost:5500/static/data/domainSafeImportantReport.js'
 // 域名资产报告(域名安全保护统计)
 export const QUERY_DOMAIN_SAFE_RATE_REPORT = 'http://localhost:5500/static/data/domainSafeRateReport.js'
+// 自有域名监控-监控通知管理列表
+export const QUERY_MAIL_MANAGE_TOP = 'http://localhost:5500/static/data/mailManageTop.js'
+// 自有域名监控-域名监控列表
+export const QUERY_DOMAIN_MONITOR = 'http://localhost:5500/static/data/domainMonitor.js'
+// 自有域名监控-域名监控详情(域名信息)
+export const QUERY_DOMAIN_MONITOR_DETAIL = 'http://localhost:5500/static/data/domainMonitorDetail.js'
+// 自有域名监控-域名监控详情(域名监控日志)
+export const QUERY_DOMAIN_MONITOR_LOG = 'http://localhost:5500/static/data/domainMonitorLog.js'

@@ -50,16 +50,7 @@ export default {
   },
   methods: {
     checkboxChange (data) {
-      if (data.length === this.len) {
-        this.indeterminate = false;
-        this.checkAll = true;
-      } else if (data.length > 0) {
-        this.indeterminate = true;
-        this.checkAll = false;
-      } else {
-        this.indeterminate = false;
-        this.checkAll = false;
-      }
+      this.resetCheckAllState(data)
       this.filterData.map((v, i)=>{
         if (data.indexOf(v.label) >= 0) {
           this.$set(v, 'checked', true)
@@ -79,17 +70,7 @@ export default {
         }
       }
       this.value = arr
-
-      if (this.value.length === this.len) {
-        this.indeterminate = false;
-        this.checkAll = true;
-      } else if (this.value.length > 0) {
-        this.indeterminate = true;
-        this.checkAll = false;
-      } else {
-        this.indeterminate = false;
-        this.checkAll = false;
-      }
+      this.resetCheckAllState(this.value)
     },
     handleCheckAll () {
       if (this.indeterminate) {
@@ -112,6 +93,21 @@ export default {
           this.$set(v, 'checked', false)
         })
       }
+    },
+    resetCheckAllState (data) {
+      if (this.len === 0 && data.length === this.len) {
+        this.indeterminate = false
+        this.checkAll = false
+      } else if (this.len > 0 && data.length === this.len) {
+        this.indeterminate = false
+        this.checkAll = true
+      } else if (data.length > 0) {
+        this.indeterminate = true
+        this.checkAll = false
+      } else {
+        this.indeterminate = false
+        this.checkAll = false
+      }
     }
   },
   computed: {
@@ -120,9 +116,9 @@ export default {
   beforeMount () {
     this.len = this.filterData.length
 
-    if (this.filterData.length > 0) {
+    if (this.len > 0) {
       let arr = []
-      for (var i=0; i<this.filterData.length; i++) {
+      for (var i=0; i<this.len; i++) {
         if (this.filterData[i].checked) {
           arr.push(this.filterData[i].label)
         }
@@ -133,7 +129,24 @@ export default {
   mounted () {
   },
   watch: {
+    filterData: {
+      handler(newV, oldV) {
+        this.len = newV.length
 
+        if (this.len > 0) {
+          let arr = []
+          for (var i=0; i<this.len; i++) {
+            if (newV[i].checked) {
+              arr.push(newV[i].label)
+            }
+          }
+          this.value = arr
+        }
+        this.resetCheckAllState(this.value)
+      },
+      deep: true,
+      immediate: true
+    }
   }
 }
 </script>

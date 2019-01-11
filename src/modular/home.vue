@@ -23,7 +23,7 @@
               span.t 我的管家
             .c.clear
               span.logo
-                img(src='')
+                img(src='../../static/img/img_butler.png')
               .info
                 h4 管家姓名：{{myKeeper.manageCustomerName}}
               Row

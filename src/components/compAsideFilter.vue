@@ -1,12 +1,12 @@
 <template lang="pug">
 Collapse.compAsideFilter(v-model="colllapseValue",accordion, @on-change="colllapseChange")
   .collapseT
-    strong(v-show="status===1") 筛选
+    strong(v-show="status===1") {{filterTitle}}筛选
     .btn(v-show="status===2")
       Button(@click="filterCancle") 取消
       Button(type="primary", @click="filterSubmit") 确认筛选
     .reset(v-show="status===3")
-      span 共筛选出<b>4</b>个域名
+      span 共筛选出<b>{{total}}</b>个域名
       Button(@click="filterReset") 重置
 
   Panel(name="3", v-if="show.indexOf(3) >= 0") 服务状态
@@ -66,6 +66,14 @@ export default {
           data: []
         }
       }
+    },
+    total: {
+      type: Number,
+      default: 0
+    },
+    filterTitle: {
+      type: String,
+      default: ''
     }
   },
   data () {
@@ -93,46 +101,7 @@ export default {
           value: '自定义'
         }
       ],
-      dataMgmtCompany: [
-        {
-          label: 'box1',
-          value: '盒子1',
-          groups: [
-            {
-              "label": 11,
-              "checked": false,
-              "value": "分组11"
-            },
-            {
-              "label": 12,
-              "checked": true,
-              "value": "分组122"
-            },
-            {
-              "label": 13,
-              "checked": false,
-              "value": "分组13"
-            }
-          ]
-        },
-        {
-          label: 'box2',
-          value: '盒子2',
-          checked: false,
-          groups: [
-            {
-              "label": 11,
-              "checked": false,
-              "value": "分组11"
-            },
-            {
-              "label": 12,
-              "checked": true,
-              "value": "分组12"
-            }
-          ]
-        }
-      ],
+      dataMgmtCompany:[],
       dataSafe: [
         {
           label: '1',
@@ -300,7 +269,9 @@ export default {
         result.dataMonitorLog = this.$refs.dataMonitorLog.value
       }
       if (this.$refs.dataDomainSuffix) {
-        result.dataDomainSuffix = this.$refs.dataDomainSuffix.value
+        result.dataDomainSuffix = {}
+        result.dataDomainSuffix.checkAll = this.$refs.dataDomainSuffix.checkAll
+        result.dataDomainSuffix.value = this.$refs.dataDomainSuffix.value
       }
       if (this.$refs.dataMgmtMethod) {
         result.dataMgmtMethod = this.$refs.dataMgmtMethod.value
@@ -312,24 +283,83 @@ export default {
         result.dataNamingState = this.$refs.dataNamingState.value
       }
       if (this.$refs.dataTimeReg) {
-        result.dataTimeReg = this.$refs.dataTimeReg.value2
+        result.dataTimeReg = {}
+        result.dataTimeReg.value = this.$refs.dataTimeReg.value.toString()
+        result.dataTimeReg.time = this.$refs.dataTimeReg.time
       }
       if (this.$refs.dataTimeExpire) {
-        result.dataTimeExpire = this.$refs.dataTimeExpire.value2
+        result.dataTimeExpire = {}
+        result.dataTimeExpire.value = this.$refs.dataTimeExpire.value.toString()
+        result.dataTimeExpire.time = this.$refs.dataTimeExpire.time
       }
       if (this.$refs.dataTimeSubmit) {
-        result.dataTimeSubmit = this.$refs.dataTimeSubmit.value2
+        result.dataTimeSubmit = {}
+        result.dataTimeSubmit.value = this.$refs.dataTimeSubmit.value.toString()
+        result.dataTimeSubmit.time = this.$refs.dataTimeSubmit.time
+      }
+      if (this.$refs.dataSafe) {
+        result.dataSafe = this.$refs.dataSafe.value
       }
       if (this.$refs.dataMgmtCompany) {
         result.dataMgmtCompany = this.$refs.dataMgmtCompany.value
       }
-
-      console.log(result)
       this.colllapseValue = ''
+      this.$emit("asideFilterSubmit", result)
     },
     filterReset () {
       this.status = 1
       this.colllapseValue = ''
+      this.dataServiceState = this.dataServiceState.map((v)=>{
+        this.$set(v, 'checked', false)
+        return v
+      })
+      this.dataMonitorLog = this.dataMonitorLog.map((v)=>{
+        this.$set(v, 'checked', false)
+        return v
+      })
+      this.dataDomainSuffix = this.dataDomainSuffix.map((v)=>{
+        this.$set(v, 'checked', false)
+        return v
+      })
+      this.dataMgmtMethod = this.dataMgmtMethod.map((v)=>{
+        this.$set(v, 'checked', false)
+        return v
+      })
+      this.dataRealName = this.dataRealName.map((v)=>{
+        this.$set(v, 'checked', false)
+        return v
+      })
+      this.dataNamingState = this.dataNamingState.map((v)=>{
+        this.$set(v, 'checked', false)
+        return v
+      })
+      this.dataTimeReg = this.dataTimeReg.map((v)=>{
+        this.$set(v, 'checked', false)
+        return v
+      })
+      this.dataTimeExpire = this.dataTimeExpire.map((v)=>{
+        this.$set(v, 'checked', false)
+        return v
+      })
+      this.dataTimeSubmit = this.dataTimeSubmit.map((v)=>{
+        this.$set(v, 'checked', false)
+        return v
+      })
+      this.dataSafe = this.dataSafe.map((v)=>{
+        v.groups.map((v2)=>{
+          this.$set(v2, 'checked', false)
+          return v2
+        })
+        return v
+      })
+      this.dataMgmtCompany = this.dataMgmtCompany.map((v)=>{
+        v.groups.map((v2)=>{
+          this.$set(v2, 'checked', false)
+          return v2
+        })
+        return v
+      })
+      this.$emit("asideFilterReset")
     },
     colllapseChange () {
       this.status = 2
@@ -353,8 +383,43 @@ export default {
     this.dataTimeSubmit = this.timeData
   },
   computed: {
-
+    ...mapState({
+      userAuthGroups (state) {
+        let arrGroups = []
+        if (state.user.userAuthGroups.companys) {
+          let len = state.user.userAuthGroups.companys.length
+          for (var i=0; i<len; i++) {
+            let v = state.user.userAuthGroups.companys[i]
+            if (v.groups.length>0) {
+              let groups = this.GLOBALS.CONVERT_CHECKBOX(v.groups, {
+                label: 'id',
+                value: 'name',
+                checked: 'checked',
+              })
+              arrGroups.push({
+                "label": v.id,
+                "checked": false,
+                "value": v.name,
+                "groups": groups
+              })
+            }
+          }
+        }
+        return arrGroups
+      }
+    })
   },
+  mounted () {
+  },
+  watch: {
+    userAuthGroups: {
+      handler(newV, oldV) {
+        this.dataMgmtCompany = newV
+      },
+      deep: true,
+      immediate: true
+    }
+  }
 }
 </script>
 

@@ -12,11 +12,14 @@
         span.name {{myUserInfo.userName}}
         Icon(type="md-arrow-dropdown")
     span.line |
-    span.email
+    router-link.email(to="/notice/monitoring")
       Icon(type="ios-mail-outline")
-      em.num 1
+      em.num
+        i {{msgNum}}
     span.line |
-    a(href="http://www.xinnet.com") 新网首页
+    router-link(to="/report") 报告中心
+    span.line |
+    a(href="http://www.xinnet.com",target="_blank") 新网首页
     a(href="javascript:;", @click="logout", class="exit") 退出
 
   <!-- 切换客户 -->
@@ -33,14 +36,19 @@
 import { mapState, mapActions } from 'vuex'
 import * as types from '@/store/types'
 import compSwitchClient from '@/components/compSwitchClient'
+// import mixinsWebSocket from '@/mixins/mixinsWebSocket'
+import { emitter as restEmitter } from '@/global/rest'
 export default {
   components: {
     compSwitchClient
   },
+  // mixins: [mixinsWebSocket],
   data () {
     return {
       loadingBtn: false,
-      showModals: false
+      showModals: false,
+      userno: 11,
+      msgNum: 0
     }
   },
   computed: {
@@ -76,23 +84,25 @@ export default {
     })
   },
   beforeMount () {
-    let vm = this
-    this.getCurrentUserData(function (response) {
+    this.getCurrentUserData((response) => {
       if (response.data.code === '1000') {
-        vm.$store.commit(types.SET_LOGINED)
-        vm.$store.commit(types.SET_CURRENT_USER_DATA, response.data)
+        this.$store.commit(types.SET_LOGINED)
+        this.$store.commit(types.SET_CURRENT_USER_DATA, response.data)
         Promise.all([
-          vm.$store.dispatch(types.GET_USER_ROLES),
-          vm.$store.dispatch(types.GET_USERS),
-          vm.$store.dispatch(types.GET_COMPANYS),
-          vm.$store.dispatch(types.GET_USER_AUTH_GROUPS)
+          this.$store.dispatch(types.GET_USER_ROLES),
+          this.$store.dispatch(types.GET_USERS),
+          this.$store.dispatch(types.GET_COMPANYS),
+          this.$store.dispatch(types.GET_USER_AUTH_GROUPS)
         ]).then((response) => {
           // 获取信息成功
+          // 开启websocket
+          // this.initWebSocket()
+          restEmitter.emit('openWebSocket')
         }).catch((error) => {
           console.log(error)
         })
       } else {
-        vm.$router.replace({ path: '/login' })
+        this.$router.replace({ path: '/login' })
       }
     })
   }
@@ -156,7 +166,6 @@ export default {
   right:0px;
   top:0px;
   background:#f00;
-  color:#fff;
   font-size:12px;
   width:16px;
   height:16px;
@@ -165,6 +174,11 @@ export default {
   text-align:center;
   border-radius:100%;
   margin: -10px -5px 0 0;
+}
+.frameTop .email .num i{
+  color:#fff;
+  display:inline-block;
+  transform: scale(0.7);
 }
 .frameTop .line{
   display:inline-block;

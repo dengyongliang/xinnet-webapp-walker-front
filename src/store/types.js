@@ -163,3 +163,13 @@ export const QUERY_DOMAIN_SAFE_NORMAL_REPORT = 'queryDomainSafeNormalReport'
 export const QUERY_DOMAIN_SAFE_IMPORTANT_REPORT = 'queryDomainSafeImportantReport'
 // 域名资产报告(域名安全保护统计)
 export const QUERY_DOMAIN_SAFE_RATE_REPORT = 'queryDomainSafeRateReport'
+
+// 自有监控
+// 监控通知管理列表
+export const QUERY_MAIL_MANAGE_TOP = 'queryMailManageTop'
+// 域名监控列表
+export const QUERY_DOMAIN_MONITOR = 'queryDomainMonitor'
+// 域名监控详情(域名信息)
+export const QUERY_DOMAIN_MONITOR_DETAIL = 'queryDomainMonitorDetail'
+// 域名监控详情(域名监控日志)
+export const QUERY_DOMAIN_MONITOR_LOG = 'queryDomainMonitorLog'

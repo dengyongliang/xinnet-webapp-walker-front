@@ -204,7 +204,21 @@ function CONVERT_SELECT_GROUP (data, map) {
   })
   return result
 }
+function CONVERT_CHECKBOX (data, map) {
+  const result = []
+  data.forEach((item) => {
+    const label = item[ map.label ]
+    const value = item[ map.value ] + ''
+    const checked = item[ map.checked ]
 
+    result.push({
+      label,
+      value,
+      checked
+    })
+  })
+  return result
+}
 export default
 {
   TITLE,
@@ -225,5 +239,6 @@ export default
   SECURITY_TYPE,
   CONVERT_SELECT,
   REAL_NAME_VERIFY_STATUS,
-  CONVERT_SELECT_GROUP
+  CONVERT_SELECT_GROUP,
+  CONVERT_CHECKBOX
 }

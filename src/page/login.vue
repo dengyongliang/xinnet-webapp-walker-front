@@ -122,7 +122,7 @@ export default {
             vm.$Message.success('登录成功！')
             setTimeout(() => {
               if (data.keeperFlag) {
-                vm.$router.replace({ path: '/selectClient' })
+                vm.$router.replace({ path: '/client' })
               } else {
                 vm.$router.replace({ path: '/home' })
               }

@@ -1,7 +1,7 @@
 <template lang="pug">
 .compSwitchClient
   .select
-    comp-select(name="customerId",:list="getCompanys",ref="customerId",styles="width:300px",:defaultValue="myUserInfo.manageCustomerId?myUserInfo.manageCustomerId.toString():''")
+    comp-select(name="customerId",:list="list",ref="customerId",styles="width:300px",:defaultValue="myUserInfo.manageCustomerId?myUserInfo.manageCustomerId.toString():''")
   div.btn
     Button(@click="onClose") 取消
     Button(type="primary", @click="changeCustomersEv") 确定
@@ -11,7 +11,6 @@
 import { mapState, mapActions } from 'vuex'
 import * as types from '@/store/types'
 import compSelect from './compSelect'
-import validateFormResult from '@/global/validateForm'
 export default {
   components: {
     compSelect
@@ -31,7 +30,8 @@ export default {
   },
   data () {
     return {
-      loadingBtn: false
+      loadingBtn: false,
+      list: []
     }
   },
   methods: {
@@ -45,6 +45,7 @@ export default {
       this.changeCustomers(params)
     },
     ...mapActions({
+      queryUserCustomersList: types.QUERY_USER_CUSTOMERS_LIST,
       changeCustomers: types.CHANGE_CUSTOMERS
     })
   },
@@ -52,20 +53,17 @@ export default {
     ...mapState({
       myUserInfo (state) {
         return state.user.myUserInfo
-      },
-      getCompanys (state) {
-        let arrGroups = []
-        if (state.user.companys) {
-          arrGroups = this.GLOBALS.CONVERT_SELECT(state.user.companys, {
-            value: 'id',
-            label: 'name'
-          })
-        }
-        return arrGroups
       }
     })
   },
   beforeMount () {
+    this.queryUserCustomersList((response) => {
+      console.log(response)
+      this.list = this.GLOBALS.CONVERT_SELECT(response.data.data, {
+        value: 'id',
+        label: 'name'
+      })
+    })
   },
   watch: {
   }

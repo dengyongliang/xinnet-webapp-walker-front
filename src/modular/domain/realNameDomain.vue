@@ -14,13 +14,7 @@
       template(slot="desc") 1、请准确上传与域名所有人证件号码一致的扫描件或照片，证件需要在有效期内。<br />2、请准确选择域名所有人证件类型，避免由于证件类型不符影响网站备案审核。<br />3、可使用已保存模板信息快速填充，但仍需进行实名审核。
 
     .filter(v-show="!showSubmit")
-      Collapse(v-model="colllapseValue")
-        Panel(name="1") 按公司筛选
-          div(slot="content")
-            Tree(:data="userCompanys", show-checkbox, ref="Tree",)
-        Panel(name="2") 按域名管理权限筛选
-          div(slot="content")
-            Tree(:data="userCompanys", show-checkbox, ref="Tree2",)
+      comp-aside-filter(:show="[3,4,11,12,13]", @asideFilterSubmit="asideFilterSubmit", @asideFilterReset="asideFilterReset", :total="page.pageItems", :filterTitle="filterTitle")
     <!-- 列表主体 -->
     .secTable(v-show="!showSubmit")
       <Table :columns="columns" :data="list" :loading="loadingTable" ref="selection" @on-select="tableSelectChange" @on-select-cancel="tableSelectChange" @on-select-all="tableSelectChange" @on-select-all-cancel="tableSelectChange"></Table>
@@ -47,27 +41,37 @@
 import { mapState, mapActions } from 'vuex'
 import * as types from '@/store/types'
 import compDomainRealNameDetail from '@/components/compDomainRealNameDetail'
-
+import compAsideFilter from '@/components/compAsideFilter'
 export default {
   components: {
-    compDomainRealNameDetail
+    compDomainRealNameDetail,
+    compAsideFilter
   },
   data () {
     return {
       value: '',
       refresh: false,
+      filterTitle: '实名制管理',
       selectData: [],
       organizeNameCn: '',
       btnRealNameDisabled: true,
       btnUpdateStatusDisabled: true,
       loadingTable: true,
       loadingBtn: false,
-      colllapseValue: '',
       templateList: [],
       list: [],
       userCompanys: [],
       domainIds: '',
       showSubmit: false,
+      asideFilterResult: {
+        groupIds: '',
+        serviceState: '',
+        rnvcStatus: '',
+        dnvcStatus: '',
+        verifyDay: '',
+        verifyTimeBegin: '',
+        verifyTimeEnd: ''
+      },
       page: {
         pageNo: 1,
         pagePages: 1,
@@ -276,6 +280,34 @@ export default {
       }
       this.updateDomainAuditStatus(params)
     },
+    asideFilterSubmit (result) {
+      console.log(result)
+      // 返回 参数 处理
+      this.asideFilterResult.groupIds = result.dataMgmtCompany.reduce((pre, cur)=>{
+        console.log(pre)
+        console.log(cur)
+        return pre.concat(cur)
+      }, []).join(",")
+      this.asideFilterResult.serviceState = result.dataServiceState.join(",")
+      this.asideFilterResult.rnvcStatus = result.dataRealName.join(",")
+      this.asideFilterResult.dnvcStatus = result.dataNamingState.join(",")
+      this.asideFilterResult.verifyDay = result.dataTimeSubmit.value==='custom'?'':result.dataTimeSubmit.value
+      this.asideFilterResult.verifyTimeBegin = result.dataTimeSubmit.value==='custom'?result.dataTimeSubmit.time[0]:''
+      this.asideFilterResult.verifyTimeEnd = result.dataTimeSubmit.value==='custom'?result.dataTimeSubmit.time[1]:''
+      //console.log(this.asideFilterResult)
+      // 加载数据
+      this.queryList(this.queryListParam({pageNum: 1}))
+    },
+    asideFilterReset () {
+      this.asideFilterResult.groupIds = ''
+      this.asideFilterResult.serviceState = ''
+      this.asideFilterResult.rnvcStatus = ''
+      this.asideFilterResult.dnvcStatus = ''
+      this.asideFilterResult.verifyDay = ''
+      this.asideFilterResult.verifyTimeBegin = ''
+      this.asideFilterResult.verifyTimeEnd = ''
+      this.queryList(this.queryListParam({pageNum: 1}))
+    },
     queryListParam (obj) {
       this.page.pageNo = obj.pageNum
       this.loadingBtn = true
@@ -286,11 +318,13 @@ export default {
           pageNum: obj.pageNum,
           pageSize: 20,
           domainName: this.value,
-          groupIds: '',
-          serviceState: '',
-          rnvcStatus: '',
-          dnvcStatus: '',
-          verifyDay: ''
+          groupIds: this.asideFilterResult.groupIds,
+          serviceState: this.asideFilterResult.serviceState,
+          rnvcStatus: this.asideFilterResult.rnvcStatus,
+          dnvcStatus: this.asideFilterResult.dnvcStatus,
+          verifyDay: this.asideFilterResult.verifyDay,
+          verifyTimeBegin: this.asideFilterResult.verifyTimeBegin,
+          verifyTimeEnd: this.asideFilterResult.verifyTimeEnd
         },
         callback: (response) => {
           this.loadingBtn = false

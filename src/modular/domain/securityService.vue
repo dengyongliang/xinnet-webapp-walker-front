@@ -12,13 +12,8 @@
       Button(type="primary", @click="searchListData",:loading="loadingBtn") 查询
   .secMain(v-show="!showDetail")
     .filter
-      Collapse(v-model="colllapseValue")
-        Panel(name="1") 按公司筛选
-          div(slot="content")
-            Tree(:data="userCompanys", show-checkbox, ref="Tree",)
-        Panel(name="2") 按域名管理权限筛选
-          div(slot="content")
-            Tree(:data="userCompanys", show-checkbox, ref="Tree2",)
+      comp-aside-filter(:show="[4,8,9]", @asideFilterSubmit="asideFilterSubmit", @asideFilterReset="asideFilterReset", :total="page.pageItems", :filterTitle="filterTitle")
+
     <!-- 列表主体 -->
     .secTable.table1(v-show="!showDetail")
       <Table :columns="columns" :data="list" :loading="loadingTable" ref="selection" @on-select="tableSelectChange" @on-select-cancel="tableSelectChange" @on-select-all="tableSelectChange" @on-select-all-cancel="tableSelectChange"></Table>
@@ -43,26 +38,27 @@ import { mapState, mapActions } from 'vuex'
 import * as types from '@/store/types'
 import compImportantSelect from '@/components/compImportantSelect'
 import compDomainSafeDetail from '@/components/compDomainSafeDetail'
+import compAsideFilter from '@/components/compAsideFilter'
 export default {
   components: {
     compImportantSelect,
-    compDomainSafeDetail
+    compDomainSafeDetail,
+    compAsideFilter
   },
   data () {
     return {
       value: '',
       refresh: false,
       visible: false,
+      filterTitle: '域名安全服务',
       selectData: [],
       loadingTable: true,
       loadingBtn: false,
       showDetail: false,
       showLock: false,
       disabledSafeLv: true,
-      colllapseValue: '',
       detailData:{},
       list: [],
-      userCompanys: [],
       page: {
         pageNo: 1,
         pagePages: 1,
@@ -172,7 +168,17 @@ export default {
             ])
           }
         }
-      ]
+      ],
+      asideFilterResult: {
+        domainSuffixs: '',
+        otherSuffix: '',
+        allSuffix: '',
+        groupIds: '',
+        importantFlag: '',
+        renewFlag: '',
+        updateFlag: '',
+        backendLockFlag: ''
+      }
     }
   },
   methods: {
@@ -207,6 +213,35 @@ export default {
     parentMethod () {
       this.showLock = true
     },
+    asideFilterSubmit (result) {
+      console.log(result)
+      // 返回 参数 处理
+      this.asideFilterResult.allSuffix = result.dataDomainSuffix.checkAll ? 1 : ''
+      this.asideFilterResult.otherSuffix = (!result.dataDomainSuffix.checkAll && result.dataDomainSuffix.value.indexOf('otherSuffix') >=0) ? 1 : ''
+      this.asideFilterResult.domainSuffixs = (!result.dataDomainSuffix.checkAll && result.dataDomainSuffix.value.indexOf('otherSuffix') < 0) ? result.dataDomainSuffix.value.join(",") : ''
+      this.asideFilterResult.groupIds = result.dataMgmtCompany.reduce((pre, cur)=>{
+        return pre.concat(cur)
+      }, []).join(",")
+      this.asideFilterResult.importantFlag = result.dataSafe[0].join(",")
+      this.asideFilterResult.renewFlag = result.dataSafe[1].join(",")
+      this.asideFilterResult.backendLockFlag = result.dataSafe[2].join(",")
+      this.asideFilterResult.updateFlag = result.dataSafe[3].join(",")
+      console.log(this.asideFilterResult)
+      // 加载数据
+      this.queryList(this.queryListParam({pageNum: 1}))
+    },
+    asideFilterReset () {
+      this.asideFilterResult.domainSuffixs = ''
+      this.asideFilterResult.otherSuffix = ''
+      this.asideFilterResult.allSuffix = ''
+      this.asideFilterResult.groupIds = ''
+      this.asideFilterResult.importantFlag = ''
+      this.asideFilterResult.renewFlag = ''
+      this.asideFilterResult.updateFlag = ''
+      this.asideFilterResult.backendLockFlag = ''
+
+      this.queryList(this.queryListParam({pageNum: 1}))
+    },
     queryListParam (obj) {
       this.page.pageNo = obj.pageNum
       this.loadingBtn = true
@@ -217,14 +252,14 @@ export default {
           pageNum: obj.pageNum,
           pageSize: 20,
           domainName: this.value,
-          domainSuffixs: '',
-          otherSuffix: '',
-          allSuffix: '',
-          groupIds: '',
-          importantFlag: '',
-          renewFlag: '',
-          updateFlag: '',
-          backendLockFlag: ''
+          domainSuffixs: this.asideFilterResult.domainSuffixs,
+          otherSuffix: this.asideFilterResult.otherSuffix,
+          allSuffix: this.asideFilterResult.allSuffix,
+          groupIds: this.asideFilterResult.groupIds,
+          importantFlag: this.asideFilterResult.importantFlag,
+          renewFlag: this.asideFilterResult.renewFlag,
+          updateFlag: this.asideFilterResult.updateFlag,
+          backendLockFlag: this.asideFilterResult.backendLockFlag
         },
         callback: (response) => {
           this.loadingBtn = false

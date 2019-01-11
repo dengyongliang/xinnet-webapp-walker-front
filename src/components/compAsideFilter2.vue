@@ -38,8 +38,7 @@ export default {
   data () {
     return {
       value: '',
-      time: [],
-      value2: ''
+      time: []
     }
   },
   methods: {
@@ -51,19 +50,16 @@ export default {
           this.$set(v, 'checked', false)
         }
       })
-      this.value2 = this.value
     },
     handleClose (event, name) {
       const index = this.filterData.findIndex((item)=>(item.value === name))
       this.$set(this.filterData[index], 'checked', false)
       this.value = ''
-      this.value2 = ''
     },
     dataChange (show) {
       // 日期关闭并有有效值
       if (!show && this.time[0]!=="" && this.time[1]!=="") {
         this.value = 'custom'
-        this.value2 = this.time[0]+','+this.time[1]
         for (var i=0; i<this.filterData.length; i++) {
           if (this.filterData[i].label === 'custom') {
             this.$set(this.filterData[i], 'checked', true)
@@ -83,7 +79,6 @@ export default {
       for (var i=0; i<this.filterData.length; i++) {
         if (this.filterData[i].checked) {
           this.value = this.filterData[i].label
-          this.value2 = this.filterData[i].label
         }
       }
     }
@@ -91,7 +86,25 @@ export default {
   mounted () {
   },
   watch: {
-
+    filterData: {
+      handler(newV, oldV) {
+        if (newV.length > 0) {
+          let flag = false
+          for (var i=0; i<newV.length; i++) {
+            if (newV[i].checked) {
+              this.value = newV[i].label
+              flag = true
+            }
+          }
+          // 重置时没有选中项，默认值置为空
+          if (!flag) {
+            this.value = ''
+          }
+        }
+      },
+      deep: true,
+      immediate: true
+    }
   }
 }
 </script>

@@ -1,7 +1,7 @@
 <template lang="pug">
   .compChartDomainDueTime
     div(id="myChart2",style="width:688px;height:328px;")
-    p 主流域名后缀.com、.cn、.com.cn，占域名总数的55%，共计1120个，其余8种域名后缀类型，共计123个域名。
+    p 主流域名后缀.com、.cn、.com.cn，占域名总数的{{charData.mainSuffixRate}}，共计{{charData.mainSuffixNumber}}个，其余域名后缀类型，共计{{charData.otherSuffixNumber}}个域名。
 </template>
 
 <script>
@@ -42,7 +42,9 @@ export default {
           y : '280',
           itemWidth: 10,
           itemHeight: 10,
-          data: Object.keys(datas)
+          data: datas.map((v)=>{
+            v.suffixName
+          })
         },
         grid: {
           left: '3%',
@@ -57,9 +59,9 @@ export default {
           type: 'category',
           data: ['']
         },
-        series: Object.values(datas).map((v)=>{
+        series: datas.map((v)=>{
           return {
-            name: v.name,
+            name: v.suffixName,
             type: 'bar',
             stack: '总量',
             label: {
@@ -68,7 +70,7 @@ export default {
                 position: 'insideRight'
               }
             },
-            data: [v.value]
+            data: [v.domainNumber]
           }
         })
       })

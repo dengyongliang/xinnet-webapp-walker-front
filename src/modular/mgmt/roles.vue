@@ -62,6 +62,9 @@ export default {
                 props: {
                   href: 'javascript:;'
                 },
+                style: {
+                  "display": this.list[params.index].roleCode.indexOf('super') >= 0 ? 'none' : 'inline-block'
+                },
                 on: {
                   click: () => {
                     this.showDrawerRole({
@@ -75,6 +78,9 @@ export default {
               h('a', {
                 props: {
                   href: 'javascript:;'
+                },
+                style: {
+                  "display": this.list[params.index].roleCode.indexOf('super') >= 0 ? 'none' : 'inline-block'
                 },
                 on: {
                   click: () => {
