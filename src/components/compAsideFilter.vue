@@ -14,7 +14,7 @@ Collapse.compAsideFilter(v-model="colllapseValue",accordion, @on-change="colllap
       comp-aside-filter1(:filterData="dataServiceState", ref="dataServiceState")
   Panel(name="4", v-if="show.indexOf(4) >= 0") 管理公司
     div(slot="content")
-      comp-aside-filter3(:filterData="dataMgmtCompany", ref="dataMgmtCompany", from="dataMgmtCompany", @changeData="changeData")
+      comp-aside-filter3(:filterData="dataMgmtCompany", ref="dataMgmtCompany", from="dataMgmtCompany",)
   Panel(name="5", v-if="show.indexOf(5) >= 0") 监控日志
     div(slot="content")
       comp-aside-filter1(:filterData="dataMonitorLog", ref="dataMonitorLog",)
@@ -29,7 +29,7 @@ Collapse.compAsideFilter(v-model="colllapseValue",accordion, @on-change="colllap
       comp-aside-filter1(:filterData="dataDomainSuffix", ref="dataDomainSuffix",)
   Panel(name="9", v-if="show.indexOf(9) >= 0") 安全服务
     div(slot="content")
-      comp-aside-filter3(:filterData="dataSafe", ref="dataSafe", @changeData="changeData")
+      comp-aside-filter3(:filterData="dataSafe", ref="dataSafe",)
   Panel(name="10", v-if="show.indexOf(10) >= 0") 管理方式
     div(slot="content")
       comp-aside-filter1(:filterData="dataMgmtMethod", ref="dataMgmtMethod",)
@@ -363,18 +363,6 @@ export default {
     },
     colllapseChange () {
       this.status = 2
-    },
-    changeData(obj) {
-      console.log(obj.from)
-      this[obj.from] = obj.data
-
-      if (obj.len > 0) {
-        this.indeterminate = true
-        this.checkAll = false
-      } else if (obj.len === 0) {
-        this.indeterminate = false
-        this.checkAll = false
-      }
     }
   },
   beforeMount () {

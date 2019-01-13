@@ -20,13 +20,13 @@ export default {
   mounted () {
   },
   methods: {
-    initWebSocket(){ //初始化weosocket
-      const wsUrl = "ws://183.84.10.123/client-api/websocket/notice/" + this.userno
+    initWebSocket(id){ //初始化weosocket
+      const wsUrl = "ws://183.84.10.123/client-api/websocket/notice/" + id
       this.websock = new WebSocket(wsUrl)
       this.websock.onmessage = this.websocketonmessage
       this.websock.onopen = this.websocketonopen
       this.websock.onerror = this.websocketonerror
-      //this.websock.onclose = this.websocketclose
+      this.websock.onclose = this.websocketclose
     },
     websocketonopen(){ //连接建立之后执行send方法发送数据
       console.log('开启连接')

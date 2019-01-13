@@ -70,7 +70,7 @@ export default {
       let i = name.split("_")[1] * 1
       const index = this.filterData[i].groups.findIndex((item)=>(item.value === v))
       this.$set(this.filterData[i].groups[index], 'checked', false)
-      this.$emit("changeData", {from: this.from, index: i, data:this.filterData, len: this.$refs.tag.length-1})
+      //this.$emit("changeData", {from: this.from, index: i, data:this.filterData, len: this.$refs.tag.length-1})
     },
     hideLv2 () {
       this.$set(this.filterData[this.index], 'groups', this.dataLv2)

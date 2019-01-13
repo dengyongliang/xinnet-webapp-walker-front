@@ -97,7 +97,7 @@ export default {
           // 获取信息成功
           // 开启websocket
           // this.initWebSocket()
-          restEmitter.emit('openWebSocket')
+          restEmitter.emit('openWebSocket', "userno")
         }).catch((error) => {
           console.log(error)
         })

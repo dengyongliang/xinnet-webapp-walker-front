@@ -196,3 +196,7 @@
 .ivu-radio-wrapper{
   padding: 0 0 10px 0;
 }
+
+.ivu-back-top .ivu-back-top-inner{
+  background: #135edb;
+}

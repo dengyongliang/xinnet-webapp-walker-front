@@ -2,6 +2,7 @@
   #app
     Spin.spinBody(v-if="showBodySpin")
     router-view
+    BackTop(:height="500", :bottom="50", :right="20")
 </template>
 
 <script>
@@ -44,8 +45,8 @@ export default {
     restEmitter.on('errorServer', () => {
       vm.$Message.error('连接到服务器失败！')
     })
-    restEmitter.on('openWebSocket', () => {
-      vm.initWebSocket()
+    restEmitter.on('openWebSocket', (id) => {
+      vm.initWebSocket(id)
     })
     restEmitter.on('closeWebSocket', () => {
       console.log('websocket close')
