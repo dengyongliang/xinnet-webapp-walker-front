@@ -85,7 +85,6 @@ export default {
     },
     saveForm () {
       this.loadingBtn = true
-      let vm = this
       let result = validateFormResult([
         this.$refs.roleId
       ])
@@ -96,22 +95,20 @@ export default {
             roleId: this.$refs.roleId.value.split("_")[0],
             groups: this.getCheckedNodes().slice(1).join(",")
           },
-          callback: function (response) {
-            vm.loadingBtn = false
+          callback: (response) => {
+            this.loadingBtn = false
             if( response.data.code === '1000' ){
-              vm.$Message.success('修改成功!')
-              vm.$emit("closeDrawer")
+              this.$Message.success('修改成功!')
+              this.$emit("closeDrawer")
             } else {
               if (response.data.code === '100') {
-                vm.$Message.error('角色编码错误')
+                this.$Message.error('角色编码错误')
               } else if (response.data.code === '200') {
-                vm.$Message.error('用户已存在')
+                this.$Message.error('用户已存在')
               } else if (response.data.code === '300') {
-                vm.$Message.error('企业不存在')
+                this.$Message.error('企业不存在')
               } else if (response.data.code === '400') {
-                vm.$Message.error('超级管理员只允许存在一个')
-              } else {
-                vm.$Message.error('修改失败')
+                this.$Message.error('超级管理员只允许存在一个')
               }
             }
           }

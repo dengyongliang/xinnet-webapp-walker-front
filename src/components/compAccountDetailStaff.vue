@@ -38,7 +38,8 @@ export default {
       userAuthGroupsList: [],
       userCompanysList: [],
       roleChecked: '',
-      companySelected: ''
+      companySelected: '',
+      super: false
     }
   },
   methods: {
@@ -49,21 +50,46 @@ export default {
 
   },
   beforeMount () {
+    // is super?
+    this.staffData.roles.map((v)=>{
+      if(v.roleCode.indexOf('super')>=0 && v.disabled ){
+        this.super = true
+      }
+    })
     this.rolesList = this.GLOBALS.CONVERT_RADIO(this.staffData.roles, {
       label: 'id',
       code: 'roleCode',
       value: 'roleName',
       disabled: 'disabled'
     })
-    this.userAuthGroupsList = this.GLOBALS.CONVERT_TREE(this.staffData.domainAuths.companys, {
-      title: 'id',
-      label: 'name',
-      checked: 'checked',
-      children: 'groups',
-      disabled_lv1: true,
-      disabled_lv2: false
-    })
-    console.log(this.userAuthGroupsList)
+    this.userAuthGroupsList = function (vm) {
+      let arr = vm.GLOBALS.CONVERT_TREE(vm.staffData.domainAuths.companys, {
+        title: 'id',
+        label: 'name',
+        checked: 'checked',
+        children: 'groups',
+        disabled_lv1: true,
+        disabled_lv2: vm.super ? true: false
+      })
+
+      let len = arr.length
+      let arr2 = []
+      console.log(arr)
+      for(var i=0; i<len; i++){
+        if (arr[i].children.length) {
+          arr2.push(arr[i])
+        }
+      }
+      if (arr2.length) {
+        if (vm.super) {
+          return [{title: 0, label: '全部', checked: false, expand: true, disabled: true,children: vm.GLOBALS.CONVERT_TREE_CHECKED_TRUE(arr2, 'children')}]
+        } else {
+          return [{title: 0, label: '全部', checked: false, expand: true,children:arr2}]
+        }
+      } else {
+        return []
+      }
+    }(this)
     this.userCompanysList = this.GLOBALS.CONVERT_SELECT(this.staffData.userCompanys, {
       label: 'name',
       value: 'id'

@@ -2,11 +2,11 @@
 Form.compStaffJurisdiction(:label-width="0")
   .t 选择员工角色：
   FormItem()
-    comp-radio(name="roleId",:list="rolesList",ref="roleId",:on-parentmethod="isSuper",)
+    comp-radio(name="roleId",:list="userRoles",ref="roleId",)
   .t 请勾选此员工可管理的域名：
   FormItem()
     .scrollList
-      Tree(:data="userAuthGroupsList", show-checkbox, ref="Tree",:render="renderContent")
+      Tree(:data="userAuthGroups", show-checkbox, ref="Tree",:render="renderContent")
   Button(type="primary",@click="saveForm",:loading="loadingBtn") 保存
 </template>
 
@@ -23,14 +23,6 @@ export default {
   props: {
     baseInfoData: {
       type: Object,
-      default: function () {
-        return {
-          data: []
-        }
-      }
-    },
-    rolesList: {
-      type: Array,
       default: function () {
         return {
           data: []
@@ -136,6 +128,9 @@ export default {
   },
   computed: {
     ...mapState({
+      userRoles (state) {
+        return state.user.userRoles
+      },
       userAuthGroups (state) {
         return state.user.userAuthGroups
       }

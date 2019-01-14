@@ -26,10 +26,7 @@
   Drawer(:closable="true", width="640", v-model="drawerAddStaff", title="添加员工", :mask-closable="maskClosable", @on-visible-change="drawerChange")
     comp-account-add-staff(
       v-if="refresh",
-      :on-close="closeDrawer",
-      :type = "type",
-      :rolesList="rolesList",
-      :userAuthGroupsList="userAuthGroupsList"
+      :on-close="closeDrawer"
     )
 
   <!-- 员工详情 抽屉 -->
@@ -163,7 +160,6 @@ export default {
     },
     addStaff () {
       this.type = 'new'
-      this.rolesList = this.userRoles
       this.drawerAddStaff = true
     },
     pageChange: function (curPage) {
@@ -322,7 +318,6 @@ export default {
         callback: (response) => {
           if( response.data.code === '1000' ){
             this.staffData = response.data.data
-
             this.drawerDetailStaff = true
           } else {
             if (response.data.code === '100') {
@@ -384,14 +379,6 @@ export default {
       },
       maskClosable (state) {
         return state.maskClosable
-      },
-      userRoles (state) {
-        return this.GLOBALS.CONVERT_ROLES(state.user.userRoles, {
-          label: 'id',
-          code: 'roleCode',
-          value: 'roleName',
-          disabled: 'disabled'
-        })
       },
       userAuthGroupsOriginal (state) {
         var array = [{

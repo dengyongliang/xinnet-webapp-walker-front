@@ -4,7 +4,7 @@
     TabPane.tabPane1(label="基本资料",name="name1")
       comp-account-staff-info(@getBaseInfo="baseInfo")
     TabPane.tabPane2(label="权限",name="name2",:disabled="tabDisabled")
-      comp-account-staff-jurisdiction(:baseInfoData="baseInfoData",:rolesList="rolesList",:userAuthGroupsList="userAuthGroupsList",@closeDrawer="onClose")
+      comp-account-staff-jurisdiction(:baseInfoData="baseInfoData",@closeDrawer="onClose")
 </template>
 
 <script>
@@ -20,22 +20,6 @@ export default {
   props: {
     onClose: {
       type: Function
-    },
-    rolesList: {
-      type: Array,
-      default: function () {
-        return {
-          data: []
-        }
-      }
-    },
-    userAuthGroupsList: {
-      type: Array,
-      default: function () {
-        return {
-          data: []
-        }
-      }
     }
   },
   data () {

@@ -13,17 +13,17 @@
       "id": 10,
       "roleCode": "super_R25330225",
       "roleName": "超级管理员",
-      "disabled": 1
+      "disabled": 0
     }, {
       "id": 18,
       "roleCode": "R03898988",
       "roleName": "邓永亮22",
-      "disabled": 0
+      "disabled": 1
     }, {
       "id": 17,
       "roleCode": "R32020433",
       "roleName": "邓永亮",
-      "disabled": 0
+      "disabled": 1
     }],
     "customers": [],
     "customerCount": 0,
@@ -103,13 +103,13 @@
           "name": "分组1",
           "userCount": null,
           "groups": null,
-          "checked": 0
+          "checked": 1
         }, {
           "id": 11,
           "name": "分组2",
           "userCount": null,
           "groups": null,
-          "checked": 0
+          "checked": 1
         }],
         "checked": 0
       }, {
