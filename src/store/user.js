@@ -42,7 +42,8 @@ export default {
     users: [],
     companys: [],
     userAuthGroups: [],
-    userAuthGroupsOriginal: []
+    userAuthGroupsOriginal: [],
+    userMsgNum: 0
   },
   mutations: {
     [types.SET_CURRENT_USER_DATA] (state, payload) {
@@ -68,6 +69,9 @@ export default {
     },
     [types.SET_USER_AUTH_GROUPS_ORIGINAL] (state, payload) {
       state.userAuthGroupsOriginal = payload.data
+    },
+    [types.SET_USER_MSG_NUM] (state, payload) {
+      state.userMsgNum = payload.data
     }
   },
   actions: {

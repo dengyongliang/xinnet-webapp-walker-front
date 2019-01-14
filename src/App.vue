@@ -49,7 +49,6 @@ export default {
       vm.initWebSocket(id)
     })
     restEmitter.on('closeWebSocket', () => {
-      console.log('websocket close')
       vm.websock.close()
     })
   },

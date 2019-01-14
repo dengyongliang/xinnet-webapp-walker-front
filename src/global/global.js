@@ -124,7 +124,7 @@ function CONVERT_TREE (tree, map) {
     const title = item[ map.title ]
     const label = item[ map.label ]
     const checked = item[ map.checked ] ? true : false
-    const disabled = item.lv===1 ? (map.disabled_lv1===true ? true : false) : (map.disabled_lv2===true ? true : false)
+    const disabled = item.groups ? (map.disabled_lv1===true ? true : false) : (map.disabled_lv2===true ? true : false)
     let children = item[ map.children ]
     // 如果有子节点，递归
     if (children) {
@@ -161,6 +161,28 @@ function CONVERT_ROLES (roles, map) {
     }
     result.push({
       label,
+      value,
+      disabled
+    })
+  })
+  return result
+}
+function CONVERT_RADIO (roles, map) {
+  const result = []
+  // 遍历 roles
+  roles.forEach((item) => {
+    // 读取 map 的键值映射
+    const label = item[ map.label ]
+    const code = item[ map.code ]
+    const value = item[ map.value ]
+    if (typeof map.disabled !== 'undefined') {
+      var disabled = item[ map.disabled ] ? false : true// 1 可以选，0 不可以选
+    } else {
+      var disabled = false
+    }
+    result.push({
+      label,
+      code,
       value,
       disabled
     })
@@ -240,5 +262,6 @@ export default
   CONVERT_SELECT,
   REAL_NAME_VERIFY_STATUS,
   CONVERT_SELECT_GROUP,
-  CONVERT_CHECKBOX
+  CONVERT_CHECKBOX,
+  CONVERT_RADIO
 }

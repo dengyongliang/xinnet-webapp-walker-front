@@ -15,7 +15,7 @@
     router-link.email(to="/notice/monitoring")
       Icon(type="ios-mail-outline")
       em.num
-        i {{msgNum}}
+        i {{userMsgNum}}
     span.line |
     router-link(to="/report") 报告中心
     span.line |
@@ -36,7 +36,7 @@
 import { mapState, mapActions } from 'vuex'
 import * as types from '@/store/types'
 import compSwitchClient from '@/components/compSwitchClient'
-// import mixinsWebSocket from '@/mixins/mixinsWebSocket'
+//import mixinsWebSocket from '@/mixins/mixinsWebSocket'
 import { emitter as restEmitter } from '@/global/rest'
 export default {
   components: {
@@ -46,15 +46,16 @@ export default {
   data () {
     return {
       loadingBtn: false,
-      showModals: false,
-      userno: 11,
-      msgNum: 0
+      showModals: false
     }
   },
   computed: {
     ...mapState({
       myUserInfo (state) {
         return state.user.myUserInfo
+      },
+      userMsgNum (state) {
+        return state.user.userMsgNum
       }
     })
   },
@@ -64,6 +65,7 @@ export default {
       let params = {
         callback: function (response) {
           if( response.data.code === '1000' ){
+            restEmitter.emit('closeWebSocket')
             vm.$Message.success('登出成功')
             vm.$router.replace({ path: '/login' })
           } else {
@@ -88,6 +90,7 @@ export default {
       if (response.data.code === '1000') {
         this.$store.commit(types.SET_LOGINED)
         this.$store.commit(types.SET_CURRENT_USER_DATA, response.data)
+        let manageCustomerId = response.data.data.manageCustomerId
         Promise.all([
           this.$store.dispatch(types.GET_USER_ROLES),
           this.$store.dispatch(types.GET_USERS),
@@ -96,8 +99,8 @@ export default {
         ]).then((response) => {
           // 获取信息成功
           // 开启websocket
-          // this.initWebSocket()
-          restEmitter.emit('openWebSocket', "userno")
+          //this.initWebSocket(manageCustomerId)
+          restEmitter.emit('openWebSocket', manageCustomerId)
         }).catch((error) => {
           console.log(error)
         })

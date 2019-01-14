@@ -17,7 +17,7 @@ import * as types from '@/store/types'
 import compRadio from '@/components/compRadio'
 import validateFormResult from '@/global/validateForm'
 export default {
-  name: 'compAccountStaffJurisdiction',
+  name: 'compAccountStaffJurisdictionForDetail',
   components: {
     compRadio
   },

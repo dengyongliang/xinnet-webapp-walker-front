@@ -5,14 +5,14 @@
     FormItem(label="姓名：")
       span.text {{getBaseInfo.userName}}
     FormItem(label="手机：")
-      comp-input(name='userMobile',label="手机",ref="userMobile", :defaultValue="getBaseInfo.userMobile")
+      comp-input(name='userMobile',label="手机",ref="userMobile", :defaultValue="getBaseInfo.userMobile",:disabled="!getBaseInfo.status")
     FormItem(label="座机：")
-      comp-input(name='userTel',label="座机",ref="userTel",:defaultValue="getBaseInfo.tel")
+      comp-input(name='userTel',label="座机",ref="userTel",:defaultValue="getBaseInfo.tel",:disabled="!getBaseInfo.status")
     FormItem(label="电子邮件：")
       comp-input(name='userEmail',label="电子邮件",ref="userEmail",:defaultValue="getBaseInfo.userEmail",:disabled="!getBaseInfo.status")
     FormItem(label="所属企业：")
-      comp-select(name="companyId",:list="companysList",ref="companyId",styles="width:240px", :defaultValue="companySelected")
-    FormItem(label="")
+      comp-select(name="companyId",:list="companysList",ref="companyId",styles="width:240px", :defaultValue="companySelected", :disabled="!getBaseInfo.status")
+    FormItem(label="", v-show="getBaseInfo.status")
       Button(type="primary",@click="nextForm",:loading="loadingBtn") 保存
     input(type="hidden", :value="getBaseInfo.userCode", ref="userCode")
 </template>

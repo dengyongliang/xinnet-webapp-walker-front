@@ -14,6 +14,7 @@ import record from './record.js'
 import report from './report.js'
 import monitor from './monitor.js'
 import rest from '../global/rest.js'
+import { emitter as restEmitter } from '@/global/rest'
 // import * as links from '../global/linkdo.js'
 import * as links from '../global/linkdo_json.js'
 Vue.use(Vuex)
@@ -83,6 +84,7 @@ export default function makeStore () {
       },
       [types.CHANGE_CUSTOMERS] ({ commit, rootState }, params) {
         rest.post(links.CHANGE_CUSTOMERS, JSON.stringify(params.param),function () {
+          //restEmitter.emit('closeWebSocket')
           window.location.href="/home"
           //params.vm.$router.push({path: '/home'})
         })

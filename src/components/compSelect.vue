@@ -1,7 +1,7 @@
 <template lang="pug">
   div.compSelect(style="display:inline-block")
     slot(name="left")
-    Select(v-model="value",:filterable="filterable",:style="styles",:name="name",@on-change="selectChange",:placeholder="placeholder",:class="{ 'error': showError }", :label-in-value="labelInValue")
+    Select(v-model="value",:filterable="filterable",:style="styles",:name="name",@on-change="selectChange",:placeholder="placeholder",:class="{ 'error': showError }", :label-in-value="labelInValue",:disabled="disabled")
       Option(v-if="!optionGroup", v-for="item in list",:value="item.value", @click.native="getMoreParams(item)") {{ item.label }}
 
       OptionGroup(v-if="optionGroup", :label="item.label", v-for="item in list")
@@ -70,6 +70,10 @@ export default {
       default: ''
     },
     filterable: {
+      type: Boolean,
+      default: false
+    },
+    disabled: {
       type: Boolean,
       default: false
     }

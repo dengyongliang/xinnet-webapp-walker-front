@@ -41,12 +41,7 @@
     comp-account-detail-staff(
       v-if="refresh",
       :on-close="closeDrawer",
-      :rolesList="detailRolesList",
-      :userAuthGroupsList="detailUserAuthGroupsList",
-      :userCompanysList = "detailUserCompanysList",
-      :userBaseInfo="staffData",
-      :roleChecked = "roleChecked",
-      :companySelected = "companySelected"
+      :staffData="staffData"
     )
 </template>
 
@@ -167,10 +162,8 @@ export default {
       this.queryUserList(this.queryParam({pageNum:1}))
     },
     addStaff () {
-      console.log(this.userAuthGroups)
       this.type = 'new'
       this.rolesList = this.userRoles
-      this.userAuthGroupsList = this.userAuthGroups
       this.drawerAddStaff = true
     },
     pageChange: function (curPage) {
@@ -329,39 +322,7 @@ export default {
         callback: (response) => {
           if( response.data.code === '1000' ){
             this.staffData = response.data.data
-            this.detailRolesList = this.GLOBALS.CONVERT_ROLES(response.data.data.roles, {
-              label: 'id',
-              code: 'roleCode',
-              value: 'roleName',
-              disabled: 'disabled'
-            })
-            this.detailUserAuthGroupsList = [{
-              title: '0',
-              label: '全部',
-              expand: true,
-              checked: false,
-              userCount: response.data.data.domainAuths.userCount,
-              children: []
-            }]
-            this.detailUserAuthGroupsList[0].children = this.GLOBALS.CONVERT_TREE(response.data.data.domainAuths.companys, {
-              title: 'id',
-              label: 'name',
-              checked: 'checked',
-              children: 'groups'
-            })
-            this.detailUserCompanysList = this.GLOBALS.CONVERT_SELECT(response.data.data.userCompanys, {
-              label: 'name',
-              value: 'id'
-            })
-            // 查找公司selected
-            response.data.data.userCompanys.forEach((v) => {
-              if (v.checked) {
-                this.companySelected = v.id + ''
-              } else {
-              }
-            })
-            // 查找角色checked
-            this.roleChecked = response.data.data.defaultRoleId
+
             this.drawerDetailStaff = true
           } else {
             if (response.data.code === '100') {
@@ -450,24 +411,6 @@ export default {
           })
         }
         return array
-      },
-      userAuthGroups (state) {
-        let arrGroups = [{
-          title: '0',
-          label: '全部',
-          expand: true,
-          checked: false,
-          children: []
-        }]
-        if (state.user.userAuthGroups.companys) {
-          arrGroups[0].children = this.GLOBALS.CONVERT_TREE(state.user.userAuthGroups.companys, {
-            title: 'id',
-            label: 'name',
-            checked: 'checked',
-            children: 'groups'
-          })
-        }
-        return arrGroups
       }
     })
   },
@@ -504,12 +447,6 @@ export default {
     this.queryUserCompanys(params)
   },
   watch: {
-    userAuthGroups: {
-      handler (newValue, oldValue) {
-        this.userAuthGroupsList = newValue
-      },
-      deep: true
-    }
   }
 }
 </script>
