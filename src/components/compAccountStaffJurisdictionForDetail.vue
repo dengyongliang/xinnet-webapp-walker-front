@@ -6,9 +6,11 @@ Form.compStaffJurisdiction(:label-width="0")
   .t 请勾选此员工可管理的域名：
   FormItem()
     .scrollList
-      Tree(:data="userAuthGroupsList", show-checkbox, ref="Tree",:render="renderContent")
+      p.none(v-show="!userAuthGroupsList.length") 暂无分组
+        router-link.text(to="/mgmt/enterprise") 创建分组
+      Tree(v-show="userAuthGroupsList.length",:data="userAuthGroupsList", show-checkbox, ref="Tree",:render="renderContent")
   input(type="hidden", :value="baseInfoData.userCode", ref="userCode")
-  Button(type="primary",@click="saveForm",:loading="loadingBtn") 保存
+  Button(type="primary",@click="saveForm",:loading="loadingBtn", v-show="!isSuper") 保存
 </template>
 
 <script>
@@ -92,7 +94,7 @@ export default {
         let params = {
           param: {
             userCode: this.$refs.userCode.value,
-            roleId: this.$refs.roleId.value.split("_")[0],
+            roleId: this.$refs.roleId.value,
             groups: this.getCheckedNodes().slice(1).join(",")
           },
           callback: (response) => {
@@ -128,6 +130,9 @@ export default {
   mounted () {
   },
   computed: {
+    isSuper () {
+      return this.baseInfoData.defaultRoleId.indexOf('super') >= 0 ? true : false
+    }
   }
 }
 </script>
@@ -141,6 +146,11 @@ export default {
 .compStaffJurisdiction .scrollList{
   height:300px;
   overflow:auto;
+}
+.compStaffJurisdiction .none a{
+  display:inline-block;
+  margin-left: 10px;
+  color:#2d8cf0;
 }
 .compStaffJurisdiction .ivu-tree{
   position:relative;

@@ -4,25 +4,25 @@
  "data": [{
   "id": 1,
   "roleCode": "super",
-  "disabled": 1,
+  "disabled": 0,
   "roleName": "超级管理员"
  },
  {
   "id": 2,
   "roleCode": "rolecode1",
-  "disabled": 0,
+  "disabled": 1,
   "roleName": "超级管理员"
  },
  {
   "id": 3,
   "roleCode": "rolecode2",
-  "disabled": 0,
+  "disabled": 1,
   "roleName": "超级管理员"
  },
  {
   "id": 4,
   "roleCode": "rolecode3",
-  "disabled": 0,
+  "disabled": 1,
   "roleName": "超级管理员"
  },
  {

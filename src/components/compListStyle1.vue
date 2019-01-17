@@ -34,7 +34,7 @@ div.list
               span.left 暂无分组
             .row2.clear(v-else, v-for="group in item.groups")
               span.left <i></i>{{group.name}}：
-              span.right {{group.domainCount}}人
+              span.right {{group.domainCount}}个
 
             .row6.clear(v-if="item.groups.length>4")
               span.left <i></i>...
@@ -139,7 +139,9 @@ export default {
                 } else if (response.data.code === '200') {
                   this.$Message.error('主体公司不允许删除！')
                 } else if (response.data.code === '300') {
-                  this.$Message.error('企业下有分组，不允许删除！')
+                  this.$Message.error('企业下有域名，不允许删除！')
+                } else if (response.data.code === '400') {
+                  this.$Message.error('企业下有员工，不允许删除！')
                 } else {
                   this.$Message.error('企业删除失败！')
                 }

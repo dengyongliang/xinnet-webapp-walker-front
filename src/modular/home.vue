@@ -56,7 +56,7 @@
               span.t 员工数量 <b>{{userStatistics.userCount}}</b>个
               div.tR
                 router-link.text(to="/mgmt/accountMgmt") 详情
-      .secBox.secBox6(:class="'status_'+payStatisticsHistoryBill.status")
+      .secBox.secBox6(:class="payStatisticsHistoryBill.thisCycle?('status_'+payStatisticsHistoryBill.status):''")
         h3.h3T.clear
           span.t 账单管理
         Row
@@ -77,9 +77,9 @@
                 span.r
                   em {{payStatisticsUnBilled.checkBill}}
           Col(span="12",)
-            h4.h4T 已出账单
-            strong 账单金额：<em>{{payStatisticsHistoryBill.payMoney}}</em>元
-            ul
+            h4.h4T {{payStatisticsHistoryBill.thisCycle?'已出账单':'暂无已出账单'}}
+            strong(v-show="payStatisticsHistoryBill.thisCycle") 账单金额：<em>{{payStatisticsHistoryBill.payMoney}}</em>元
+            ul(v-show="payStatisticsHistoryBill.thisCycle")
               li.clear
                 span.l 结算周期：
                 span.r
@@ -93,9 +93,9 @@
                 span.r
                   em {{payStatisticsHistoryBill.checkBill}}
         p.other
-          span 剩余额度：{{accountStatistics.creditBalance}}元
-          span 总额度：{{accountStatistics.totalCreditBalance}}元
-          span 已用额度：{{accountStatistics.payBalance}}元
+          span 信用剩余额度：{{accountStatistics.creditBalance}}元
+          span 信用总额度：{{accountStatistics.totalCreditBalance}}元
+          span 信用已用额度：{{accountStatistics.totalCreditBalance - accountStatistics.creditBalance}}元
 </template>
 
 <script>

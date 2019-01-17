@@ -17,8 +17,8 @@
           FormItem.verificationCodeInput
             comp-input(name='verificationCode',ref="verificationCode",defaultValue="",placeholder="请输验证码",styles="width:100%",:on-errorparent="onShowError",:on-focusparent="onHideError",:errorInCompInput="false",label="验证码",:maxLength="6",)
               Icon.iconleft(custom="i-icon i-icon-tick1",slot="left")
-            a(href="javascript:;" @click="getVerificationCode",v-show="!success") 获取短信验证码
-            span.tips(v-show="success") 发送成功
+            a(href="javascript:;" @click="getVerificationCode",v-show="!success") {{textVC}}
+            span.tips(v-show="success") 重新发送({{downTime}})
 
           FormItem
             Button(type="primary", @click="submit", :loading="loadingBtn") 立即登录
@@ -42,7 +42,9 @@ export default {
       errorText: '',
       loadingBtn: false,
       showError: false,
-      success: false
+      success: false,
+      textVC: '获取短信验证码',
+      downTime: 60
     }
   },
   methods: {
@@ -60,21 +62,22 @@ export default {
         this.loadingBtn = false
         return false
       }
-      let vm = this
+
       let params = {
         param: {
           userCode: this.$refs.account.value
         },
-        callback: function (response) {
+        callback: (response) => {
           let data = response.data
           if (data.code === '1000') {
-            vm.success = true
+            this.success = true
+            this.countDown()
           } else if (data.code === '100') {
-            vm.$refs.account.showValidateResult({text:'手机号码不存在'})
+            this.$refs.account.showValidateResult({text:'手机号码不存在'})
           } else if (data.code === '200') {
-            vm.onShowError('获取短信验证码已超上限')
+            this.onShowError('获取短信验证码已超上限')
           } else if (data.code === '300') {
-            vm.onShowError('短信验证码已发送')
+            this.onShowError('短信验证码已发送')
           }
         }
       }
@@ -121,7 +124,7 @@ export default {
           if (data.code === '1000') {
             vm.$Message.success('登录成功！')
             setTimeout(() => {
-              if (data.keeperFlag) {
+              if (data.keeperFlag * 1) {
                 vm.$router.replace({ path: '/client' })
               } else {
                 vm.$router.replace({ path: '/home' })
@@ -155,6 +158,16 @@ export default {
         }
       }
       this.loginSubmit(params)
+    },
+    countDown() {
+      let clock = window.setInterval(() => {
+        this.downTime--
+        if (this.downTime < 0) {     //当倒计时小于0时清除定时器
+          window.clearInterval(clock)
+          this.success = false
+          this.downTime = 60
+        }
+      },1000)
     },
     ...mapActions({
       loginSubmit: types.LOGIN_SUBMIT,
@@ -242,6 +255,7 @@ export default {
   right:10px;
   top:13px;
   line-height:20px;
+  color: #bcbcbc;
 }
 .forgetPw {
   color:#2271f4;

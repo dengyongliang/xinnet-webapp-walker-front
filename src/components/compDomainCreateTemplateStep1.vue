@@ -19,7 +19,7 @@ div.step1
     FormItem(label="域名联系人（中文）：", required)
       comp-input(name='userNameCn',label="域名联系人",ref="userNameCn",styles="width:300px", :maxLength="100", :defaultValue="(type!=='create'?templateData.userNameCn:'')", :disabled="disabled")
     FormItem(label="所属区域：", required)
-      compCascader(styles="width:300px;",:list="areaList", ref="area", :defaultValue="(type!=='create'?area:[])", :disabled="disabled")
+      compCascader(styles="width:300px;",:list="areaList", ref="area", :defaultValue="area", :disabled="disabled")
     FormItem(label="通讯地址（中文）：", required)
       comp-input(name='streetCn',label="通讯地址",ref="streetCn",styles="width:300px",:maxLength="100", :defaultValue="(type!=='create'?templateData.publicStreetCn:'')", :disabled="disabled")
     FormItem(label="邮政编码：", required)
@@ -140,10 +140,8 @@ export default {
               this.$emit("setTemplateData", params.param)
               this.$emit("showStep2")
             } else {
-              if (response.data.code === '100') {
+              if (response.data.code === '100' || response.data.code === '200') {
                 this.$Message.error('模板名称已存在')
-              } else {
-                this.$Message.error('模板创建失败')
               }
             }
           }
@@ -201,7 +199,7 @@ export default {
               this.$Message.success('模板修改成功')
               this.$emit("refreshData")
             } else {
-              if (response.data.code === '100') {
+              if (response.data.code === '200') {
                 this.$Message.error('模板名称已存在')
               }
             }

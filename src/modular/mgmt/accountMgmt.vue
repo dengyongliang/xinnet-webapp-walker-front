@@ -15,7 +15,9 @@
             Tree(:data="userCompanys", show-checkbox, ref="Tree", :render="renderContent",@on-check-change="companyChange")
         Panel(name="2") 按域名管理权限筛选
           div(slot="content")
-            Tree(:data="userAuthGroupsOriginal", show-checkbox, ref="Tree2", :render="renderContent", @on-check-change="domainGroupChange")
+            p.none(v-show="!userAuthGroupsOriginal.length")
+              router-link.text(to="/mgmt/enterprise") 创建分组
+            Tree(v-show="userAuthGroupsOriginal.length",:data="userAuthGroupsOriginal", show-checkbox, ref="Tree2", :render="renderContent", @on-check-change="domainGroupChange")
     <!-- 列表主体 -->
     .secTable
       <Table :columns="columns" :data="list" :loading="loadingTable"></Table>
@@ -25,7 +27,7 @@
   <!-- 添加员工 抽屉 -->
   Drawer(:closable="true", width="640", v-model="drawerAddStaff", title="添加员工", :mask-closable="maskClosable", @on-visible-change="drawerChange")
     comp-account-add-staff(
-      v-if="refresh",
+      v-if="refresh && drawerAddStaff",
       :on-close="closeDrawer"
     )
 
@@ -36,7 +38,7 @@
         span （{{staffData.userCode}}）
       p {{staffData.userTitle}}
     comp-account-detail-staff(
-      v-if="refresh",
+      v-if="refresh && drawerDetailStaff",
       :on-close="closeDrawer",
       :staffData="staffData"
     )
@@ -62,11 +64,6 @@ export default {
       loadingBtn: false,
       drawerAddStaff: false,
       drawerDetailStaff: false,
-      rolesList: [],
-      userAuthGroupsList: [],
-      detailRolesList: [],
-      detailUserAuthGroupsList: [],
-      detailUserCompanysList: [],
       userCompanys: [],
       roleChecked: '',
       companySelected: '',
@@ -159,7 +156,6 @@ export default {
       this.queryUserList(this.queryParam({pageNum:1}))
     },
     addStaff () {
-      this.type = 'new'
       this.drawerAddStaff = true
     },
     pageChange: function (curPage) {
@@ -279,7 +275,7 @@ export default {
           }
         },
         [
-          h('span', data.label + '(' + data.userCount + ')')
+          h('span', data.label)
         ]
       )
     },
@@ -381,7 +377,7 @@ export default {
         return state.maskClosable
       },
       userAuthGroupsOriginal (state) {
-        var array = [{
+        let array = [{
           title: '0',
           label: '全部',
           expand: true,
@@ -389,6 +385,8 @@ export default {
           userCount: state.user.userAuthGroupsOriginal.userCount,
           children: []
         }]
+        let array2 = []
+        let len = 0
         if (state.user.userAuthGroupsOriginal.companys) {
           array[0].children = this.convertTree(state.user.userAuthGroupsOriginal.companys, {
             title: 'id',
@@ -396,6 +394,19 @@ export default {
             children: 'groups',
             userCount: 'userCount'
           })
+          len = array[0].children.length
+          // 查找存在分组数据
+          for (var i=0; i<len; i++) {
+            let v = array[0].children[i]
+            if (v.children.length) {
+              array2.push(v)
+            }
+          }
+          if (array2.length>0) {
+            array[0].children = array2
+          } else {
+            array = []
+          }
         }
         return array
       }
@@ -416,16 +427,18 @@ export default {
             userCount: response.data.data.userCount,
             children:[]
           })
-          response.data.data.companys.forEach((item, index, array) => {
-            this.userCompanys[0].children.push({
-              title: item.id,
-              label: item.name,
-              expand: true,
-              checked: false,
-              userCount: item.userCount,
-              children:[]
+          if (response.data.data.companys && response.data.data.companys.length) {
+            response.data.data.companys.forEach((item, index, array) => {
+              this.userCompanys[0].children.push({
+                title: item.id,
+                label: item.name,
+                expand: true,
+                checked: false,
+                userCount: item.userCount,
+                children:[]
+              })
             })
-          })
+          }
         } else {
           this.$Message.error('查询失败')
         }
@@ -448,7 +461,10 @@ export default {
   background:#fff;
   margin-right:20px;
 }
-
+.contAccountMgmt .filter p.none a{
+  display:inline-block;
+  color:#2d8cf0;
+}
 .contAccountMgmt .secTable{
   overflow:hidden;
   background:none;

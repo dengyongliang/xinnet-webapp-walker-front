@@ -7,7 +7,7 @@
     FormItem(label="手机：")
       comp-input(name='userMobile',label="手机",ref="userMobile", :defaultValue="getBaseInfo.userMobile",:disabled="!getBaseInfo.status")
     FormItem(label="座机：")
-      comp-input(name='userTel',label="座机",ref="userTel",:defaultValue="getBaseInfo.tel",:disabled="!getBaseInfo.status")
+      comp-input(name='userTel',label="座机",ref="userTel",:defaultValue="getBaseInfo.userTel",:disabled="!getBaseInfo.status")
     FormItem(label="电子邮件：")
       comp-input(name='userEmail',label="电子邮件",ref="userEmail",:defaultValue="getBaseInfo.userEmail",:disabled="!getBaseInfo.status")
     FormItem(label="所属企业：")
@@ -78,13 +78,16 @@ export default {
             this.loadingBtn = false
             if( response.data.code === '1000' ){
               this.$Message.success('修改成功!')
+              this.$emit("closeDrawer")
             } else {
               if (response.data.code === '200') {
                 this.$Message.error('用户不存在')
               } else if (response.data.code === '300') {
                 this.$Message.error('用户被锁定')
-              } else {
-                this.$Message.error('修改失败')
+              } else if (response.data.code === '600') {
+                this.$refs.userMobile.showValidateResult({text:'手机号码已存在'})
+              } else if (response.data.code === '700') {
+                this.$refs.userEmail.showValidateResult({text:'邮箱已存在'})
               }
             }
           }

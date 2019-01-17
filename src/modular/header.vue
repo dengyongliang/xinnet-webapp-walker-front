@@ -90,6 +90,7 @@ export default {
       if (response.data.code === '1000') {
         this.$store.commit(types.SET_LOGINED)
         this.$store.commit(types.SET_CURRENT_USER_DATA, response.data)
+        this.$store.commit(types.SET_MENUS, response.data)
         let manageCustomerId = response.data.data.manageCustomerId
         Promise.all([
           this.$store.dispatch(types.GET_USER_ROLES),

@@ -22,6 +22,7 @@
           compSelect(styles="width:150px;",:filterable="true",:list="usersList", v-show="showMgmtSelect", :ref="'select'+index", :labelInValue="true")
           a.btnSave(href="javascript:;",  @click="handleSave(index, 'create')",) 保存
           a.btnDel(href="javascript:;", :ref="index", @click="handleRemove(index, 'create')", v-show="showDelBtn2") 删除
+
         div(v-if="item.status==='modify'")
           input(:ref="'groupId'+index", :value="item.id", type="hidden")
           comp-input(name='name',label="请输入组名",:ref="'name'+index",:maxLength="30",styles="width:208px",:defaultValue="item.name")
@@ -33,6 +34,7 @@
           a.btnSave(href="javascript:;",  @click="handleSave(index, 'modify')",) 保存
           a.btnCancle(href="javascript:;", @click="handleCancle(index)") 取消
           a.btnDel(href="javascript:;", :ref="index", @click="handleRemove(index, 'modify')", v-show="showDelBtn2") 删除
+
         div(v-if="item.status==='view'",)
           input(:ref="'groupId'+index", :value="item.id", type="hidden")
           div.groupName
@@ -102,8 +104,10 @@ export default {
       this.showMgmtSelect = true
     },
     handleCancle (index) {
+      let current = this.formDynamic.items[index]
+      current.status = "view"
       this.status = 'view'
-      this.$set(this.formDynamic.items[index], 'status', 'view')
+      this.$set(this.formDynamic.items, index, current)
     },
     handleSave (index, type) {
       this.loadingBtn = true
@@ -128,6 +132,7 @@ export default {
           callback: (response) => {
             this.loadingBtn = false
             if( response.data.code === '1000' ){
+              this.showMgmtBtn = false
               this.$Message.success('分组'+text+'成功')
               this.$set(this.formDynamic.items, index, {
                 id: type==='create' ? response.data.id : this.$refs['groupId'+index][0].value,
@@ -169,6 +174,7 @@ export default {
     handleAdd () {
       this.status = 'edit'
       this.showModifyBtn = false
+      this.showMgmtBtn = true
       this.showDelBtn = false
       this.formDynamic.items.push({
         id: 0,
@@ -181,12 +187,15 @@ export default {
       let current = this.formDynamic.items[index]
       current.status = "modify"
       this.status = 'edit'
+      this.showMgmtBtn = false
+      this.showMgmtSelect = true
       this.$set(this.formDynamic.items, index, current)
     },
     handleRemove (index, type) {
       this.loadingBtn = true
       this.status = 'view'
       if (type==='create') {
+        this.showMgmtBtn = false
         this.formDynamic.items.splice(index, 1)
         this.loadingBtn = false
       } else {
@@ -197,6 +206,7 @@ export default {
           callback: (response) => {
             this.loadingBtn = false
             if( response.data.code === '1000' ){
+              this.showMgmtBtn = false
               this.$Message.success('删除分组成功')
               this.formDynamic.items.splice(index, 1)
             } else {
@@ -204,8 +214,8 @@ export default {
                 this.$Message.error('企业不存在')
               } else if (response.data.code === '200') {
                 this.$Message.error('分组内有域名，不允许删除')
-              } else {
-                this.$Message.error('删除分组失败')
+              } else if (response.data.code === '300') {
+                this.$Message.error('用户有分组负责人权限，不允许删除')
               }
             }
           }
@@ -244,7 +254,7 @@ export default {
             this.showDelBtn = false
             this.disabledBtn = true
             this.showDelBtn2 = false
-            this.showMgmtBtn = true
+            // this.showMgmtBtn = true
           } else {
             this.showDelBtn = false
             this.disabledBtn = false
@@ -263,7 +273,7 @@ export default {
             this.showDelBtn = false
             this.showModifyBtn = false
             this.disabledBtn = true
-            this.showMgmtBtn = true
+            // this.showMgmtBtn = true
           } else {
             this.showDelBtn = true
             this.showModifyBtn = true

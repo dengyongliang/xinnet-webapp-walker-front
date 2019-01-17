@@ -15,7 +15,7 @@
       tr
         td.col1(colspan="2") 用户名：{{myUserInfo.userCode}}
       tr
-        td.col1(colspan="2") 所属企业：{{myUserInfo.manageCustomerName}}
+        td.col1(colspan="2",) {{myUserInfo.keeperFlag?'管理企业':'所属企业'}}：{{myUserInfo.manageCustomerName}}
     h3 联系人信息
       i
     table
@@ -29,6 +29,10 @@
           a(href="javascript:;", @click="drawerModifyTel=true") 修改
       tr
         td.col1(colspan="2") 邮箱：{{myUserInfo.userEmail}}
+      tr
+        td.col1(colspan="2") QQ：{{myUserInfo.qq}}
+      tr
+        td.col1(colspan="2") 微信：{{myUserInfo.wx}}
     h3 管理信息
       i
     table
@@ -155,7 +159,7 @@ export default {
 .contMyAccount .secMain td.col2{
   text-align:right;
 }
-.contMyAccount .secMain td.col2 a{
+.contMyAccount .secMain td a{
   color:#145ddd;
 }
 .contMyAccount .secMain td .n{

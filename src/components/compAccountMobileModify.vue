@@ -149,21 +149,21 @@ export default {
             userMobile: this.$refs.userMobile.value,
             verificationCode: this.$refs.verificationCode2.value
           },
-          callback: function (response) {
-            vm.loadingBtn = false
+          callback: (response) => {
+            this.loadingBtn = false
             if( response.data.code === '1000' ){
-              vm.$Message.success('手机更新成功')
-              vm.$store.commit(types.UPDATE_USER_MOBILE, vm.$refs.userMobile.value)
-              vm.close()
+              this.$Message.success('手机更新成功')
+              this.$store.commit(types.UPDATE_USER_MOBILE, this.$refs.userMobile.value)
+              this.close()
             } else {
               if (response.data.code === '200') {
-                vm.$Message.error('用户不存在')
+                this.$Message.error('用户不存在')
               } else if (response.data.code === '300') {
-                vm.$Message.error('用户被锁定')
+                this.$Message.error('用户被锁定')
               } else if (response.data.code === '400') {
-                vm.$refs.verificationCode2.showValidateResult({text:'手机验证码错误'})
-              } else {
-                vm.$Message.error('验证失败')
+                this.$refs.verificationCode2.showValidateResult({text:'手机验证码错误'})
+              } else if (response.data.code === '600') {
+                this.$refs.userMobile.showValidateResult({text:'手机号码已存在'})
               }
             }
           }

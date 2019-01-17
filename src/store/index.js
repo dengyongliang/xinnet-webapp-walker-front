@@ -15,8 +15,8 @@ import report from './report.js'
 import monitor from './monitor.js'
 import rest from '../global/rest.js'
 import { emitter as restEmitter } from '@/global/rest'
-// import * as links from '../global/linkdo.js'
-import * as links from '../global/linkdo_json.js'
+import * as links from '../global/linkdo.js'
+// import * as links from '../global/linkdo_json.js'
 Vue.use(Vuex)
 export default function makeStore () {
   return new Vuex.Store({
