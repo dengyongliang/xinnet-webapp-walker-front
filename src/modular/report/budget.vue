@@ -7,24 +7,26 @@
     Row
       Col(span="12")
         strong 域名总览
-        em.num 225
+        em.num {{domainBudget.totalMoney ? domainBudget.totalMoney : 0}}
           i 元
         ul
           li.clear
             span.l 新注册域名
-            span.r 45元
+            span.r {{domainBudget.registerMoney ? domainBudget.registerMoney : 0}}元
           li.clear
             span.l 域名续费
-            span.r 45元
+            span.r {{domainBudget.renewMoney ? domainBudget.renewMoney : 0}}元
           li.clear
             span.l 域名安全保护
-            span.r 45元
+            span.r {{domainBudget.safeMoney ? domainBudget.safeMoney : 0}}元
           li.clear
             span.l 域名回购
-            span.r 45元
+            span.r {{domainBudget.repurchaseMoney ? domainBudget.repurchaseMoney : 0}}元
       Col(span="12")
         strong 2019年度域名预算
-        comp-chart-report-budget-total()
+        comp-chart-report-budget-total(
+          :charData="domainBudget"
+        )
 
   .secBox.secBox2
     h4.h4T.clear
@@ -34,26 +36,21 @@
     Row
       Col(span="12")
         strong 新顶级域名注册
-        em.num 225
+        em.num {{register.newMoney}}
           i 元
         ul
-          li.clear
-            span.l 重点保护域名
-            span.r 45个
-          li.clear
-            span.l 注册局锁开通率
-            span.r 45%
+          li.clear(v-for="item in register.newList")
+            span.l {{item.domainSuffix}}
+            span.r {{item.budgetNumber}}个
+
       Col(span="12")
         strong 通用顶级域名注册
-        em.num 32
+        em.num {{register.normalMoney}}
           i 元
         ul
-          li.clear
-            span.l 已开通
-            span.r 32个
-          li.clear
-            span.l 未开通
-            span.r 32个
+          li.clear(v-for="item in register.normalList")
+            span.l {{item.domainSuffix}}
+            span.r {{item.budgetNumber}}个
 
   .secBox.secBox3
     h4.h4T.clear
@@ -61,44 +58,39 @@
     Row
       Col(span="12")
         strong 域名续费
-        em.num 225
+        em.num {{renewAndSafe.renewMap ? renewAndSafe.renewMap.renewMoney : 0}}
           i 元
         ul
           li.clear
-            span.l 新注册域名
-            span.r 45元
+            span.l .com
+            span.r {{renewAndSafe.renewMap ? renewAndSafe.renewMap.renewComNumber : 0}}元
           li.clear
-            span.l 域名续费
-            span.r 45元
+            span.l .cn
+            span.r {{renewAndSafe.renewMap ? renewAndSafe.renewMap.renewCnNumber : 0}}元
           li.clear
-            span.l 域名安全保护
-            span.r 45元
+            span.l .com.cn
+            span.r {{renewAndSafe.renewMap ? renewAndSafe.renewMap.renewComCnNumber : 0}}元
           li.clear
-            span.l 域名回购
-            span.r 45元
+            span.l 其他后缀
+            span.r {{renewAndSafe.renewMap ? renewAndSafe.renewMap.renewOtherNumber : 0}}元
       Col(span="12")
-        comp-chart-report-budget-renew()
+        comp-chart-report-budget-renew(
+          :charData="renewAndSafe.renewMap"
+        )
     Divider()
     Row
       Col(span="12")
         strong 域名安全保护
-        em.num 225
+        em.num {{renewAndSafe.safeMap ? renewAndSafe.safeMap.safeMoney : 0}}
           i 元
         ul
           li.clear
-            span.l 新注册域名
-            span.r 45元
-          li.clear
-            span.l 域名续费
-            span.r 45元
-          li.clear
-            span.l 域名安全保护
-            span.r 45元
-          li.clear
-            span.l 域名回购
-            span.r 45元
+            span.l 域名注册局锁
+            span.r {{renewAndSafe.safeMap ? renewAndSafe.safeMap.safeNumber : 0}}个
       Col(span="12")
-        comp-chart-report-budget-safe()
+        comp-chart-report-budget-safe(
+          :charData="renewAndSafe.safeMap"
+        )
 
   h3.h3T.clear 域名回购
   .secTable
@@ -125,6 +117,9 @@ export default {
     compChartReportBudgetRenew,
     compChartReportBudgetSafe
   },
+  props: {
+    reportId: ''
+  },
   data () {
     return {
       value: '',
@@ -132,65 +127,19 @@ export default {
       loadingBtn: false,
       columns: [
         {
-          title: '提交时间',
-          key: 'createTime',
+          title: '域名',
+          key: 'domainName',
           className: 'col1'
         },
         {
-          title: '转入完成时间',
-          key: 'tansferInTime',
+          title: '回购原因',
+          key: 'reason',
           className: 'col2'
         },
         {
-          title: '域名',
-          key: 'domainName',
+          title: '预估价格',
+          key: 'budgetPrice',
           className: 'col3'
-        },
-        {
-          title: '转入状态',
-          key: 'transferStatus',
-          className: 'col4',
-          render: (h, params) => {
-            if (this.list[params.index].transferStatus===4) {
-              return h('Tooltip', {
-                  props: {
-                    content: '转入失败，已退款',
-                    placement: "top"
-                  }
-                },
-                [
-                  h('Icon', {
-                    props: {
-                      custom: 'i-icon i-icon-tips',
-                      size: "16"
-                    },
-                    style: {
-                      margin: "0 5px 0 0",
-                      color: "#48affe"
-                    }
-                  }),
-                  h('a', {
-                    props: {
-                      href: ''
-                    },
-                    style: {
-                      color: "#f00"
-                    }
-                  }, this.DATAS.DOMAIN_TRANSFER_STATUS[this.list[params.index].transferStatus])
-                ]
-              )
-            }
-
-            if (this.list[params.index].transferStatus!==4) {
-              return h('div', [
-                h('a', {
-                  props: {
-                    href: ''
-                  }
-                }, this.DATAS.DOMAIN_TRANSFER_STATUS[this.list[params.index].transferStatus])
-              ])
-            }
-          }
         }
       ],
       list: [],
@@ -198,7 +147,14 @@ export default {
         pageNo: 1,
         pagePages: 1,
         pageItems: 1
-      }
+      },
+      domainBudget: {},
+      renewAndSafe: {},
+      register: {},
+      reportId: 0,
+      companyName: '',
+      start: '',
+      end: ''
     }
   },
   methods: {
@@ -206,15 +162,69 @@ export default {
 
     },
     ...mapActions({
-      submitTransferIn: types.SUBMIT_TRANSFER_IN,
-      buyBackendLock: types.BUY_BACKEND_LOCK,
-      renewBackendLock: types.RENEW_BACKEND_LOCK,
-      orderPayDomainRenew: types.ORDER_PAY_DOMAIN_RENEW
+      queryDomainBudgetReport: types.QUERY_DOMAIN_BUDGET_REPORT,
+      queryDomainRepurchaseReport: types.QUERY_DOMAIN_REPURCHASE_REPORT,
+      queryDomainRenewAndSafeReport: types.QUERY_DOMAIN_RENEW_AND_SAFE_REPORT,
+      queryDomainRegisterReport: types.QUERY_DOMAIN_REGISTER_REPORT
     })
   },
   computed: {
   },
   beforeMount () {
+    // 获取reportId
+    this.reportId = this.$route.query.reportId
+
+    if (this.reportId * 1 !== 0) {
+      let params = {
+        param: {
+          reportId: this.reportId
+        },
+        callback: (response) => {
+          if( response.data.code === '1000' ){
+            this.domainBudget = response.data.data
+          } else {
+          }
+        }
+      }
+      this.queryDomainBudgetReport(params)
+      let params2 = {
+        param: {
+          reportId: this.reportId
+        },
+        callback: (response) => {
+          if( response.data.code === '1000' ){
+            this.list = response.data.data.list
+          } else {
+          }
+        }
+      }
+      this.queryDomainRepurchaseReport(params2)
+      let params3 = {
+        param: {
+          reportId: this.reportId
+        },
+        callback: (response) => {
+          if( response.data.code === '1000' ){
+            this.renewAndSafe = response.data.data
+          } else {
+          }
+        }
+      }
+      this.queryDomainRenewAndSafeReport(params3)
+
+      let params4 = {
+        param: {
+          reportId: this.reportId
+        },
+        callback: (response) => {
+          if( response.data.code === '1000' ){
+            this.register = response.data.data
+          } else {
+          }
+        }
+      }
+      this.queryDomainRegisterReport(params4)
+    }
   },
   mounted(){
   },

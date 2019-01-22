@@ -3,8 +3,9 @@
   header-body
   .mainBody
     .img
-      p XXXXX有限公司
-      strong 报告中心
+      p {{myUserInfo.manageCustomerName}}
+      strong(v-show="type==='center'") 报告中心
+      strong(v-show="type==='budget'") {{start}} ~ {{end}} 域名预算报告
     router-view
 
 </template>
@@ -21,17 +22,27 @@ export default {
     return {
       value: '',
       loadingTable: false,
-      loadingBtn: false
+      loadingBtn: false,
+      start: '',
+      end: '',
+      type: 'center'
     }
   },
   methods: {
-    ...mapActions({
-      submitTransferIn: types.SUBMIT_TRANSFER_IN
-    })
   },
   computed: {
+    ...mapState({
+      myUserInfo (state) {
+        return state.user.myUserInfo
+      }
+    })
   },
   beforeMount () {
+    if (this.$route.query.type) {
+      this.type = this.$route.query.type
+    }
+    this.start = this.$route.query.start
+    this.end = this.$route.query.end
   },
   mounted(){
   },

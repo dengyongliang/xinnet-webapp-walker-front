@@ -34,6 +34,21 @@ export default {
     },
     [types.QUERY_DOMAIN_SAFE_RATE_REPORT] ({ commit, rootState }, callback) {
       rest.post(links.QUERY_DOMAIN_SAFE_RATE_REPORT, JSON.stringify({}), callback)
+    },
+    [types.QUERY_DOMAIN_BUDGET_REPORT] ({ commit, rootState }, params) {
+      rest.post(links.QUERY_DOMAIN_BUDGET_REPORT, JSON.stringify(params.param), params.callback)
+    },
+    [types.QUERY_DOMAIN_REPURCHASE_REPORT] ({ commit, rootState }, params) {
+      rest.post(links.QUERY_DOMAIN_REPURCHASE_REPORT, JSON.stringify(params.param), params.callback)
+    },
+    [types.QUERY_DOMAIN_RENEW_AND_SAFE_REPORT] ({ commit, rootState }, params) {
+      rest.post(links.QUERY_DOMAIN_RENEW_AND_SAFE_REPORT, JSON.stringify(params.param), params.callback)
+    },
+    [types.QUERY_DOMAIN_REGISTER_REPORT] ({ commit, rootState }, params) {
+      rest.post(links.QUERY_DOMAIN_REGISTER_REPORT, JSON.stringify(params.param), params.callback)
+    },
+    [types.QUERY_DOMAIN_BUDGET_REPORT_LIST] ({ commit, rootState }, params) {
+      rest.post(links.QUERY_DOMAIN_BUDGET_REPORT_LIST, JSON.stringify(params.param), params.callback)
     }
   }
 }

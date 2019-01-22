@@ -165,6 +165,16 @@ export const QUERY_DOMAIN_SAFE_NORMAL_REPORT = 'queryDomainSafeNormalReport'
 export const QUERY_DOMAIN_SAFE_IMPORTANT_REPORT = 'queryDomainSafeImportantReport'
 // 域名资产报告(域名安全保护统计)
 export const QUERY_DOMAIN_SAFE_RATE_REPORT = 'queryDomainSafeRateReport'
+// 域名预算报告总览
+export const QUERY_DOMAIN_BUDGET_REPORT = 'queryDomainBudgetReport'
+// 域名预算报告-域名回购
+export const QUERY_DOMAIN_REPURCHASE_REPORT = 'queryDomainRepurchaseReport'
+// 域名预算报告-域名续费及域名安全保护
+export const QUERY_DOMAIN_RENEW_AND_SAFE_REPORT = 'queryDomainRenewAndSafeReport'
+// 域名预算报告-域名注册
+export const QUERY_DOMAIN_REGISTER_REPORT = 'queryDomainRegisterReport'
+// 域名预算报告列表
+export const QUERY_DOMAIN_BUDGET_REPORT_LIST = 'queryDomainBudgetReportList'
 
 // 自有监控
 // 监控通知管理列表

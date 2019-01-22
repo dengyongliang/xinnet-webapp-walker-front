@@ -11,12 +11,10 @@ Collapse(v-model="value")
   Panel(name="3") <Icon custom="i-icon iconL i-icon-report1" size="24" />域名预算报告
     span.right 2018-12-14 13：21更新
     ul(slot="content")
-      li.clear
-        a(href="#") 201900000域名预算报告
-        span.right 2018-12-14 13：21更新
-      li.clear
-        a(href="#") 201900000域名预算报告
-        span.right 2018-12-14 13：21更新
+      li.clear(v-for="item in budgetList")
+        router-link(tag="a", target="_blank", :to="{ path: '/report/budget', query: {reportId: item.id, type: 'budget', start: item.budgetCycleStart, end: item.budgetCycleEnd}}") {{item.budgetCycleStart}} ~ {{item.budgetCycleEnd}} 域名预算报告
+        span.right {{item.modifyTime}}更新
+
   Panel(name="4") <Icon custom="i-icon iconL i-icon-report3" size="24" />域名消费报告
     span.right 2018-12-14 13：21更新
     p(slot="content") 史蒂夫·乔布斯（Steve Jobs），1955年2月24日生于美国加利福尼亚州旧金山，美国发明家、企业家、美国苹果公司联合创办人。
@@ -31,17 +29,31 @@ export default {
   },
   data () {
     return {
-      value: ''
+      value: '',
+      budgetList: []
     }
   },
   methods: {
     ...mapActions({
-      submitTransferIn: types.SUBMIT_TRANSFER_IN
+      queryDomainBudgetReportList: types.QUERY_DOMAIN_BUDGET_REPORT_LIST
     })
   },
   computed: {
   },
   beforeMount () {
+    let params = {
+      param: {
+        pageNum: 1,
+        pageSize: 20
+      },
+      callback: (response) => {
+        if( response.data.code === '1000' ){
+          this.budgetList = response.data.data.list
+        } else {
+        }
+      }
+    }
+    this.queryDomainBudgetReportList(params)
   },
   mounted(){
   },

@@ -40,7 +40,7 @@ export default {
           top: 'center',
           itemWidth: 10,
           itemHeight: 10,
-          data: datas.company?Object.keys(datas.company):[]
+          data: datas.company && Object.keys(datas.company).length ? Object.keys(datas.company) : ['无']
         },
         series : [
           {
@@ -49,7 +49,7 @@ export default {
             radius: ['50%', '85%'],
             center: ['30%', '50%'],
             avoidLabelOverlap: false,
-            data: datas.company?Object.values(datas.company):[],
+            data: datas.company && Object.values(datas.company).length ? Object.values(datas.company) : [{"name": "无", "value": 0}],
             label: {
               normal: {
                 show: true,

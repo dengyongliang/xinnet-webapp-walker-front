@@ -40,20 +40,19 @@ export default {
           top: 'center',
           itemWidth: 10,
           itemHeight: 10,
-          data:['直接访问','邮件营销','联盟广告','视频广告','搜索引擎']
+          data:['新域名注册','域名续费','域名安全保护','域名回购']
         },
         series : [
           {
-            name: '域名所属公司',
+            name: '域名预算',
             type: 'pie',
             radius : '85%',
             center: ['40%', '50%'],
             data:[
-                {value:335, name:'直接访问'},
-                {value:310, name:'邮件营销'},
-                {value:234, name:'联盟广告'},
-                {value:135, name:'视频广告'},
-                {value:1548, name:'搜索引擎'}
+                {value: datas.registerMoney, name: '新域名注册'},
+                {value: datas.renewMoney, name: '域名续费'},
+                {value: datas.safeMoney, name: '域名安全保护'},
+                {value: datas.repurchaseMoney, name: '域名回购'}
             ],
             label: {
               normal: {

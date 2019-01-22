@@ -61,13 +61,12 @@ export default {
   },
   methods: {
     logout () {
-      let vm = this
       let params = {
-        callback: function (response) {
+        callback: (response) => {
           if( response.data.code === '1000' ){
             restEmitter.emit('closeWebSocket')
-            vm.$Message.success('登出成功')
-            vm.$router.replace({ path: '/login' })
+            this.$Message.success('登出成功')
+            this.$router.replace({ path: '/login' })
           } else {
           }
         }

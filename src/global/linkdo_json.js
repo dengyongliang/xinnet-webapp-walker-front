@@ -236,3 +236,13 @@ export const QUERY_DOMAIN_MONITOR = 'http://localhost:5500/static/data/domainMon
 export const QUERY_DOMAIN_MONITOR_DETAIL = 'http://localhost:5500/static/data/domainMonitorDetail.js'
 // 自有域名监控-域名监控详情(域名监控日志)
 export const QUERY_DOMAIN_MONITOR_LOG = 'http://localhost:5500/static/data/domainMonitorLog.js'
+// 域名预算报告总览
+export const QUERY_DOMAIN_BUDGET_REPORT = 'http://localhost:5500/static/data/domainBudgetReport.js'
+// 域名预算报告-域名回购
+export const QUERY_DOMAIN_REPURCHASE_REPORT = 'http://localhost:5500/static/data/domainRepurchaseReport.js'
+// 域名预算报告-域名续费及域名安全保护
+export const QUERY_DOMAIN_RENEW_AND_SAFE_REPORT = 'http://localhost:5500/static/data/domainRenewAndSafeReport.js'
+// 域名预算报告-域名注册
+export const QUERY_DOMAIN_REGISTER_REPORT = 'http://localhost:5500/static/data/domainRegisterReport.js'
+// 域名预算报告列表
+export const QUERY_DOMAIN_BUDGET_REPORT_LIST = 'http://localhost:5500/static/data/domainBudgetReportList.js'

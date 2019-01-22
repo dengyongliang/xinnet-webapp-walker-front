@@ -134,9 +134,14 @@ const DOMAIN_SUFFIX = {
   '.cc': '.cc',
   'otherSuffix': '其他后缀'
 }
-
+const UNIT = {
+  'Y': '年',
+  'M': '月',
+  'C': '次'
+}
 export default
 {
+  UNIT,
   ORDER_TYPE,
   REGISTRANT_ID_TYPE_I,
   REGISTRANT_ID_TYPE_E,

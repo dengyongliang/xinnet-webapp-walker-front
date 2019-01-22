@@ -37,10 +37,11 @@ export default {
     },
     {
       path: 'budget',
-      name: 'REPORT_BUDGET',
+      name: 'budget',
       component (resolve) {
         return require(['@/modular/report/budget'], resolve)
       },
+      props: true,
       meta: {
         title: '域名预算报告'
       }

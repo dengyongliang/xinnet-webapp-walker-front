@@ -9,7 +9,7 @@
           td.td1
             span.n 搜索：
             .inputWrap
-              <Input v-model="param.orderGoodsInfo" placeholder="订单编号/域名/企业名称/用户名" />
+              <Input v-model="param.orderGoodsInfo" placeholder="订单编号/域名/用户名" />
           td.td2
             span.n 下单时间：
             .inputWrap
@@ -196,7 +196,7 @@ export default {
           className: 'col8',
           render: (h, params) => {
             return h('div', [
-              h('span', {}, this.orderList[params.index].orderGoodsNum + this.orderList[params.index].orderGoodsUnit)
+              h('span', {}, this.orderList[params.index].orderGoodsNum + this.DATAS.UNIT[this.orderList[params.index].orderGoodsUnit])
             ])
           }
         },

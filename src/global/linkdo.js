@@ -232,7 +232,6 @@ export const QUERY_DOMAIN_MONITOR_CHANGE_REPORT = api + '/client-api/client/repo
 export const QUERY_DOMAIN_MONITOR_SAFE_REPORT = api + '/client-api/client/report/domainMonitorSafeReport'
 // 自有监控报告到期时间
 export const QUERY_DOMAIN_MONITOR_EXPIRE_REPORT = api + '/client-api/client/report/domainMonitorExpireReport'
-
 // 域名资产报告(资产概况)
 export const QUERY_DOMAIN_ASSETS_VIEW_REPORT = api + '/client-api/client/report/domainAssetsViewReport'
 // 域名资产报告(域名所属公司柱状图)
@@ -255,3 +254,13 @@ export const QUERY_DOMAIN_MONITOR_DETAIL = api + '/client-api/client/monitor/dom
 export const QUERY_DOMAIN_MONITOR_LOG = api + '/client-api/client/monitor/domainMonitorLog'
 // 自有域名监控-域名监控详情(域名监控日志导出)
 export const EXPORT_DOMAIN_LOG = api + '/client-api/client/monitor/exportDomainLog'
+// 域名预算报告总览
+export const QUERY_DOMAIN_BUDGET_REPORT = api + '/client-api/client/report/domainBudgetReport'
+// 域名预算报告-域名回购
+export const QUERY_DOMAIN_REPURCHASE_REPORT = api + '/client-api/client/report/domainRepurchaseReport'
+// 域名预算报告-域名续费及域名安全保护
+export const QUERY_DOMAIN_RENEW_AND_SAFE_REPORT = api + '/client-api/client/report/domainRenewAndSafeReport'
+// 域名预算报告-域名注册
+export const QUERY_DOMAIN_REGISTER_REPORT = api + '/client-api/client/report/domainRegisterReport'
+// 域名预算报告列表
+export const QUERY_DOMAIN_BUDGET_REPORT_LIST = api + '/client-api/client/report/domainBudgetReportList'
