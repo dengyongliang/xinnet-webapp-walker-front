@@ -40,21 +40,19 @@ export default {
           top: 'center',
           itemWidth: 10,
           itemHeight: 10,
-          data:['直接访问','邮件营销','联盟广告','视频广告','搜索引擎']
+          data:datas.map((v) => {
+            return v.companyName
+          })
         },
         series : [
           {
-            name: '域名所属公司',
+            name: '消费统计',
             type: 'pie',
             radius : '85%',
             center: ['40%', '50%'],
-            data:[
-                {value:335, name:'直接访问'},
-                {value:310, name:'邮件营销'},
-                {value:234, name:'联盟广告'},
-                {value:135, name:'视频广告'},
-                {value:1548, name:'搜索引擎'}
-            ],
+            data:datas.map((v) => {
+              return {value: v.totalMoney, name: v.companyName}
+            }),
             label: {
               normal: {
                 show: true,
@@ -83,13 +81,16 @@ export default {
 
   },
   mounted () {
-    this.drawChart(this.charData)
+    this.drawChart(this.charData.companyList)
   },
   computed: {
   },
   watch: {
-    charData: function (val, oldVal) {
-      this.drawChart(val)
+    charData: {
+      handler(val, oldVal) {
+        this.drawChart(val.companyList)
+      },
+      deep: true
     }
   }
 }

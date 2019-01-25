@@ -175,6 +175,20 @@ export const QUERY_DOMAIN_RENEW_AND_SAFE_REPORT = 'queryDomainRenewAndSafeReport
 export const QUERY_DOMAIN_REGISTER_REPORT = 'queryDomainRegisterReport'
 // 域名预算报告列表
 export const QUERY_DOMAIN_BUDGET_REPORT_LIST = 'queryDomainBudgetReportList'
+// 域名消费报告-域名消费列表
+export const QUERY_DOMAIN_CONSUMPTION_REPORT_LIST = 'queryDomainConsumptionReportList'
+// 域名消费报告-域名消费明细列表
+export const QUERY_DOMAIN_CONSUMPTION_DETAIL_REPORT = 'queryDomainConsumptionDetailReport'
+// 域名消费报告-域名消费报告总览
+export const QUERY_DOMAIN_CONSUMPTION_REPORT = 'queryDomainConsumptionReport'
+// 域名消费报告-域名每月消费类别及金额
+export const QUERY_DOMAIN_CONSUMPTION_SORT_REPORT = 'queryDomainConsumptionSortReport'
+// 域名消费报告-域名企业消费类别柱状图
+export const QUERY_DOMAIN_CONSUMPTION_COMPANY_SORT_REPORT = 'queryDomainConsumptionCompanySortReport'
+// 域名消费报告-域名企业消费月份柱状图
+export const QUERY_DOMAIN_CONSUMPTION_COMPANY_MONTH_REPORT = 'queryDomainConsumptionCompanyMonthReport'
+// 域名消费报告-域名企业消费总览
+export const QUERY_DOMAIN_CONSUMPTION_COMPANY_REPORT = 'queryDomainConsumptionCompanyReport'
 
 // 自有监控
 // 监控通知管理列表

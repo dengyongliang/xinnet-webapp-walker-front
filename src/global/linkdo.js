@@ -264,3 +264,17 @@ export const QUERY_DOMAIN_RENEW_AND_SAFE_REPORT = api + '/client-api/client/repo
 export const QUERY_DOMAIN_REGISTER_REPORT = api + '/client-api/client/report/domainRegisterReport'
 // 域名预算报告列表
 export const QUERY_DOMAIN_BUDGET_REPORT_LIST = api + '/client-api/client/report/domainBudgetReportList'
+// 域名消费报告-域名消费列表
+export const QUERY_DOMAIN_CONSUMPTION_REPORT_LIST = api + '/client-api/client/report/domainConsumptionReportList'
+// 域名消费报告-域名消费明细列表
+export const QUERY_DOMAIN_CONSUMPTION_DETAIL_REPORT = api + '/client-api/client/report/domainConsumptionDetailReport'
+// 域名消费报告-域名消费报告总览
+export const QUERY_DOMAIN_CONSUMPTION_REPORT = api + '/client-api/client/report/domainConsumptionReport'
+// 域名消费报告-域名每月消费类别及金额
+export const QUERY_DOMAIN_CONSUMPTION_SORT_REPORT = api + '/client-api/client/report/domainConsumptionSortReport'
+// 域名消费报告-域名企业消费类别柱状图
+export const QUERY_DOMAIN_CONSUMPTION_COMPANY_SORT_REPORT = api + '/client-api/client/report/domainConsumptionCompanySortReport'
+// 域名消费报告-域名企业消费月份柱状图
+export const QUERY_DOMAIN_CONSUMPTION_COMPANY_MONTH_REPORT = api + '/client-api/client/report/domainConsumptionCompanyMonthReport'
+// 域名消费报告-域名企业消费总览
+export const QUERY_DOMAIN_CONSUMPTION_COMPANY_REPORT = api + '/client-api/client/report/domainConsumptionCompanyReport'

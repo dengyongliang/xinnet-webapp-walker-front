@@ -1,11 +1,11 @@
 <template lang="pug">
-.compChartOverviewSuffix
+.compChartReportSpendingCate
   #myChartSuffix
 </template>
 
 <script>
 export default {
-  name: 'compChartOverviewSuffix',
+  name: 'compChartReportSpendingCate',
   props: {
     charData: {
       type: Object,
@@ -40,21 +40,19 @@ export default {
           top: 'center',
           itemWidth: 10,
           itemHeight: 10,
-          data:['直接访问','邮件营销','联盟广告','视频广告','搜索引擎']
+          data: datas.map((v) => {
+            return v.type
+          })
         },
         series : [
           {
-            name: '域名所属公司',
+            name: '消费统计',
             type: 'pie',
             radius : '85%',
             center: ['40%', '50%'],
-            data:[
-                {value:335, name:'直接访问'},
-                {value:310, name:'邮件营销'},
-                {value:234, name:'联盟广告'},
-                {value:135, name:'视频广告'},
-                {value:1548, name:'搜索引擎'}
-            ],
+            data: datas.map((v) => {
+              return {value: v.money, name: v.type}
+            }),
             label: {
               normal: {
                 show: true,
@@ -83,22 +81,25 @@ export default {
 
   },
   mounted () {
-    this.drawChart(this.charData)
+    this.drawChart(this.charData.businessList)
   },
   computed: {
   },
   watch: {
-    charData: function (val, oldVal) {
-      this.drawChart(val)
+    charData: {
+      handler(val, oldVal) {
+        this.drawChart(val.businessList)
+      },
+      deep: true
     }
   }
 }
 </script>
 <style scoped>
-.compChartOverviewSuffix{
+.compChartReportSpendingCate{
   text-align: center;
 }
-.compChartOverviewSuffix #myChartSuffix{
+.compChartReportSpendingCate #myChartSuffix{
   height: 200px;
   width: 500px;
   margin: 0 auto;

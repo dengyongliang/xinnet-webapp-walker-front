@@ -36,7 +36,7 @@ export default function validateFormResult (validateArray) {
       }
     } else if (v.type === 'select') {
       let value = v.value
-      if (!value.length) {
+      if (value === '') {
         v.showValidateResult()
         flag = false
         // break

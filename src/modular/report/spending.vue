@@ -1,36 +1,32 @@
 <template lang="pug">
 .contReportSpending
   h3.h3T 消费总览
-    .tR 2018年3月1日至2019年2月28日，河北天翼实业集团有限公司及其旗下公司数字品牌资产共计消费<b class="num">45545</b>元。
+    .tR {{start}}日至{{end}}日，{{myUserInfo.manageCustomerName}}及其旗下公司数字品牌资产共计消费<b class="num">{{domainConsumptionReport.totalMoney}}</b>元。
   .secBox.secBox1
     h4.h4T.clear
       span.t 域名预算总额
     Row
       Col(span="12")
         ul
-          li.clear
-            span.l 域名注册：
-            span.r 45元
-          li.clear
-            span.l 域名续费：
-            span.r 45元
-          li.clear
-            span.l 域名回购：
-            span.r 45元
-          li.clear
-            span.l 域名安全保护：
-            span.r 45元
+          li.clear(v-for="item in domainConsumptionReport.businessList")
+            span.l {{item.type}}
+            span.r {{item.money}}元
+
           li.clear.total
             span.l 总计：
-            span.r <b>45545</b>元
+            span.r <b>{{domainConsumptionReport.totalMoney}}</b>元
       Col(span="12")
-        comp-chart-report-spending-cate()
+        comp-chart-report-spending-cate(
+          :charData="domainConsumptionReport"
+        )
 
   .secBox.secBox2
     h4.h4T.clear
       span.t 每月消费类别及金额
     .c
-      comp-chart-report-spending-month()
+      comp-chart-report-spending-month(
+        :charData="domainConsumptionSortReport"
+      )
   h3.h3T 各企业消费统计
   .secBox.secBox3
     h4.h4T.clear
@@ -38,41 +34,36 @@
     Row
       Col(span="12")
         ul
-          li.clear
-            span.l 新注册域名
-            span.r 45元
-          li.clear
-            span.l 域名续费
-            span.r 45元
-          li.clear
-            span.l 域名安全保护
-            span.r 45元
-          li.clear
-            span.l 域名回购
-            span.r 45元
+          li.clear(v-for="item in domainConsumptionCompanyReport.companyList")
+            span.l {{item.companyName}}
+            span.r {{item.totalMoney}}元
           li.clear.total
             span.l 总计：
-            span.r <b>45545</b>元
+            span.r <b>{{domainConsumptionCompanyReport.totalMoney}}</b>元
       Col(span="12")
-        comp-chart-report-spending-company()
+        comp-chart-report-spending-company(
+          :charData="domainConsumptionCompanyReport"
+        )
 
   .secBox.secBox4
     h4.h4T.clear
       span.t 各企业消费类别统计
     .c
-      comp-chart-report-spending-company-cate()
+      comp-chart-report-spending-company-cate(
+        :charData="domainConsumptionCompanySortReport"
+      )
   .secBox.secBox5
     h4.h4T.clear
       span.t 各企业每月消费类别统计
     .c
-      comp-chart-report-spending-month-cate()
+      comp-chart-report-spending-month-cate(
+        :charData="domainConsumptionCompanyMonthReport"
+      )
 
   h3.h3T.clear 消费明细
   .secTable
     <Table :columns="columns" :data="list" :loading="loadingTable"></Table>
 
-  <!-- 翻页区 -->
-  Page(:total="page.pageItems",:current="page.pageNo",show-elevator,show-total,prev-text="上一页",next-text="下一页",@on-change="pageChange",:page-size=20)
 </template>
 
 <script>
@@ -99,89 +90,212 @@ export default {
       loadingBtn: false,
       columns: [
         {
-          title: '提交时间',
-          key: 'createTime',
+          title: '类型',
+          key: 'type',
           className: 'col1'
         },
         {
-          title: '转入完成时间',
-          key: 'tansferInTime',
+          title: '数量',
+          key: 'num',
           className: 'col2'
         },
         {
-          title: '域名',
-          key: 'domainName',
+          title: '总价',
+          key: 'total',
           className: 'col3'
-        },
-        {
-          title: '转入状态',
-          key: 'transferStatus',
-          className: 'col4',
-          render: (h, params) => {
-            if (this.list[params.index].transferStatus===4) {
-              return h('Tooltip', {
-                  props: {
-                    content: '转入失败，已退款',
-                    placement: "top"
-                  }
-                },
-                [
-                  h('Icon', {
-                    props: {
-                      custom: 'i-icon i-icon-tips',
-                      size: "16"
-                    },
-                    style: {
-                      margin: "0 5px 0 0",
-                      color: "#48affe"
-                    }
-                  }),
-                  h('a', {
-                    props: {
-                      href: ''
-                    },
-                    style: {
-                      color: "#f00"
-                    }
-                  }, this.DATAS.DOMAIN_TRANSFER_STATUS[this.list[params.index].transferStatus])
-                ]
-              )
-            }
-
-            if (this.list[params.index].transferStatus!==4) {
-              return h('div', [
-                h('a', {
-                  props: {
-                    href: ''
-                  }
-                }, this.DATAS.DOMAIN_TRANSFER_STATUS[this.list[params.index].transferStatus])
-              ])
-            }
-          }
         }
       ],
       list: [],
-      page: {
-        pageNo: 1,
-        pagePages: 1,
-        pageItems: 1
+      customerId: 0,
+      start: '',
+      end: '',
+      domainConsumptionReport: {
+        totalMoney: 0,
+        businessList: []
+      },
+      domainConsumptionSortReport: {
+        dateList: [],
+        goodTypeList: [],
+        result: {}
+      },
+      domainConsumptionCompanySortReport: {
+        companyNameList: [],
+        goodTypeList: [],
+        statisticsMap: {}
+      },
+      domainConsumptionCompanyMonthReport: {
+        dateList: [],
+        companyNameList: [],
+        result: {}
+      },
+      domainConsumptionCompanyReport: {
+        totalMoney: 0,
+        companyList: []
       }
     }
   },
   methods: {
-    pageChange () {
-
-    },
     ...mapActions({
-      submitTransferIn: types.SUBMIT_TRANSFER_IN,
-      buyBackendLock: types.BUY_BACKEND_LOCK,
-      renewBackendLock: types.RENEW_BACKEND_LOCK,
-      orderPayDomainRenew: types.ORDER_PAY_DOMAIN_RENEW
+      queryDomainConsumptionReport: types.QUERY_DOMAIN_CONSUMPTION_REPORT,
+      queryDomainConsumptionDetailReport: types.QUERY_DOMAIN_CONSUMPTION_DETAIL_REPORT,
+      queryDomainConsumptionSortReport: types.QUERY_DOMAIN_CONSUMPTION_SORT_REPORT,
+      queryDomainConsumptionCompanySortReport: types.QUERY_DOMAIN_CONSUMPTION_COMPANY_SORT_REPORT,
+      queryDomainConsumptionCompanyMonthReport: types.QUERY_DOMAIN_CONSUMPTION_COMPANY_MONTH_REPORT,
+      queryDomainConsumptionCompanyReport: types.QUERY_DOMAIN_CONSUMPTION_COMPANY_REPORT
     })
   },
   computed: {
+    ...mapState({
+      myUserInfo (state) {
+        return state.user.myUserInfo
+      }
+    })
   },
   beforeMount () {
+    // customerId
+    this.customerId = this.$route.query.customerId
+    this.start = this.$route.query.start
+    this.end = this.$route.query.end
+
+    let param = {
+      customerId: this.customerId,
+      backCycleStart: this.start,
+      backCycleEnd: this.end
+    }
+    // 域名预算总额
+    let params = {
+      param: param,
+      callback: (response) => {
+        this.loadingBtn = false
+        this.loadingTable = false
+        if (response.data.code === '1000'){
+          this.domainConsumptionReport.totalMoney = response.data.data.totalMoney
+          this.domainConsumptionReport.businessList = function (vm) {
+            let arr = []
+            for (var i in vm.DATAS.BUSINESS_LIST) {
+              arr.push({
+                type: vm.DATAS.BUSINESS_LIST[i],
+                money: response.data.data.businessList[0][i]
+              })
+            }
+            return arr
+          }(this)
+        } else {
+        }
+      }
+    }
+    this.queryDomainConsumptionReport(params)
+    // 每月消费类别及金额
+    let params2 = {
+      param: param,
+      callback: (response) => {
+        this.loadingBtn = false
+        this.loadingTable = false
+        if (response.data.code === '1000'){
+          this.domainConsumptionSortReport = response.data.data
+          let arr = {}
+          Object.values(response.data.data.result).map((v) => {
+            v.map((v2) => {
+              if (arr[v2.orderGoodsType]) {
+                arr[v2.orderGoodsType].push(v2.orderTotalMoney)
+              } else {
+                arr[v2.orderGoodsType] = []
+                arr[v2.orderGoodsType].push(v2.orderTotalMoney)
+              }
+            })
+          })
+          this.domainConsumptionSortReport.result = arr
+        } else {
+        }
+      }
+    }
+    this.queryDomainConsumptionSortReport(params2)
+    // 各企业消费金额及占比
+    let params3 = {
+      param: param,
+      callback: (response) => {
+        this.loadingBtn = false
+        this.loadingTable = false
+        if (response.data.code === '1000'){
+          this.domainConsumptionCompanyReport = response.data.data
+        } else {
+        }
+      }
+    }
+    this.queryDomainConsumptionCompanyReport(params3)
+    // 各企业消费类别统计
+    let params4 = {
+      param: param,
+      callback: (response) => {
+        this.loadingBtn = false
+        this.loadingTable = false
+        if (response.data.code === '1000'){
+          this.domainConsumptionCompanySortReport = response.data.data
+          let arr = {}
+          Object.values(response.data.data.statisticsMap).map((v) => {
+            v.map((v2) => {
+              if (arr[v2.orderGoodsType]) {
+                arr[v2.orderGoodsType].push(v2.orderTotalMoney)
+              } else {
+                arr[v2.orderGoodsType] = []
+                arr[v2.orderGoodsType].push(v2.orderTotalMoney)
+              }
+            })
+          })
+          this.domainConsumptionCompanySortReport.statisticsMap = arr
+        } else {
+        }
+      }
+    }
+    this.queryDomainConsumptionCompanySortReport(params4)
+    // 各企业每月消费类别统计
+    let params5 = {
+      param: param,
+      callback: (response) => {
+        this.loadingBtn = false
+        this.loadingTable = false
+        if (response.data.code === '1000'){
+          this.domainConsumptionCompanyMonthReport = response.data.data
+          let arr = {}
+          Object.values(response.data.data.result).map((v) => {
+            v.map((v2) => {
+              if (arr[v2.companyName]) {
+                arr[v2.companyName].push(v2.totalMoney)
+              } else {
+                arr[v2.companyName] = []
+                arr[v2.companyName].push(v2.totalMoney)
+              }
+            })
+          })
+          this.domainConsumptionCompanyMonthReport.result = arr
+        } else {
+        }
+      }
+    }
+    this.queryDomainConsumptionCompanyMonthReport(params5)
+    // 消费明细
+    let params6 = {
+      param: param,
+      callback: (response) => {
+        this.loadingBtn = false
+        this.loadingTable = false
+        if (response.data.code === '1000'){
+          this.list = function (vm) {
+            let arr = []
+            for (var i in vm.DATAS.BUSINESS_LIST) {
+              arr.push({
+                type: vm.DATAS.BUSINESS_LIST[i],
+                num: response.data.data.businessList[0][i + 'PayNumber'] + '个',
+                total: response.data.data.businessList[0][i] + '元'
+              })
+            }
+            return arr
+          }(this)
+        } else {
+        }
+      }
+    }
+    this.queryDomainConsumptionDetailReport(params6)
   },
   mounted(){
   },
@@ -256,11 +370,11 @@ export default {
   margin: 0 auto;
 }
 .contReportSpending .secBox1 .ivu-col ul li{
-  padding-bottom: 25px;
+  padding-bottom: 20px;
 }
 .contReportSpending .secBox1 .ivu-col ul li.total{
   border-top: 1px dashed #eee;
-  padding-top: 25px;
+  padding-top: 20px;
 }
 .contReportSpending .secBox1 .ivu-col ul li.total b{
   color: #f40a0b;

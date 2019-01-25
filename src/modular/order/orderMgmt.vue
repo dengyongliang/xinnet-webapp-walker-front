@@ -110,24 +110,19 @@ export default {
             label: '域名安全服务'
         }
       ],
-      orderTypeList: [
-        {
-            value: '',
-            label: '全部'
-        },
-        {
-            value: '1',
-            label: '新开'
-        },
-        {
-            value: '2',
-            label: '续费'
-        },
-        {
-            value: '3',
-            label: '退费'
+      orderTypeList: function (vm) {
+        let array = [{
+          label: '全部',
+          value: ''
+        }]
+        for (var i in vm.DATAS.ORDER_TYPE) {
+          array.push({
+            label: vm.DATAS.ORDER_TYPE[i],
+            value: i + ''
+          })
         }
-      ],
+        return array
+      }(this),
       orderPayTypeList: [
         {
             value: '',
@@ -205,21 +200,9 @@ export default {
           key: 'orderType',
           className: 'col9',
           render: (h, params) => {
-            if (this.orderList[params.index].orderType === 1) {
-              return h('div', [
-                h('span', {}, '新开')
-              ])
-            }
-            if (this.orderList[params.index].orderType === 2) {
-              return h('div', [
-                h('span', {}, '续费')
-              ])
-            }
-            if (this.orderList[params.index].orderType === 3) {
-              return h('div', [
-                h('span', {}, '退费')
-              ])
-            }
+            return h('div', [
+              h('span', {}, this.DATAS.ORDER_TYPE[this.orderList[params.index].orderType])
+            ])
           }
         },
         {

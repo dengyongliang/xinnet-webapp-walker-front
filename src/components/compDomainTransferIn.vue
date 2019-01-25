@@ -58,7 +58,6 @@ export default {
         this.$refs.groupId
       ])
       if (result) {
-        let vm = this
         var params = {
           param: {
             templateId: this.$refs.templateId.value,

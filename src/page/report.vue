@@ -5,7 +5,10 @@
     .img
       p {{myUserInfo.manageCustomerName}}
       strong(v-show="type==='center'") 报告中心
+      strong(v-show="type==='assets'") 域名资产报告
+      strong(v-show="type==='own'") 自有域名监控报告
       strong(v-show="type==='budget'") {{start}} ~ {{end}} 域名预算报告
+      strong(v-show="type==='spending'") {{start}} ~ {{end}} 域名消费报告
     router-view
 
 </template>

@@ -1,7 +1,7 @@
 <template lang="pug">
 .compChartOverviewSuffix
   #myChart2
-  p 2019年需要续费的域名{{charData.renewNumber}}个，占全部域名的{{charData.renewRate}}。
+  p 需要续费的域名{{charData.renewNumber}}个，占全部域名的{{charData.renewRate}}。
 </template>
 
 <script>

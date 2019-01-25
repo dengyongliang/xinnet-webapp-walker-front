@@ -49,6 +49,27 @@ export default {
     },
     [types.QUERY_DOMAIN_BUDGET_REPORT_LIST] ({ commit, rootState }, params) {
       rest.post(links.QUERY_DOMAIN_BUDGET_REPORT_LIST, JSON.stringify(params.param), params.callback)
+    },
+    [types.QUERY_DOMAIN_CONSUMPTION_REPORT_LIST] ({ commit, rootState }, params) {
+      rest.post(links.QUERY_DOMAIN_CONSUMPTION_REPORT_LIST, JSON.stringify(params.param), params.callback)
+    },
+    [types.QUERY_DOMAIN_CONSUMPTION_DETAIL_REPORT] ({ commit, rootState }, params) {
+      rest.post(links.QUERY_DOMAIN_CONSUMPTION_DETAIL_REPORT, JSON.stringify(params.param), params.callback)
+    },
+    [types.QUERY_DOMAIN_CONSUMPTION_REPORT] ({ commit, rootState }, params) {
+      rest.post(links.QUERY_DOMAIN_CONSUMPTION_REPORT, JSON.stringify(params.param), params.callback)
+    },
+    [types.QUERY_DOMAIN_CONSUMPTION_SORT_REPORT] ({ commit, rootState }, params) {
+      rest.post(links.QUERY_DOMAIN_CONSUMPTION_SORT_REPORT, JSON.stringify(params.param), params.callback)
+    },
+    [types.QUERY_DOMAIN_CONSUMPTION_COMPANY_SORT_REPORT] ({ commit, rootState }, params) {
+      rest.post(links.QUERY_DOMAIN_CONSUMPTION_COMPANY_SORT_REPORT, JSON.stringify(params.param), params.callback)
+    },
+    [types.QUERY_DOMAIN_CONSUMPTION_COMPANY_MONTH_REPORT] ({ commit, rootState }, params) {
+      rest.post(links.QUERY_DOMAIN_CONSUMPTION_COMPANY_MONTH_REPORT, JSON.stringify(params.param), params.callback)
+    },
+    [types.QUERY_DOMAIN_CONSUMPTION_COMPANY_REPORT] ({ commit, rootState }, params) {
+      rest.post(links.QUERY_DOMAIN_CONSUMPTION_COMPANY_REPORT, JSON.stringify(params.param), params.callback)
     }
   }
 }

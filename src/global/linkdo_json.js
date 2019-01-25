@@ -246,3 +246,17 @@ export const QUERY_DOMAIN_RENEW_AND_SAFE_REPORT = 'http://localhost:5500/static/
 export const QUERY_DOMAIN_REGISTER_REPORT = 'http://localhost:5500/static/data/domainRegisterReport.js'
 // 域名预算报告列表
 export const QUERY_DOMAIN_BUDGET_REPORT_LIST = 'http://localhost:5500/static/data/domainBudgetReportList.js'
+// 域名消费报告-域名消费列表
+export const QUERY_DOMAIN_CONSUMPTION_REPORT_LIST = 'http://localhost:5500/static/data/domainConsumptionReportList.js'
+// 域名消费报告-域名消费明细列表
+export const QUERY_DOMAIN_CONSUMPTION_DETAIL_REPORT = 'http://localhost:5500/static/data/domainConsumptionDetailReport.js'
+// 域名消费报告-域名消费报告总览
+export const QUERY_DOMAIN_CONSUMPTION_REPORT = 'http://localhost:5500/static/data/domainConsumptionReport.js'
+// 域名消费报告-域名每月消费类别及金额
+export const QUERY_DOMAIN_CONSUMPTION_SORT_REPORT = 'http://localhost:5500/static/data/domainConsumptionSortReport.js'
+// 域名消费报告-域名企业消费类别柱状图
+export const QUERY_DOMAIN_CONSUMPTION_COMPANY_SORT_REPORT = 'http://localhost:5500/static/data/domainConsumptionCompanySortReport.js'
+// 域名消费报告-域名企业消费月份柱状图
+export const QUERY_DOMAIN_CONSUMPTION_COMPANY_MONTH_REPORT = 'http://localhost:5500/static/data/domainConsumptionCompanyMonthReport.js'
+// 域名消费报告-域名企业消费总览
+export const QUERY_DOMAIN_CONSUMPTION_COMPANY_REPORT = 'http://localhost:5500/static/data/domainConsumptionCompanyReport.js'
