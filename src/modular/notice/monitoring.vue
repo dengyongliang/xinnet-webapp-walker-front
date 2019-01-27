@@ -43,6 +43,7 @@
 import { mapState, mapActions } from 'vuex'
 import * as types from '@/store/types'
 import compNoticeSet from '@/components/compNoticeSet'
+import moment from 'moment'
 export default {
   components: {
     compNoticeSet
@@ -178,8 +179,8 @@ export default {
         param: {
           pageNum: obj.pageNum,
           pageSize: 20,
-          createTimeBegin: this.time[0] !== '' ? this.GLOBALS.CRT_TIME_FORMAT(this.time[0]) : '',
-          createTimeEnd: this.time[1] !== '' ? this.GLOBALS.CRT_TIME_FORMAT(this.time[1]) : '',
+          createTimeBegin: this.time[0] !== '' ? moment(this.time[0]).format('YYYY-MM-DD') + ' 00:00:00' : '',
+          createTimeEnd: this.time[1] !== '' ? moment(this.time[1]).format('YYYY-MM-DD') + ' 23:59:59' : '',
           type: this.type
         },
         callback: (response) => {

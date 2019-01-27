@@ -43,6 +43,8 @@ import compSelect from '@/components/compSelect'
 import compNotOutBill from '@/components/compNotOutBill'
 import compPastBill from '@/components/compPastBill'
 import compChartCreditQuota from '@/components/compChartCreditQuota'
+import moment from 'moment'
+
 export default {
   components: {
     compSelect,
@@ -82,7 +84,7 @@ export default {
           render: (h, params) => {
             return h('div', [
               h('span', {
-              }, this.GLOBALS.PAY_TYPE[this.list[params.index].flowType])
+              }, this.DATAS.PAY_TYPE[this.list[params.index].flowType])
             ])
           }
         },
@@ -168,8 +170,8 @@ export default {
         param: {
           pageNum: obj.pageNum,
           pageSize: 20,
-          createTimeBegin: this.time[0] !== '' ? this.GLOBALS.CRT_TIME_FORMAT(this.time[0]) : '',
-          createTimeEnd: this.time[1] !== '' ? this.GLOBALS.CRT_TIME_FORMAT(this.time[1]) : '',
+          createTimeBegin: this.time[0] !== '' ? moment(this.time[0]).format('YYYY-MM-DD') + ' 00:00:00' : '',
+          createTimeEnd: this.time[1] !== '' ? moment(this.time[1]).format('YYYY-MM-DD') + ' 23:59:59' : '',
           flowCode: this.value,
           payType: this.$refs.payType.value
         },

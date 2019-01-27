@@ -59,8 +59,8 @@
                   Option(v-for="item in typeList",:value="item.value",:key="item.value") {{ item.label }}
               Button(type="primary", @click="searchListData",:loading="loadingBtn") 查询
               input(type="hidden", name="domainName", :value="domainName")
-              input(type="hidden", name="createTimeBegin", :value="time[0]")
-              input(type="hidden", name="createTimeEnd", :value="time[1]")
+              input(type="hidden", name="createTimeBegin", :value="time[0] !== '' ? moment(time[0]).format('YYYY-MM-DD') + ' 00:00:00' : ''")
+              input(type="hidden", name="createTimeEnd", :value="time[1] !== '' ? moment(time[1]).format('YYYY-MM-DD') + ' 23:59:59' : ''")
 
             td.tdBtn
               a(href="javascript:;", @click="exportOrder") 导出日志
@@ -74,6 +74,7 @@
 import { mapState, mapActions } from 'vuex'
 import * as types from '@/store/types'
 import * as links from '@/global/linkdo.js'
+import moment from 'moment'
 export default {
   name: 'compMonitorOwnDetail',
   components: {
@@ -191,8 +192,8 @@ export default {
           pageNum: obj.pageNum,
           pageSize: 20,
           domainName: this.domainName,
-          createTimeBegin: this.time[0] !== '' ? this.GLOBALS.CRT_TIME_FORMAT(this.time[0]) : '',
-          createTimeEnd: this.time[1] !== '' ? this.GLOBALS.CRT_TIME_FORMAT(this.time[1]) : '',
+          createTimeBegin: this.time[0] !== '' ? moment(this.time[0]).format('YYYY-MM-DD') + ' 00:00:00' : '',
+          createTimeEnd: this.time[1] !== '' ? moment(this.time[1]).format('YYYY-MM-DD') + ' 23:59:59' : '',
           type: this.type
         },
         callback: (response) => {

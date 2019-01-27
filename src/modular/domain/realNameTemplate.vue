@@ -408,9 +408,9 @@ export default {
           value: ''
         }
       ]
-      for (var i in vm.GLOBALS.REAL_NAME_VERIFY_STATUS) {
+      for (var i in vm.DATAS.REAL_NAME_VERIFY_STATUS) {
         array.push({
-          label: vm.GLOBALS.REAL_NAME_VERIFY_STATUS[i],
+          label: vm.DATAS.REAL_NAME_VERIFY_STATUS[i],
           value: i
         })
       }

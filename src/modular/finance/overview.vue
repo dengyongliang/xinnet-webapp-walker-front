@@ -47,6 +47,8 @@ import { mapState, mapActions } from 'vuex'
 import * as types from '@/store/types'
 import compChartSpendTrend from '@/components/compChartSpendTrend'
 import compChartSpendTotal from '@/components/compChartSpendTotal'
+import moment from 'moment'
+
 export default {
   components: {
     compChartSpendTrend,
@@ -72,7 +74,7 @@ export default {
           render: (h, params) => {
             return h('div', [
               h('span', {
-              }, this.GLOBALS.ORDER_GOODS_TYPE[this.list[params.index].orderGoodsType])
+              }, this.DATAS.ORDER_GOODS_TYPE[this.list[params.index].orderGoodsType])
             ])
           }
         },
@@ -142,8 +144,8 @@ export default {
       let vm = this
       let params = {
         param: {
-          startTime: this.time1[0] !== '' ? this.GLOBALS.CRT_TIME_FORMAT(this.time1[0]) : '',
-          endTime: this.time1[1] !== '' ? this.GLOBALS.CRT_TIME_FORMAT(this.time1[1]) : ''
+          startTime: this.time1[0] !== '' ? moment(this.time1[0]).format('YYYY-MM-DD') + ' 00:00:00' : '',
+          endTime: this.time1[1] !== '' ? moment(this.time1[1]).format('YYYY-MM-DD') + ' 23:59:59' : ''
         },
         callback: function(response){
           vm.loadingTable = false
@@ -156,7 +158,7 @@ export default {
             let charData = {}
             charData.legend = []
             charData.series = response.data.data.businessList.map((value,idx,arr) => {
-              let name = vm.GLOBALS.BUSINESS_LIST[Object.keys(value)]
+              let name = vm.DATAS.BUSINESS_LIST[Object.keys(value)]
               charData.legend.push(name)
               return {
                 name: name,
@@ -178,8 +180,8 @@ export default {
       let vm = this
       let params = {
         param: {
-          startTime: this.time2[0] !== '' ? this.GLOBALS.CRT_TIME_FORMAT(this.time2[0]) : '',
-          endTime: this.time2[1] !== '' ? this.GLOBALS.CRT_TIME_FORMAT(this.time2[1]) : ''
+          startTime: this.time2[0] !== '' ? moment(this.time2[0]).format('YYYY-MM-DD') + ' 00:00:00' : '',
+          endTime: this.time2[1] !== '' ? moment(this.time2[1]).format('YYYY-MM-DD') + ' 23:59:59' : ''
         },
         callback: function(response){
           vm.loadingBtn = false
@@ -192,7 +194,7 @@ export default {
             }
             vm.payStatisticsTrendData.xAxis = response.data.data.dateList
             vm.payStatisticsTrendData.series = response.data.data.goodTypeList.map((value,idx,arr) => {
-              vm.payStatisticsTrendData.legend.push(vm.GLOBALS.ORDER_GOODS_TYPE[value])
+              vm.payStatisticsTrendData.legend.push(vm.DATAS.ORDER_GOODS_TYPE[value])
               var arrs = []
               response.data.data.dateList.forEach((item1,index1) => {
                 if (response.data.data.result[item1]) {
@@ -206,7 +208,7 @@ export default {
                 }
               })
               return {
-                name: vm.GLOBALS.ORDER_GOODS_TYPE[value],
+                name: vm.DATAS.ORDER_GOODS_TYPE[value],
                 type: 'bar',
                 stack: '总量',
                 label: {

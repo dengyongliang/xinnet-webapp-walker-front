@@ -64,7 +64,7 @@ export default {
           className: 'col4',
           render: (h, params) => {
             return h('div', [
-              h('span', {}, this.GLOBALS.QUESTION_TYPE[this.list[params.index].questionType])
+              h('span', {}, this.DATAS.QUESTION_TYPE[this.list[params.index].questionType])
             ])
           }
         },

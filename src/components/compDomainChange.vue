@@ -49,6 +49,21 @@ export default {
         this.$refs.domain,
         this.$refs.templateId
       ])
+
+      let domains = this.$refs.domain.value.replace(/[\n\r]/g, ',').split(",")
+      if (domains.length > 100) {
+        this.$refs.domain.showValidateResult({text: '最多100个域名！'})
+        result = false
+      } else {
+        for (var i = 0; i < domains.length; i++) {
+          if (!this.GLOBALS.IS_DOMAIN_AVAILABLE(domains[i])){
+            result = false
+            this.$refs.domain.showValidateResult({text: '域名格式错误！'})
+            break
+          }
+        }
+      }
+
       if (result) {
         let vm = this
         var params = {

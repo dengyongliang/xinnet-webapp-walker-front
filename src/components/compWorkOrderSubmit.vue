@@ -61,9 +61,9 @@ export default {
       descriptionRequired: false,
       safeTypeList: function (vm) {
         let array = []
-        for (var i in vm.GLOBALS.SECURITY_TYPE) {
+        for (var i in vm.DATAS.SECURITY_TYPE) {
           array.push({
-            label: vm.GLOBALS.SECURITY_TYPE[i],
+            label: vm.DATAS.SECURITY_TYPE[i],
             value: i
           })
         }
@@ -71,9 +71,9 @@ export default {
       }(this),
       questionTypeList: function (vm) {
         let array = []
-        for (var i in vm.GLOBALS.QUESTION_TYPE) {
+        for (var i in vm.DATAS.QUESTION_TYPE) {
           array.push({
-            label: vm.GLOBALS.QUESTION_TYPE[i],
+            label: vm.DATAS.QUESTION_TYPE[i],
             value: i
           })
         }
@@ -81,9 +81,9 @@ export default {
       }(this),
       updateTypeList: function (vm) {
         let array = []
-        for (var i in vm.GLOBALS.QUESTION_MODIFY_TYPE) {
+        for (var i in vm.DATAS.QUESTION_MODIFY_TYPE) {
           array.push({
-            label: vm.GLOBALS.QUESTION_MODIFY_TYPE[i],
+            label: vm.DATAS.QUESTION_MODIFY_TYPE[i],
             value: i
           })
         }

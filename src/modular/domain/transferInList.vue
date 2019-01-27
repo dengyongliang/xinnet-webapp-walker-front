@@ -42,7 +42,7 @@ import { mapState, mapActions } from 'vuex'
 import * as types from '@/store/types'
 import compSelect from '@/components/compSelect'
 import compDomainTransferIn from '@/components/compDomainTransferIn'
-
+import moment from 'moment'
 export default {
   components: {
     compSelect,
@@ -153,8 +153,8 @@ export default {
           pageSize: 20,
           domainName: this.value,
           transferStatus: this.$refs.transferStatus.value,
-          createTimeBegin: this.times[0] !== '' ? this.GLOBALS.CRT_TIME_FORMAT(this.times[0]) : '',
-          createTimeEnd: this.times[1] !== '' ? this.GLOBALS.CRT_TIME_FORMAT(this.times[1]) : ''
+          createTimeBegin: this.times[0] !== '' ? moment(this.times[0]).format('YYYY-MM-DD') + ' 00:00:00' : '',
+          createTimeEnd: this.times[1] !== '' ? moment(this.times[1]).format('YYYY-MM-DD') + ' 23:59:59' : ''
         },
         callback: (response) => {
           this.loadingBtn = false

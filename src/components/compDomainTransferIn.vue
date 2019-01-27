@@ -57,6 +57,20 @@ export default {
         this.$refs.templateId,
         this.$refs.groupId
       ])
+      let domains = this.$refs.domain.value.replace(/[\n\r]/g, ',').split(",")
+      if (domains.length > 500) {
+        this.$refs.domain.showValidateResult({text: '最多500个域名！'})
+        result = false
+      } else {
+        for (var i = 0; i < domains.length; i++) {
+          if (!this.GLOBALS.IS_DOMAIN_AVAILABLE(domains[i].split(" ")[0])){
+            result = false
+            this.$refs.domain.showValidateResult({text: '域名格式错误！'})
+            break
+          }
+        }
+      }
+
       if (result) {
         var params = {
           param: {

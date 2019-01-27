@@ -5,7 +5,7 @@
       span.text(v-show="orderData.status===2") 处理中
       span.text(v-show="orderData.status===3") 已完成
     FormItem(label="问题类型：")
-      span.text {{ this.GLOBALS.QUESTION_TYPE[orderData.questionType] }}
+      span.text {{ this.DATAS.QUESTION_TYPE[orderData.questionType] }}
 
       p(v-show="orderData.questionType===1") <Icon custom="i-icon i-icon-tips" size="16" />可委托管家注册并管理行者平台暂不支持注册的域名。
       p(v-show="orderData.questionType===2") <Icon custom="i-icon i-icon-tips" size="16" />可委托管家尝试回购已被他人注册的域名。
@@ -21,9 +21,9 @@
     FormItem(label="预算：", v-show="orderData.questionType===2")
       span.text {{orderData.money}} 元
     FormItem(label="修改类型：", v-show="orderData.questionType===5")
-      span.text {{ this.GLOBALS.QUESTION_MODIFY_TYPE[orderData.updateType] }}
+      span.text {{ this.DATAS.QUESTION_MODIFY_TYPE[orderData.updateType] }}
     FormItem(label="安全问题类型：",v-show="orderData.questionType===3")
-      span.text {{ this.GLOBALS.SECURITY_TYPE[orderData.securityType] }}
+      span.text {{ this.DATAS.SECURITY_TYPE[orderData.securityType] }}
     FormItem(label="问题描述：")
       .text {{orderData.description}}
 </template>

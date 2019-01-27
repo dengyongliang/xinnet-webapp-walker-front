@@ -40,7 +40,7 @@ export default {
           render: (h, params) => {
             return h('div', [
               h('span', {
-              }, this.GLOBALS.ORDER_GOODS_TYPE[this.payFinishData.jsonObj[params.index].orderGoodsType])
+              }, this.DATAS.ORDER_GOODS_TYPE[this.payFinishData.jsonObj[params.index].orderGoodsType])
             ])
           }
         },

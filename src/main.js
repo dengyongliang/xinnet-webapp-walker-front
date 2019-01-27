@@ -23,7 +23,7 @@ Vue.config.productionTip = false
 Vue.use(iView)
 Vue.use(directives)
 Vue.use(vuescroll)
-Vue.filter('dateFmt', (input, formatString="YYYY-MM-DD") => {
+Vue.filter('dateformat', (input, formatString="YYYY-MM-DD HH:mm:ss") => {
 /**
 * moment(input) 把时间字符串转成时间对象
 * format(formatString) 把时间对象，按照指定格式，格式化成符合条件的字符串

@@ -36,6 +36,7 @@
 import { mapState, mapActions } from 'vuex'
 import * as types from '@/store/types'
 import * as links from '@/global/linkdo.js'
+import moment from 'moment'
 export default {
   components: {
   },
@@ -121,8 +122,8 @@ export default {
           pageNum: obj.pageNum,
           pageSize: 20,
           domainName: this.value,
-          createTimeBegin: this.time[0] !== '' ? this.GLOBALS.CRT_TIME_FORMAT(this.time[0]) : '',
-          createTimeEnd: this.time[1] !== '' ? this.GLOBALS.CRT_TIME_FORMAT(this.time[1]) : '',
+          createTimeBegin: this.time[0] !== '' ? moment(this.time[0]).format('YYYY-MM-DD') + ' 00:00:00' : '',
+          createTimeEnd: this.time[1] !== '' ? moment(this.time[1]).format('YYYY-MM-DD') + ' 23:59:59' : '',
           levelType: this.levelType
         },
         callback: (response) => {

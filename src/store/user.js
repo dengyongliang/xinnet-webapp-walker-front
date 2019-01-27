@@ -1,7 +1,7 @@
 import * as types from './types'
 import rest from '../global/rest.js'
-import * as links from '../global/linkdo.js'
-// import * as links from '../global/linkdo_json.js'
+// import * as links from '../global/linkdo.js'
+import * as links from '../global/linkdo_json.js'
 const api = process.env.NODE_ENV === 'production' ? '' : '/api'
 export default {
   state: {
@@ -116,7 +116,7 @@ export default {
       })
     },
     [types.GET_USER_AUTH_GROUPS] ({ commit, rootState }) {
-      rest.post(links.GET_USER_AUTH_GROUPS, JSON.stringify({userId:''}), function (response) {
+      rest.get(links.GET_USER_AUTH_GROUPS, JSON.stringify({userId:''}), function (response) {
         if (response.data.code === '1000') {
           commit(types.SET_USER_AUTH_GROUPS, response.data)
           commit(types.SET_USER_AUTH_GROUPS_ORIGINAL, response.data)

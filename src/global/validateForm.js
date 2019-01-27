@@ -43,7 +43,7 @@ export default function validateFormResult (validateArray) {
       }
     } else if (v.type === 'cascader') {
       let value = v.value
-      if (!value.length || (!value[0].length && !value[1].length)) {
+      if (!value.length || (!value[0] && !value[1])) {
         v.showValidateResult()
         flag = false
         // break
