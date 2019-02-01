@@ -5,7 +5,6 @@ import App from './App'
 import router from './router'
 import makeStore from './store'
 import directives from './directives'
-import vuescroll from 'vuescroll'
 import moment from 'moment'
 import iView from 'iview'
 import echarts from 'echarts'
@@ -20,7 +19,6 @@ Vue.prototype.DATAS = DATAS
 Vue.config.productionTip = false
 Vue.use(iView)
 Vue.use(directives)
-Vue.use(vuescroll)
 Vue.filter('dateformat', (input, formatString = 'YYYY-MM-DD HH:mm:ss') => {
   /**
   * moment(input) 把时间字符串转成时间对象
