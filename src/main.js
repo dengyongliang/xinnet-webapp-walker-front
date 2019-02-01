@@ -7,8 +7,6 @@ import makeStore from './store'
 import directives from './directives'
 import vuescroll from 'vuescroll'
 import moment from 'moment'
-// import $ from 'jquery'
-// import axios from 'axios'
 import iView from 'iview'
 import echarts from 'echarts'
 // 自定义方法及变量
@@ -19,7 +17,6 @@ require('es6-promise').polyfill()
 Vue.prototype.$echarts = echarts
 Vue.prototype.GLOBALS = GLOBAL
 Vue.prototype.DATAS = DATAS
-// Vue.prototype.$ajax = axios
 Vue.config.productionTip = false
 Vue.use(iView)
 Vue.use(directives)
