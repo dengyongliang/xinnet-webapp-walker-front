@@ -48,7 +48,7 @@ export default {
   },
   methods: {
     close () {
-      this.onClose();
+      this.onClose()
     },
     submitForm () {
       this.loadingBtn = true
@@ -57,13 +57,13 @@ export default {
         this.$refs.templateId,
         this.$refs.groupId
       ])
-      let domains = this.$refs.domain.value.replace(/[\n\r]/g, ',').split(",")
+      let domains = this.$refs.domain.value.replace(/[\n\r]/g, ',').split(',')
       if (domains.length > 500) {
-        this.$refs.domain.showValidateResult({text: '最多500个域名！'})
+        this.$refs.domain.showValidateResult({text: '最多允许一次提交500个域名！'})
         result = false
       } else {
         for (var i = 0; i < domains.length; i++) {
-          if (!this.GLOBALS.IS_DOMAIN_AVAILABLE(domains[i].split(" ")[0])){
+          if (!this.GLOBALS.IS_DOMAIN_AVAILABLE(domains[i].split(' ')[0])) {
             result = false
             this.$refs.domain.showValidateResult({text: '域名格式错误！'})
             break
@@ -76,10 +76,10 @@ export default {
           param: {
             templateId: this.$refs.templateId.value,
             groupId: this.$refs.groupId.value,
-            jsonObj: this.$refs.domain.value.replace(/[\n\r]/g, ',').split(",").map((v) => {
+            jsonObj: this.$refs.domain.value.replace(/[\n\r]/g, ',').split(',').map((v) => {
               return {
-                domainName: v.split(" ")[0],
-                domainPwd: v.split(" ")[1],
+                domainName: v.split(' ')[0],
+                domainPwd: v.split(' ')[1],
                 orderGoodsType: 5,
                 orderType: 4
               }
@@ -87,9 +87,9 @@ export default {
           },
           callback: (response) => {
             this.loadingBtn = false
-            if( response.data.code === '1000' ){
+            if (response.data.code === '1000') {
               response.data.jsonObj.map((v) => {
-                v.price = v.goodsNumAndPrice[0].price+"_"+v.goodsNumAndPrice[0].unit
+                v.price = v.goodsNumAndPrice[0].price + '_' + v.goodsNumAndPrice[0].unit
                 v.num = v.goodsNumAndPrice[0].num
                 v.unit = v.goodsNumAndPrice[0].unit
               })
@@ -136,10 +136,9 @@ export default {
   beforeMount () {
     let params = {
       param: {
-
       },
       callback: (response) => {
-        if( response.data.code === '1000' ){
+        if (response.data.code === '1000') {
           this.templateList = this.GLOBALS.CONVERT_SELECT(response.data.data, {
             label: 'templateName',
             value: 'id'

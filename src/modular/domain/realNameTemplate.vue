@@ -21,7 +21,7 @@
   Drawer(:closable="true", width="800", v-model="drawerCreateTemplate", title="创建模板", :mask-closable="maskClosable", @on-visible-change="drawerChange",)
     .compDomainCreateTemplate
       comp-domain-create-template-step1(
-        v-if="refresh",
+        v-if="drawerCreateTemplate",
         v-show="step===1",
         :on-close="closeDrawer",
         @refreshData="searchListData",
@@ -31,17 +31,18 @@
         type="create"
       )
       comp-domain-create-template-step2(
-        v-if="refresh",
+        v-if="drawerCreateTemplate",
         v-show="step===2",
         :on-close="closeDrawer",
         @refreshData="searchListData",
-        :templateData="templateData"
+        :templateData="templateData",
+        status="creat"
       )
   <!-- 修改模板 抽屉 -->
   Drawer(:closable="true", width="800", v-model="drawerModifyTemplate", title="修改模板", :mask-closable="maskClosable", @on-visible-change="drawerChange",)
     .compDomainCreateTemplate
       comp-domain-create-template-step1(
-        v-if="refresh",
+        v-if="drawerModifyTemplate",
         :on-close="closeDrawer",
         @refreshData="searchListData",
         :templateData="templateData",
@@ -51,7 +52,7 @@
   Drawer(:closable="true", width="800", v-model="drawerDetailTemplate", title="模板详情", :mask-closable="maskClosable", @on-visible-change="drawerChange",)
     .compDomainCreateTemplate
       comp-domain-create-template-step1(
-        v-if="refresh",
+        v-if="drawerDetailTemplate",
         :on-close="closeDrawer",
         @refreshData="searchListData",
         :templateData="templateData",
@@ -62,7 +63,7 @@
   Drawer(:closable="true", width="800", v-model="drawerModifyMaterial", title="重新提交资料", :mask-closable="maskClosable", @on-visible-change="drawerChange",)
     .compDomainCreateTemplate
       comp-domain-create-template-step2(
-        v-if="refresh",
+        v-if="drawerModifyMaterial",
         :on-close="closeDrawer",
         @refreshData="searchListData",
         :templateData="templateData",
@@ -73,7 +74,7 @@
   Drawer(:closable="true", width="800", v-model="drawerCreateMaterial", title="提交资料", :mask-closable="maskClosable", @on-visible-change="drawerChange",)
     .compDomainCreateTemplate
       comp-domain-create-template-step2(
-        v-if="refresh",
+        v-if="drawerCreateMaterial",
         :on-close="closeDrawer",
         @refreshData="searchListData",
         :templateData="templateData",
@@ -84,7 +85,7 @@
   Drawer(:closable="true", width="800", v-model="drawerViewMaterial", title="提交资料详情", :mask-closable="maskClosable", @on-visible-change="drawerChange",)
     .compDomainCreateTemplate
       comp-domain-create-template-step2(
-        v-if="refresh",
+        v-if="drawerViewMaterial",
         :on-close="closeDrawer",
         @refreshData="searchListData",
         :templateData="templateData",
@@ -134,7 +135,7 @@ export default {
         {
           title: '域名所有者',
           key: 'organizeNameCn',
-          className: 'col3',
+          className: 'col3'
         },
         {
           title: '域名联系人',
@@ -151,7 +152,7 @@ export default {
           key: 'verifyStatus',
           className: 'col6',
           render: (h, params) => {
-            if (this.list[params.index].verifyStatus===0) {
+            if (this.list[params.index].verifyStatus === 0) {
               return h('div', [
                 h('a', {
                   props: {
@@ -165,7 +166,7 @@ export default {
                 }, '未提交资料')
               ])
             }
-            if (this.list[params.index].verifyStatus===1) {
+            if (this.list[params.index].verifyStatus === 1) {
               return h('div', [
                 h('a', {
                   props: {
@@ -179,7 +180,7 @@ export default {
                 }, '审核中')
               ])
             }
-            if (this.list[params.index].verifyStatus===2) {
+            if (this.list[params.index].verifyStatus === 2) {
               return h('div', [
                 h('a', {
                   props: {
@@ -193,7 +194,7 @@ export default {
                 }, '审核通过')
               ])
             }
-            if (this.list[params.index].verifyStatus===3) {
+            if (this.list[params.index].verifyStatus === 3) {
               return h('div', [
                 h('a', {
                   props: {
@@ -214,7 +215,7 @@ export default {
           key: 'operate',
           className: 'operate',
           render: (h, params) => {
-            if (this.list[params.index].verifyStatus===1) {
+            if (this.list[params.index].verifyStatus === 1) {
               return h('div', [
                 h('a', {
                   props: {
@@ -228,7 +229,7 @@ export default {
                 }, '查看')
               ])
             }
-            if (this.list[params.index].verifyStatus!==1) {
+            if (this.list[params.index].verifyStatus !== 1) {
               return h('div', [
                 h('a', {
                   props: {
@@ -275,7 +276,6 @@ export default {
       this.drawerViewMaterial = false
     },
     drawerChange () {
-      this.refresh = (this.drawerCreateTemplate || this.drawerModifyTemplate || this.drawerDetailTemplate || this.drawerModifyMaterial || this.drawerCreateMaterial || this.drawerViewMaterial) ? true : false
     },
     showStep2 () {
       this.step = 2
@@ -286,10 +286,10 @@ export default {
     queryInfo (id, type) {
       let params = {
         param: {
-          templateId: id,
+          templateId: id
         },
         callback: (response) => {
-          if( response.data.code === '1000' ){
+          if (response.data.code === '1000') {
             this.templateData = response.data.data
           } else {
             if (response.data.code === '100') {
@@ -308,10 +308,10 @@ export default {
     queryMaterialInfo (id, type) {
       let params = {
         param: {
-          templateId: id,
+          templateId: id
         },
         callback: (response) => {
-          if( response.data.code === '1000' ){
+          if (response.data.code === '1000') {
             this.templateData = response.data.data
           } else {
             if (response.data.code === '100') {
@@ -337,11 +337,11 @@ export default {
         onOk: () => {
           let params = {
             param: {
-              templateId: id,
+              templateId: id
             },
             callback: (response) => {
               this.$Modal.remove()
-              if( response.data.code === '1000' ){
+              if (response.data.code === '1000') {
                 this.$Message.success('删除成功')
                 this.searchListData()
               } else {
@@ -374,7 +374,7 @@ export default {
         callback: (response) => {
           this.loadingBtn = false
           this.loadingTable = false
-          if (response.data.code === '1000'){
+          if (response.data.code === '1000') {
             this.list = response.data.data.list
             this.page.pageItems = response.data.data.totalNum
           } else {
@@ -401,7 +401,7 @@ export default {
     })
   },
   beforeMount () {
-    this.verifyStatusList = function (vm) {
+    this.verifyStatusList = (function (vm) {
       let array = [
         {
           label: '全部',
@@ -415,7 +415,7 @@ export default {
         })
       }
       return array
-    }(this)
+    })(this)
   },
   mounted () {
     this.queryTemplateList(this.queryTemplateListParam({pageNum: 1}))

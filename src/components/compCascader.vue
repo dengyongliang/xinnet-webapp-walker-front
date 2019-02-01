@@ -59,7 +59,7 @@ export default {
     return {
       value: [],
       showError: false,
-      errorText: '请选择'+ this.label +'！',
+      errorText: '请选择' + this.label + '！',
       param: {}
     }
   },
@@ -80,7 +80,7 @@ export default {
   },
   watch: {
     defaultValue: {
-      handler(newV, oldV) {
+      handler (newV, oldV) {
         this.value = newV
       },
       deep: true,

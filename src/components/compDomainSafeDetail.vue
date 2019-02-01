@@ -33,7 +33,7 @@
   <!-- 提交工单 抽屉 -->
   Drawer(:closable="true", width="640", v-model="drawerWorkOrderSubmit", title="提交工单", :mask-closable="maskClosable", @on-visible-change="drawerChange")
     comp-work-order-submit(
-      v-if="refresh",
+      v-if="drawerWorkOrderSubmit",
       :on-close="closeDrawer",
       qaTypeDefaultValue="7"
     )
@@ -99,14 +99,14 @@ export default {
             return h('div', [
               h('span', {
                 style: {
-                  color: function (vm) {
-                    if (vm.list[params.index].status===0 || vm.list[params.index].status===2) {
-                      return "#aaa"
+                  color: (function (vm) {
+                    if (vm.list[params.index].status === 0 || vm.list[params.index].status === 2) {
+                      return '#aaa'
                     }
-                    if (vm.list[params.index].status===1) {
-                      return "#46a405"
+                    if (vm.list[params.index].status === 1) {
+                      return '#46a405'
                     }
-                  }(this)
+                  })(this)
                 }
               }, this.DATAS[this.list[params.index].name.toUpperCase()][this.list[params.index].status])
             ])
@@ -117,8 +117,8 @@ export default {
           key: 'operate',
           className: 'operate',
           render: (h, params) => {
-            if (this.list[params.index].name==='renewFlag') {
-              if (this.list[params.index].status===0) {
+            if (this.list[params.index].name === 'renewFlag') {
+              if (this.list[params.index].status === 0) {
                 return h('div', [
                   h('a', {
                     props: {
@@ -132,7 +132,7 @@ export default {
                   }, '开启')
                 ])
               }
-              if (this.list[params.index].status===1) {
+              if (this.list[params.index].status === 1) {
                 return h('div', [
                   h('a', {
                     props: {
@@ -147,8 +147,8 @@ export default {
                 ])
               }
             }
-            if (this.list[params.index].name==='updateFlag') {
-              if (this.list[params.index].status===0) {
+            if (this.list[params.index].name === 'updateFlag') {
+              if (this.list[params.index].status === 0) {
                 return h('div', [
                   h('a', {
                     props: {
@@ -162,7 +162,7 @@ export default {
                   }, '开启')
                 ])
               }
-              if (this.list[params.index].status===1) {
+              if (this.list[params.index].status === 1) {
                 return h('div', [
                   h('a', {
                     props: {
@@ -177,7 +177,7 @@ export default {
                 ])
               }
             }
-            if (this.list[params.index].name==='backendLockFlag') {
+            if (this.list[params.index].name === 'backendLockFlag') {
               return h('div', [
                 h('a', {
                   props: {
@@ -221,10 +221,8 @@ export default {
       this.drawerWorkOrderSubmit = false
     },
     drawerChange () {
-      this.refresh = this.drawerWorkOrderSubmit ? true : false
     },
     buyFun (type) {
-      let vm = this
       var params = {
         param: {
           jsonObj: [{
@@ -235,10 +233,10 @@ export default {
         },
         callback: (response) => {
           this.loadingBtn = false
-          if( response.data.code === '1000' ){
-            response.data.type = '4_'+(type === 'new' ? 1 : 2)
+          if (response.data.code === '1000') {
+            response.data.type = '4_' + (type === 'new' ? 1 : 2)
             response.data.jsonObj.map((v) => {
-              v.price = v.goodsNumAndPrice[0].price+"_"+v.goodsNumAndPrice[0].unit
+              v.price = v.goodsNumAndPrice[0].price + '_' + v.goodsNumAndPrice[0].unit
               v.num = v.goodsNumAndPrice[0].num
               v.unit = v.goodsNumAndPrice[0].unit
             })
@@ -269,9 +267,9 @@ export default {
         },
         callback: (response) => {
           this.loadingBtn = false
-          if (response.data.code === '1000'){
+          if (response.data.code === '1000') {
             this.loadingBtn = false
-            this.$Message.success(`自动续费${flag===1?'开启':'关闭'}成功`)
+            this.$Message.success(`自动续费${flag === 1 ? '开启' : '关闭'}成功`)
             this.list[0].status = flag
           } else {
             if (response.data.code === '100') {
@@ -285,7 +283,7 @@ export default {
             } else if (response.data.code === '600') {
               this.$Message.error('信用额度不足')
             }
-            // this.$Message.error(`自动续费${flag===1?'开启':'关闭'}失败`)
+            // this.$Message.error(`自动续费${flag === 1 ? '开启' : '关闭'}失败`)
           }
         }
       }
@@ -299,12 +297,12 @@ export default {
         },
         callback: (response) => {
           this.loadingBtn = false
-          if (response.data.code === '1000'){
+          if (response.data.code === '1000') {
             this.loadingBtn = false
-            this.$Message.success(`禁止更新${flag===1?'开启':'关闭'}成功`)
+            this.$Message.success(`禁止更新${flag === 1 ? '开启' : '关闭'}成功`)
             this.list[1].status = flag
           } else {
-            // this.$Message.error(`禁止更新${flag===1?'开启':'关闭'}失败`)
+            // this.$Message.error(`禁止更新${flag === 1 ? '开启' : '关闭'}失败`)
           }
         }
       }

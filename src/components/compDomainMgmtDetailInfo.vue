@@ -17,9 +17,10 @@
         <a href="javascript:;" v-show="detailData.depositFlag===1" @click="showOrder">修改</a>
         <a href="javascript:;" v-show="detailData.depositFlag===0 && detailData.updateFlag===0" @click="onTabschange(2)">修改</a>
     FormItem(label="实名认证：")
-      span.text {{this.DATAS.REAL_NAME_VERIFY_STATUS[detailData.verifyStatus]}}
+      span.text {{detailData.verifyStatus ? this.DATAS.REAL_NAME_VERIFY_STATUS[detailData.verifyStatus] : '未实名'}}
     FormItem(label="域名状态：")
-      span.text {{this.DATAS.SERVICE_STATE[detailData.serviceStatus]}}
+      p.text
+        span.status(v-for="item in detailData.statusList") {{item.statusName}}
     FormItem(label="DNS服务器：")
       p.text
         span.dns(v-for="(item, index) in detailData.dnsList") {{item.dnsName}}
@@ -29,9 +30,8 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
+import {mapActions} from 'vuex'
 import * as types from '@/store/types'
-
 export default {
   name: 'compDomainMgmtDetailInfo',
   components: {
@@ -55,13 +55,13 @@ export default {
   },
   methods: {
     showOrder () {
-      this.$emit("showWorkOrder")
+      this.$emit('showWorkOrder')
     },
     showDns () {
       if (this.detailData.importantFlag) {
-        this.$emit("showAuthorize")
+        this.$emit('showAuthorize')
       } else {
-       this.$emit("modifyDns")
+        this.$emit('modifyDns')
       }
     },
     renewFun () {
@@ -75,12 +75,18 @@ export default {
         },
         callback: (response) => {
           this.loadingBtn = false
-          if( response.data.code === '1000' ){
+          if (response.data.code === '1000') {
             response.data.type = '2_2'
             response.data.jsonObj.map((v) => {
-              v.price = v.goodsNumAndPrice[0].price+"_"+v.goodsNumAndPrice[0].unit
-              v.num = v.goodsNumAndPrice[0].num
-              v.unit = v.goodsNumAndPrice[0].unit
+              if (v.goodsNumAndPrice.length) {
+                v.price = v.goodsNumAndPrice[0].price + '_' + v.goodsNumAndPrice[0].unit
+                v.num = v.goodsNumAndPrice[0].num
+                v.unit = v.goodsNumAndPrice[0].unit
+              } else {
+                v.price = '0_null'
+                v.num = null
+                v.unit = null
+              }
             })
             this.$store.commit(types.SET_PAY_ORDERS, response.data)
             this.$router.push({path: '/payConfirm'})
@@ -122,6 +128,10 @@ export default {
   display:inline-block;
   margin-left: 40px;
   color:#2071f6;
+}
+.compDomainMgmtDetailInfo .ivu-form-item .status{
+  display: inline-block;
+  margin-right: 20px;
 }
 .compDomainMgmtDetailInfo .ivu-form-item .dns{
   display:block;

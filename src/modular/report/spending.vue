@@ -67,7 +67,7 @@
 </template>
 
 <script>
-import { mapState, mapActions, mapMutations } from 'vuex'
+import {mapState, mapActions} from 'vuex'
 import * as types from '@/store/types'
 import compChartReportSpendingCate from '@/components/compChartReportSpendingCate'
 import compChartReportSpendingCompany from '@/components/compChartReportSpendingCompany'
@@ -168,9 +168,9 @@ export default {
       callback: (response) => {
         this.loadingBtn = false
         this.loadingTable = false
-        if (response.data.code === '1000'){
+        if (response.data.code === '1000') {
           this.domainConsumptionReport.totalMoney = response.data.data.totalMoney
-          this.domainConsumptionReport.businessList = function (vm) {
+          this.domainConsumptionReport.businessList = (function (vm) {
             let arr = []
             for (var i in vm.DATAS.BUSINESS_LIST) {
               arr.push({
@@ -179,7 +179,7 @@ export default {
               })
             }
             return arr
-          }(this)
+          })(this)
         } else {
         }
       }
@@ -191,7 +191,7 @@ export default {
       callback: (response) => {
         this.loadingBtn = false
         this.loadingTable = false
-        if (response.data.code === '1000'){
+        if (response.data.code === '1000') {
           this.domainConsumptionSortReport = response.data.data
           let arr = {}
           Object.values(response.data.data.result).map((v) => {
@@ -216,7 +216,7 @@ export default {
       callback: (response) => {
         this.loadingBtn = false
         this.loadingTable = false
-        if (response.data.code === '1000'){
+        if (response.data.code === '1000') {
           this.domainConsumptionCompanyReport = response.data.data
         } else {
         }
@@ -229,7 +229,7 @@ export default {
       callback: (response) => {
         this.loadingBtn = false
         this.loadingTable = false
-        if (response.data.code === '1000'){
+        if (response.data.code === '1000') {
           this.domainConsumptionCompanySortReport = response.data.data
           let arr = {}
           Object.values(response.data.data.statisticsMap).map((v) => {
@@ -254,7 +254,7 @@ export default {
       callback: (response) => {
         this.loadingBtn = false
         this.loadingTable = false
-        if (response.data.code === '1000'){
+        if (response.data.code === '1000') {
           this.domainConsumptionCompanyMonthReport = response.data.data
           let arr = {}
           Object.values(response.data.data.result).map((v) => {
@@ -279,8 +279,8 @@ export default {
       callback: (response) => {
         this.loadingBtn = false
         this.loadingTable = false
-        if (response.data.code === '1000'){
-          this.list = function (vm) {
+        if (response.data.code === '1000') {
+          this.list = (function (vm) {
             let arr = []
             for (var i in vm.DATAS.BUSINESS_LIST) {
               arr.push({
@@ -290,14 +290,14 @@ export default {
               })
             }
             return arr
-          }(this)
+          })(this)
         } else {
         }
       }
     }
     this.queryDomainConsumptionDetailReport(params6)
   },
-  mounted(){
+  mounted () {
   },
   watch: {
   }

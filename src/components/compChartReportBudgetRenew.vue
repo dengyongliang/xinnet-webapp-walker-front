@@ -26,14 +26,14 @@ export default {
       let myChart = this.$echarts.init(document.getElementById('myChart2'))
       // 绘制图表
       myChart.setOption({
-        title : {
+        title: {
           text: '',
           subtext: '',
-          x:'center'
+          x: 'center'
         },
-        tooltip : {
+        tooltip: {
           trigger: 'item',
-          formatter: "{b} : {c} ({d}%)"
+          formatter: '{b} : {c} ({d}%)'
         },
         legend: {
           orient: 'vertical',
@@ -41,15 +41,15 @@ export default {
           top: 'center',
           itemWidth: 10,
           itemHeight: 10,
-          data:['需要续费','不需要续费']
+          data: ['需要续费', '不需要续费']
         },
-        series : [
+        series: [
           {
             name: '域名续费',
             type: 'pie',
-            radius : '85%',
+            radius: '85%',
             center: ['40%', '50%'],
-            data:[
+            data: [
               {value: datas.renewNumber, name: '需要续费'},
               {value: datas.serviceNumber, name: '不需要续费'}
             ],
@@ -61,9 +61,9 @@ export default {
               }
             },
             labelLine: {
-                normal: {
-                    show: false
-                }
+              normal: {
+                show: false
+              }
             },
             itemStyle: {
               emphasis: {

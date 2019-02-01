@@ -80,13 +80,12 @@ export default {
       this.errorTextRePassword = v.text
     },
     onFocus (e) {
-      let val = e.target.value
       let name = e.target.name
       if (name === 'password') {
-        this.errorTextPassword = '',
+        this.errorTextPassword = ''
         this.showPasswordError = false
-      } else if (name === 'rePassword'){
-        this.errorTextRePassword = '',
+      } else if (name === 'rePassword') {
+        this.errorTextRePassword = ''
         this.showRePasswordError = false
       }
     },
@@ -102,7 +101,7 @@ export default {
       }
       if (val !== '') {
         if (name === 'password') {
-          if (!this.GLOBALS.regPw.test(val)) {
+          if (!this.GLOBALS.IS_PWD_AVAILABLE(val)) {
             this.ok1 = false
             this.showPasswordError = true
             this.errorTextPassword = '密码由8-16位字母、数字、符号组成，区分大小写，且至少包含有字母、数字、符号、大小写中的两种组合！'
@@ -111,11 +110,11 @@ export default {
           }
         }
         if (name === 'rePassword') {
-          if (!this.GLOBALS.regPw.test(val)) {
+          if (!this.GLOBALS.IS_PWD_AVAILABLE(val)) {
             this.ok2 = false
             this.showRePasswordError = true
             this.errorTextRePassword = '密码由8-16位字母、数字、符号组成，区分大小写，且至少包含有字母、数字、符号、大小写中的两种组合！'
-          } else if (this.GLOBALS.regPw.test(val) && this.value1 !== val) {
+          } else if (this.GLOBALS.IS_PWD_AVAILABLE(val) && this.value1 !== val) {
             this.ok2 = false
             this.showRePasswordError = true
             this.errorTextRePassword = '重复输入密码与新密码不一致！'

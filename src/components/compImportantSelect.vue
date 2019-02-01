@@ -6,7 +6,7 @@ div(class="importantPop",slot="content")
     Button(@click="close") 取消
 </template>
 <script>
-import { mapState, mapActions } from 'vuex'
+import {mapActions} from 'vuex'
 import * as types from '@/store/types'
 import compRadio from '@/components/compRadio'
 import validateFormResult from '@/global/validateForm'
@@ -52,7 +52,7 @@ export default {
           },
           callback: (response) => {
             this.loadingBtn = false
-            if (response.data.code === '1000'){
+            if (response.data.code === '1000') {
               this.loadingBtn = false
               this.$Message.success('设置保护等级成功')
               this.close()

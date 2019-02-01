@@ -6,7 +6,6 @@ import domain from './domain'
 import mgmt from './mgmt'
 import order from './order'
 import finance from './finance'
-import workorder from './workorder'
 import notice from './notice'
 import record from './record'
 import report from './report'
@@ -29,7 +28,7 @@ const RouterMain = new Router({
     },
     {
       path: '/login',
-      name: 'LOGIN',
+      name: 'login',
       component (resolve) {
         return require(['@/page/login'], resolve)
       },
@@ -39,7 +38,7 @@ const RouterMain = new Router({
     },
     {
       path: '/forgetPw',
-      name: 'FORGET_PW',
+      name: 'findpw',
       component (resolve) {
         return require(['@/page/forgetPw'], resolve)
       },
@@ -49,7 +48,7 @@ const RouterMain = new Router({
     },
     {
       path: '/account_activation/:userCode',
-      name: 'ACTIVATION',
+      name: 'activation',
       component (resolve) {
         return require(['@/page/activation'], resolve)
       },
@@ -60,7 +59,7 @@ const RouterMain = new Router({
     },
     {
       path: '/client',
-      name: 'SELECTCLIENT',
+      name: 'client_list',
       component (resolve) {
         return require(['@/page/selectClient'], resolve)
       },
@@ -70,7 +69,7 @@ const RouterMain = new Router({
     },
     {
       path: '/payConfirm',
-      name: 'PAY_CONFIRM',
+      name: 'pay_confirm',
       component (resolve) {
         return require(['@/page/payConfirm'], resolve)
       },
@@ -80,7 +79,7 @@ const RouterMain = new Router({
     },
     {
       path: '/pay',
-      name: 'PAY',
+      name: 'pay',
       component (resolve) {
         return require(['@/page/pay'], resolve)
       },
@@ -90,7 +89,7 @@ const RouterMain = new Router({
     },
     {
       path: '/',
-      name: 'MAIN',
+      name: 'main',
       component (resolve) {
         return require(['@/page/main'], resolve)
       },
@@ -100,7 +99,7 @@ const RouterMain = new Router({
       children: [
         {
           path: '/',
-          name: 'HOME',
+          name: 'home',
           component (resolve) {
             return require(['@/modular/home'], resolve)
           },
@@ -110,7 +109,7 @@ const RouterMain = new Router({
         },
         {
           path: '/home',
-          name: 'HOME',
+          name: 'home',
           component (resolve) {
             return require(['@/modular/home'], resolve)
           },
@@ -124,7 +123,6 @@ const RouterMain = new Router({
     finance,
     mgmt,
     order,
-    workorder,
     notice,
     record,
     report,

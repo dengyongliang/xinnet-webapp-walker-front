@@ -6,7 +6,7 @@ export default {
   children: [
     {
       path: '/',
-      name: 'RECORD_DOMAIN',
+      name: 'record_domain',
       component (resolve) {
         return require(['@/modular/record/domain'], resolve)
       },
@@ -16,7 +16,7 @@ export default {
     },
     {
       path: 'domain',
-      name: 'RECORD_DOMAIN',
+      name: 'record_domain',
       component (resolve) {
         return require(['@/modular/record/domain'], resolve)
       },
@@ -26,7 +26,7 @@ export default {
     },
     {
       path: 'staff',
-      name: 'RECORD_STAFF',
+      name: 'record_staff',
       component (resolve) {
         return require(['@/modular/record/staff'], resolve)
       },

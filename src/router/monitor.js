@@ -6,7 +6,7 @@ export default {
   children: [
     {
       path: '/',
-      name: 'MONITOR_OWN',
+      name: 'monitor_own',
       component (resolve) {
         return require(['@/modular/monitor/own'], resolve)
       },
@@ -16,7 +16,7 @@ export default {
     },
     {
       path: 'own',
-      name: 'MONITOR_OWN',
+      name: 'monitor_own',
       component (resolve) {
         return require(['@/modular/monitor/own'], resolve)
       },
@@ -26,7 +26,7 @@ export default {
     },
     {
       path: 'focus',
-      name: 'MONITOR_FOCUS',
+      name: 'monitor_focus',
       component (resolve) {
         return require(['@/modular/monitor/focus'], resolve)
       },

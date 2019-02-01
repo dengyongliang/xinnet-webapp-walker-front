@@ -6,7 +6,7 @@ export default {
   children: [
     {
       path: '/',
-      name: 'DOMAIN_OVERVIEW',
+      name: 'domain_overview',
       component (resolve) {
         return require(['@/modular/domain/overview'], resolve)
       },
@@ -16,7 +16,7 @@ export default {
     },
     {
       path: 'overview',
-      name: 'DOMAIN_OVERVIEW',
+      name: 'domain_overview',
       component (resolve) {
         return require(['@/modular/domain/overview'], resolve)
       },
@@ -26,7 +26,7 @@ export default {
     },
     {
       path: 'mgmt',
-      name: 'DOMAIN_MGMT',
+      name: 'domain_mgmt',
       component (resolve) {
         return require(['@/modular/domain/domainMgmt'], resolve)
       },
@@ -36,7 +36,7 @@ export default {
     },
     {
       path: 'security',
-      name: 'DOMAIN_SECURITY',
+      name: 'domain_security',
       component (resolve) {
         return require(['@/modular/domain/securityService'], resolve)
       },
@@ -46,7 +46,7 @@ export default {
     },
     {
       path: 'realnameDomain',
-      name: 'DOMAIN_REALNAME_DOMAIN',
+      name: 'domain_rn_domain',
       component (resolve) {
         return require(['@/modular/domain/realnameDomain'], resolve)
       },
@@ -56,7 +56,7 @@ export default {
     },
     {
       path: 'transferin',
-      name: 'DOMAIN_TRANSFERIN',
+      name: 'domain_transferin',
       component (resolve) {
         return require(['@/modular/domain/transferInList'], resolve)
       },
@@ -66,7 +66,7 @@ export default {
     },
     {
       path: 'change',
-      name: 'DOMAIN_CHANGE',
+      name: 'domain_change',
       component (resolve) {
         return require(['@/modular/domain/domainChange'], resolve)
       },
@@ -76,7 +76,7 @@ export default {
     },
     {
       path: 'realname',
-      name: 'DOMAIN_REALNAME',
+      name: 'domain_rn_temp',
       component (resolve) {
         return require(['@/modular/domain/realNameTemplate'], resolve)
       },

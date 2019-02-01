@@ -7,7 +7,7 @@ div
   ) 全选
 
   CheckboxGroup(v-model="value", @on-change="checkboxChange",)
-    Checkbox(v-for="item in filterData", :label="item.label",)
+    Checkbox(v-for="item in filterData", :label="item.label", :key="item.label")
       span {{item.value}}
   Tag(
     v-for="item in filterData",
@@ -20,9 +20,6 @@ div
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
-import * as types from '@/store/types'
-
 export default {
   components: {
 
@@ -51,7 +48,7 @@ export default {
   methods: {
     checkboxChange (data) {
       this.resetCheckAllState(data)
-      this.filterData.map((v, i)=>{
+      this.filterData.map((v, i) => {
         if (data.indexOf(v.label) >= 0) {
           this.$set(v, 'checked', true)
         } else {
@@ -60,11 +57,11 @@ export default {
       })
     },
     handleClose (event, name) {
-      const index = this.filterData.findIndex((item)=>(item.value === name))
+      const index = this.filterData.findIndex((item) => (item.value === name))
       this.$set(this.filterData[index], 'checked', false)
 
       let arr = []
-      for (var i=0; i<this.filterData.length; i++) {
+      for (var i = 0; i < this.filterData.length; i++) {
         if (this.filterData[i].checked) {
           arr.push(this.filterData[i].label)
         }
@@ -74,22 +71,22 @@ export default {
     },
     handleCheckAll () {
       if (this.indeterminate) {
-        this.checkAll = false;
+        this.checkAll = false
       } else {
-        this.checkAll = !this.checkAll;
+        this.checkAll = !this.checkAll
       }
-      this.indeterminate = false;
+      this.indeterminate = false
 
       if (this.checkAll) {
-        this.value = this.filterData.map((v)=>{
+        this.value = this.filterData.map((v) => {
           return v.label
         })
-        this.filterData.map((v, i)=>{
+        this.filterData.map((v, i) => {
           this.$set(v, 'checked', true)
         })
       } else {
         this.value = []
-        this.filterData.map((v, i)=>{
+        this.filterData.map((v, i) => {
           this.$set(v, 'checked', false)
         })
       }
@@ -118,7 +115,7 @@ export default {
 
     if (this.len > 0) {
       let arr = []
-      for (var i=0; i<this.len; i++) {
+      for (var i = 0; i < this.len; i++) {
         if (this.filterData[i].checked) {
           arr.push(this.filterData[i].label)
         }
@@ -130,12 +127,12 @@ export default {
   },
   watch: {
     filterData: {
-      handler(newV, oldV) {
+      handler (newV, oldV) {
         this.len = newV.length
 
         if (this.len > 0) {
           let arr = []
-          for (var i=0; i<this.len; i++) {
+          for (var i = 0; i < this.len; i++) {
             if (newV[i].checked) {
               arr.push(newV[i].label)
             }

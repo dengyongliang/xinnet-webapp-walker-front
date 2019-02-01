@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
+import {mapActions} from 'vuex'
 import * as types from '@/store/types'
 import compInput from './compInput'
 import validateFormResult from '@/global/validateForm'
@@ -53,25 +53,24 @@ export default {
   },
   methods: {
     close () {
-      this.onClose();
+      this.onClose()
     },
     getVerificationCode1 () {
       this.loadingBtn = true
-      let vm = this
       let params = {
         param: {
         },
-        callback: function (response) {
-          vm.loadingBtn = false
-          if( response.data.code === '1000' ){
-            vm.$Message.success('发送成功')
+        callback: (response) => {
+          this.loadingBtn = false
+          if (response.data.code === '1000') {
+            this.$Message.success('发送成功')
           } else {
             if (response.data.code === '300') {
-              vm.$Message.error('短信验证码已发送')
+              this.$Message.error('短信验证码已发送')
             } else if (response.data.code === '500') {
-              vm.$Message.error('手机号码错误')
+              this.$Message.error('手机号码错误')
             } else {
-              vm.$Message.error('发送失败')
+              this.$Message.error('发送失败')
             }
           }
         }
@@ -84,22 +83,21 @@ export default {
         this.$refs.userMobile
       ])
       if (result) {
-        let vm = this
         let params = {
           param: {
             userMobile: this.$refs.userMobile.value
           },
-          callback: function (response) {
-            vm.loadingBtn = false
-            if( response.data.code === '1000' ){
-              vm.$Message.success('发送成功')
+          callback: (response) => {
+            this.loadingBtn = false
+            if (response.data.code === '1000') {
+              this.$Message.success('发送成功')
             } else {
               if (response.data.code === '300') {
-                vm.$Message.error('短信验证码已发送')
+                this.$Message.error('短信验证码已发送')
               } else if (response.data.code === '500') {
-                vm.$refs.userMobile.showValidateResult({text:'手机号码错误'})
+                this.$refs.userMobile.showValidateResult({text: '手机号码错误'})
               } else {
-                vm.$Message.error('发送失败')
+                this.$Message.error('发送失败')
               }
             }
           }
@@ -115,18 +113,17 @@ export default {
         this.$refs.verificationCode1
       ])
       if (result) {
-        let vm = this
         var params = {
           param: {
             verificationCode: this.$refs.verificationCode1.value
           },
-          callback: function (response) {
-            vm.loadingBtn = false
-            if( response.data.code === '1000' ){
-              vm.$Message.success('验证成功')
-              vm.step = 2
+          callback: (response) => {
+            this.loadingBtn = false
+            if (response.data.code === '1000') {
+              this.$Message.success('验证成功')
+              this.step = 2
             } else {
-              vm.$Message.error('验证失败')
+              this.$Message.error('验证失败')
             }
           }
         }
@@ -142,7 +139,6 @@ export default {
         this.$refs.verificationCode2
       ])
       if (result) {
-        let vm = this
         var params = {
           param: {
             userCode: this.$refs.userCode.value,
@@ -151,7 +147,7 @@ export default {
           },
           callback: (response) => {
             this.loadingBtn = false
-            if( response.data.code === '1000' ){
+            if (response.data.code === '1000') {
               this.$Message.success('手机更新成功')
               this.$store.commit(types.UPDATE_USER_MOBILE, this.$refs.userMobile.value)
               this.close()
@@ -161,9 +157,9 @@ export default {
               } else if (response.data.code === '300') {
                 this.$Message.error('用户被锁定')
               } else if (response.data.code === '400') {
-                this.$refs.verificationCode2.showValidateResult({text:'手机验证码错误'})
+                this.$refs.verificationCode2.showValidateResult({text: '手机验证码错误'})
               } else if (response.data.code === '600') {
-                this.$refs.userMobile.showValidateResult({text:'手机号码已存在'})
+                this.$refs.userMobile.showValidateResult({text: '手机号码已存在'})
               }
             }
           }

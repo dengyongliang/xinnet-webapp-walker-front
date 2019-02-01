@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
+import {mapActions} from 'vuex'
 import * as types from '@/store/types'
 import compRadio from '@/components/compRadio'
 import compSelect from '@/components/compSelect'
@@ -84,12 +84,12 @@ export default {
       ],
       isTempList: [
         {
-            value: '使用模板资料',
-            label: '1'
+          value: '使用模板资料',
+          label: '1'
         },
         {
-            value: '上传资料',
-            label: '0'
+          value: '上传资料',
+          label: '0'
         }
       ],
       uploadAction: links.UPLOAD_FILE_DOMAIN_VERIFY
@@ -97,10 +97,10 @@ export default {
   },
   methods: {
     close () {
-      this.onClose();
+      this.onClose()
     },
     changeUploadStatus () {
-      this.status = 'view'
+      this.status = 'modify'
       this.modify = true
     },
     isTempChange (obj) {
@@ -112,14 +112,14 @@ export default {
     formSubmit () {
       this.loadingBtn = true
       let result = false
-      if (this.isTemp===0) {
+      if (this.isTemp === 0) {
         result = validateFormResult([
           this.$refs.registrantType,
-          this.$refs['idType'+this.registrantType],
+          this.$refs['idType' + this.registrantType],
           this.$refs.idCode,
           this.$refs.upfile
         ])
-      } else if (this.isTemp===1) {
+      } else if (this.isTemp === 1) {
         result = validateFormResult([
           this.$refs.templateId
         ])
@@ -132,15 +132,15 @@ export default {
           },
           callback: (response) => {
             this.loadingBtn = false
-            if (response.data.code === '1000'){
+            if (response.data.code === '1000') {
               this.$Message.success('模板资料提交成功')
-              this.$emit("refreshData")
+              this.$emit('refreshData')
             } else {
               this.$Message.error('模板资料提交失败')
             }
           }
         }
-        if (this.isTemp===0) {
+        if (this.isTemp === 0) {
           Object.assign(params.param, {
             registrantType: this.$refs.registrantType.value,
             idCode: this.$refs.idCode.value,
@@ -148,7 +148,7 @@ export default {
             idFileUrl: this.$refs.upfile.$refs.upload.fileList[0].file,
             idFileName: this.$refs.upfile.$refs.upload.fileList[0].name
           })
-        } else if (this.isTemp===1) {
+        } else if (this.isTemp === 1) {
           Object.assign(params.param, {
             templateId: this.$refs.templateId.value
           })
@@ -167,7 +167,7 @@ export default {
   computed: {
   },
   beforeMount () {
-    this.idTypeListI = function (vm) {
+    this.idTypeListI = (function (vm) {
       let array = []
       for (var i in vm.DATAS.REGISTRANT_ID_TYPE_I) {
         array.push({
@@ -176,8 +176,8 @@ export default {
         })
       }
       return array
-    }(this)
-    this.idTypeListE = function (vm) {
+    })(this)
+    this.idTypeListE = (function (vm) {
       let array = []
       for (var i in vm.DATAS.REGISTRANT_ID_TYPE_E) {
         array.push({
@@ -186,7 +186,7 @@ export default {
         })
       }
       return array
-    }(this)
+    })(this)
   },
   watch: {
   }

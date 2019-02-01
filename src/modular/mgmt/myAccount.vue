@@ -50,7 +50,7 @@
   <!-- 修改座机 抽屉 -->
   Drawer(:closable="true", width="640", v-model="drawerModifyTel", title="修改座机号码", :mask-closable="maskClosable", @on-visible-change="drawerChange")
     comp-account-tel-modify(
-      v-if="refresh",
+      v-if="drawerModifyTel",
       :defaultValue="myUserInfo.userTel",
       :on-close="closeDrawer",
       :userCode="myUserInfo.userCode"
@@ -58,7 +58,7 @@
   <!-- 修改手机 抽屉 -->
   Drawer(:closable="true", width="640", v-model="drawerModifyMobile", title="修改绑定手机号码", :mask-closable="maskClosable", @on-visible-change="drawerChange")
     comp-account-mobile-modify(
-      v-if="refresh",
+      v-if="drawerModifyMobile",
       :on-close="closeDrawer",
       :userName = "myUserInfo.userName",
       :userCode = "myUserInfo.userCode",
@@ -67,7 +67,7 @@
   <!-- 修改登录密码 抽屉 -->
   Drawer(:closable="true", width="640", v-model="drawerModifyPw", title="修改登录密码", :mask-closable="maskClosable", @on-visible-change="drawerChange")
     comp-account-password-modify(
-      v-if="refresh",
+      v-if="drawerModifyPw",
       :on-close="closeDrawer",
       :userName = "myUserInfo.userName",
       :userCode = "myUserInfo.userCode",
@@ -76,8 +76,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
-import * as types from '@/store/types'
+import {mapState} from 'vuex'
 import compAccountTelModify from '@/components/compAccountTelModify'
 import compAccountMobileModify from '@/components/compAccountMobileModify'
 import compAccountPasswordModify from '@/components/compAccountPasswordModify'
@@ -103,7 +102,6 @@ export default {
       this.drawerModifyPw = false
     },
     drawerChange () {
-      this.refresh = (this.drawerModifyTel || this.drawerModifyMobile || this.drawerModifyPw) ? true : false
     }
   },
   computed: {

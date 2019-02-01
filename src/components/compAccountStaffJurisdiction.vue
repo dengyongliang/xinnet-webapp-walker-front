@@ -40,15 +40,15 @@ export default {
     }
   },
   methods: {
-    renderContent(h, { root, node, data }){
+    renderContent (h, {root, node, data}) {
       return h(
         'span', {
           style: {
             display: 'inline-block',
             margin: '0 0 0 25px'
           },
-          on:{
-            click:(e)=>{
+          on: {
+            click: (e) => {
             }
           }
         },
@@ -57,8 +57,8 @@ export default {
         ]
       )
     },
-    getCheckedNodes(){
-      let checkedArray = this.$refs.Tree.getCheckedAndIndeterminateNodes().map((val,idx,arr) => {
+    getCheckedNodes () {
+      let checkedArray = this.$refs.Tree.getCheckedAndIndeterminateNodes().map((val, idx, arr) => {
         return val.title
       })
       if (!checkedArray.length) {
@@ -75,13 +75,13 @@ export default {
         let params = {
           param: {
             roleId: this.$refs.roleId.value,
-            groups: this.getCheckedNodes().slice(1).join(",")
+            groups: this.getCheckedNodes().slice(1).join(',')
           },
           callback: (response) => {
             this.loadingBtn = false
-            if( response.data.code === '1000' ){
+            if (response.data.code === '1000') {
               this.$Message.success('账号创建成功!')
-              this.$emit("closeDrawer")
+              this.$emit('closeDrawer')
             } else {
               if (response.data.code === '100') {
                 this.$Message.error('角色编码错误')
@@ -120,8 +120,8 @@ export default {
     ...mapState({
       userRoles (state) {
         // is super?
-        state.user.userRoles.map((v)=>{
-          if(v.roleCode.indexOf('super')>=0 && v.disabled ){
+        state.user.userRoles.map((v) => {
+          if (v.roleCode.indexOf('super') >= 0 && v.disabled) {
             this.super = true
             this.defaultValue = v.id
           }
@@ -140,21 +140,21 @@ export default {
           checked: 'checked',
           children: 'groups',
           disabled_lv1: true,
-          disabled_lv2: this.super ? true: false
+          disabled_lv2: this.super
         })
         let len = arr.length
         let arr2 = []
         console.log(arr)
-        for(var i=0; i<len; i++){
+        for (var i = 0; i < len; i++) {
           if (arr[i].children.length) {
             arr2.push(arr[i])
           }
         }
         if (arr2.length) {
           if (this.super) {
-            return [{title: 0, label: '全部', checked: false, expand: true, disabled: true,children: this.GLOBALS.CONVERT_TREE_CHECKED_TRUE(arr2, 'children')}]
+            return [{title: 0, label: '全部', checked: false, expand: true, disabled: true, children: this.GLOBALS.CONVERT_TREE_CHECKED_TRUE(arr2, 'children')}]
           } else {
-            return [{title: 0, label: '全部', checked: false, expand: true,children:arr2}]
+            return [{title: 0, label: '全部', checked: false, expand: true, children: arr2}]
           }
         } else {
           return []

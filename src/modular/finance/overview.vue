@@ -43,12 +43,11 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
+import {mapActions} from 'vuex'
 import * as types from '@/store/types'
 import compChartSpendTrend from '@/components/compChartSpendTrend'
 import compChartSpendTotal from '@/components/compChartSpendTotal'
 import moment from 'moment'
-
 export default {
   components: {
     compChartSpendTrend,
@@ -56,13 +55,15 @@ export default {
   },
   data () {
     return {
+      // 一月区间
       time1: [
-        this.GLOBALS.ADD_DAY(30),
-        new Date()
+        new Date(moment().subtract(1, 'months').format('YYYY-MM-DD') + ' 00:00:00'),
+        new Date(moment(new Date()).format('YYYY-MM-DD') + ' 23:59:59')
       ],
+      // 一年区间
       time2: [
-        this.GLOBALS.ADD_DAY(30*12),
-        new Date()
+        new Date(moment().subtract(1, 'years').format('YYYY-MM-DD') + ' 00:00:00'),
+        new Date(moment(new Date()).format('YYYY-MM-DD') + ' 23:59:59')
       ],
       loadingTable: false,
       loadingBtn: false,
@@ -123,6 +124,13 @@ export default {
                 },
                 on: {
                   click: () => {
+                    this.toOrderMgmt(
+                      {
+                        orderGoodsType: this.list[params.index].orderGoodsType,
+                        startTime: this.time1[0] !== '' ? moment(this.time1[0]).format('YYYY-MM-DD') + ' 00:00:00' : '',
+                        endTime: this.time1[1] !== '' ? moment(this.time1[1]).format('YYYY-MM-DD') + ' 23:59:59' : ''
+                      }
+                    )
                   }
                 }
               }, '详情')
@@ -139,36 +147,38 @@ export default {
     }
   },
   methods: {
+    toOrderMgmt (obj) {
+      this.$router.push({path: '/order/orderMgmt', query: {orderGoodsType: obj.orderGoodsType, startTime: obj.startTime, endTime: obj.endTime}})
+    },
     getFinancePayStatisticsParam (obj) {
       this.loadingTable = true
-      let vm = this
       let params = {
         param: {
           startTime: this.time1[0] !== '' ? moment(this.time1[0]).format('YYYY-MM-DD') + ' 00:00:00' : '',
           endTime: this.time1[1] !== '' ? moment(this.time1[1]).format('YYYY-MM-DD') + ' 23:59:59' : ''
         },
-        callback: function(response){
-          vm.loadingTable = false
+        callback: (response) => {
+          this.loadingTable = false
           console.log(response.data)
-          if (response.data.code === '1000'){
-            vm.creditMoney = response.data.data.creditMoney
-            vm.payMoney = response.data.data.payMoney
-            vm.totalMoney = response.data.data.totalMoney
-            vm.list = response.data.data.list
+          if (response.data.code === '1000') {
+            this.creditMoney = response.data.data.creditMoney
+            this.payMoney = response.data.data.payMoney
+            this.totalMoney = response.data.data.totalMoney
+            this.list = response.data.data.list
             let charData = {}
             charData.legend = []
-            charData.series = response.data.data.businessList.map((value,idx,arr) => {
-              let name = vm.DATAS.BUSINESS_LIST[Object.keys(value)]
+            charData.series = response.data.data.businessList.map((value, idx, arr) => {
+              let name = this.DATAS.BUSINESS_LIST[Object.keys(value)]
               charData.legend.push(name)
               return {
                 name: name,
                 value: value[Object.keys(value)]
               }
             })
-            vm.payStatisticsTotalData = charData
+            this.payStatisticsTotalData = charData
           } else {
             if (response.data.code === '900') {
-              vm.$Message.error('查询失败')
+              this.$Message.error('查询失败')
             }
           }
         }
@@ -177,28 +187,27 @@ export default {
     },
     getFinancePayStatisticsTrendParam (obj) {
       this.loadingBtn = true
-      let vm = this
       let params = {
         param: {
           startTime: this.time2[0] !== '' ? moment(this.time2[0]).format('YYYY-MM-DD') + ' 00:00:00' : '',
           endTime: this.time2[1] !== '' ? moment(this.time2[1]).format('YYYY-MM-DD') + ' 23:59:59' : ''
         },
-        callback: function(response){
-          vm.loadingBtn = false
+        callback: (response) => {
+          this.loadingBtn = false
           console.log(response)
-          if (response.data.code === '1000'){
-            vm.payStatisticsTrendData = {
+          if (response.data.code === '1000') {
+            this.payStatisticsTrendData = {
               legend: [],
               xAxis: [],
               series: []
             }
-            vm.payStatisticsTrendData.xAxis = response.data.data.dateList
-            vm.payStatisticsTrendData.series = response.data.data.goodTypeList.map((value,idx,arr) => {
-              vm.payStatisticsTrendData.legend.push(vm.DATAS.ORDER_GOODS_TYPE[value])
+            this.payStatisticsTrendData.xAxis = response.data.data.dateList
+            this.payStatisticsTrendData.series = response.data.data.goodTypeList.map((value, idx, arr) => {
+              this.payStatisticsTrendData.legend.push(this.DATAS.ORDER_GOODS_TYPE[value])
               var arrs = []
-              response.data.data.dateList.forEach((item1,index1) => {
+              response.data.data.dateList.forEach((item1, index1) => {
                 if (response.data.data.result[item1]) {
-                  response.data.data.result[item1].forEach((item2,index2)=>{
+                  response.data.data.result[item1].forEach((item2, index2) => {
                     if (item2.orderGoodsType === parseInt(value)) {
                       arrs.push(item2.orderTotalMoney)
                     }
@@ -208,7 +217,7 @@ export default {
                 }
               })
               return {
-                name: vm.DATAS.ORDER_GOODS_TYPE[value],
+                name: this.DATAS.ORDER_GOODS_TYPE[value],
                 type: 'bar',
                 stack: '总量',
                 label: {
@@ -223,7 +232,7 @@ export default {
             // console.log(vm.payStatisticsTrendData.series)
           } else {
             if (response.data.code === '900') {
-              vm.$Message.error('查询失败')
+              this.$Message.error('查询失败')
             }
           }
         }
@@ -247,8 +256,8 @@ export default {
     this.financePayStatistics(this.getFinancePayStatisticsParam())
     this.financePayStatisticsTrend(this.getFinancePayStatisticsTrendParam())
   },
-  mounted(){
-
+  mounted () {
+    console.log(moment().subtract(1, 'months').format('YYYY-MM-DD'))
   }
 }
 </script>

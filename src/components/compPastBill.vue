@@ -1,44 +1,46 @@
 <template lang="pug">
-div(:class="'status_'+historyData.status")
-  .filter
-    span.text 记账周期
-    comp-select(name="",:list="historyCycleList",ref="historyCycle",styles="width:200px")
-    Button(type="primary", @click="queryHistoryCycle",:loading="loadingBtn") 查询
-  .totalInfo
-    Tooltip(content="账单金额=信用消费-退款抵扣", placement="bottom-start")
-      <Icon custom="i-icon i-icon-tips" size="16" />
-    span.text 账单金额：<em> {{historyData.totalMoney}} </em>元
-  table
-    tr
-      td.col1
-        span.n 信用消费：
-        span.v {{historyData.creditMoney}} 元
-      td.col2
-        span.n 记账周期：
-        span.v {{historyData.thisCycle}}
-    tr
-      td.col1
-        span.n 预付费消费：
-        span.v {{historyData.payMoney}} 元
-      td.col2
-        span.n 出账日期：
-        span.v {{historyData.outBill}}
-    tr
-      td.col1
-        span.n 存入：
-        span.v {{historyData.depositMoney}} 元
-      td.col2
-        span.n 最晚结款日：
-        span.v {{historyData.checkBill}}
-    tr
-      td.col1
-        span.n 退款抵扣：
-        span.v {{historyData.returnsMoney}} 元
-      td.col2
+div(:class="historyData.thisCycle !== '' ? ('status_'+historyData.status) : ''")
+  div.none(v-show="historyData.thisCycle === ''") 暂无往期账单
+  div(v-show="historyData.thisCycle !== ''")
+    .filter
+      span.text 记账周期
+      comp-select(name="",:list="historyCycleList",ref="historyCycle",styles="width:200px")
+      Button(type="primary", @click="queryHistoryCycle",:loading="loadingBtn") 查询
+    .totalInfo
+      Tooltip(content="账单金额=信用消费-退款抵扣", placement="bottom-start")
+        <Icon custom="i-icon i-icon-tips" size="16" />
+      span.text 账单金额：<em> {{historyData.totalMoney}} </em>元
+    table
+      tr
+        td.col1
+          span.n 信用消费：
+          span.v {{historyData.creditMoney}} 元
+        td.col2
+          span.n 记账周期：
+          span.v {{historyData.thisCycle}}
+      tr
+        td.col1
+          span.n 预付费消费：
+          span.v {{historyData.payMoney}} 元
+        td.col2
+          span.n 出账日期：
+          span.v {{historyData.outBill}}
+      tr
+        td.col1
+          span.n 存入：
+          span.v {{historyData.depositMoney}} 元
+        td.col2
+          span.n 最晚结款日：
+          span.v {{historyData.checkBill}}
+      tr
+        td.col1
+          span.n 退款抵扣：
+          span.v {{historyData.returnsMoney}} 元
+        td.col2
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
+import {mapActions} from 'vuex'
 import * as types from '@/store/types'
 import compSelect from '@/components/compSelect'
 export default {
@@ -62,25 +64,24 @@ export default {
       this.payStatisticsHistoryBill(this.getHistoryCycleParam())
     },
     getHistoryCycleParam () {
-      let vm = this
       let params = {
         param: {
           historyCycle: this.$refs.historyCycle.value
         },
-        callback: function (response) {
-          if (response.data.code === '1000'){
-            if (!vm.historyCycleList.length) {
-              vm.historyCycleList = response.data.data.historyCycleList.map((value,key,arr) => {
+        callback: (response) => {
+          if (response.data.code === '1000') {
+            if (!this.historyCycleList.length) {
+              this.historyCycleList = response.data.data.historyCycleList.map((value, key, arr) => {
                 return {
                   value: value,
                   label: value
                 }
               })
             }
-            vm.historyData = response.data.data
+            this.historyData = response.data.data
           } else {
             if (response.data.code === '900') {
-              vm.$Message.error('查询失败')
+              this.$Message.error('查询失败')
             }
           }
         }
@@ -102,6 +103,10 @@ export default {
 }
 </script>
 <style scoped>
+.none{
+  text-align: center;
+  line-height: 100px;
+}
 .filter .text{
   display:inline-block;
   margin-right:10px;
@@ -130,7 +135,7 @@ td{
   height:29px;
   line-height:29px;
   border-bottom:1px dashed #eee;
-  padding:0 20px;
+  padding:0 10px;
   font-size:12px;
 }
 td .v{

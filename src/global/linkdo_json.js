@@ -260,3 +260,6 @@ export const QUERY_DOMAIN_CONSUMPTION_COMPANY_SORT_REPORT = 'http://localhost:55
 export const QUERY_DOMAIN_CONSUMPTION_COMPANY_MONTH_REPORT = 'http://localhost:5500/static/data/domainConsumptionCompanyMonthReport.js'
 // 域名消费报告-域名企业消费总览
 export const QUERY_DOMAIN_CONSUMPTION_COMPANY_REPORT = 'http://localhost:5500/static/data/domainConsumptionCompanyReport.js'
+
+// 结算
+export const ORDER_PAYMENT = 'http://localhost:5500/static/data/domainConsumptionCompanyReport.js'

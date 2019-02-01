@@ -24,8 +24,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
-import * as types from '@/store/types'
+import {mapState} from 'vuex'
 import compUserAuthGroups from '@/components/compUserAuthGroups'
 export default {
   name: 'compDomainMgmtDetailStep4',
@@ -52,8 +51,8 @@ export default {
       this.visible = false
     },
     setDetailFun2 (obj) {
-      this.$emit("setDetailFun", obj)
-    },
+      this.$emit('setDetailFun', obj)
+    }
   },
   beforeMount () {
   },

@@ -7,15 +7,14 @@
       strong(v-show="type==='center'") 报告中心
       strong(v-show="type==='assets'") 域名资产报告
       strong(v-show="type==='own'") 自有域名监控报告
-      strong(v-show="type==='budget'") {{start}} ~ {{end}} 域名预算报告
-      strong(v-show="type==='spending'") {{start}} ~ {{end}} 域名消费报告
+      strong(v-show="type==='budget'") {{start | dateformat}} ~ {{end | dateformat}} 域名预算报告
+      strong(v-show="type==='spending'") {{start | dateformat}} ~ {{end | dateformat}} 域名消费报告
     router-view
 
 </template>
 
 <script>
-import { mapState, mapActions, mapMutations } from 'vuex'
-import * as types from '@/store/types'
+import {mapState} from 'vuex'
 import headerBody from '../modular/header'
 export default {
   components: {
@@ -47,7 +46,7 @@ export default {
     this.start = this.$route.query.start
     this.end = this.$route.query.end
   },
-  mounted(){
+  mounted () {
   },
   watch: {
   }

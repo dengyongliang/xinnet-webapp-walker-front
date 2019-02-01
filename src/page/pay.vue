@@ -10,13 +10,13 @@
       <Table :columns="columns" :data="payFinishData.jsonObj" :loading="loadingTable"></Table>
       .price 应付金额：<em>{{total}}</em>元
       .quota 剩余信用额度：<em>{{payFinishData.creditBalance}}</em>元
-    .btn(v-show="!pay && (payFinishData.creditBalance >= total)")
+    .btn(v-show="!pay")
       Button(type="primary", @click="toPay", :loading="loadingBtn",) 立即支付
     .total(v-show="pay") 实付金额：<em>{{realPrice}}</em>元
 </template>
 
 <script>
-import { mapState, mapActions, mapMutations } from 'vuex'
+import {mapState, mapActions} from 'vuex'
 import * as types from '@/store/types'
 import headerBody from '../modular/header'
 export default {
@@ -61,9 +61,9 @@ export default {
           }
         },
         {
-           title: '数量',
-           key: 'num',
-           className: 'col4',
+          title: '数量',
+          key: 'num',
+          className: 'col4'
         },
         {
           title: '价格（元）',
@@ -73,9 +73,9 @@ export default {
             return h('div', [
               h('span', {
                 style: {
-                  color:'#f00'
+                  color: '#f00'
                 }
-              }, this.payFinishData.jsonObj[params.index].price.split("_")[0] + '元')
+              }, this.payFinishData.jsonObj[params.index].price.split('_')[0] + '元')
             ])
           }
         },
@@ -108,14 +108,14 @@ export default {
               }, '支付成功'),
               h('span', {
                 style: {
-                  color: "#f00",
+                  color: '#f00',
                   display: this.payFinishData.jsonObj[params.index].payStatus === 'fail' ? 'inline-block' : 'none'
                 }
               }, this.payFinishData.jsonObj[params.index].errorText),
               h('Button', {
                 style: {
-                  border: "none",
-                  background: "none",
+                  border: 'none',
+                  background: 'none',
                   display: this.payFinishData.jsonObj[params.index].payStatus === 'ing' ? 'inline-block' : 'none'
                 },
                 props: {
@@ -133,82 +133,58 @@ export default {
       this.$router.push({path: '/payConfirm'})
     },
     toPay () {
+      if (this.payFinishData.creditBalance < this.total) {
+        this.$Message.error('当前账户余额不足')
+        return false
+      }
       this.pay = true
       let templateId = this.payFinishData.templateId
       let groupId = this.payFinishData.groupId
-      this.payFinishData.jsonObj.map((v,i,arr) => {
-        v.payStatus = "ing"
+      this.payFinishData.jsonObj.map((v, i, arr) => {
+        this.$set(v, 'payStatus', 'ing')
         let params = {
           param: {
-
+            jsonObj: {
+              domainName: v.domainName,
+              orderPayType: 1,
+              orderMoney: v.price.split('_')[0] * 1,
+              orderGoodsNum: v.num,
+              orderType: v.orderType,
+              orderGoodsType: v.orderGoodsType,
+              domainPassword: v.domainPwd,
+              templateId: templateId,
+              groupId: groupId
+            }
           },
           callback: (response) => {
             let data = response.data
             if (data.code === '1000') {
-              this.realPrice += this.payFinishData.jsonObj[i].price.split("_")[0] * 1
-              this.payFinishData.creditBalance -= this.payFinishData.jsonObj[i].price.split("_")[0] * 1
-              this.payFinishData.jsonObj[i].payStatus = "success"
+              this.realPrice += this.payFinishData.jsonObj[i].price.split('_')[0] * 1
+              this.payFinishData.creditBalance -= this.payFinishData.jsonObj[i].price.split('_')[0] * 1
+              // this.payFinishData.jsonObj[i].payStatus = 'success'
+              let v = this.payFinishData.jsonObj[i]
+              v.payStatus = 'success'
+              this.$set(this.payFinishData.jsonObj, i, v)
             } else {
-              if (data.code==='100') {
-                this.payFinishData.jsonObj[i].errorText = '域名正在转入中，无法重复提交'
-              } else if (data.code==='200') {
-                this.payFinishData.jsonObj[i].errorText = '余额不足'
-              } else {
-                this.payFinishData.jsonObj[i].errorText = '支付失败'
-              }
-              this.payFinishData.jsonObj[i].payStatus = "fail"
+              let v = this.payFinishData.jsonObj[i]
+              v.payStatus = 'fail'
+              v.errorText = data.msg
+              this.$set(this.payFinishData.jsonObj, i, v)
             }
           }
         }
-        if (this.payFinishData.type==="4_1") {
-          params.param = {
-            domainName: v.domainName,
-            orderMoney: v.price.split("_")[0] * 1,
-            orderGoodsNum: v.num,
-            orderPayType: 1
-          }
-          this.buyBackendLock(params)
-        } else if (this.payFinishData.type==="4_2") {
-          params.param = {
-            domainName: v.domainName,
-            orderMoney: v.price.split("_")[0] * 1,
-            orderGoodsNum: v.num,
-            orderPayType: 1
-          }
-          this.renewBackendLock(params)
-        } else if (this.payFinishData.type==="2_2") {
-          params.param = {
-            domainName: v.domainName,
-            orderMoney: v.price.split("_")[0] * 1,
-            orderGoodsNum: v.num,
-            orderPayType: 1
-          }
-          this.orderPayDomainRenew(params)
-        } else {
-          params.param = {
-            templateId: templateId,
-            groupId: groupId,
-            domainName: v.domainName,
-            domainPassword: v.domainPwd,
-            orderPayType: 1
-          }
-          this.submitTransferIn(params)
-        }
+        this.orderPayment(params)
       })
-
     },
     ...mapActions({
-      submitTransferIn: types.SUBMIT_TRANSFER_IN,
-      buyBackendLock: types.BUY_BACKEND_LOCK,
-      renewBackendLock: types.RENEW_BACKEND_LOCK,
-      orderPayDomainRenew: types.ORDER_PAY_DOMAIN_RENEW
+      orderPayment: types.ORDER_PAYMENT
     })
   },
   computed: {
     total () {
       if (typeof this.payFinishData.jsonObj !== 'undefined' && this.payFinishData.jsonObj.length) {
-        return this.payFinishData.jsonObj.reduce(function(prev, cur) {
-          return (cur.price.split("_")[0] * 1) + prev
+        return this.payFinishData.jsonObj.reduce((prev, cur) => {
+          return (cur.price.split('_')[0] * 1) + prev
         }, 0)
       } else {
         return 0
@@ -222,18 +198,20 @@ export default {
     // 查看vuex中是否有数据，有使用vuex数据
     // 如果没有数据，查看本地存储中是否存在数据，有使用本地存储数据
     // 都没有，显示空列表
-    if (this.payOrdersFinish.jsonObj.length) {
+    if (this.payOrdersFinish.jsonObj) {
+      localStorage.setItem('data_pay_finish', JSON.stringify(this.payOrdersFinish))
       this.payFinishData = this.payOrdersFinish
-      localStorage.setItem('data_pay_finish', JSON.stringify(this.payFinishData))
-    } else if (localStorage.getItem("data_pay_finish")) {
+      // this.payFinishData = JSON.parse(localStorage.getItem('data_pay_finish'))
+    } else if (localStorage.getItem('data_pay_finish')) {
       this.payFinishData = JSON.parse(localStorage.getItem('data_pay_finish'))
     } else {
+      this.payFinishData.jsonObj = []
     }
   },
-  mounted(){
+  mounted () {
   },
   watch: {
-    payOrdersFinish: {
+    payFinishData: {
       handler (newV, oldV) {
       },
       deep: true

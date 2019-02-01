@@ -49,7 +49,7 @@ div.step1
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
+import {mapActions} from 'vuex'
 import * as types from '@/store/types'
 import compInput from './compInput'
 import compCascader from './compCascader'
@@ -85,7 +85,7 @@ export default {
   },
   data () {
     return {
-      value:'',
+      value: '',
       loadingBtn: false,
       areaList: [],
       area: []
@@ -129,16 +129,16 @@ export default {
             organizeNameUk: this.$refs.organizeNameUk.value,
             userSureNameUk: this.$refs.userSureNameUk.value,
             userNameUk: this.$refs.userNameUk.value,
-            streetUk: this.$refs.streetUk.value,
+            streetUk: this.$refs.streetUk.value
           },
           callback: (response) => {
             this.loadingBtn = false
-            if (response.data.code === '1000'){
+            if (response.data.code === '1000') {
               this.loadingBtn = false
               this.$Message.success('模板创建成功')
               params.param.userCode = response.data.userCode
-              this.$emit("setTemplateData", params.param)
-              this.$emit("showStep2")
+              this.$emit('setTemplateData', params.param)
+              this.$emit('showStep2')
             } else {
               if (response.data.code === '100' || response.data.code === '200') {
                 this.$Message.error('模板名称已存在')
@@ -190,14 +190,14 @@ export default {
             organizeNameUk: this.$refs.organizeNameUk.value,
             userSureNameUk: this.$refs.userSureNameUk.value,
             userNameUk: this.$refs.userNameUk.value,
-            streetUk: this.$refs.streetUk.value,
+            streetUk: this.$refs.streetUk.value
           },
           callback: (response) => {
             this.loadingBtn = false
-            if (response.data.code === '1000'){
+            if (response.data.code === '1000') {
               this.loadingBtn = false
               this.$Message.success('模板修改成功')
-              this.$emit("refreshData")
+              this.$emit('refreshData')
             } else {
               if (response.data.code === '200') {
                 this.$Message.error('模板名称已存在')
@@ -226,7 +226,7 @@ export default {
   },
   watch: {
     templateData: {
-      handler(newV, oldV) {
+      handler (newV, oldV) {
         this.$set(this.area, 0, newV.publicProvinceUk)
         this.$set(this.area, 1, newV.publicCityUk)
       },

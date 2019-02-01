@@ -36,7 +36,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
+import {mapActions} from 'vuex'
 import * as types from '@/store/types'
 import * as links from '@/global/linkdo.js'
 import compSelect from '@/components/compSelect'
@@ -64,8 +64,14 @@ export default {
           title: '交易时间',
           key: 'flowTime',
           className: 'col1',
+          render: (h, params) => {
+            return h('div', [
+              h('span', {
+              }, moment(this.list[params.index].flowTime).format('YYYY-MM-DD HH:mm:ss'))
+            ])
+          },
           sortable: true,
-          sortMethod:function(a,b,type){}
+          sortMethod: function (a, b, type) {}
         },
         {
           title: '交易单号',
@@ -93,7 +99,7 @@ export default {
           key: 'flowMoney',
           className: 'col5',
           sortable: true,
-          sortMethod:function(a,b,type){},
+          sortMethod: function (a, b, type) {},
           render: (h, params) => {
             return h('div', [
               h('span', {
@@ -108,34 +114,34 @@ export default {
         pagePages: 1,
         pageItems: 1
       },
-      payTypeList:[
+      payTypeList: [
         {
-            value: '',
-            label: '全部'
+          value: '',
+          label: '全部'
         },
         {
-            value: '1',
-            label: '预付款存入'
+          value: '1',
+          label: '预付款存入'
         },
         {
-            value: '2',
-            label: '信用消费'
+          value: '2',
+          label: '信用消费'
         },
         {
-            value: '3',
-            label: '预付款消费'
+          value: '3',
+          label: '预付款消费'
         },
         {
-            value: '4',
-            label: '退款'
+          value: '4',
+          label: '退款'
         },
         {
-            value: '5',
-            label: '结款'
+          value: '5',
+          label: '结款'
         },
         {
-            value: '6',
-            label: '信用额度增加'
+          value: '6',
+          label: '信用额度增加'
         }
       ],
       chartCreditQuotaData: {},
@@ -155,7 +161,7 @@ export default {
       let sort = {}
       sort.sortType = v.key === 'flowTime' ? 'time' : 'money'
       sort.sortValue = v.order
-      this.queryFinanceCustomerFlowList(this.queryFinanceCustomerFlowListParam({pageNum:1,sort:sort}))
+      this.queryFinanceCustomerFlowList(this.queryFinanceCustomerFlowListParam({pageNum: 1, sort: sort}))
     },
     exportBill () {
       this.$refs.exportForm.submit()
@@ -165,7 +171,6 @@ export default {
       this.loadingBtn = true
       this.loadingTable = true
 
-      let vm = this
       let params = {
         param: {
           pageNum: obj.pageNum,
@@ -175,20 +180,20 @@ export default {
           flowCode: this.value,
           payType: this.$refs.payType.value
         },
-        callback: function(response){
-          vm.loadingBtn = false
-          vm.loadingTable = false
-          if (response.data.code === '1000'){
-            vm.list = response.data.data.list
-            vm.page.pageItems = response.data.data.totalNum
+        callback: (response) => {
+          this.loadingBtn = false
+          this.loadingTable = false
+          if (response.data.code === '1000') {
+            this.list = response.data.data.list
+            this.page.pageItems = response.data.data.totalNum
           } else {
             if (response.data.code === '900') {
-              vm.$Message.error('查询失败')
+              this.$Message.error('查询失败')
             }
           }
         }
       }
-      if (typeof obj.sort) {
+      if (obj.sort) {
         Object.assign(params.param, obj.sort)
       }
       console.log(params.param)
@@ -204,24 +209,23 @@ export default {
   },
   beforeMount () {
   },
-  mounted(){
-    let vm = this
-    this.payStatisticsUnBilled(function (response) {
-      if (response.data.code === '1000'){
-        vm.payStatisticsUnBilledData = response.data.data
+  mounted () {
+    this.payStatisticsUnBilled((response) => {
+      if (response.data.code === '1000') {
+        this.payStatisticsUnBilledData = response.data.data
       } else {
         if (response.data.code === '900') {
-          vm.$Message.error('查询失败')
+          this.$Message.error('查询失败')
         }
       }
     })
-    this.queryFinanceCustomerFlowList(this.queryFinanceCustomerFlowListParam({pageNum:1}))
-    this.queryPayStatisticsBalance(function (response) {
-      if (response.data.code === '1000'){
-        vm.chartCreditQuotaData = response.data.data
+    this.queryFinanceCustomerFlowList(this.queryFinanceCustomerFlowListParam({pageNum: 1}))
+    this.queryPayStatisticsBalance((response) => {
+      if (response.data.code === '1000') {
+        this.chartCreditQuotaData = response.data.data
       } else {
         if (response.data.code === '900') {
-          vm.$Message.error('查询失败')
+          this.$Message.error('查询失败')
         }
       }
     })

@@ -5,14 +5,13 @@
       input(type="hidden",ref="roleId",:value="roleData.roleId")
     FormItem(label="页面权限勾选：")
       .roleList
-        vue-scroll(:ops="ops",ref="vs")
-          Tree(:data="roleData.list", show-checkbox, ref="Tree",:render="renderContent",)
+        Tree(:data="roleData.list", show-checkbox, ref="Tree",:render="renderContent",)
     FormItem(label="")
       Button(type="primary",@click="formUpdate",:loading="loadingBtn") 确定
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
+import {mapActions} from 'vuex'
 import * as types from '@/store/types'
 import compInput from './compInput'
 import validateFormResult from '@/global/validateForm'
@@ -39,12 +38,6 @@ export default {
   },
   data () {
     return {
-      ops: {
-        bar: {
-          background: 'rgba(0,0,0,0.2)',
-          keepShow: true
-        }
-      },
       loadingBtn: false
     }
   },
@@ -55,26 +48,26 @@ export default {
         this.$refs.roleName
       ])
       if (result) {
-        let vm = this
+        let text = ''
         if (this.roleData.type === 'new') {
-          var text = '新建'
+          text = '新建'
         } else {
-          var text = '修改'
+          text = '修改'
         }
         let params = {
           param: {
-            menuIds: this.getCheckedNodes().join(",")
+            menuIds: this.getCheckedNodes().join(',')
           },
-          callback: function (response) {
-            vm.loadingBtn = false
-            if( response.data.code === '1000' ){
-              vm.$Message.success(text + '成功！')
-              vm.$emit('refreshData')
+          callback: (response) => {
+            this.loadingBtn = false
+            if (response.data.code === '1000') {
+              this.$Message.success(text + '成功！')
+              this.$emit('refreshData')
             } else {
               if (response.data.code === '100') {
-                vm.$Message.error('角色名称已存在')
+                this.$Message.error('角色名称已存在')
               } else {
-                vm.$Message.error('操作失败')
+                this.$Message.error('操作失败')
               }
             }
           }
@@ -93,8 +86,8 @@ export default {
         this.loadingBtn = false
       }
     },
-    getCheckedNodes(){
-      let checkedArray = this.$refs.Tree.getCheckedAndIndeterminateNodes().map((val,idx,arr) => {
+    getCheckedNodes () {
+      let checkedArray = this.$refs.Tree.getCheckedAndIndeterminateNodes().map((val, idx, arr) => {
         return val.title
       })
       if (!checkedArray.length) {
@@ -103,20 +96,20 @@ export default {
       return checkedArray
     },
     close () {
-      this.onClose();
+      this.onClose()
     },
-    renderContent(h, { root, node, data }){
+    renderContent (h, {root, node, data}) {
       return h(
         'span', {
           style: {
             display: 'inline-block',
             margin: '0 0 0 25px'
           },
-          on:{
-            click:(e)=>{
+          on: {
+            click: (e) => {
             }
           }
-        }, 
+        },
         [
           h('span', data.label)
         ]
@@ -146,5 +139,9 @@ form{
   height:400px;
   border:1px solid #dcdee2;
   padding-left:10px;
+  overflow: auto;
+}
+.ivu-tree{
+  position: relative;
 }
 </style>

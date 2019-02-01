@@ -6,7 +6,7 @@ export default {
   children: [
     {
       path: '/',
-      name: 'NOTICE_MONITORING',
+      name: 'notice_monitoring',
       component (resolve) {
         return require(['@/modular/notice/monitoring'], resolve)
       },
@@ -16,7 +16,7 @@ export default {
     },
     {
       path: 'monitoring',
-      name: 'NOTICE_MONITORING',
+      name: 'notice_monitoring',
       component (resolve) {
         return require(['@/modular/notice/monitoring'], resolve)
       },

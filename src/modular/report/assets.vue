@@ -46,10 +46,8 @@
 </template>
 
 <script>
-import { mapState, mapActions, mapMutations } from 'vuex'
+import {mapActions} from 'vuex'
 import * as types from '@/store/types'
-import compInput from '@/components/compInput'
-import compSelect from '@/components/compSelect'
 import compChartReportAssetsCompany from '@/components/compChartReportAssetsCompany'
 import compChartReportAssetsSuffix from '@/components/compChartReportAssetsSuffix'
 import compChartReportOwnDueTime from '@/components/compChartReportOwnDueTime'
@@ -89,49 +87,49 @@ export default {
   },
   beforeMount () {
     this.queryDomainAssetsViewReport((response) => {
-      if( response.data.code === '1000' ){
+      if (response.data.code === '1000') {
         this.reportAssets = response.data.data
       } else {
       }
     })
     this.queryDomainCompanyViewReport((response) => {
-      if( response.data.code === '1000' ){
+      if (response.data.code === '1000') {
         this.reportcompany = response.data.data
       } else {
       }
     })
     this.queryDomainSuffixViewReport((response) => {
-      if( response.data.code === '1000' ){
+      if (response.data.code === '1000') {
         this.reportSuffix = response.data.data
       } else {
       }
     })
     this.queryDomainSafeNormalReport((response) => {
-      if( response.data.code === '1000' ){
+      if (response.data.code === '1000') {
         this.reportSafeNormal = response.data.data
       } else {
       }
     })
     this.queryDomainSafeImportantReport((response) => {
-      if( response.data.code === '1000' ){
+      if (response.data.code === '1000') {
         this.reportSafeImportant = response.data.data
       } else {
       }
     })
     this.queryDomainSafeRateReport((response) => {
-      if( response.data.code === '1000' ){
+      if (response.data.code === '1000') {
         this.reportSafeRate = response.data.data
       } else {
       }
     })
     this.queryDomainMonitorExpireReport((response) => {
-      if( response.data.code === '1000' ){
+      if (response.data.code === '1000') {
         this.reportExpire = response.data.data
       } else {
       }
     })
   },
-  mounted(){
+  mounted () {
   },
   watch: {
   }

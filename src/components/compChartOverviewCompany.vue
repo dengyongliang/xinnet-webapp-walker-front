@@ -25,14 +25,14 @@ export default {
       let myChart = this.$echarts.init(document.getElementById('myChart'))
       // 绘制图表
       myChart.setOption({
-        title : {
+        title: {
           text: '',
           subtext: '',
-          x:'center'
+          x: 'center'
         },
-        tooltip : {
+        tooltip: {
           trigger: 'item',
-          formatter: "{b} : {c} ({d}%)"
+          formatter: '{b} : {c} ({d}%)'
         },
         legend: {
           orient: 'vertical',
@@ -42,14 +42,14 @@ export default {
           itemHeight: 10,
           data: datas.company && Object.keys(datas.company).length ? Object.keys(datas.company) : ['无']
         },
-        series : [
+        series: [
           {
             name: '域名所属公司',
             type: 'pie',
             radius: ['50%', '85%'],
             center: ['30%', '50%'],
             avoidLabelOverlap: false,
-            data: datas.company && Object.values(datas.company).length ? Object.values(datas.company) : [{"name": "无", "value": 0}],
+            data: datas.company && Object.values(datas.company).length ? Object.values(datas.company) : [{'name': '无', 'value': 0}],
             label: {
               normal: {
                 show: true,
@@ -58,9 +58,9 @@ export default {
               }
             },
             labelLine: {
-                normal: {
-                    show: false
-                }
+              normal: {
+                show: false
+              }
             },
             itemStyle: {
               emphasis: {

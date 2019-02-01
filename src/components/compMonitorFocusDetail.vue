@@ -118,9 +118,9 @@ export default {
             return h('div', [
               h('i', {
                 class: this.list[params.index].readFlag === 1 ? 'unRead' : ''
-              }, '●' ),
+              }, '●'),
               h('span', {
-              }, this.list[params.index].sendTime )
+              }, this.list[params.index].sendTime)
             ])
           }
         },
@@ -133,19 +133,19 @@ export default {
               h('Icon', {
                 props: {
                   type: 'md-alert',
-                  size: "17"
+                  size: '17'
                 },
                 style: {
                   color: '#f00',
                   margin: '0 5px 0 0',
-                  display: this.list[params.index].sendType === 2 ? "inline-block" : "none"
+                  display: this.list[params.index].sendType === 2 ? 'inline-block' : 'none'
                 }
-              }, this.list[params.index].title ),
+              }, this.list[params.index].title),
               h('a', {
                 style: {
                   color: '#2271f4'
                 }
-              }, this.list[params.index].title )
+              }, this.list[params.index].title)
             ])
           }
         }
@@ -153,16 +153,16 @@ export default {
       list: [],
       typeList: [
         {
-            value: '',
-            label: '全部'
+          value: '',
+          label: '全部'
         },
         {
-            value: 1,
-            label: '普通'
+          value: 1,
+          label: '普通'
         },
         {
-            value: 2,
-            label: '重要'
+          value: 2,
+          label: '重要'
         }
       ],
       page: {

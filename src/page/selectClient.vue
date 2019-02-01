@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import { mapActions, mapMutations } from 'vuex'
+import {mapActions} from 'vuex'
 import * as types from '@/store/types'
 import compListNone from '@/components/compListNone'
 import headerBody from '../modular/headerNoLogin'
@@ -45,11 +45,12 @@ export default {
   },
   beforeMount () {
     this.queryUserCustomersList((response) => {
-      console.log(response)
-      this.list = response.data.data
+      if (response.data.code === '1000') {
+        this.list = response.data.data
+      }
     })
   },
-  mounted(){
+  mounted () {
   }
 }
 </script>

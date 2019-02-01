@@ -185,6 +185,16 @@ const SECURITY_TYPE = {
   3: '域名过期未续费',
   4: '其他问题'
 }
+const ORDER_PAY_TYPE = {
+  1: '信用消费',
+  2: '预付费消费'
+}
+const ORDER_MODE = {
+  1: '用户下单',
+  2: '系统下单',
+  3: '线下下单'
+}
+
 export default
 {
   ORDER_GOODS_TYPE,
@@ -211,5 +221,7 @@ export default
   PAY_TYPE,
   QUESTION_TYPE,
   QUESTION_MODIFY_TYPE,
-  SECURITY_TYPE
+  SECURITY_TYPE,
+  ORDER_PAY_TYPE,
+  ORDER_MODE
 }

@@ -14,7 +14,7 @@
   <!-- 创建企业 抽屉 -->
   Drawer(:closable="true", width="640", v-model="drawerCompanyCreate", title="创建企业", :mask-closable="maskClosable", @on-visible-change="drawerChange")
     comp-company-create(
-      v-if="refresh",
+      v-if="drawerCompanyCreate",
       :on-close="closeDrawer",
       :orgFile = "orgFile"
     )
@@ -38,7 +38,7 @@ export default {
       loadingBtn: false,
       drawerCompanyCreate: false,
       list: [],
-      orgFile:'',
+      orgFile: ''
     }
   },
   methods: {
@@ -49,24 +49,20 @@ export default {
       this.drawerCompanyCreate = false
     },
     drawerChange () {
-      if (this.drawerCompanyCreate || this.drawerCompanyDetail) {
-        this.refresh = true
-      } else {
-        this.refresh = false
+      if (!this.drawerCompanyCreate) {
         this.searchListData()
       }
     },
     queryParam () {
-      let vm = this
       let params = {
         param: {
           companyName: this.value
         },
-        callback: function(response){
-          if (response.data.code === '1000'){
-            vm.list = response.data.data
+        callback: (response) => {
+          if (response.data.code === '1000') {
+            this.list = response.data.data
           } else {
-            vm.$Message.error('查询失败')
+            this.$Message.error('查询失败')
           }
         }
       }

@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
+import {mapActions} from 'vuex'
 import * as types from '@/store/types'
 import compInput from './compInput'
 import compSelect from './compSelect'
@@ -31,7 +31,7 @@ export default {
     },
     onClose: {
       type: Function
-    },
+    }
   },
   data () {
     return {
@@ -41,7 +41,7 @@ export default {
   },
   methods: {
     close () {
-      this.onClose();
+      this.onClose()
     },
     submitForm () {
       this.loadingBtn = true
@@ -50,13 +50,13 @@ export default {
         this.$refs.templateId
       ])
 
-      let domains = this.$refs.domain.value.replace(/[\n\r]/g, ',').split(",")
+      let domains = this.$refs.domain.value.replace(/[\n\r]/g, ',').split(',')
       if (domains.length > 100) {
-        this.$refs.domain.showValidateResult({text: '最多100个域名！'})
+        this.$refs.domain.showValidateResult({text: '最多允许一次提交100个域名！'})
         result = false
       } else {
         for (var i = 0; i < domains.length; i++) {
-          if (!this.GLOBALS.IS_DOMAIN_AVAILABLE(domains[i])){
+          if (!this.GLOBALS.IS_DOMAIN_AVAILABLE(domains[i])) {
             result = false
             this.$refs.domain.showValidateResult({text: '域名格式错误！'})
             break
@@ -65,7 +65,6 @@ export default {
       }
 
       if (result) {
-        let vm = this
         var params = {
           param: {
             templateId: this.$refs.templateId.value,
@@ -73,9 +72,9 @@ export default {
           },
           callback: (response) => {
             this.loadingBtn = false
-            if( response.data.code === '1000' ){
+            if (response.data.code === '1000') {
               this.$Message.success(`提交过户成功：${response.data.countSuccess}个，失败：${response.data.countFaild}个`)
-              this.$emit("refreshData")
+              this.$emit('refreshData')
             } else {
               if (response.data.code === '100') {
                 this.$Message.error('模板不存在')
@@ -105,7 +104,7 @@ export default {
 
       },
       callback: (response) => {
-        if( response.data.code === '1000' ){
+        if (response.data.code === '1000') {
           this.templateList = this.GLOBALS.CONVERT_SELECT(response.data.data, {
             label: 'templateName',
             value: 'id'

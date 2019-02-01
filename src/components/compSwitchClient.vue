@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
+import {mapState, mapActions} from 'vuex'
 import * as types from '@/store/types'
 import compSelect from './compSelect'
 export default {
@@ -26,7 +26,7 @@ export default {
     },
     onClose: {
       type: Function
-    },
+    }
   },
   data () {
     return {
@@ -58,11 +58,12 @@ export default {
   },
   beforeMount () {
     this.queryUserCustomersList((response) => {
-      console.log(response)
-      this.list = this.GLOBALS.CONVERT_SELECT(response.data.data, {
-        value: 'id',
-        label: 'name'
-      })
+      if (response.data.code === '1000') {
+        this.list = this.GLOBALS.CONVERT_SELECT(response.data.data, {
+          value: 'id',
+          label: 'name'
+        })
+      }
     })
   },
   watch: {

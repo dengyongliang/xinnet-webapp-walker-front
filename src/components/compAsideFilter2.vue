@@ -1,8 +1,8 @@
 <template lang="pug">
 div
   RadioGroup(v-model="value", @on-change="radioChange")
-    Radio(v-for="item in filterData", :label="item.label", v-if="item.label!=='custom'") {{item.value}}
-    Radio(v-for="item in filterData", :label="item.label", v-if="item.label==='custom'", disabled)
+    Radio(v-for="item in filterData", :label="item.label", :key="item.label", v-if="item.label!=='custom'") {{item.value}}
+    Radio(v-for="item in filterData", :label="item.label", :key="item.label", v-if="item.label==='custom'", disabled)
       DatePicker(type="daterange",placeholder="",v-model="time",format="yyyy-MM-dd",@on-change="time=$event",:confirm="true", @on-open-change="dataChange")
   Tag(
     v-for="item in filterData",
@@ -15,9 +15,6 @@ div
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
-import * as types from '@/store/types'
-
 export default {
   components: {
 
@@ -43,7 +40,7 @@ export default {
   },
   methods: {
     radioChange (val) {
-      this.filterData.map((v, i)=>{
+      this.filterData.map((v, i) => {
         if (v.label === this.value) {
           this.$set(v, 'checked', true)
         } else {
@@ -52,18 +49,18 @@ export default {
       })
     },
     handleClose (event, name) {
-      const index = this.filterData.findIndex((item)=>(item.value === name))
+      const index = this.filterData.findIndex((item) => (item.value === name))
       this.$set(this.filterData[index], 'checked', false)
       this.value = ''
     },
     dataChange (show) {
       // 日期关闭并有有效值
-      if (!show && this.time[0]!=="" && this.time[1]!=="") {
+      if (!show && this.time[0] !== '' && this.time[1] !== '') {
         this.value = 'custom'
-        for (var i=0; i<this.filterData.length; i++) {
+        for (var i = 0; i < this.filterData.length; i++) {
           if (this.filterData[i].label === 'custom') {
             this.$set(this.filterData[i], 'checked', true)
-            this.$set(this.filterData[i], 'value', (this.time[0]+'-'+this.time[1]))
+            this.$set(this.filterData[i], 'value', (this.time[0] + '-' + this.time[1]))
           } else {
             this.$set(this.filterData[i], 'checked', false)
           }
@@ -76,7 +73,7 @@ export default {
   },
   beforeMount () {
     if (this.filterData.length > 0) {
-      for (var i=0; i<this.filterData.length; i++) {
+      for (var i = 0; i < this.filterData.length; i++) {
         if (this.filterData[i].checked) {
           this.value = this.filterData[i].label
         }
@@ -87,10 +84,10 @@ export default {
   },
   watch: {
     filterData: {
-      handler(newV, oldV) {
+      handler (newV, oldV) {
         if (newV.length > 0) {
           let flag = false
-          for (var i=0; i<newV.length; i++) {
+          for (var i = 0; i < newV.length; i++) {
             if (newV[i].checked) {
               this.value = newV[i].label
               flag = true

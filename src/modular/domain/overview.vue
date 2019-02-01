@@ -28,40 +28,11 @@
           h3.h3T.clear
             span.t 域名监控
             div.tR
-              a.text 查看全部
-          ul
-            li.clear
-              span.l 2018-55-55
-              span.r
-                a 域名信息修改通知信
-            li.clear
-              span.l 2018-55-55
-              span.r
-                a 域名信息修改通知信
-            li.clear
-              span.l 2018-55-55
-              span.r
-                a 域名信息修改通知信
-            li.clear
-              span.l 2018-55-55
-              span.r
-                a 域名信息修改通知信
-            li.clear
-              span.l 2018-55-55
-              span.r
-                a 域名信息修改通知信
-            li.clear
-              span.l 2018-55-55
-              span.r
-                a 域名信息修改通知信
-            li.clear
-              span.l 2018-55-55
-              span.r
-                a 域名信息修改通知信
-            li.clear
-              span.l 2018-55-55
-              span.r
-                a 域名信息修改通知信
+              router-link.text(to="/notice/monitoring", v-if="myUserInfo.keeperFlag || (myUserInfo.userRoles && myUserInfo.userRoles[0].roleCode.indexOf('super')>=0) || menus.indexOf('client_notice_monitor')>=0") 查看全部
+          comp-notice-monitor-list(v-if="myUserInfo.keeperFlag || (myUserInfo.userRoles && myUserInfo.userRoles[0].roleCode.indexOf('super')>=0) || menus.indexOf('client_notice_monitor')>=0")
+
+          div.none(v-else) 暂无权限
+
     .secBox.secBox3.row2
       h3.h3T.clear
         span.t 数量变化总览
@@ -160,12 +131,13 @@ import * as types from '@/store/types'
 import compChartOverviewCompany from '@/components/compChartOverviewCompany'
 import compChartOverviewSuffix from '@/components/compChartOverviewSuffix'
 import compChartOverviewExpire from '@/components/compChartOverviewExpire'
-
+import compNoticeMonitorList from '@/components/compNoticeMonitorList'
 export default {
   components: {
     compChartOverviewCompany,
     compChartOverviewSuffix,
-    compChartOverviewExpire
+    compChartOverviewExpire,
+    compNoticeMonitorList
   },
   data () {
     return {
@@ -193,7 +165,7 @@ export default {
         },
         callback: (response) => {
           this.loadingBtn = false
-          if( response.data.code === '1000' ){
+          if (response.data.code === '1000') {
             console.log(response.data.data)
             this.overviewDomainCount = response.data.data
           } else {
@@ -214,6 +186,14 @@ export default {
     })
   },
   computed: {
+    ...mapState({
+      myUserInfo (state) {
+        return state.user.myUserInfo
+      },
+      menus (state) {
+        return state.user.menus
+      }
+    })
   },
   beforeMount () {
     this.overviewDomainStatistics((response) => {
@@ -357,35 +337,10 @@ export default {
 .contDomainOverview .secBox2{
   height: 360px;
 }
-.contDomainOverview .secBox2 ul{
-  padding: 20px 20px 0 20px;
-  font-size: 12px;
-}
-.contDomainOverview .secBox2 ul li{
-  color: #666;
-  border-bottom: 1px dashed #eee;
-  padding: 10px 0 10px 10px;
-  position: relative;
-}
-.contDomainOverview .secBox2 ul li:before{
-  content:"";
-  background: #666;
-  display: block;
-  width: 2px;
-  height: 2px;
-  position: absolute;
-  left: 0px;
-  top: 50%;
-  margin-top: -1px;
-}
-.contDomainOverview .secBox2 ul .l{
-  color: #666;
-}
-.contDomainOverview .secBox2 ul .r{
-  float:right;
-}
-.contDomainOverview .secBox2 ul a{
-  color: #2271f4;
+.contDomainOverview .secBox2 .none{
+  text-align: center;
+  line-height: 240px;
+  color: #aaa;
 }
 .contDomainOverview .secBox3{
   padding-bottom: 55px;

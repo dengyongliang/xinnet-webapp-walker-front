@@ -50,7 +50,7 @@ div.compDomainMgmtDetailOwner
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
+import {mapActions} from 'vuex'
 import * as types from '@/store/types'
 import compInput from './compInput'
 import compCascader from './compCascader'
@@ -78,7 +78,7 @@ export default {
   },
   data () {
     return {
-      value:'',
+      value: '',
       loadingBtn: false,
       areaList: [],
       area: []
@@ -117,11 +117,11 @@ export default {
             faxNumber: this.$refs.userFax.value3,
             userSureNameUk: this.$refs.userSureNameUk.value,
             userNameUk: this.$refs.userNameUk.value,
-            streetUk: this.$refs.streetUk.value,
+            streetUk: this.$refs.streetUk.value
           },
           callback: (response) => {
             this.loadingBtn = false
-            if (response.data.code === '1000'){
+            if (response.data.code === '1000') {
               this.$Message.success('保存成功')
             } else {
               if (response.data.code === '100') {
@@ -156,9 +156,9 @@ export default {
   },
   watch: {
     detailData: {
-      handler(newV, oldV) {
-        this.$set(this.area, 0, newV.regUserInfo?newV.regUserInfo.publicProvinceUk:'')
-        this.$set(this.area, 1, newV.regUserInfo?newV.regUserInfo.publicCityUk:'')
+      handler (newV, oldV) {
+        this.$set(this.area, 0, newV.regUserInfo ? newV.regUserInfo.publicProvinceUk : '')
+        this.$set(this.area, 1, newV.regUserInfo ? newV.regUserInfo.publicCityUk : '')
       },
       deep: true,
       immediate: true

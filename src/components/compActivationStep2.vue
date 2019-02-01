@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import { mapState, mapActions, mapMutations } from 'vuex'
+import {mapState, mapActions} from 'vuex'
 import * as types from '@/store/types'
 import compInput from '@/components/compInput'
 import compRadio from '@/components/compRadio'
@@ -46,12 +46,12 @@ export default {
       loadingBtn: false,
       sexList: [
         {
-            value: '男',
-            label: '1'
+          value: '男',
+          label: '1'
         },
         {
-            value: '女',
-            label: '0'
+          value: '女',
+          label: '0'
         }
       ]
     }
@@ -79,7 +79,6 @@ export default {
       }
 
       if (result) {
-        let vm = this
         let params = {
           param: {
             userCode: this.userCode,
@@ -88,23 +87,23 @@ export default {
             userMobile: this.$refs.userMobile.value,
             verificationCode: this.$refs.verificationCode.value
           },
-          callback: function (response) {
-            vm.loadingBtn = false
-            if( response.data.code === '1000' ){
-              vm.$Message.success('设置个人信息成功')
-              vm.$store.commit(types.CLEAR_ACTIVATION_DATA)
-              vm.$emit('submitStep')
+          callback: (response) => {
+            this.loadingBtn = false
+            if (response.data.code === '1000') {
+              this.$Message.success('设置个人信息成功')
+              this.$store.commit(types.CLEAR_ACTIVATION_DATA)
+              this.$emit('submitStep')
             } else {
               if (response.data.code === '100') {
-                vm.$refs.verificationCode.showValidateResult({text:'验证码错误或已失效'})
+                this.$refs.verificationCode.showValidateResult({text: '验证码错误或已失效'})
               } else if (response.data.code === '200') {
-                vm.$Message.error('用户不存在')
+                this.$Message.error('用户不存在')
               } else if (response.data.code === '300') {
-                vm.$Message.error('用户已激活')
+                this.$Message.error('用户已激活')
               } else if (response.data.code === '400') {
-                vm.$Message.error('手机号码已存在')
+                this.$Message.error('手机号码已存在')
               } else {
-                vm.$Message.error('发送失败')
+                this.$Message.error('发送失败')
               }
             }
           }
@@ -124,22 +123,21 @@ export default {
         this.$refs.userMobile
       ])
       if (result) {
-        let vm = this
         let params = {
           param: {
             userMobile: this.$refs.userMobile.value
           },
-          callback: function (response) {
-            vm.loadingBtn = false
-            if( response.data.code === '1000' ){
-              vm.$Message.success('发送成功')
+          callback: (response) => {
+            this.loadingBtn = false
+            if (response.data.code === '1000') {
+              this.$Message.success('发送成功')
             } else {
               if (response.data.code === '300') {
-                vm.$Message.error('短信验证码已发送')
+                this.$Message.error('短信验证码已发送')
               } else if (response.data.code === '500') {
-                vm.$Message.error('手机号码错误')
+                this.$Message.error('手机号码错误')
               } else {
-                vm.$Message.error('发送失败')
+                this.$Message.error('发送失败')
               }
             }
           }

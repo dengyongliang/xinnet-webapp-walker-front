@@ -1,7 +1,10 @@
 <template lang="pug">
   .creditQuota
     div(id="myChart",style="width:450px;height:260px;")
-    p.text 剩余额度：{{charData.unUsedCreditBalance}} 元　　总额度：{{charData.totalCreditBalance}} 元　　已用额度：{{charData.usedCreditBalance}} 元
+    p.text
+      span 剩余额度：{{charData.unUsedCreditBalance}} 元
+      span 总额度：{{charData.totalCreditBalance}} 元
+      span 已用额度：{{charData.usedCreditBalance}} 元
 </template>
 
 <script>
@@ -26,30 +29,30 @@ export default {
       let myChart = this.$echarts.init(document.getElementById('myChart'))
       // 绘制图表
       myChart.setOption({
-        title : {
+        title: {
           text: '',
           subtext: '',
-          x:'center'
+          x: 'center'
         },
-        tooltip : {
+        tooltip: {
           trigger: 'item',
-          formatter: "{b} : {c} ({d}%)"
+          formatter: '{b} : {c} ({d}%)'
         },
         legend: {
           orient: 'vertical',
           right: '12%',
           top: 'center',
-          data: ['信用消费','剩余额度']
+          data: ['信用消费', '剩余额度']
         },
-        series : [
+        series: [
           {
             name: '访问来源',
             type: 'pie',
-            radius : '60%',
+            radius: '60%',
             center: ['30%', '50%'],
-            data:[
-              {value:datas.usedCreditBalance, name:'信用消费'},
-              {value:datas.unUsedCreditBalance, name:'剩余额度'}
+            data: [
+              {value: datas.usedCreditBalance, name: '信用消费'},
+              {value: datas.unUsedCreditBalance, name: '剩余额度'}
             ],
             label: {
               normal: {
@@ -59,9 +62,9 @@ export default {
               }
             },
             labelLine: {
-                normal: {
-                    show: false
-                }
+              normal: {
+                show: false
+              }
             },
             itemStyle: {
               emphasis: {
@@ -96,5 +99,9 @@ export default {
 .creditQuota p.text{
   color:#666;
   font-size:12px;
+}
+.creditQuota p.text span{
+  display: inline-block;
+  margin: 0 10px;
 }
 </style>

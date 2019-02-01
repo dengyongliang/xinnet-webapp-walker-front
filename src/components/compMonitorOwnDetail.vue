@@ -71,7 +71,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
+import {mapActions} from 'vuex'
 import * as types from '@/store/types'
 import * as links from '@/global/linkdo.js'
 import moment from 'moment'
@@ -88,7 +88,7 @@ export default {
   data () {
     return {
       type: '',
-      time: ['',''],
+      time: ['', ''],
       loadingTable: false,
       loadingBtn: false,
       detailData: {},
@@ -113,7 +113,7 @@ export default {
           className: 'col3',
           render: (h, params) => {
             return h('div', [
-              h('span', {}, this.DATAS.RECORD_DOMAIN_EVENT_TYPE[this.list[params.index].type] )
+              h('span', {}, this.DATAS.RECORD_DOMAIN_EVENT_TYPE[this.list[params.index].type])
             ])
           }
         },
@@ -126,21 +126,21 @@ export default {
               h('Icon', {
                 props: {
                   type: 'md-alert',
-                  size: "17"
+                  size: '17'
                 },
                 style: {
                   color: '#f00',
                   margin: '0 5px 0 0',
-                  display: this.list[params.index].levelType === 2 ? "inline-block" : "none"
+                  display: this.list[params.index].levelType === 2 ? 'inline-block' : 'none'
                 }
-              }, ),
-              h('span', {}, this.list[params.index].content )
+              }, ''),
+              h('span', {}, this.list[params.index].content)
             ])
           }
         }
       ],
       list: [],
-      typeList: function (vm) {
+      typeList: (function (vm) {
         let array = []
         for (var i in vm.DATAS.RECORD_DOMAIN_EVENT_TYPE) {
           array.push({
@@ -149,7 +149,7 @@ export default {
           })
         }
         return array
-      }(this),
+      })(this),
       page: {
         pageNo: 1,
         pagePages: 1,
@@ -174,7 +174,7 @@ export default {
         callback: (response) => {
           this.loadingBtn = false
           this.loadingTable = false
-          if (response.data.code === '1000'){
+          if (response.data.code === '1000') {
             this.detailData = response.data.data
           } else {
           }
@@ -199,7 +199,7 @@ export default {
         callback: (response) => {
           this.loadingBtn = false
           this.loadingTable = false
-          if (response.data.code === '1000'){
+          if (response.data.code === '1000') {
             this.list = response.data.data.list
           } else {
           }
@@ -216,7 +216,7 @@ export default {
 
   },
   mounted () {
-    if (this.domainName!=="") {
+    if (this.domainName !== '') {
       this.queryDomainMonitorDetail(this.getParamDetail())
       this.queryDomainMonitorLog(this.getParamLog({pageNum: 1}))
     }
@@ -225,8 +225,8 @@ export default {
   },
   watch: {
     domainName: function (val, oldVal) {
-      if (val!=="") {
-        this.time = ['','']
+      if (val !== '') {
+        this.time = ['', '']
         this.queryDomainMonitorDetail(this.getParamDetail())
         this.queryDomainMonitorLog(this.getParamLog({pageNum: 1}))
       }

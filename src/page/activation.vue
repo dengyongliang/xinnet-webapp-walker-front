@@ -13,10 +13,8 @@
     comp-activation-step3(v-if="step===2",ref="form3",:userCode="userCode",@submitStep="submitStep3")
     comp-activation-step4(v-if="step===3",ref="form4",:userCode="userCode")
 </template>
-
 <script>
-import { mapState, mapActions, mapMutations } from 'vuex'
-import * as types from '@/store/types'
+import {mapState} from 'vuex'
 import headerBody from '../modular/headerNoLogin'
 import compActivationStep1 from '@/components/compActivationStep1'
 import compActivationStep2 from '@/components/compActivationStep2'
@@ -56,7 +54,7 @@ export default {
   },
   beforeMount () {
   },
-  mounted(){
+  mounted () {
   }
 }
 </script>
@@ -157,5 +155,4 @@ export default {
   padding:0 50px;
   font-size:15px;
 }
-
 </style>

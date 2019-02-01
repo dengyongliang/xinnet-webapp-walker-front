@@ -1,11 +1,38 @@
 <template lang="pug">
   div.compSelect(style="display:inline-block")
     slot(name="left")
-    Select(v-model="value",:filterable="filterable",:style="styles",:name="name",@on-change="selectChange",:placeholder="placeholder",:class="{ 'error': showError }", :label-in-value="labelInValue",:disabled="disabled")
-      Option(v-if="!optionGroup", v-for="item in list",:value="item.value", @click.native="getMoreParams(item)") {{ item.label }}
+    Select(
+      v-model="value",
+      :filterable="filterable",
+      :style="styles",
+      :name="name",
+      @on-change="selectChange",
+      :placeholder="placeholder",
+      :class="{ 'error': showError }",
+      :label-in-value="labelInValue",
+      :disabled="disabled"
+    )
+      Option(
+        v-if="!optionGroup",
+        v-for="item in list",
+        :value="item.value",
+        :key="item.value",
+        @click.native="getMoreParams(item)"
+      ) {{ item.label }}
 
-      OptionGroup(v-if="optionGroup", :label="item.label", v-for="item in list")
-        Option(v-if="item.children.length>0", v-for="item2 in item.children",:value="item2.value", @click.native="getMoreParams(item2)") {{ item2.label }}
+      OptionGroup(
+        v-if="optionGroup",
+        :label="item.label",
+        :key="item.label",
+        v-for="item in list"
+      )
+        Option(
+          v-if="item.children.length > 0",
+          v-for="item2 in item.children",
+          :value="item2.value",
+          :key="item2.value",
+          @click.native="getMoreParams(item2)"
+        ) {{item2.label}}
     slot(name="right")
     Alert(type="error",show-icon, style="display:inline-block",v-show="showError") {{errorText}}
 </template>

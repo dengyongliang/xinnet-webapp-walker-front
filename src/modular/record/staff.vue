@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
+import {mapActions} from 'vuex'
 import * as types from '@/store/types'
 import * as links from '@/global/linkdo.js'
 import moment from 'moment'
@@ -48,16 +48,16 @@ export default {
       exportLink: links.EXPORT_MONITOR_USER_LOG,
       typeList: [
         {
-            value: '',
-            label: '全部'
+          value: '',
+          label: '全部'
         },
         {
-            value: 1,
-            label: '普通'
+          value: 1,
+          label: '普通'
         },
         {
-            value: 2,
-            label: '重要'
+          value: 2,
+          label: '重要'
         }
       ],
       columns: [
@@ -74,7 +74,7 @@ export default {
           className: 'col2',
           render: (h, params) => {
             return h('div', [
-              h('span', {}, `${this.list[params.index].userName}(${this.list[params.index].userCode})` )
+              h('span', {}, `${this.list[params.index].userName}(${this.list[params.index].userCode})`)
             ])
           }
         },
@@ -85,7 +85,7 @@ export default {
           className: 'col3',
           render: (h, params) => {
             return h('div', [
-              h('span', {}, this.DATAS.RECORD_USER_EVENT_TYPE[this.list[params.index].type] )
+              h('span', {}, this.DATAS.RECORD_USER_EVENT_TYPE[this.list[params.index].type])
             ])
           }
         },
@@ -134,7 +134,7 @@ export default {
         callback: (response) => {
           this.loadingBtn = false
           this.loadingTable = false
-          if (response.data.code === '1000'){
+          if (response.data.code === '1000') {
             this.list = response.data.data.list
             this.page.pageItems = response.data.data.totalNum
           } else {

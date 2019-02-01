@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import { mapState, mapActions, mapMutations } from 'vuex'
+import {mapState, mapActions} from 'vuex'
 import * as types from '@/store/types'
 import compInput from '@/components/compInput'
 import validateFormResult from '@/global/validateForm'
@@ -32,24 +32,23 @@ export default {
         this.$refs.userName
       ])
       if (result) {
-        let vm = this
         var params = {
           param: {
             userCode: this.userCode,
             userName: this.$refs.userName.value
           },
-          callback: function (response) {
-            vm.loadingBtn = false
-            if( response.data.code === '1000' ){
-              vm.$Message.success('验证成功')
-              vm.$store.commit(types.SET_ACTIVATION_DATA, response.data)
-              vm.$store.commit(types.SET_ACTIVATION_DATA, params.param)
-              vm.$emit('submitStep')
+          callback: (response) => {
+            this.loadingBtn = false
+            if (response.data.code === '1000') {
+              this.$Message.success('验证成功')
+              this.$store.commit(types.SET_ACTIVATION_DATA, response.data)
+              this.$store.commit(types.SET_ACTIVATION_DATA, params.param)
+              this.$emit('submitStep')
             } else {
               if (response.data.code === '200') {
-                vm.$Message.error('用户不存在')
+                this.$Message.error('用户不存在')
               } else {
-                vm.$Message.error('验证失败')
+                this.$Message.error('验证失败')
               }
             }
           }

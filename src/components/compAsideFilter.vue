@@ -44,10 +44,8 @@ Collapse.compAsideFilter(v-model="colllapseValue",accordion, @on-change="colllap
       comp-aside-filter2(:filterData="dataTimeSubmit", ref="dataTimeSubmit",)
 
 </template>
-
 <script>
-import { mapState, mapActions } from 'vuex'
-import * as types from '@/store/types'
+import {mapState} from 'vuex'
 import compAsideFilter1 from '@/components/compAsideFilter1'
 import compAsideFilter2 from '@/components/compAsideFilter2'
 import compAsideFilter3 from '@/components/compAsideFilter3'
@@ -101,21 +99,21 @@ export default {
           value: '自定义'
         }
       ],
-      dataMgmtCompany:[],
+      dataMgmtCompany: [],
       dataSafe: [
         {
           label: '1',
           value: '保护级别',
           groups: [
             {
-              "label": 'normal',
-              "checked": false,
-              "value": "普通域名"
+              'label': 'normal',
+              'checked': false,
+              'value': '普通域名'
             },
             {
-              "label": 'important',
-              "checked": false,
-              "value": "重点域名"
+              'label': 'important',
+              'checked': false,
+              'value': '重点域名'
             }
           ]
         },
@@ -125,14 +123,14 @@ export default {
           checked: false,
           groups: [
             {
-              "label": '1',
-              "checked": false,
-              "value": "已开启"
+              'label': '1',
+              'checked': false,
+              'value': '已开启'
             },
             {
-              "label": '0',
-              "checked": false,
-              "value": "已关闭"
+              'label': '0',
+              'checked': false,
+              'value': '已关闭'
             }
           ]
         },
@@ -142,24 +140,24 @@ export default {
           checked: false,
           groups: [
             {
-              "label": '1',
-              "checked": false,
-              "value": "已开启"
+              'label': '1',
+              'checked': false,
+              'value': '已开启'
             },
             {
-              "label": '0',
-              "checked": false,
-              "value": "已关闭"
+              'label': '0',
+              'checked': false,
+              'value': '已关闭'
             },
             {
-              "label": '2',
-              "checked": false,
-              "value": "未开启"
+              'label': '2',
+              'checked': false,
+              'value': '未开启'
             },
             {
-              "label": '3',
-              "checked": false,
-              "value": "不支持"
+              'label': '3',
+              'checked': false,
+              'value': '不支持'
             }
           ]
         },
@@ -169,19 +167,19 @@ export default {
           checked: false,
           groups: [
             {
-              "label": '1',
-              "checked": false,
-              "value": "已开启"
+              'label': '1',
+              'checked': false,
+              'value': '已开启'
             },
             {
-              "label": '0',
-              "checked": false,
-              "value": "已关闭"
+              'label': '0',
+              'checked': false,
+              'value': '已关闭'
             }
           ]
         }
       ],
-      dataServiceState: function (vm) {
+      dataServiceState: (function (vm) {
         let array = []
         for (var i in vm.DATAS.SERVICE_STATE) {
           array.push({
@@ -191,8 +189,8 @@ export default {
           })
         }
         return array
-      }(this),
-      dataMonitorLog: function (vm) {
+      })(this),
+      dataMonitorLog: (function (vm) {
         let array = []
         for (var i in vm.DATAS.MONITOR_LOG) {
           array.push({
@@ -202,8 +200,8 @@ export default {
           })
         }
         return array
-      }(this),
-      dataDomainSuffix: function (vm) {
+      })(this),
+      dataDomainSuffix: (function (vm) {
         let array = []
         for (var i in vm.DATAS.DOMAIN_SUFFIX) {
           array.push({
@@ -213,8 +211,8 @@ export default {
           })
         }
         return array
-      }(this),
-      dataMgmtMethod: function (vm) {
+      })(this),
+      dataMgmtMethod: (function (vm) {
         let array = []
         for (var i in vm.DATAS.MGMT_TYPE) {
           array.push({
@@ -224,8 +222,8 @@ export default {
           })
         }
         return array
-      }(this),
-      dataRealName: function (vm) {
+      })(this),
+      dataRealName: (function (vm) {
         let array = []
         for (var i in vm.DATAS.REAL_NAME_VERIFY_STATUS) {
           array.push({
@@ -235,8 +233,8 @@ export default {
           })
         }
         return array
-      }(this),
-      dataNamingState: function (vm) {
+      })(this),
+      dataNamingState: (function (vm) {
         let array = []
         for (var i in vm.DATAS.DOMAIN_NAME_VERIFY_STATUS) {
           array.push({
@@ -246,7 +244,7 @@ export default {
           })
         }
         return array
-      }(this),
+      })(this),
       dataTimeReg: [],
       dataTimeExpire: [],
       dataTimeSubmit: [],
@@ -304,62 +302,62 @@ export default {
         result.dataMgmtCompany = this.$refs.dataMgmtCompany.value
       }
       this.colllapseValue = ''
-      this.$emit("asideFilterSubmit", result)
+      this.$emit('asideFilterSubmit', result)
     },
     filterReset () {
       this.status = 1
       this.colllapseValue = ''
-      this.dataServiceState = this.dataServiceState.map((v)=>{
+      this.dataServiceState = this.dataServiceState.map((v) => {
         this.$set(v, 'checked', false)
         return v
       })
-      this.dataMonitorLog = this.dataMonitorLog.map((v)=>{
+      this.dataMonitorLog = this.dataMonitorLog.map((v) => {
         this.$set(v, 'checked', false)
         return v
       })
-      this.dataDomainSuffix = this.dataDomainSuffix.map((v)=>{
+      this.dataDomainSuffix = this.dataDomainSuffix.map((v) => {
         this.$set(v, 'checked', false)
         return v
       })
-      this.dataMgmtMethod = this.dataMgmtMethod.map((v)=>{
+      this.dataMgmtMethod = this.dataMgmtMethod.map((v) => {
         this.$set(v, 'checked', false)
         return v
       })
-      this.dataRealName = this.dataRealName.map((v)=>{
+      this.dataRealName = this.dataRealName.map((v) => {
         this.$set(v, 'checked', false)
         return v
       })
-      this.dataNamingState = this.dataNamingState.map((v)=>{
+      this.dataNamingState = this.dataNamingState.map((v) => {
         this.$set(v, 'checked', false)
         return v
       })
-      this.dataTimeReg = this.dataTimeReg.map((v)=>{
+      this.dataTimeReg = this.dataTimeReg.map((v) => {
         this.$set(v, 'checked', false)
         return v
       })
-      this.dataTimeExpire = this.dataTimeExpire.map((v)=>{
+      this.dataTimeExpire = this.dataTimeExpire.map((v) => {
         this.$set(v, 'checked', false)
         return v
       })
-      this.dataTimeSubmit = this.dataTimeSubmit.map((v)=>{
+      this.dataTimeSubmit = this.dataTimeSubmit.map((v) => {
         this.$set(v, 'checked', false)
         return v
       })
-      this.dataSafe = this.dataSafe.map((v)=>{
-        v.groups.map((v2)=>{
+      this.dataSafe = this.dataSafe.map((v) => {
+        v.groups.map((v2) => {
           this.$set(v2, 'checked', false)
           return v2
         })
         return v
       })
-      this.dataMgmtCompany = this.dataMgmtCompany.map((v)=>{
-        v.groups.map((v2)=>{
+      this.dataMgmtCompany = this.dataMgmtCompany.map((v) => {
+        v.groups.map((v2) => {
           this.$set(v2, 'checked', false)
           return v2
         })
         return v
       })
-      this.$emit("asideFilterReset")
+      this.$emit('asideFilterReset')
     },
     colllapseChange () {
       this.status = 2
@@ -376,19 +374,19 @@ export default {
         let arrGroups = []
         if (state.user.userAuthGroups.companys) {
           let len = state.user.userAuthGroups.companys.length
-          for (var i=0; i<len; i++) {
+          for (var i = 0; i < len; i++) {
             let v = state.user.userAuthGroups.companys[i]
-            if (v.groups.length>0) {
+            if (v.groups.length > 0) {
               let groups = this.GLOBALS.CONVERT_CHECKBOX(v.groups, {
                 label: 'id',
                 value: 'name',
-                checked: 'checked',
+                checked: 'checked'
               })
               arrGroups.push({
-                "label": v.id,
-                "checked": false,
-                "value": v.name,
-                "groups": groups
+                'label': v.id,
+                'checked': false,
+                'value': v.name,
+                'groups': groups
               })
             }
           }
@@ -401,7 +399,7 @@ export default {
   },
   watch: {
     userAuthGroups: {
-      handler(newV, oldV) {
+      handler (newV, oldV) {
         this.dataMgmtCompany = newV
       },
       deep: true,

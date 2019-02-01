@@ -36,7 +36,7 @@
   <!-- 过户提交 抽屉 -->
   Drawer(:closable="true", width="650", v-model="drawerDomainChange", title="提交过户", :mask-closable="maskClosable", @on-visible-change="drawerChange",)
     comp-domain-change(
-      v-if="refresh",
+      v-if="drawerDomainChange",
       :on-close="closeDrawer",
       @refreshData="searchListData",
     )
@@ -132,7 +132,7 @@ export default {
           changeId: id
         },
         callback: (response) => {
-          if (response.data.code === '1000'){
+          if (response.data.code === '1000') {
             this.detailData = response.data.data
           } else {
 
@@ -146,7 +146,6 @@ export default {
       this.drawerDomainChange = false
     },
     drawerChange () {
-      this.refresh = this.drawerDomainChange ? true : false
     },
     toBackList () {
       this.showDetail = false
@@ -172,7 +171,7 @@ export default {
         callback: (response) => {
           this.loadingBtn = false
           this.loadingTable = false
-          if (response.data.code === '1000'){
+          if (response.data.code === '1000') {
             this.list = response.data.data.list
             this.page.pageItems = response.data.data.totalNum
           } else {
@@ -197,7 +196,7 @@ export default {
   beforeMount () {
   },
   mounted () {
-    this.statusList = function (vm) {
+    this.statusList = (function (vm) {
       let array = [{
         label: '全部',
         value: ''
@@ -209,7 +208,7 @@ export default {
         })
       }
       return array
-    }(this)
+    })(this)
     this.queryChangeList(this.queryListParam({pageNum: 1}))
   }
 }

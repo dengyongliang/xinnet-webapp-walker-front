@@ -8,8 +8,6 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
-import * as types from '@/store/types'
 import compAccountStaffInfoForDetail from './compAccountStaffInfoForDetail'
 import compAccountStaffJurisdictionForDetail from './compAccountStaffJurisdictionForDetail'
 export default {
@@ -32,7 +30,7 @@ export default {
   },
   data () {
     return {
-      value:'',
+      value: '',
       loadingBtn: false,
       rolesList: [],
       userAuthGroupsList: [],
@@ -49,11 +47,11 @@ export default {
   },
   beforeMount () {
     // is super?
-    if(this.staffData.defaultRoleId.indexOf('super')>=0){
+    if (this.staffData.defaultRoleId.indexOf('super') >= 0) {
       this.super = true
     }
     // 将超级管理员置为可选，其余不可选
-    this.rolesList = function (vm) {
+    this.rolesList = (function (vm) {
       let arr = []
       arr = vm.GLOBALS.CONVERT_RADIO(vm.staffData.roles, {
         label: 'id',
@@ -62,8 +60,8 @@ export default {
         disabled: 'disabled'
       })
       if (vm.super) {
-        return arr.map((v)=>{
-          if (v.code.indexOf('super')>=0) {
+        return arr.map((v) => {
+          if (v.code.indexOf('super') >= 0) {
             v.disabled = false
           } else {
             v.disabled = true
@@ -73,21 +71,21 @@ export default {
       } else {
         return arr
       }
-    }(this)
-    this.userAuthGroupsList = function (vm) {
+    })(this)
+    this.userAuthGroupsList = (function (vm) {
       let arr = vm.GLOBALS.CONVERT_TREE(vm.staffData.domainAuths.companys, {
         title: 'id',
         label: 'name',
         checked: 'checked',
         children: 'groups',
         disabled_lv1: true,
-        disabled_lv2: vm.super ? true: false
+        disabled_lv2: vm.super
       })
 
       let len = arr.length
       let arr2 = []
       console.log(arr)
-      for(var i=0; i<len; i++){
+      for (var i = 0; i < len; i++) {
         if (arr[i].children.length) {
           arr2.push(arr[i])
         }
@@ -95,14 +93,14 @@ export default {
       if (arr2.length) {
         // 超级管理员全选
         if (vm.super) {
-          return [{title: 0, label: '全部', checked: false, expand: true, disabled: true,children: vm.GLOBALS.CONVERT_TREE_CHECKED_TRUE(arr2, 'children')}]
+          return [{title: 0, label: '全部', checked: false, expand: true, disabled: true, children: vm.GLOBALS.CONVERT_TREE_CHECKED_TRUE(arr2, 'children')}]
         } else {
-          return [{title: 0, label: '全部', checked: false, expand: true,children:arr2}]
+          return [{title: 0, label: '全部', checked: false, expand: true, children: arr2}]
         }
       } else {
         return []
       }
-    }(this)
+    })(this)
     this.userCompanysList = this.GLOBALS.CONVERT_SELECT(this.staffData.userCompanys, {
       label: 'name',
       value: 'id'
@@ -115,7 +113,7 @@ export default {
       }
     })
     // 查找角色checked
-    this.roleChecked = this.staffData.defaultRoleId.split("_")[0]
+    this.roleChecked = this.staffData.defaultRoleId.split('_')[0]
   },
   mounted () {
   },

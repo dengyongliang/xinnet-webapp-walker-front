@@ -51,7 +51,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
+import {mapActions} from 'vuex'
 import * as types from '@/store/types'
 import * as links from '@/global/linkdo.js'
 import moment from 'moment'
@@ -71,47 +71,33 @@ export default {
         orderType: '',
         orderPayType: ''
       },
-      orderModeList: [
-        {
-            value: '',
-            label: '全部'
-        },
-        {
-            value: '1',
-            label: '用户下单'
-        },
-        {
-            value: '2',
-            label: '系统下单'
-        },
-        {
-            value: '3',
-            label: '线下下单'
+      orderModeList: (function (vm) {
+        let array = [{
+          label: '全部',
+          value: ''
+        }]
+        for (var i in vm.DATAS.ORDER_MODE) {
+          array.push({
+            label: vm.DATAS.ORDER_MODE[i],
+            value: i + ''
+          })
         }
-      ],
-      orderGoodsTypeList: [
-        {
-            value: '',
-            label: '全部'
-        },
-        {
-            value: '1',
-            label: '域名注册'
-        },
-        {
-            value: '2',
-            label: '域名续费'
-        },
-        {
-            value: '3',
-            label: '域名回购'
-        },
-        {
-            value: '4',
-            label: '域名安全服务'
+        return array
+      })(this),
+      orderGoodsTypeList: (function (vm) {
+        let array = [{
+          label: '全部',
+          value: ''
+        }]
+        for (var i in vm.DATAS.ORDER_GOODS_TYPE) {
+          array.push({
+            label: vm.DATAS.ORDER_GOODS_TYPE[i],
+            value: i + ''
+          })
         }
-      ],
-      orderTypeList: function (vm) {
+        return array
+      })(this),
+      orderTypeList: (function (vm) {
         let array = [{
           label: '全部',
           value: ''
@@ -123,21 +109,20 @@ export default {
           })
         }
         return array
-      }(this),
-      orderPayTypeList: [
-        {
-            value: '',
-            label: '全部'
-        },
-        {
-            value: '1',
-            label: '信用消费'
-        },
-        {
-            value: '2',
-            label: '预付费消费'
+      })(this),
+      orderPayTypeList: (function (vm) {
+        let array = [{
+          label: '全部',
+          value: ''
+        }]
+        for (var i in vm.DATAS.ORDER_PAY_TYPE) {
+          array.push({
+            label: vm.DATAS.ORDER_PAY_TYPE[i],
+            value: i + ''
+          })
         }
-      ],
+        return array
+      })(this),
       columns: [
         {
           title: '下单时间',
@@ -261,7 +246,6 @@ export default {
       this.loadingBtn = true
       this.loadingTable = true
 
-      let vm = this
       let params = {
         param: {
           pageNum: obj.pageNum,
@@ -274,16 +258,16 @@ export default {
           orderPayType: this.param.orderPayType,
           orderType: this.param.orderType
         },
-        callback: function(response){
-          vm.loadingBtn = false
-          vm.loadingTable = false
+        callback: (response) => {
+          this.loadingBtn = false
+          this.loadingTable = false
           // console.log(response)
-          if (response.data.code === '1000'){
-            vm.orderList = response.data.data.list
-            vm.page.pageItems = response.data.data.totalNum
+          if (response.data.code === '1000') {
+            this.orderList = response.data.data.list
+            this.page.pageItems = response.data.data.totalNum
           } else {
             if (response.data.code === '900') {
-              vm.$Message.error('查询失败')
+              this.$Message.error('查询失败')
             }
           }
         }
@@ -297,8 +281,26 @@ export default {
   },
   computed: {
   },
+  create () {
+
+  },
   beforeMount () {
+
+  },
+  mounted () {
+    if (this.$route.query.orderGoodsType) {
+      this.$set(this.param, 'orderGoodsType', this.$route.query.orderGoodsType + '')
+    }
+    if (this.$route.query.startTime) {
+      this.param.createTime[0] = this.$route.query.startTime
+    }
+    if (this.$route.query.endTime) {
+      this.param.createTime[1] = this.$route.query.endTime
+    }
     this.queryOrderList(this.queryOrderListParam({pageNum: 1}))
+  },
+  watch: {
+
   }
 }
 </script>

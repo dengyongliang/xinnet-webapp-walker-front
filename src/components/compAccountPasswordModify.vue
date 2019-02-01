@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
+import {mapActions} from 'vuex'
 import * as types from '@/store/types'
 import compInput from './compInput'
 import compRePassword from './compRePassword'
@@ -51,25 +51,24 @@ export default {
   },
   methods: {
     close () {
-      this.onClose();
+      this.onClose()
     },
     getVerificationCode () {
       this.loadingBtn = true
-      let vm = this
       let params = {
         param: {
         },
-        callback: function (response) {
-          vm.loadingBtn = false
-          if( response.data.code === '1000' ){
-            vm.$Message.success('发送成功')
+        callback: (response) => {
+          this.loadingBtn = false
+          if (response.data.code === '1000') {
+            this.$Message.success('发送成功')
           } else {
             if (response.data.code === '300') {
-              vm.$Message.error('短信验证码已发送')
+              this.$Message.error('短信验证码已发送')
             } else if (response.data.code === '500') {
-              vm.$Message.error('手机号码错误')
+              this.$Message.error('手机号码错误')
             } else {
-              vm.$Message.error('发送失败')
+              this.$Message.error('发送失败')
             }
           }
         }
@@ -82,18 +81,17 @@ export default {
         this.$refs.verificationCode
       ])
       if (result) {
-        let vm = this
         var params = {
           param: {
             verificationCode: this.$refs.verificationCode.value
           },
-          callback: function (response) {
-            vm.loadingBtn = false
-            if( response.data.code === '1000' ){
-              vm.$Message.success('验证成功')
-              vm.step = 2
+          callback: (response) => {
+            this.loadingBtn = false
+            if (response.data.code === '1000') {
+              this.$Message.success('验证成功')
+              this.step = 2
             } else {
-              vm.$Message.error('验证失败')
+              this.$Message.error('验证失败')
             }
           }
         }
@@ -108,26 +106,25 @@ export default {
         this.$refs.compRePassword
       ])
       if (result) {
-        let vm = this
         var params = {
           param: {
             userCode: this.$refs.userCode.value,
-            newPassword: this.$refs.compRePassword.$refs.password.value,
+            newPassword: this.$refs.compRePassword.$refs.password.value
           },
-          callback: function (response) {
-            vm.loadingBtn = false
-            if( response.data.code === '1000' ){
-              vm.$Message.success('登录密码更新成功')
-              vm.close()
+          callback: (response) => {
+            this.loadingBtn = false
+            if (response.data.code === '1000') {
+              this.$Message.success('登录密码更新成功')
+              this.close()
             } else {
               if (response.data.code === '200') {
-                vm.$Message.error('用户不存在')
+                this.$Message.error('用户不存在')
               } else if (response.data.code === '300') {
-                vm.$Message.error('用户被锁定')
+                this.$Message.error('用户被锁定')
               } else if (response.data.code === '400') {
-                vm.$Message.error('原始密码错误')
+                this.$Message.error('原始密码错误')
               } else {
-                vm.$Message.error('登录密码更新失败')
+                this.$Message.error('登录密码更新失败')
               }
             }
           }

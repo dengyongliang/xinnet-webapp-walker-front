@@ -55,7 +55,6 @@ import { mapState, mapActions } from 'vuex'
 import * as types from '@/store/types'
 import compInput from '@/components/compInput'
 import compSelect from '@/components/compSelect'
-import validateFormResult from '@/global/validateForm'
 export default {
   name: 'compAccountStaffInfo',
   components: {
@@ -105,7 +104,7 @@ export default {
     },
     handleCancle (index) {
       let current = this.formDynamic.items[index]
-      current.status = "view"
+      current.status = 'view'
       this.status = 'view'
       this.$set(this.formDynamic.items, index, current)
     },
@@ -113,9 +112,9 @@ export default {
       this.loadingBtn = true
       this.status = 'view'
       var resulte = true
-      var text = type==='create' ? '创建' : '修改'
-      let name = this.$refs['name'+index][0].$refs.input.value
-      let manageId = this.$refs['select'+index][0].value
+      var text = type === 'create' ? '创建' : '修改'
+      let name = this.$refs['name' + index][0].$refs.input.value
+      let manageId = this.$refs['select' + index][0].value
       if (name === '') {
         this.$Message.error('请填写分组名称！')
         resulte = false
@@ -126,21 +125,21 @@ export default {
       if (resulte) {
         let params = {
           param: {
-            manageId: this.$refs['select'+index][0].value,
-            name: this.$refs['name'+index][0].$refs.input.value
+            manageId: this.$refs['select' + index][0].value,
+            name: this.$refs['name' + index][0].$refs.input.value
           },
           callback: (response) => {
             this.loadingBtn = false
-            if( response.data.code === '1000' ){
+            if (response.data.code === '1000') {
               this.showMgmtBtn = false
-              this.$Message.success('分组'+text+'成功')
+              this.$Message.success('分组' + text + '成功')
               this.$set(this.formDynamic.items, index, {
-                id: type==='create' ? response.data.id : this.$refs['groupId'+index][0].value,
-                name: this.$refs['name'+index][0].$refs.input.value,
+                id: type === 'create' ? response.data.id : this.$refs['groupId' + index][0].value,
+                name: this.$refs['name' + index][0].$refs.input.value,
                 domainCount: 0,
-                manageId: this.$refs['select'+index][0].value,
-                manageName: this.$refs['select'+index][0].param.label,
-                manageCode: this.$refs['select'+index][0].param.code,
+                manageId: this.$refs['select' + index][0].value,
+                manageName: this.$refs['select' + index][0].param.label,
+                manageCode: this.$refs['select' + index][0].param.code,
                 status: 'view'
               })
             } else {
@@ -151,25 +150,22 @@ export default {
               } else if (response.data.code === '300') {
                 this.$Message.error('负责人不存在')
               } else {
-                this.$Message.error('分组'+text+'失败')
+                this.$Message.error('分组' + text + '失败')
               }
             }
           }
         }
 
-        if (type==='create') {
+        if (type === 'create') {
           params.param.companyId = this.$refs.companyId.value
           this.createGroup(params)
         } else {
-          params.param.groupId = this.$refs['groupId'+index][0].value
+          params.param.groupId = this.$refs['groupId' + index][0].value
           this.updateGroup(params)
         }
-        console.log('----------------------')
-        console.log(params.param)
       } else {
         this.loadingBtn = false
       }
-
     },
     handleAdd () {
       this.status = 'edit'
@@ -178,14 +174,14 @@ export default {
       this.showDelBtn = false
       this.formDynamic.items.push({
         id: 0,
-        name: "",
+        name: '',
         domainCount: 0,
         status: 'create'
       })
     },
     handleModify (index) {
       let current = this.formDynamic.items[index]
-      current.status = "modify"
+      current.status = 'modify'
       this.status = 'edit'
       this.showMgmtBtn = false
       this.showMgmtSelect = true
@@ -194,18 +190,18 @@ export default {
     handleRemove (index, type) {
       this.loadingBtn = true
       this.status = 'view'
-      if (type==='create') {
+      if (type === 'create') {
         this.showMgmtBtn = false
         this.formDynamic.items.splice(index, 1)
         this.loadingBtn = false
       } else {
-        let params= {
+        let params = {
           param: {
-            groupId: this.$refs['groupId'+index][0].value
+            groupId: this.$refs['groupId' + index][0].value
           },
           callback: (response) => {
             this.loadingBtn = false
-            if( response.data.code === '1000' ){
+            if (response.data.code === '1000') {
               this.showMgmtBtn = false
               this.$Message.success('删除分组成功')
               this.formDynamic.items.splice(index, 1)
@@ -222,7 +218,7 @@ export default {
         }
         this.deleteGroup(params)
       }
-      //console.log(this.$refs['name'+index][0].$refs.input.value)
+      // console.log(this.$refs['name'+index][0].$refs.input.value)
     },
     ...mapActions({
       createGroup: types.CREATE_GROUP,
@@ -249,8 +245,8 @@ export default {
   watch: {
     formDynamic: {
       handler (newV, oldV) {
-        if (newV.items.length===1) {
-          if (this.status==='edit') {
+        if (newV.items.length === 1) {
+          if (this.status === 'edit') {
             this.showDelBtn = false
             this.disabledBtn = true
             this.showDelBtn2 = false
@@ -264,12 +260,12 @@ export default {
           this.showAddBtn = true
         } else {
           this.showDelBtn2 = true
-          if (newV.items.length===50) {
+          if (newV.items.length === 50) {
             this.showAddBtn = false
           } else {
             this.showAddBtn = true
           }
-          if (this.status==='edit') {
+          if (this.status === 'edit') {
             this.showDelBtn = false
             this.showModifyBtn = false
             this.disabledBtn = true

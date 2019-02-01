@@ -37,7 +37,6 @@
         Button(@click="renewFun", :disabled="renewDisabled", class="toolBtn") 续费
         Button(@click="domainChangeFun", :disabled="disabledSafeLv", class="toolBtn") 过户
 
-
   <!-- 翻页区 -->
   Page(:total="page.pageItems",:current="page.pageNo",show-elevator,show-total,prev-text="上一页",next-text="下一页",@on-change="pageChange",:page-size=20, v-show="!showDetail && !showDns")
 
@@ -62,7 +61,7 @@
   <!-- 过户提交 抽屉 -->
   Drawer(:closable="true", width="650", v-model="drawerDomainChange", title="提交过户", :mask-closable="maskClosable", @on-visible-change="drawerChange",)
     comp-domain-change(
-      v-if="refresh",
+      v-if="drawerDomainChange",
       :on-close="closeDrawer",
       @refreshData="searchListData",
       :defaultValue="defaultValueChange"
@@ -128,7 +127,7 @@ export default {
               h('Icon', {
                 props: {
                   type: 'md-star',
-                  size: "18"
+                  size: '18'
                 },
                 on: {
                   click: () => {
@@ -136,17 +135,17 @@ export default {
                   }
                 },
                 style: {
-                  margin: "0 5px 0 0",
-                  color: "#f00",
+                  margin: '0 5px 0 0',
+                  color: '#f00',
                   cursor: 'pointer',
-                  display: (this.list[params.index].importantFlag===1 ? 'inline-block' : 'none')
+                  display: (this.list[params.index].importantFlag === 1 ? 'inline-block' : 'none')
                 }
               }),
               h('span', {
               }, this.list[params.index].domainName),
               h('span', {
                 style: {
-                  color: "#aaa",
+                  color: '#aaa'
                 }
               }, this.list[params.index].depositFlag ? '(托管域名)' : '')
             ])
@@ -232,7 +231,6 @@ export default {
       this.drawerDomainChange = false
     },
     drawerChange () {
-      this.refresh = this.drawerDomainChange ? true : false
     },
     setVerificationCode (v) {
       alert(v)
@@ -252,8 +250,8 @@ export default {
     },
     tableSelectChange (selected) {
       this.selectData = selected
-      this.moveGroupDisabled = selected.length ? false : true
-      this.renewDisabled = selected.length ? false : true
+      this.moveGroupDisabled = !selected.length
+      this.renewDisabled = !selected.length
     },
     renewFun () {
       var params = {
@@ -268,10 +266,10 @@ export default {
         },
         callback: (response) => {
           this.loadingBtn = false
-          if( response.data.code === '1000' ){
+          if (response.data.code === '1000') {
             response.data.type = '2_2'
             response.data.jsonObj.map((v) => {
-              v.price = v.goodsNumAndPrice[0].price+"_"+v.goodsNumAndPrice[0].unit
+              v.price = v.goodsNumAndPrice[0].price + '_' + v.goodsNumAndPrice[0].unit
               v.num = v.goodsNumAndPrice[0].num
               v.unit = v.goodsNumAndPrice[0].unit
             })
@@ -297,11 +295,11 @@ export default {
     domainChangeFun () {
       let flag = true
       let domainString = this.selectData.map((v) => {
-        if (v.depositFlag===1) {
+        if (v.depositFlag === 1) {
           flag = false
         }
         return v.domainName
-      }).join(",")
+      }).join(',')
       // flag===true 执行过户，否则提示 错误信息
       if (flag) {
         this.defaultValueChange = domainString
@@ -309,7 +307,6 @@ export default {
       } else {
         this.$Message.error('存在托管域名，禁止过户')
       }
-
     },
     showDetailFun (item) {
       this.domainType = item.depositFlag
@@ -320,7 +317,7 @@ export default {
         },
         callback: (response) => {
           this.loadingBtn = false
-          if( response.data.code === '1000' ){
+          if (response.data.code === '1000') {
             this.detailData = response.data.data
           } else {
 
@@ -343,21 +340,21 @@ export default {
       console.log(result)
       // 返回 参数 处理
       this.asideFilterResult.allSuffix = result.dataDomainSuffix.checkAll ? 1 : ''
-      this.asideFilterResult.otherSuffix = (!result.dataDomainSuffix.checkAll && result.dataDomainSuffix.value.indexOf('otherSuffix') >=0) ? 1 : ''
-      this.asideFilterResult.domainSuffixs = (!result.dataDomainSuffix.checkAll && result.dataDomainSuffix.value.indexOf('otherSuffix') < 0) ? result.dataDomainSuffix.value.join(",") : ''
-      this.asideFilterResult.groupIds = result.dataMgmtCompany.reduce((pre, cur)=>{
+      this.asideFilterResult.otherSuffix = (!result.dataDomainSuffix.checkAll && result.dataDomainSuffix.value.indexOf('otherSuffix') >= 0) ? 1 : ''
+      this.asideFilterResult.domainSuffixs = (!result.dataDomainSuffix.checkAll && result.dataDomainSuffix.value.indexOf('otherSuffix') < 0) ? result.dataDomainSuffix.value.join(',') : ''
+      this.asideFilterResult.groupIds = result.dataMgmtCompany.reduce((pre, cur) => {
         return pre.concat(cur)
-      }, []).join(",")
+      }, []).join(',')
 
-      this.asideFilterResult.serviceState = result.dataServiceState.join(",")
+      this.asideFilterResult.serviceState = result.dataServiceState.join(',')
 
-      this.asideFilterResult.createDay = result.dataTimeReg.value==='custom'?'':result.dataTimeReg.value
-      this.asideFilterResult.createTimeBegin = result.dataTimeReg.value==='custom'?result.dataTimeReg.time[0]:''
-      this.asideFilterResult.createTimeEnd = result.dataTimeReg.value==='custom'?result.dataTimeReg.time[1]:''
+      this.asideFilterResult.createDay = result.dataTimeReg.value === 'custom' ? '' : result.dataTimeReg.value
+      this.asideFilterResult.createTimeBegin = result.dataTimeReg.value === 'custom' ? result.dataTimeReg.time[0] : ''
+      this.asideFilterResult.createTimeEnd = result.dataTimeReg.value === 'custom' ? result.dataTimeReg.time[1] : ''
 
-      this.asideFilterResult.expireDay = result.dataTimeExpire.value==='custom'?'':result.dataTimeExpire.value
-      this.asideFilterResult.expireTimeBegin = result.dataTimeExpire.value==='custom'?result.dataTimeExpire.time[0]:''
-      this.asideFilterResult.expireTimeEnd = result.dataTimeExpire.value==='custom'?result.dataTimeExpire.time[1]:''
+      this.asideFilterResult.expireDay = result.dataTimeExpire.value === 'custom' ? '' : result.dataTimeExpire.value
+      this.asideFilterResult.expireTimeBegin = result.dataTimeExpire.value === 'custom' ? result.dataTimeExpire.time[0] : ''
+      this.asideFilterResult.expireTimeEnd = result.dataTimeExpire.value === 'custom' ? result.dataTimeExpire.time[1] : ''
 
       console.log(this.asideFilterResult)
       // 加载数据
@@ -403,7 +400,7 @@ export default {
         callback: (response) => {
           this.loadingBtn = false
           this.loadingTable = false
-          if (response.data.code === '1000'){
+          if (response.data.code === '1000') {
             this.list = response.data.data.list
             this.page.pageItems = response.data.data.totalNum
           } else {
@@ -423,7 +420,7 @@ export default {
       console.log(this.selectData)
       return this.selectData.map((v) => {
         return v.id
-      }).join(",")
+      }).join(',')
     },
     ...mapState({
       maskClosable (state) {
@@ -499,5 +496,4 @@ export default {
   display:inline-block;
   margin: 0 10px;
 }
-
 </style>

@@ -24,45 +24,45 @@ export default {
     drawChart (datas) {
       let myChart = this.$echarts.init(document.getElementById('myChart5'))
       let labelOption = {
-          normal: {
-              show: true,
-              rotate: 90,
-              align: 'left',
-              verticalAlign: 'middle',
-              position: 'insideBottom',
-              distance: 15,
-              formatter: '{c}',
-              fontSize: 12,
-              rich: {
-                  name: {
-                      textBorderColor: '#fff'
-                  }
-              }
+        normal: {
+          show: true,
+          rotate: 90,
+          align: 'left',
+          verticalAlign: 'middle',
+          position: 'insideBottom',
+          distance: 15,
+          formatter: '{c}',
+          fontSize: 12,
+          rich: {
+            name: {
+              textBorderColor: '#fff'
+            }
           }
+        }
       }
       // 绘制图表
       myChart.setOption({
         color: ['#006699', '#aaaaaa'],
-        title : {
+        title: {
           text: '',
           subtext: '',
-          x:'center'
+          x: 'center'
         },
-        tooltip : {
+        tooltip: {
           trigger: 'axis',
           axisPointer: {
-              type: 'shadow'
+            type: 'shadow'
           }
         },
         legend: {
-          x : 'center',
-          y : '90%',
+          x: 'center',
+          y: '90%',
           itemWidth: 10,
           itemHeight: 10,
           data: ['已开通', '未开通']
         },
         calculable: true,
-        xAxis:  {
+        xAxis: {
           type: 'category',
           axisTick: {show: false},
           data: ['注册局锁', '自动续费', '禁止更新']
@@ -72,17 +72,17 @@ export default {
         },
         series: [
           {
-              name: '已开通',
-              type: 'bar',
-              barGap: 0,
-              label: labelOption,
-              data: [datas.backEndLockOpenNumber, datas.autoRenewOpenNumber, datas.updateProhibitedOpenNumber]
+            name: '已开通',
+            type: 'bar',
+            barGap: 0,
+            label: labelOption,
+            data: [datas.backEndLockOpenNumber, datas.autoRenewOpenNumber, datas.updateProhibitedOpenNumber]
           },
           {
-              name: '未开通',
-              type: 'bar',
-              label: labelOption,
-              data: [datas.backEndLockNumber, datas.autoRenewNumber, datas.updateProhibitedNumber]
+            name: '未开通',
+            type: 'bar',
+            label: labelOption,
+            data: [datas.backEndLockNumber, datas.autoRenewNumber, datas.updateProhibitedNumber]
           }
         ]
       })

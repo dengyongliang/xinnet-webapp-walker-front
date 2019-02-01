@@ -24,14 +24,14 @@ export default {
       let myChart = this.$echarts.init(document.getElementById('myChart'))
       // 绘制图表
       myChart.setOption({
-        title : {
+        title: {
           text: '',
           subtext: '',
-          x:'center'
+          x: 'center'
         },
-        tooltip : {
+        tooltip: {
           trigger: 'item',
-          formatter: "{a} <br/>{b} : {c} ({d}%)"
+          formatter: '{a} <br/>{b} : {c} ({d}%)'
         },
         legend: {
           orient: 'vertical',
@@ -39,24 +39,24 @@ export default {
           top: 'center',
           data: this.charData.legend
         },
-        series : [
+        series: [
           {
             name: '访问来源',
             type: 'pie',
-            radius : '70%',
+            radius: '70%',
             center: ['30%', '50%'],
             data: this.charData.series,
             label: {
-                normal: {
-                  show: true,
-                  position: 'inner',
-                  formatter: '{d}%'
-                }
+              normal: {
+                show: true,
+                position: 'inner',
+                formatter: '{d}%'
+              }
             },
             labelLine: {
-                normal: {
-                    show: false
-                }
+              normal: {
+                show: false
+              }
             },
             itemStyle: {
               emphasis: {

@@ -30,10 +30,11 @@
 
   <!-- 翻页区 -->
   Page(:total="page.pageItems",:current="page.pageNo",show-elevator,show-total,prev-text="上一页",next-text="下一页",@on-change="pageChange",:page-size=20)
+
   <!-- 通知设置 抽屉 -->
   Drawer(:closable="true", width="640", v-model="drawerNoticeSet", title="通知设置", :mask-closable="maskClosable", @on-visible-change="drawerChange")
     comp-notice-set(
-      v-if="refresh",
+      v-if="drawerNoticeSet",
       :on-close="closeDrawer",
       @refreshData="searchListData"
     )
@@ -59,16 +60,16 @@ export default {
       selectData: [],
       typeList: [
         {
-            value: '',
-            label: '全部'
+          value: '',
+          label: '全部'
         },
         {
-            value: 1,
-            label: '普通'
+          value: 1,
+          label: '普通'
         },
         {
-            value: 2,
-            label: '重要'
+          value: 2,
+          label: '重要'
         }
       ],
       columns: [
@@ -86,9 +87,9 @@ export default {
             return h('div', [
               h('i', {
                 class: this.list[params.index].readFlag === 1 ? 'unRead' : ''
-              }, '●' ),
+              }, '●'),
               h('span', {
-              }, this.list[params.index].sendTime )
+              }, this.list[params.index].sendTime)
             ])
           }
         },
@@ -101,19 +102,19 @@ export default {
               h('Icon', {
                 props: {
                   type: 'md-alert',
-                  size: "17"
+                  size: '17'
                 },
                 style: {
                   color: '#f00',
                   margin: '0 5px 0 0',
-                  display: this.list[params.index].sendType === 2 ? "inline-block" : "none"
+                  display: this.list[params.index].sendType === 2 ? 'inline-block' : 'none'
                 }
-              }, this.list[params.index].title ),
+              }, this.list[params.index].title),
               h('a', {
                 style: {
                   color: '#2271f4'
                 }
-              }, this.list[params.index].title )
+              }, this.list[params.index].title)
             ])
           }
         }
@@ -142,14 +143,13 @@ export default {
       this.drawerNoticeSet = false
     },
     drawerChange () {
-      this.refresh = this.drawerNoticeSet ? true : false
     },
     handleSelectAll (status) {
       this.$refs.selection.selectAll(status)
     },
     tableSelectChange (selected) {
       this.selectData = selected
-      this.setReadDisabled = selected.length ? false : true
+      this.setReadDisabled = !selected.length
     },
     setRead () {
       this.getDomainId.map((v) => {
@@ -158,9 +158,9 @@ export default {
             id: v
           },
           callback: (response) => {
-            if (response.data.code === '1000'){
+            if (response.data.code === '1000') {
               // 查找 所在 索引值
-              let idx = this.list.findIndex((item)=>(item.id === v))
+              let idx = this.list.findIndex((item) => (item.id === v))
               // 设为已读
               this.list[idx].readFlag = 2
             } else {
@@ -186,7 +186,7 @@ export default {
         callback: (response) => {
           this.loadingBtn = false
           this.loadingTable = false
-          if (response.data.code === '1000'){
+          if (response.data.code === '1000') {
             this.list = response.data.data.list
             this.page.pageItems = response.data.data.totalNum
           } else {

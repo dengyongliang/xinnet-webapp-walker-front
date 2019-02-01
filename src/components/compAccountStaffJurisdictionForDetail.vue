@@ -14,7 +14,7 @@ Form.compStaffJurisdiction(:label-width="0")
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
+import {mapActions} from 'vuex'
 import * as types from '@/store/types'
 import compRadio from '@/components/compRadio'
 import validateFormResult from '@/global/validateForm'
@@ -55,19 +55,19 @@ export default {
   },
   data () {
     return {
-      loadingBtn: false,
+      loadingBtn: false
     }
   },
   methods: {
-    renderContent(h, { root, node, data }){
+    renderContent (h, {root, node, data}) {
       return h(
         'span', {
           style: {
             display: 'inline-block',
             margin: '0 0 0 25px'
           },
-          on:{
-            click:(e)=>{
+          on: {
+            click: (e) => {
             }
           }
         },
@@ -76,8 +76,8 @@ export default {
         ]
       )
     },
-    getCheckedNodes(){
-      let checkedArray = this.$refs.Tree.getCheckedAndIndeterminateNodes().map((val,idx,arr) => {
+    getCheckedNodes () {
+      let checkedArray = this.$refs.Tree.getCheckedAndIndeterminateNodes().map((val, idx, arr) => {
         return val.title
       })
       if (!checkedArray.length) {
@@ -95,13 +95,13 @@ export default {
           param: {
             userCode: this.$refs.userCode.value,
             roleId: this.$refs.roleId.value,
-            groups: this.getCheckedNodes().slice(1).join(",")
+            groups: this.getCheckedNodes().slice(1).join(',')
           },
           callback: (response) => {
             this.loadingBtn = false
-            if( response.data.code === '1000' ){
+            if (response.data.code === '1000') {
               this.$Message.success('修改成功!')
-              this.$emit("closeDrawer")
+              this.$emit('closeDrawer')
             } else {
               if (response.data.code === '100') {
                 this.$Message.error('角色编码错误')
@@ -131,7 +131,7 @@ export default {
   },
   computed: {
     isSuper () {
-      return this.baseInfoData.defaultRoleId.indexOf('super') >= 0 ? true : false
+      return this.baseInfoData.defaultRoleId.indexOf('super') >= 0
     }
   }
 }

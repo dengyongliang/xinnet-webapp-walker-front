@@ -1,14 +1,12 @@
 <template lang="pug">
   .frameTop.clear
-    .logo
+    router-link.logo(to="/")
       img(src="../../static/img/logo.png")
     .right
       a(href="http://www.xinnet.com",target="_blank") 新网首页
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
-import * as types from '@/store/types'
 export default {
   data () {
     return {

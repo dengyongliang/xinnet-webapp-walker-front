@@ -6,7 +6,7 @@ export default {
   children: [
     {
       path: '/',
-      name: 'ORDER_MGMT',
+      name: 'order_mgmt',
       component (resolve) {
         return require(['@/modular/order/orderMgmt'], resolve)
       },
@@ -16,7 +16,7 @@ export default {
     },
     {
       path: 'orderMgmt',
-      name: 'ORDER_MGMT',
+      name: 'order_mgmt',
       component (resolve) {
         return require(['@/modular/order/orderMgmt'], resolve)
       },

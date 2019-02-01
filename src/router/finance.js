@@ -6,7 +6,7 @@ export default {
   children: [
     {
       path: '/',
-      name: 'FINANCE_OVERVIEW',
+      name: 'finance_overview',
       component (resolve) {
         return require(['@/modular/finance/overview'], resolve)
       },
@@ -16,7 +16,7 @@ export default {
     },
     {
       path: 'overview',
-      name: 'FINANCE_OVERVIEW',
+      name: 'finance_overview',
       component (resolve) {
         return require(['@/modular/finance/overview'], resolve)
       },
@@ -26,7 +26,7 @@ export default {
     },
     {
       path: 'billMgmt',
-      name: 'FINANCE_BILLMGMT',
+      name: 'finance_billmgmt',
       component (resolve) {
         return require(['@/modular/finance/billMgmt'], resolve)
       },

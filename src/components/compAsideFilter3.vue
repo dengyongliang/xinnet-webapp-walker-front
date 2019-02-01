@@ -24,14 +24,11 @@
         @click.prevent.native="handleCheckAll"
       ) 全选
       CheckboxGroup(v-model="valueLv2", @on-change="checkboxChange")
-        Checkbox(v-for="item in dataLv2", :label="item.label",)
+        Checkbox(v-for="item in dataLv2", :label="item.label", :key="item.label")
           span {{item.value}}
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
-import * as types from '@/store/types'
-
 export default {
   components: {
 
@@ -66,11 +63,11 @@ export default {
   },
   methods: {
     handleClose (event, name) {
-      let v = name.split("_")[0]
-      let i = name.split("_")[1] * 1
-      const index = this.filterData[i].groups.findIndex((item)=>(item.value === v))
+      let v = name.split('_')[0]
+      let i = name.split('_')[1] * 1
+      const index = this.filterData[i].groups.findIndex((item) => (item.value === v))
       this.$set(this.filterData[i].groups[index], 'checked', false)
-      //this.$emit("changeData", {from: this.from, index: i, data:this.filterData, len: this.$refs.tag.length-1})
+      // this.$emit('changeData', {from: this.from, index: i, data:this.filterData, len: this.$refs.tag.length-1})
     },
     hideLv2 () {
       this.$set(this.filterData[this.index], 'groups', this.dataLv2)
@@ -81,7 +78,7 @@ export default {
       this.dataLv2 = this.filterData[index].groups
       let arr = []
       this.len = this.dataLv2.length
-      for (var i=0; i<this.len; i++) {
+      for (var i = 0; i < this.len; i++) {
         if (this.dataLv2[i].checked) {
           arr.push(this.dataLv2[i].label)
         }
@@ -94,29 +91,29 @@ export default {
     },
     handleCheckAll () {
       if (this.indeterminate) {
-        this.checkAll = false;
+        this.checkAll = false
       } else {
-        this.checkAll = !this.checkAll;
+        this.checkAll = !this.checkAll
       }
-      this.indeterminate = false;
+      this.indeterminate = false
 
       if (this.checkAll) {
-        this.valueLv2 = this.dataLv2.map((v)=>{
+        this.valueLv2 = this.dataLv2.map((v) => {
           return v.label
         })
-        this.dataLv2.map((v, i)=>{
+        this.dataLv2.map((v, i) => {
           this.$set(v, 'checked', true)
         })
       } else {
         this.valueLv2 = []
-        this.dataLv2.map((v, i)=>{
+        this.dataLv2.map((v, i) => {
           this.$set(v, 'checked', false)
         })
       }
     },
     checkboxChange (data) {
       this.resetCheckAllState(data)
-      this.dataLv2.map((v, i)=>{
+      this.dataLv2.map((v, i) => {
         if (this.valueLv2.indexOf(v.label) >= 0) {
           this.$set(v, 'checked', true)
         } else {
@@ -144,9 +141,9 @@ export default {
 
   },
   beforeMount () {
-    this.value = this.filterData.map((v)=>{
+    this.value = this.filterData.map((v) => {
       let arr = []
-      for (var i=0; i<v.groups.length; i++) {
+      for (var i = 0; i < v.groups.length; i++) {
         if (v.groups[i].checked) {
           arr.push(v.groups[i].label)
         }
@@ -158,10 +155,10 @@ export default {
   },
   watch: {
     filterData: {
-      handler(newV, oldV) {
-        this.value = newV.map((v)=>{
+      handler (newV, oldV) {
+        this.value = newV.map((v) => {
           let arr = []
-          for (var i=0; i<v.groups.length; i++) {
+          for (var i = 0; i < v.groups.length; i++) {
             if (v.groups[i].checked) {
               arr.push(v.groups[i].label)
             }

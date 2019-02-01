@@ -11,24 +11,24 @@ export default function validateFormResult (validateArray) {
       let label = v.label
       let number = v.isnumber
       if (value === '' && required) {
-        v.showValidateResult({text:'请输入' + (label || '') + '！'})
+        v.showValidateResult({text: '请输入' + (label || '') + '！'})
         flag = false
         // break
       } else {
-        if (number && isNaN(value)){
-          v.showValidateResult({text:'只允许输入数字！'})
+        if (number && isNaN(value)) {
+          v.showValidateResult({text: '只允许输入数字！'})
           flag = false
         }
         if (name === 'userEmail') {
           if (value !== '' && !GLOBAL.IS_EMAIL_AVAILABLE(value)) {
-            v.showValidateResult({text:'请输入正确的邮件地址，如xinnet@xinnet.com！'})
+            v.showValidateResult({text: '请输入正确的邮件地址，如xinnet@xinnet.com！'})
             flag = false
             // break
           }
         }
         if (name === 'userMobile') {
           if (value !== '' && !GLOBAL.IS_PHONE_AVAILABLE(value)) {
-            v.showValidateResult({text:'请输入11位的手机号码！'})
+            v.showValidateResult({text: '请输入11位的手机号码！'})
             flag = false
             // break
           }
@@ -68,25 +68,25 @@ export default function validateFormResult (validateArray) {
       let rePassword = v.$refs.rePassword.value
       console.log(v.$refs.password)
       if (password === '') {
-        v.showValidateResult1({text:'请输入密码！'})
+        v.showValidateResult1({text: '请输入密码！'})
         flag = false
       } else {
-        if (!GLOBAL.regPw.test(password)) {
+        if (!GLOBAL.IS_PWD_AVAILABLE(password)) {
           flag = false
-          v.showValidateResult1({text:'密码由8-16位字母、数字、符号组成，区分大小写，且至少包含有字母、数字、符号、大小写中的两种组合！'})
+          v.showValidateResult1({text: '密码由8-16位字母、数字、符号组成，区分大小写，且至少包含有字母、数字、符号、大小写中的两种组合！'})
         }
       }
       if (rePassword === '') {
         flag = false
-        v.showValidateResult2({text:'请输入密码！'})
+        v.showValidateResult2({text: '请输入密码！'})
       } else {
-        if (!GLOBAL.regPw.test(rePassword)) {
+        if (!GLOBAL.IS_PWD_AVAILABLE(rePassword)) {
           flag = false
-          v.showValidateResult2({text:'密码由8-16位字母、数字、符号组成，区分大小写，且至少包含有字母、数字、符号、大小写中的两种组合！'})
+          v.showValidateResult2({text: '密码由8-16位字母、数字、符号组成，区分大小写，且至少包含有字母、数字、符号、大小写中的两种组合！'})
         }
-        if (GLOBAL.regPw.test(rePassword) && password !== rePassword) {
+        if (GLOBAL.IS_PWD_AVAILABLE(rePassword) && password !== rePassword) {
           flag = false
-          v.showValidateResult2({text:'重复输入密码与新密码不一致！'})
+          v.showValidateResult2({text: '重复输入密码与新密码不一致！'})
         }
       }
     } else if (v.type === 'threeInput') {
@@ -95,17 +95,17 @@ export default function validateFormResult (validateArray) {
         v.errorText = `请填写${v.label}！`
         flag = false
       } else {
-        if (v.value1!=='' && v.isnumber1 &&  isNaN(v.value1)) {
+        if (v.value1 !== '' && v.isnumber1 && isNaN(v.value1)) {
           flag = false
           v.showError1 = true
           v.errorText = `${v.label1}只允许输入数字`
         }
-        if (v.value2!=='' && v.isnumber2 &&  isNaN(v.value2)) {
+        if (v.value2 !== '' && v.isnumber2 && isNaN(v.value2)) {
           flag = false
           v.showError2 = true
           v.errorText += v.errorText.length ? ` - ${v.label2}只允许输入数字` : `${v.label2}只允许输入数字`
         }
-        if (v.value3!=='' && v.isnumber3 &&  isNaN(v.value3)) {
+        if (v.value3 !== '' && v.isnumber3 && isNaN(v.value3)) {
           flag = false
           v.showError3 = true
           v.errorText += v.errorText.length ? ` - ${v.label3}只允许输入数字` : `${v.label3}只允许输入数字`
@@ -115,4 +115,3 @@ export default function validateFormResult (validateArray) {
   }
   return flag
 }
-

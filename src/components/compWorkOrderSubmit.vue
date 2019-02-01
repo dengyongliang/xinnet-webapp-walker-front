@@ -50,8 +50,8 @@ export default {
   },
   data () {
     return {
-      qaType: "0",
-      tips: "0",
+      qaType: '0',
+      tips: '0',
       showOrderCode: false,
       showMoney: false,
       showUpdateType: false,
@@ -59,7 +59,7 @@ export default {
       loadingBtn: false,
       domainNameRequired: true,
       descriptionRequired: false,
-      safeTypeList: function (vm) {
+      safeTypeList: (function (vm) {
         let array = []
         for (var i in vm.DATAS.SECURITY_TYPE) {
           array.push({
@@ -68,8 +68,8 @@ export default {
           })
         }
         return array
-      }(this),
-      questionTypeList: function (vm) {
+      })(this),
+      questionTypeList: (function (vm) {
         let array = []
         for (var i in vm.DATAS.QUESTION_TYPE) {
           array.push({
@@ -78,8 +78,8 @@ export default {
           })
         }
         return array
-      }(this),
-      updateTypeList: function (vm) {
+      })(this),
+      updateTypeList: (function (vm) {
         let array = []
         for (var i in vm.DATAS.QUESTION_MODIFY_TYPE) {
           array.push({
@@ -88,70 +88,70 @@ export default {
           })
         }
         return array
-      }(this)
+      })(this)
     }
   },
   methods: {
     showType (type) {
       this.qaType = type
-      if (type === "1") {
-        this.tips = "1"
+      if (type === '1') {
+        this.tips = '1'
         this.showOrderCode = false
         this.showMoney = false
         this.showUpdateType = false
         this.showSafeType = false
         this.domainNameRequired = true
         this.descriptionRequired = false
-      } else if (type === "2") {
-        this.tips = "6"
+      } else if (type === '2') {
+        this.tips = '6'
         this.showOrderCode = false
         this.showMoney = true
         this.showUpdateType = false
         this.showSafeType = false
         this.domainNameRequired = true
         this.descriptionRequired = false
-      } else if (type === "3") {
-        this.tips = "4"
+      } else if (type === '3') {
+        this.tips = '4'
         this.showOrderCode = false
         this.showMoney = false
         this.showUpdateType = false
         this.showSafeType = true
         this.domainNameRequired = true
         this.descriptionRequired = false
-      } else if (type === "4") {
-        this.tips = "2"
+      } else if (type === '4') {
+        this.tips = '2'
         this.showOrderCode = true
         this.showMoney = false
         this.showUpdateType = false
         this.showSafeType = false
         this.domainNameRequired = true
         this.descriptionRequired = true
-      } else if (type === "5") {
-        this.tips = "5"
+      } else if (type === '5') {
+        this.tips = '5'
         this.showOrderCode = false
         this.showMoney = false
         this.showUpdateType = true
         this.showSafeType = false
         this.domainNameRequired = true
         this.descriptionRequired = false
-      } else if (type === "6") {
-        this.tips = "5"
+      } else if (type === '6') {
+        this.tips = '5'
         this.showOrderCode = false
         this.showMoney = false
         this.showUpdateType = false
         this.showSafeType = false
         this.domainNameRequired = true
         this.descriptionRequired = false
-      } else if (type === "7") {
-        this.tips = "3"
+      } else if (type === '7') {
+        this.tips = '3'
         this.showOrderCode = false
         this.showMoney = false
         this.showUpdateType = false
         this.showSafeType = false
         this.domainNameRequired = true
         this.descriptionRequired = false
-      } else if (type === "8") {
-        this.tips = "0"
+      } else if (type === '8') {
+        this.tips = '0'
         this.showOrderCode = false
         this.showMoney = false
         this.showUpdateType = false
@@ -162,50 +162,49 @@ export default {
     },
     submitForm () {
       this.loadingBtn = true
-      let vm = this
       var result = true
       var param = {}
-      if (this.qaType === "0") {
+      if (this.qaType === '0') {
         result = validateFormResult([
           this.$refs.questionType
         ])
-      } else if (this.qaType === "1") {
+      } else if (this.qaType === '1') {
         result = validateFormResult([
           this.$refs.domainName
         ])
-      } else if (this.qaType === "2") {
+      } else if (this.qaType === '2') {
         result = validateFormResult([
           this.$refs.domainName,
           this.$refs.money
         ])
         param.money = this.$refs.money.value
-      } else if (this.qaType === "3") {
+      } else if (this.qaType === '3') {
         result = validateFormResult([
           this.$refs.domainName,
           this.$refs.safeType
         ])
         param.securityType = this.$refs.safeType.value
-      } else if (this.qaType === "4") {
+      } else if (this.qaType === '4') {
         result = validateFormResult([
           this.$refs.domainName,
           this.$refs.description
         ])
         param.orderCode = this.$refs.orderCode.value
-      } else if (this.qaType === "5") {
+      } else if (this.qaType === '5') {
         result = validateFormResult([
           this.$refs.domainName,
           this.$refs.updateType
         ])
         param.updateType = this.$refs.updateType.value
-      } else if (this.qaType === "6") {
+      } else if (this.qaType === '6') {
         result = validateFormResult([
           this.$refs.domainName
         ])
-      } else if (this.qaType === "7") {
+      } else if (this.qaType === '7') {
         result = validateFormResult([
           this.$refs.domainName
         ])
-      } else if (this.qaType === "8") {
+      } else if (this.qaType === '8') {
         result = validateFormResult([
           this.$refs.description
         ])
@@ -216,15 +215,15 @@ export default {
       if (result) {
         let params = {
           param: param,
-          callback: function (response) {
-            vm.loadingBtn = false
+          callback: (response) => {
+            this.loadingBtn = false
             if (response.data.code === '1000') {
-              vm.$Message.success('工单提交成功')
+              this.$Message.success('工单提交成功')
               // 重置列表
-              vm.$emit('refreshData')
-              vm.onClose()
+              this.$emit('refreshData')
+              this.onClose()
             } else {
-              vm.$Message.error('操作失败')
+              this.$Message.error('操作失败')
             }
           }
         }

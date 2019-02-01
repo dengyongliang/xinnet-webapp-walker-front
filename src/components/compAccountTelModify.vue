@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
+import {mapActions} from 'vuex'
 import * as types from '@/store/types'
 import compInput from './compInput'
 import validateFormResult from '@/global/validateForm'
@@ -36,7 +36,7 @@ export default {
   },
   methods: {
     close () {
-      this.onClose();
+      this.onClose()
     },
     updateForm () {
       this.loadingBtn = true
@@ -44,25 +44,24 @@ export default {
         this.$refs.userTel
       ])
       if (result) {
-        let vm = this
         var params = {
           param: {
             userCode: this.$refs.userCode.value,
             userTel: this.$refs.userTel.value
           },
-          callback: function (response) {
-            vm.loadingBtn = false
-            if( response.data.code === '1000' ){
-              vm.$Message.success('座机更新成功')
-              vm.$store.commit(types.UPDATE_USER_TEL, vm.$refs.userTel.value)
-              vm.close()
+          callback: (response) => {
+            this.loadingBtn = false
+            if (response.data.code === '1000') {
+              this.$Message.success('座机更新成功')
+              this.$store.commit(types.UPDATE_USER_TEL, this.$refs.userTel.value)
+              this.close()
             } else {
               if (response.data.code === '200') {
-                vm.$Message.error('用户不存在')
+                this.$Message.error('用户不存在')
               } else if (response.data.code === '300') {
-                vm.$Message.error('用户被锁定')
+                this.$Message.error('用户被锁定')
               } else {
-                vm.$Message.error('更新失败')
+                this.$Message.error('更新失败')
               }
             }
           }

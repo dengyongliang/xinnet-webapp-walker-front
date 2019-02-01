@@ -1,41 +1,67 @@
+// 登录-获取验证码
 export const LOGIN_VERIFICATIONCODE = 'loginVerificationCode'
+// 登录-提交
 export const LOGIN_SUBMIT = 'loginSubmit'
+// 登出
 export const LOGIN_OUT = 'loginOut'
+// 全屏等待遮罩
 export const SHOW_BODY_SPIN = 'showBodySpin'
+// 用户信息-获取当前用户信息
 export const GET_CURRENT_USER_DATA = 'getCurrentUserData'
+// 用户信息-存储当前用户信息
 export const SET_CURRENT_USER_DATA = 'setCurrentUserData'
+// 用户信息-修改手机号-获取原手机号验证码
 export const GET_OLD_PHONE_CODE = 'getOldPhoneCode'
+// 用户信息-修改手机号-获取新手机号验证码
 export const GET_UPDATE_PHONE_CODE = 'getUpdatePhoneCode'
+// 用户信息-修改手机号-校验原手机号验证码
 export const CHECK_OLD_PHONE_CODE = 'checkOldPhoneCode'
+// 用户信息-获取当前用户角色
 export const GET_USER_ROLES = 'getUserRoles'
+// 用户信息-获取当前用户可用账号
 export const GET_USERS = 'getUsers'
+// 用户信息-获取当前用户可用企业
 export const GET_COMPANYS = 'getCompanys'
+// 用户信息-获取当前用户可用企业分组
 export const GET_USER_AUTH_GROUPS = 'getUserAuthGroups'
+// 用户信息-存储当前角色信息
 export const SET_USER_ROLES = 'setUserRoles'
+// 用户信息-存储当前可用账号信息
 export const SET_USERS = 'setUsers'
+// 用户信息-存储当前可用企业信息
 export const SET_COMPANYS = 'setCompanys'
+// 用户信息-存储当前可用企业分组信息
 export const SET_USER_AUTH_GROUPS = 'setUserAuthGroups'
 export const SET_USER_AUTH_GROUPS_ORIGINAL = 'userAuthGroupsOriginal'
+// 登录-登录成功标识设置
 export const SET_LOGINED = 'setLogined'
 export const SET_PAY_ORDERS = 'setPayOrders'
 export const SET_PAY_ORDERS_FINISH = 'setPayOrdersFinish'
 export const SET_USER_MSG_NUM = 'setUserMsgNum'
-export const SET_MENUS= 'setMenus'
+// 用户信息-存储当前用户左侧可用菜单数据
+export const SET_MENUS = 'setMenus'
 export const CLEAR_PAY_DATA = 'clearPayData'
 export const ORDER_SETTLEMENT = 'orderSettlement'
 export const BUY_BACKEND_LOCK = 'buyBackendLock'
 export const RENEW_BACKEND_LOCK = 'renewBackendLock'
 export const GET_DOMAIN_MGMT_V_CODE = 'getDomainMgmtVCode'
-
-// 激活
+// 支付-订单结算
+export const ORDER_PAYMENT = 'orderPayment'
+// 激活-检查用户是否可用
 export const CHECK_VALID_USER = 'checkValidUser'
+// 激活-存储激活数据
 export const SET_ACTIVATION_DATA = 'setActivationData'
+// 激活-清除激活数据
 export const CLEAR_ACTIVATION_DATA = 'clearActivationData'
+// 激活-激活所需验证码
 export const ACTIVATION_VERIFICATIONCODE = 'activationVerificationCode'
+// 激活-提交用户数据
 export const SUBMIT_ACTIVATION_USER_INFO = 'submitActivationUserInfo'
+// 激活-提交用户密码数据
 export const SUBMIT_ACTIVATION_USER_PWD = 'submitActivationUserPwd'
-// 管家管理的客户列表
+// 客户-管家管理客户列表
 export const QUERY_USER_CUSTOMERS_LIST = 'queryUserCustomersList'
+// 客户-切换客户
 export const CHANGE_CUSTOMERS = 'changeCustomers'
 
 // 财务管理

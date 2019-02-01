@@ -24,7 +24,6 @@
           Button(@click="", :disabled="disabledSafeLv", class="btnSafeLv") 设置保护等级
           comp-important-select(slot="content", :on-parentmethod="hidePop", :domainIds="getDomainId", @refreshData = "searchListData")
 
-
   <!-- 翻页区 -->
   Page(:total="page.pageItems",:current="page.pageNo",show-elevator,show-total,prev-text="上一页",next-text="下一页",@on-change="pageChange",:page-size=20, v-show="!showDetail")
 
@@ -57,7 +56,7 @@ export default {
       showDetail: false,
       showLock: false,
       disabledSafeLv: true,
-      detailData:{},
+      detailData: {},
       list: [],
       page: {
         pageNo: 1,
@@ -94,14 +93,14 @@ export default {
             return h('div', [
               h('span', {
                 style: {
-                  color: function (vm) {
-                    if (vm.list[params.index].renewFlag===1) {
-                      return "#46a405"
+                  color: (function (vm) {
+                    if (vm.list[params.index].renewFlag === 1) {
+                      return '#46a405'
                     }
-                    if (vm.list[params.index].renewFlag===2) {
-                      return "#aaa"
+                    if (vm.list[params.index].renewFlag === 2) {
+                      return '#aaa'
                     }
-                  }(this)
+                  })(this)
                 }
               }, this.DATAS.RENEWFLAG[this.list[params.index].renewFlag])
             ])
@@ -115,14 +114,14 @@ export default {
             return h('div', [
               h('span', {
                 style: {
-                  color: function (vm) {
-                    if (vm.list[params.index].backendLockFlag===1) {
-                      return "#46a405"
+                  color: (function (vm) {
+                    if (vm.list[params.index].backendLockFlag === 1) {
+                      return '#46a405'
                     }
-                    if (vm.list[params.index].backendLockFlag===2) {
-                      return "#aaa"
+                    if (vm.list[params.index].backendLockFlag === 2) {
+                      return '#aaa'
                     }
-                  }(this)
+                  })(this)
                 }
               }, this.DATAS.BACKENDLOCKFLAG[this.list[params.index].backendLockFlag])
             ])
@@ -136,14 +135,14 @@ export default {
             return h('div', [
               h('span', {
                 style: {
-                  color: function (vm) {
-                    if (vm.list[params.index].updateFlag===1) {
-                      return "#46a405"
+                  color: (function (vm) {
+                    if (vm.list[params.index].updateFlag === 1) {
+                      return '#46a405'
                     }
-                    if (vm.list[params.index].updateFlag===2) {
-                      return "#aaa"
+                    if (vm.list[params.index].updateFlag === 2) {
+                      return '#aaa'
                     }
-                  }(this)
+                  })(this)
                 }
               }, this.DATAS.UPDATEFLAG[this.list[params.index].updateFlag])
             ])
@@ -201,7 +200,7 @@ export default {
     },
     tableSelectChange (selected) {
       this.selectData = selected
-      this.disabledSafeLv = selected.length ? false : true
+      this.disabledSafeLv = selected.length
     },
     hidePop () {
       this.visible = false
@@ -217,15 +216,15 @@ export default {
       console.log(result)
       // 返回 参数 处理
       this.asideFilterResult.allSuffix = result.dataDomainSuffix.checkAll ? 1 : ''
-      this.asideFilterResult.otherSuffix = (!result.dataDomainSuffix.checkAll && result.dataDomainSuffix.value.indexOf('otherSuffix') >=0) ? 1 : ''
-      this.asideFilterResult.domainSuffixs = (!result.dataDomainSuffix.checkAll && result.dataDomainSuffix.value.indexOf('otherSuffix') < 0) ? result.dataDomainSuffix.value.join(",") : ''
-      this.asideFilterResult.groupIds = result.dataMgmtCompany.reduce((pre, cur)=>{
+      this.asideFilterResult.otherSuffix = (!result.dataDomainSuffix.checkAll && result.dataDomainSuffix.value.indexOf('otherSuffix') >= 0) ? 1 : ''
+      this.asideFilterResult.domainSuffixs = (!result.dataDomainSuffix.checkAll && result.dataDomainSuffix.value.indexOf('otherSuffix') < 0) ? result.dataDomainSuffix.value.join(',') : ''
+      this.asideFilterResult.groupIds = result.dataMgmtCompany.reduce((pre, cur) => {
         return pre.concat(cur)
-      }, []).join(",")
-      this.asideFilterResult.importantFlag = result.dataSafe[0].join(",")
-      this.asideFilterResult.renewFlag = result.dataSafe[1].join(",")
-      this.asideFilterResult.backendLockFlag = result.dataSafe[2].join(",")
-      this.asideFilterResult.updateFlag = result.dataSafe[3].join(",")
+      }, []).join(',')
+      this.asideFilterResult.importantFlag = result.dataSafe[0].join(',')
+      this.asideFilterResult.renewFlag = result.dataSafe[1].join(',')
+      this.asideFilterResult.backendLockFlag = result.dataSafe[2].join(',')
+      this.asideFilterResult.updateFlag = result.dataSafe[3].join(',')
       console.log(this.asideFilterResult)
       // 加载数据
       this.queryList(this.queryListParam({pageNum: 1}))
@@ -264,7 +263,7 @@ export default {
         callback: (response) => {
           this.loadingBtn = false
           this.loadingTable = false
-          if (response.data.code === '1000'){
+          if (response.data.code === '1000') {
             this.list = response.data.data.list
             this.page.pageItems = response.data.data.totalNum
           } else {
@@ -282,7 +281,7 @@ export default {
       console.log(this.selectData)
       return this.selectData.map((v) => {
         return v.id
-      }).join(",")
+      }).join(',')
     },
     ...mapState({
       maskClosable (state) {

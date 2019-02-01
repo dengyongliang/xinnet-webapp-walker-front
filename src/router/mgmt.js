@@ -6,7 +6,7 @@ export default {
   children: [
     {
       path: '/',
-      name: 'MGMT_ENTERPRISE',
+      name: 'mgmt_enterprise',
       component (resolve) {
         return require(['@/modular/mgmt/enterprise'], resolve)
       },
@@ -16,7 +16,7 @@ export default {
     },
     {
       path: 'enterprise',
-      name: 'MGMT_ENTERPRISE',
+      name: 'mgmt_enterprise',
       component (resolve) {
         return require(['@/modular/mgmt/enterprise'], resolve)
       },
@@ -26,7 +26,7 @@ export default {
     },
     {
       path: 'myAccount',
-      name: 'MGMT_MY_ACCOUNT',
+      name: 'mgmt_my_account',
       component (resolve) {
         return require(['@/modular/mgmt/myAccount'], resolve)
       },
@@ -36,7 +36,7 @@ export default {
     },
     {
       path: 'roles',
-      name: 'MGMT_ROLES',
+      name: 'mgmt_roles',
       component (resolve) {
         return require(['@/modular/mgmt/roles'], resolve)
       },
@@ -46,12 +46,22 @@ export default {
     },
     {
       path: 'accountMgmt',
-      name: 'MGMT_ACCOUNT',
+      name: 'mgmt_account_mgmt',
       component (resolve) {
         return require(['@/modular/mgmt/accountMgmt'], resolve)
       },
       meta: {
         title: '账号管理'
+      }
+    },
+    {
+      path: 'workorder',
+      name: 'mgmt_workorder',
+      component (resolve) {
+        return require(['@/modular/mgmt/workOrder'], resolve)
+      },
+      meta: {
+        title: '工单管理'
       }
     }
   ]

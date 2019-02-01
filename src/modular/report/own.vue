@@ -111,7 +111,7 @@
 </template>
 
 <script>
-import { mapState, mapActions, mapMutations } from 'vuex'
+import {mapActions} from 'vuex'
 import * as types from '@/store/types'
 import compInput from '@/components/compInput'
 import compSelect from '@/components/compSelect'
@@ -167,37 +167,35 @@ export default {
           key: 'transferStatus',
           className: 'col4',
           render: (h, params) => {
-            if (this.list[params.index].transferStatus===4) {
+            if (this.list[params.index].transferStatus === 4) {
               return h('Tooltip', {
+                props: {
+                  content: '转入失败，已退款',
+                  placement: 'top'
+                }
+              },
+              [
+                h('Icon', {
                   props: {
-                    content: '转入失败，已退款',
-                    placement: "top"
+                    custom: 'i-icon i-icon-tips',
+                    size: '16'
+                  },
+                  style: {
+                    margin: '0 5px 0 0',
+                    color: '#48affe'
                   }
-                },
-                [
-                  h('Icon', {
-                    props: {
-                      custom: 'i-icon i-icon-tips',
-                      size: "16"
-                    },
-                    style: {
-                      margin: "0 5px 0 0",
-                      color: "#48affe"
-                    }
-                  }),
-                  h('a', {
-                    props: {
-                      href: ''
-                    },
-                    style: {
-                      color: "#f00"
-                    }
-                  }, this.DATAS.DOMAIN_TRANSFER_STATUS[this.list[params.index].transferStatus])
-                ]
-              )
+                }),
+                h('a', {
+                  props: {
+                    href: ''
+                  },
+                  style: {
+                    color: '#f00'
+                  }
+                }, this.DATAS.DOMAIN_TRANSFER_STATUS[this.list[params.index].transferStatus])
+              ])
             }
-
-            if (this.list[params.index].transferStatus!==4) {
+            if (this.list[params.index].transferStatus !== 4) {
               return h('div', [
                 h('a', {
                   props: {
@@ -224,13 +222,13 @@ export default {
     selectChange (v) {
       this.getChangeReport(v)
     },
-    getChangeReport (v=30) {
+    getChangeReport (v = 30) {
       let params = {
         param: {
           cycleTime: v * 1
         },
         callback: (response) => {
-          if( response.data.code === '1000' ){
+          if (response.data.code === '1000') {
             this.reportChange = response.data.data
           } else {
           }
@@ -249,19 +247,19 @@ export default {
   beforeMount () {
     this.getChangeReport()
     this.queryDomainMonitorSafeReport((response) => {
-      if( response.data.code === '1000' ){
+      if (response.data.code === '1000') {
         this.reportSafe = response.data.data
       } else {
       }
     })
     this.queryDomainMonitorExpireReport((response) => {
-      if( response.data.code === '1000' ){
+      if (response.data.code === '1000') {
         this.reportExpire = response.data.data
       } else {
       }
     })
   },
-  mounted(){
+  mounted () {
   },
   watch: {
   }

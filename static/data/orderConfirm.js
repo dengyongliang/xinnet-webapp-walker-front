@@ -8,16 +8,7 @@
     "goodsName": "英文.com",
     "domainName": "test.com",
     "domainPwd": "1231231",
-    "goodsNumAndPrice": [{
-      "price": 60,
-      "num": 1,
-      "unit": "Y"
-    },
-{
-      "price": 120,
-      "num": 2,
-      "unit": "Y"
-    }
+    "goodsNumAndPrice": [
     ],
     "orderGoodsType": 5,
     "orderType": 4
@@ -33,5 +24,5 @@
     "orderGoodsType": 5,
     "orderType": 4
   }],
-  "creditBalance": 99902
+  "creditBalance": 1
 }

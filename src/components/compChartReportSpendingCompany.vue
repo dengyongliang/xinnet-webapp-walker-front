@@ -25,14 +25,14 @@ export default {
       let myChart = this.$echarts.init(document.getElementById('myChart3'))
       // 绘制图表
       myChart.setOption({
-        title : {
+        title: {
           text: '',
           subtext: '',
-          x:'center'
+          x: 'center'
         },
-        tooltip : {
+        tooltip: {
           trigger: 'item',
-          formatter: "{b} : {c} ({d}%)"
+          formatter: '{b} : {c} ({d}%)'
         },
         legend: {
           orient: 'vertical',
@@ -40,17 +40,17 @@ export default {
           top: 'center',
           itemWidth: 10,
           itemHeight: 10,
-          data:datas.map((v) => {
+          data: datas.map((v) => {
             return v.companyName
           })
         },
-        series : [
+        series: [
           {
             name: '消费统计',
             type: 'pie',
-            radius : '85%',
+            radius: '85%',
             center: ['40%', '50%'],
-            data:datas.map((v) => {
+            data: datas.map((v) => {
               return {value: v.totalMoney, name: v.companyName}
             }),
             label: {
@@ -61,9 +61,9 @@ export default {
               }
             },
             labelLine: {
-                normal: {
-                    show: false
-                }
+              normal: {
+                show: false
+              }
             },
             itemStyle: {
               emphasis: {
@@ -87,7 +87,7 @@ export default {
   },
   watch: {
     charData: {
-      handler(val, oldVal) {
+      handler (val, oldVal) {
         this.drawChart(val.companyList)
       },
       deep: true

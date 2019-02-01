@@ -9,8 +9,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
-import * as types from '../store/types'
+import {mapState} from 'vuex'
 import menuBody from '../modular/menu'
 import headerBody from '../modular/header'
 export default {
@@ -34,7 +33,7 @@ export default {
     ...mapState([
       'islogin'
     ])
-  },
+  }
 }
 </script>
 

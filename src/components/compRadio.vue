@@ -1,7 +1,7 @@
 <template lang="pug">
   div.compRadio(style="display:inline-block")
     RadioGroup(v-model="value",@on-change="onChange",ref="radio",:name="name")
-      Radio(v-for="item in list", :label="item.label.toString()",:disabled="typeof(item.disabled)!=='undefined'?item.disabled:isDisabled") {{item.value}}
+      Radio(v-for="item in list", :label="item.label.toString()", :key="item.label", :disabled="typeof(item.disabled)!=='undefined'?item.disabled:isDisabled") {{item.value}}
     Alert(type="error",show-icon, style="display:inline-block",v-show="showError") {{errorText}}
 </template>
 

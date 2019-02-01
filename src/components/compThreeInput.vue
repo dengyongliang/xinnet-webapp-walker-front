@@ -178,25 +178,25 @@ export default {
   },
   methods: {
     showValidateResult (v) {
-      this['showError'+v.num] = true
+      this['showError' + v.num] = true
       this.errorText = v.text
     },
     onFocus (e) {
-      this.errorText = '',
+      this.errorText = ''
       this.showError1 = false
       this.showError2 = false
       this.showError3 = false
     },
     onBlur (e) {
-      if (this.value1!=='' && isNaN(this.value1)) {
+      if (this.value1 !== '' && isNaN(this.value1)) {
         this.showError1 = true
         this.errorText = `${this.label1}只允许输入数字`
       }
-      if (this.value2!=='' && isNaN(this.value2)) {
+      if (this.value2 !== '' && isNaN(this.value2)) {
         this.showError2 = true
         this.errorText += this.errorText.length ? ` - ${this.label2}只允许输入数字` : `${this.label2}只允许输入数字`
       }
-      if (this.value3!=='' && isNaN(this.value3)) {
+      if (this.value3 !== '' && isNaN(this.value3)) {
         this.showError3 = true
         this.errorText += this.errorText.length ? ` - ${this.label3}只允许输入数字` : `${this.label3}只允许输入数字`
       }

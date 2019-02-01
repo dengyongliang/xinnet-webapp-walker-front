@@ -24,29 +24,29 @@ export default {
   },
   methods: {
     getIdxItem (v) {
-      return this.charData.expireReportInfo.findIndex((item)=>(item.serviceStatus === v))
+      return this.charData.expireReportInfo.findIndex((item) => (item.serviceStatus === v))
     },
     drawChart (datas) {
       let myChart = this.$echarts.init(document.getElementById('myChart'))
       // 绘制图表
       myChart.setOption({
-        title : {
+        title: {
           text: '',
           subtext: '',
-          x:'center'
+          x: 'center'
         },
-        tooltip : {
+        tooltip: {
           trigger: 'axis',
-          axisPointer : {            // 坐标轴指示器，坐标轴触发有效
-              type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+          axisPointer: {
+            type: 'shadow'
           }
         },
         legend: {
-          x : 'center',
-          y : '280',
+          x: 'center',
+          y: '280',
           itemWidth: 10,
           itemHeight: 10,
-          data: datas.map((v)=>{
+          data: datas.map((v) => {
             return this.DATAS.SERVICE_STATE[v.serviceStatus]
           })
         },
@@ -57,14 +57,14 @@ export default {
           bottom: '20%',
           containLabel: true
         },
-        xAxis:  {
+        xAxis: {
           type: 'value'
         },
         yAxis: {
           type: 'category',
           data: ['']
         },
-        series: datas.map((v)=>{
+        series: datas.map((v) => {
           return {
             name: this.DATAS.SERVICE_STATE[v.serviceStatus],
             type: 'bar',

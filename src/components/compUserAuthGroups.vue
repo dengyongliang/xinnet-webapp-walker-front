@@ -7,9 +7,8 @@ div(class="userGroupsPop",slot="content")
     Button(@click="close") 取消
 </template>
 <script>
-import { mapState, mapActions } from 'vuex'
+import {mapActions} from 'vuex'
 import * as types from '@/store/types'
-import validateFormResult from '@/global/validateForm'
 export default {
   components: {
   },
@@ -51,10 +50,10 @@ export default {
           },
           callback: (response) => {
             this.loadingBtn = false
-            if (response.data.code === '1000'){
+            if (response.data.code === '1000') {
               this.loadingBtn = false
               this.$Message.success('分组设置成功')
-              if (this.type==="list") {
+              if (this.type === 'list') {
                 this.close()
                 this.$emit('refreshData')
               } else {
@@ -64,8 +63,8 @@ export default {
                     domainId: this.domainIds
                   },
                   callback: (response) => {
-                    if( response.data.code === '1000' ){
-                      this.$emit("refreshData", response.data.data)
+                    if (response.data.code === '1000') {
+                      this.$emit('refreshData', response.data.data)
                     } else {
 
                     }
@@ -89,7 +88,7 @@ export default {
     getSelected () {
       return this.$refs.Tree.getSelectedNodes().map((v) => {
         return v.label
-      }).join(",")
+      }).join(',')
     },
     close () {
       if (this.onParentmethod && typeof this.onParentmethod === 'function') {

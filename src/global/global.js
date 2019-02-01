@@ -1,15 +1,21 @@
-"use strict"
-const TITLE = `行者`
-const regPw = /^(?![A-Z]+$)(?![a-z]+$)(?!\d+$)(?![\W_]+$)\S{8,16}$/
+'use strict'
+const IS_PWD_AVAILABLE = (val) => {
+  var reg = /^(?![A-Z]+$)(?![a-z]+$)(?!\d+$)(?![\W_]+$)\S{8,16}$/
+  if (!reg.test(val)) {
+    return false
+  } else {
+    return true
+  }
+}
 const IS_PHONE_AVAILABLE = (str) => {
-  var myreg=/^[1][3,4,5,7,8][0-9]{9}$/
+  var myreg = /^[1][3,4,5,7,8][0-9]{9}$/
   if (!myreg.test(str)) {
     return false
   } else {
     return true
   }
 }
-const IS_DOMAIN_AVAILABLE = (val) => {　　
+const IS_DOMAIN_AVAILABLE = (val) => {
   var reg = /^(?=^.{3,255}$)[a-zA-Z0-9][-a-zA-Z0-9]{0,62}(\.[a-zA-Z0-9][-a-zA-Z0-9]{0,62})+$/
   if (!reg.test(val)) {
     return false
@@ -17,19 +23,13 @@ const IS_DOMAIN_AVAILABLE = (val) => {　　
     return true
   }
 }
-const IS_EMAIL_AVAILABLE = (val) => {　　
-  var reg = new RegExp("^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$")  　　
+const IS_EMAIL_AVAILABLE = (val) => {
+  var reg = new RegExp('^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$')
   if (!reg.test(val)) {
     return false
   } else {
     return true
   }
-}
-
-function ADD_DAY (day) {
-  var now = new Date
-  now.setDate(now.getDate() - day)
-  return now
 }
 function CONVERT_TREE_CHECKED_TRUE (tree, key) {
   const result = []
@@ -72,8 +72,10 @@ function CONVERT_TREE (tree, map) {
     // 读取 map 的键值映射
     const title = item[ map.title ]
     const label = item[ map.label ]
-    const checked = item[ map.checked ] ? true : false
-    const disabled = item.groups ? (map.disabled_lv1===true ? true : false) : (map.disabled_lv2===true ? true : false)
+    // const checked = item[ map.checked ] ? true : false
+    const checked = item[ map.checked ]
+    // const disabled = item.groups ? (map.disabled_lv1 === true ? true : false) : (map.disabled_lv2 === true ? true : false)
+    const disabled = item.groups ? map.disabled_lv1 : map.disabled_lv2
     let children = item[ map.children ]
     // 如果有子节点，递归
     if (children) {
@@ -101,12 +103,12 @@ function CONVERT_ROLES (roles, map) {
   // 遍历 roles
   roles.forEach((item) => {
     // 读取 map 的键值映射
-    const label = item[ map.label ]+'_'+item[ map.code ]
+    const label = item[ map.label ] + '_' + item[ map.code ]
     const value = item[ map.value ]
+    let disabled = false
     if (typeof map.disabled !== 'undefined') {
-      var disabled = item[ map.disabled ] ? true : false
-    } else {
-      var disabled = false
+      // var disabled = item[ map.disabled ] ? true : false
+      disabled = item[ map.disabled ]
     }
     result.push({
       label,
@@ -124,10 +126,10 @@ function CONVERT_RADIO (roles, map) {
     const label = item[ map.label ]
     const code = item[ map.code ]
     const value = item[ map.value ]
+    let disabled = false
     if (typeof map.disabled !== 'undefined') {
-      var disabled = item[ map.disabled ] ? false : true// 1 可以选，0 不可以选
-    } else {
-      var disabled = false
+      // 1 可以选，0 不可以选
+      disabled = !item[map.disabled]
     }
     result.push({
       label,
@@ -192,12 +194,10 @@ function CONVERT_CHECKBOX (data, map) {
 }
 export default
 {
-  TITLE,
-  regPw,
+  IS_PWD_AVAILABLE,
   IS_DOMAIN_AVAILABLE,
   IS_PHONE_AVAILABLE,
   IS_EMAIL_AVAILABLE,
-  ADD_DAY,
   CONVERT_TREE,
   CONVERT_ROLES,
   CONVERT_TREE_CHECKED_TRUE,

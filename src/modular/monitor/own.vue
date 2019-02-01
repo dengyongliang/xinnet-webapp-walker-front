@@ -34,7 +34,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
+import {mapActions} from 'vuex'
 import * as types from '@/store/types'
 import compMonitorOwnDetail from '@/components/compMonitorOwnDetail'
 import compAsideFilter from '@/components/compAsideFilter'
@@ -61,9 +61,9 @@ export default {
             return h('div', [
               h('i', {
                 class: this.listTop[params.index].readFlag === 1 ? 'unRead' : ''
-              }, '●' ),
+              }, '●'),
               h('span', {
-              }, this.listTop[params.index].sendTime )
+              }, this.listTop[params.index].sendTime)
             ])
           }
         },
@@ -76,18 +76,18 @@ export default {
               h('Icon', {
                 props: {
                   type: 'md-alert',
-                  size: "17"
+                  size: '17'
                 },
                 style: {
                   color: '#f00',
                   margin: '0 5px 0 0',
-                  display: this.listTop[params.index].sendType === 2 ? "inline-block" : "none"
+                  display: this.listTop[params.index].sendType === 2 ? 'inline-block' : 'none'
                 }
-              },  ),
+              }, ''),
               h('a', {
                 style: {
                 }
-              }, this.listTop[params.index].title )
+              }, this.listTop[params.index].title)
             ])
           }
         }
@@ -103,21 +103,21 @@ export default {
             return h('div', [
               h('span', {
                 style: {
-                  display: "inline-block",
-                  "font-size": "16px",
-                  "line-height": "18px",
-                  "vertical-align": "top"
+                  display: 'inline-block',
+                  'font-size': '16px',
+                  'line-height': '18px',
+                  'vertical-align': 'top'
                 }
               }, this.list[params.index].domainName),
               h('Icon', {
                 props: {
                   type: 'md-star',
-                  size: "18"
+                  size: '18'
                 },
                 style: {
-                  margin: "0 5px 0 0",
-                  color: "#f00",
-                  display: (this.list[params.index].levelType===2 ? 'inline-block' : 'none')
+                  margin: '0 5px 0 0',
+                  color: '#f00',
+                  display: (this.list[params.index].levelType === 2 ? 'inline-block' : 'none')
                 }
               })
             ])
@@ -130,8 +130,8 @@ export default {
           className: 'col2',
           render: (h, params) => {
             return h('div', [
-              h('p', {}, this.list[params.index].organizeNameCn ),
-              h('p', {}, this.list[params.index].userEmail )
+              h('p', {}, this.list[params.index].organizeNameCn),
+              h('p', {}, this.list[params.index].userEmail)
             ])
           }
         },
@@ -151,15 +151,15 @@ export default {
               h('Icon', {
                 props: {
                   type: 'md-alert',
-                  size: "17"
+                  size: '17'
                 },
                 style: {
                   color: '#f00',
                   margin: '0 5px 0 0',
-                  display: this.list[params.index].levelType === 2 ? "inline-block" : "none"
+                  display: this.list[params.index].levelType === 2 ? 'inline-block' : 'none'
                 }
-              }, ),
-              h('span', {}, this.DATAS.RECORD_DOMAIN_EVENT_TYPE[this.list[params.index].type] )
+              }, ''),
+              h('span', {}, this.DATAS.RECORD_DOMAIN_EVENT_TYPE[this.list[params.index].type])
             ])
           }
         },
@@ -212,15 +212,15 @@ export default {
       console.log(result)
       // 返回 参数 处理
       this.asideFilterResult.allSuffix = result.dataDomainSuffix.checkAll ? 1 : ''
-      this.asideFilterResult.otherSuffix = (!result.dataDomainSuffix.checkAll && result.dataDomainSuffix.value.indexOf('otherSuffix') >=0) ? 1 : ''
-      this.asideFilterResult.domainSuffixs = (!result.dataDomainSuffix.checkAll && result.dataDomainSuffix.value.indexOf('otherSuffix') < 0) ? result.dataDomainSuffix.value.join(",") : ''
-      this.asideFilterResult.groupIds = result.dataMgmtCompany.reduce((pre, cur)=>{
+      this.asideFilterResult.otherSuffix = (!result.dataDomainSuffix.checkAll && result.dataDomainSuffix.value.indexOf('otherSuffix') >= 0) ? 1 : ''
+      this.asideFilterResult.domainSuffixs = (!result.dataDomainSuffix.checkAll && result.dataDomainSuffix.value.indexOf('otherSuffix') < 0) ? result.dataDomainSuffix.value.join(',') : ''
+      this.asideFilterResult.groupIds = result.dataMgmtCompany.reduce((pre, cur) => {
         return pre.concat(cur)
-      }, []).join(",")
-      this.asideFilterResult.importantFlag = result.dataSafe[0].join(",")
-      this.asideFilterResult.renewFlag = result.dataSafe[1].join(",")
-      this.asideFilterResult.backendLockFlag = result.dataSafe[2].join(",")
-      this.asideFilterResult.updateFlag = result.dataSafe[3].join(",")
+      }, []).join(',')
+      this.asideFilterResult.importantFlag = result.dataSafe[0].join(',')
+      this.asideFilterResult.renewFlag = result.dataSafe[1].join(',')
+      this.asideFilterResult.backendLockFlag = result.dataSafe[2].join(',')
+      this.asideFilterResult.updateFlag = result.dataSafe[3].join(',')
       console.log(this.asideFilterResult)
       // 加载数据
       this.queryList(this.queryListParam({pageNum: 1}))
@@ -245,12 +245,12 @@ export default {
       let params = {
         param: {
           pageNum: obj.pageNum,
-          pageSize: 20,
+          pageSize: 20
         },
         callback: (response) => {
           this.loadingBtn = false
           this.loadingTable = false
-          if (response.data.code === '1000'){
+          if (response.data.code === '1000') {
             this.list = response.data.data.list
             this.page.pageItems = response.data.data.totalNum
           } else {
@@ -273,7 +273,7 @@ export default {
       callback: (response) => {
         this.loadingTable = false
         this.loadingBtn = false
-        if (response.data.code === '1000'){
+        if (response.data.code === '1000') {
           this.listTop = response.data.data.list
         } else {
         }

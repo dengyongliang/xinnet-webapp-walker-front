@@ -21,8 +21,6 @@
 </template>
 
 <script>
-import * as links from '../global/linkdo.js'
-// import * as links from '../global/linkdo_json.js'
 export default {
   name: 'compImgUpload',
   props: {
@@ -113,13 +111,13 @@ export default {
     handleFormatError (file) {
       this.$Notice.warning({
         title: '文件格式错误',
-        desc: '文件 ' + file.name + ' 格式错误, 请上传jpg、gif、png格式，'+this.size+'KB 以内。'
+        desc: '文件 ' + file.name + ' 格式错误, 请上传jpg、gif、png格式，' + this.size + 'KB 以内。'
       })
     },
     handleMaxSize (file) {
       this.$Notice.warning({
         title: '文件过大',
-        desc: '文件  ' + file.name + ' 体积大于 '+this.size+'KB。'
+        desc: '文件  ' + file.name + ' 体积大于 ' + this.size + 'KB。'
       })
     },
     handleBeforeUpload (file) {
@@ -137,7 +135,7 @@ export default {
         }
       }
       return check
-    },
+    }
   },
   beforeMount () {
     if (this.status === 'view') {
@@ -153,7 +151,7 @@ export default {
       this.uploadList = [
         {
           percentage: 100,
-          status: "finished",
+          status: 'finished',
           uid: '',
           url: val
         }

@@ -278,3 +278,6 @@ export const QUERY_DOMAIN_CONSUMPTION_COMPANY_SORT_REPORT = api + '/client-api/c
 export const QUERY_DOMAIN_CONSUMPTION_COMPANY_MONTH_REPORT = api + '/client-api/client/report/domainConsumptionCompanyMonthReport'
 // 域名消费报告-域名企业消费总览
 export const QUERY_DOMAIN_CONSUMPTION_COMPANY_REPORT = api + '/client-api/client/report/domainConsumptionCompanyReport'
+
+// 结算
+export const ORDER_PAYMENT = api + '/client-api/client/order/orderPayment'

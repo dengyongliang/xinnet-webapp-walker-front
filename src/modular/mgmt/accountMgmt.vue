@@ -27,7 +27,7 @@
   <!-- 添加员工 抽屉 -->
   Drawer(:closable="true", width="640", v-model="drawerAddStaff", title="添加员工", :mask-closable="maskClosable", @on-visible-change="drawerChange")
     comp-account-add-staff(
-      v-if="refresh && drawerAddStaff",
+      v-if="drawerAddStaff",
       :on-close="closeDrawer"
     )
 
@@ -38,7 +38,7 @@
         span （{{staffData.userCode}}）
       p {{staffData.userTitle}}
     comp-account-detail-staff(
-      v-if="refresh && drawerDetailStaff",
+      v-if="drawerDetailStaff",
       :on-close="closeDrawer",
       :staffData="staffData"
     )
@@ -76,7 +76,7 @@ export default {
           render: (h, params) => {
             return h('div', [
               h('span', {
-              }, this.list[params.index].userName + '(' + this.list[params.index].userCode + ')' )
+              }, this.list[params.index].userName + '(' + this.list[params.index].userCode + ')')
             ])
           }
         },
@@ -153,17 +153,17 @@ export default {
   },
   methods: {
     searchUserData () {
-      this.queryUserList(this.queryParam({pageNum:1}))
+      this.queryUserList(this.queryParam({pageNum: 1}))
     },
     addStaff () {
       this.drawerAddStaff = true
     },
     pageChange: function (curPage) {
       // 根据当前页获取数据
-      this.queryUserList(this.queryParam({pageNum:curPage}))
+      this.queryUserList(this.queryParam({pageNum: curPage}))
     },
-    getCheckedNodes($tree){
-      let checkedArray = $tree.getCheckedAndIndeterminateNodes().map((val,idx,arr) => {
+    getCheckedNodes ($tree) {
+      let checkedArray = $tree.getCheckedAndIndeterminateNodes().map((val, idx, arr) => {
         return val.title
       })
       if (!checkedArray.length) {
@@ -175,45 +175,41 @@ export default {
       this.drawerAddStaff = false
     },
     drawerChange () {
-      if (this.drawerAddStaff || this.drawerDetailStaff) {
-        this.refresh = true
-      } else {
-        this.refresh = false
+      if (!this.drawerAddStaff && !this.drawerDetailStaff) {
         this.searchUserData()
       }
     },
     companyChange () {
-      let companyId = this.getCheckedNodes(this.$refs.Tree).slice(1).join(",")
-      this.queryUserList( this.queryParamCompany({pageNum:1,companyId:companyId}) )
+      let companyId = this.getCheckedNodes(this.$refs.Tree).slice(1).join(',')
+      this.queryUserList(this.queryParamCompany({pageNum: 1, companyId: companyId}))
     },
     domainGroupChange () {
       let domainCompanyId = []
       let domainGroupId = []
       this.getCheckedNodes(this.$refs.Tree2).slice(1).forEach((item, index, array) => {
-        if (item.split("_")[1] === 'domainCompanyId') {
-          domainCompanyId.push(item.split("_")[0])
+        if (item.split('_')[1] === 'domainCompanyId') {
+          domainCompanyId.push(item.split('_')[0])
         } else {
-          domainGroupId.push(item.split("_")[0])
+          domainGroupId.push(item.split('_')[0])
         }
       })
-      this.queryUserList( this.queryParamDomainGroup({pageNum:1, domainCompanyId:domainCompanyId.join(","), domainGroupId:domainGroupId.join(",")}) )
+      this.queryUserList(this.queryParamDomainGroup({pageNum: 1, domainCompanyId: domainCompanyId.join(','), domainGroupId: domainGroupId.join(',')}))
     },
     queryParam (obj) {
       this.page.pageNo = obj.pageNum
-      let vm = this
       let params = {
         param: {
           pageNum: obj.pageNum,
           pageSize: 20,
           userCode: this.value
         },
-        callback: function(response){
-          if (response.data.code === '1000'){
-            vm.list = response.data.data.list
-            vm.page.pageItems = response.data.data.totalNum
+        callback: (response) => {
+          if (response.data.code === '1000') {
+            this.list = response.data.data.list
+            this.page.pageItems = response.data.data.totalNum
           } else {
             if (response.data.code === '900') {
-              vm.$Message.error('查询失败')
+              this.$Message.error('查询失败')
             }
           }
         }
@@ -222,19 +218,18 @@ export default {
     },
     queryParamCompany (obj) {
       this.page.pageNo = obj.pageNum
-      let vm = this
       let params = {
         param: {
           pageNum: obj.pageNum,
           pageSize: 20,
           companyId: obj.companyId
         },
-        callback: function(response){
-          if (response.data.code === '1000'){
-            vm.list = response.data.data.list
-            vm.page.pageItems = response.data.data.totalNum
+        callback: (response) => {
+          if (response.data.code === '1000') {
+            this.list = response.data.data.list
+            this.page.pageItems = response.data.data.totalNum
           } else {
-            vm.$Message.error('查询失败')
+            this.$Message.error('查询失败')
           }
         }
       }
@@ -242,7 +237,6 @@ export default {
     },
     queryParamDomainGroup (obj) {
       this.page.pageNo = obj.pageNum
-      let vm = this
       let params = {
         param: {
           pageNum: obj.pageNum,
@@ -250,18 +244,18 @@ export default {
           domainCompanyId: obj.domainCompanyId,
           domainGroupId: obj.domainGroupId
         },
-        callback: function(response){
-          if (response.data.code === '1000'){
-            vm.list = response.data.data.list
-            vm.page.pageItems = response.data.data.totalNum
+        callback: (response) => {
+          if (response.data.code === '1000') {
+            this.list = response.data.data.list
+            this.page.pageItems = response.data.data.totalNum
           } else {
-            vm.$Message.error('查询失败')
+            this.$Message.error('查询失败')
           }
         }
       }
       return params
     },
-    renderContent(h, { root, node, data }){
+    renderContent (h, { root, node, data }) {
       return h(
         'span', {
           style: {
@@ -269,8 +263,8 @@ export default {
             margin: '0 0 0 25px',
             'line-height': '14px'
           },
-          on:{
-            click:(e)=>{
+          on: {
+            click: (e) => {
             }
           }
         },
@@ -312,7 +306,7 @@ export default {
           userCode: userCode
         },
         callback: (response) => {
-          if( response.data.code === '1000' ){
+          if (response.data.code === '1000') {
             this.staffData = response.data.data
             this.drawerDetailStaff = true
           } else {
@@ -333,24 +327,23 @@ export default {
         content: '<p>请确认是否要删除此员工！</p>',
         loading: true,
         onOk: () => {
-          let vm = this
           let params = {
             param: {
               userCode: userCode
             },
-            callback: function (response) {
-              vm.$Modal.remove()
-              if( response.data.code === '1000' ){
-                vm.$Message.success('删除成功')
+            callback: (response) => {
+              this.$Modal.remove()
+              if (response.data.code === '1000') {
+                this.$Message.success('删除成功')
                 // 删除成功，重新加载用户列表数据
-                vm.searchUserData()
+                this.searchUserData()
               } else {
                 if (response.data.code === '200') {
-                  vm.$Message.error('用户不存在')
+                  this.$Message.error('用户不存在')
                 } else if (response.data.code === '300') {
-                  vm.$Message.error('用户被锁定')
+                  this.$Message.error('用户被锁定')
                 } else {
-                  vm.$Message.error('操作失败')
+                  this.$Message.error('操作失败')
                 }
               }
             }
@@ -396,13 +389,13 @@ export default {
           })
           len = array[0].children.length
           // 查找存在分组数据
-          for (var i=0; i<len; i++) {
+          for (var i = 0; i < len; i++) {
             let v = array[0].children[i]
             if (v.children.length) {
               array2.push(v)
             }
           }
-          if (array2.length>0) {
+          if (array2.length > 0) {
             array[0].children = array2
           } else {
             array = []
@@ -413,19 +406,18 @@ export default {
     })
   },
   beforeMount () {
-    this.queryUserList(this.queryParam({pageNum:1}))
-    let vm = this
+    this.queryUserList(this.queryParam({pageNum: 1}))
     let params = {
       param: {},
       callback: (response) => {
-        if (response.data.code === '1000'){
+        if (response.data.code === '1000') {
           this.userCompanys.push({
             title: response.data.data.id,
             label: response.data.data.name,
             expand: true,
             checked: false,
             userCount: response.data.data.userCount,
-            children:[]
+            children: []
           })
           if (response.data.data.companys && response.data.data.companys.length) {
             response.data.data.companys.forEach((item, index, array) => {
@@ -435,7 +427,7 @@ export default {
                 expand: true,
                 checked: false,
                 userCount: item.userCount,
-                children:[]
+                children: []
               })
             })
           }
@@ -451,7 +443,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
 .contAccountMgmt .secMain{
   background:none;
 }
@@ -471,6 +463,25 @@ export default {
 }
 .contAccountMgmt .ivu-page{
   padding-top:20px;
+}
+.drawerDetailStaff .ivu-drawer-header{
+  line-height:30px;
+}
+.drawerDetailStaff .ivu-drawer-header strong{
+  font-weight:200;
+  font-size: 18px;
+  color: #fff;
+  display: block;
+  padding-top: 20px;
+}
+.drawerDetailStaff .ivu-drawer-header strong span{
+  font-size: 12px;
+  color: #fff;
+}
+.drawerDetailStaff .ivu-drawer-header p{
+  font-size: 12px;
+  color: #fff;
+  font-weight:200;
 }
 
 </style>

@@ -55,7 +55,7 @@ export default {
     return {
       value: '',
       errorText: '',
-      showError: false,
+      showError: false
     }
   },
   computed: {
@@ -68,12 +68,12 @@ export default {
   },
   methods: {
     showErrorParent (errText) {
-      if (typeof this.onErrorparent !=='undefined') {
+      if (typeof this.onErrorparent !== 'undefined') {
         this.onErrorparent(errText)
       }
     },
     hideErrorParent () {
-      if (typeof this.onFocusparent !=='undefined') {
+      if (typeof this.onFocusparent !== 'undefined') {
         this.onFocusparent()
       }
     },
@@ -82,12 +82,11 @@ export default {
       this.errorText = v.text
     },
     onFocus (e) {
-      this.errorText = '',
+      this.errorText = ''
       this.showError = false
       this.hideErrorParent()
     },
     onBlur (e) {
-      let vm = this
       let val = this.value
       let name = this.name
       if (val !== '') {

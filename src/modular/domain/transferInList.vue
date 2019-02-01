@@ -32,7 +32,7 @@
   <!-- 提交转入 抽屉 -->
   Drawer(:closable="true", width="650", v-model="drawerTransferIn", title="提交转入", :mask-closable="maskClosable", @on-visible-change="drawerChange",)
     comp-domain-transfer-in(
-      v-if="refresh",
+      v-if="drawerTransferIn",
       :on-close="closeDrawer"
     )
 </template>
@@ -59,11 +59,17 @@ export default {
         {
           title: '提交时间',
           key: 'createTime',
-          className: 'col1'
+          className: 'col1',
+          render: (h, params) => {
+            return h('div', [
+              h('span', {
+              }, moment(this.list[params.index].createTime).format('YYYY-MM-DD HH:mm:ss'))
+            ])
+          }
         },
         {
           title: '转入完成时间',
-          key: 'tansferInTime',
+          key: 'transferInTime',
           className: 'col2'
         },
         {
@@ -76,37 +82,35 @@ export default {
           key: 'transferStatus',
           className: 'col4',
           render: (h, params) => {
-            if (this.list[params.index].transferStatus===4) {
+            if (this.list[params.index].transferStatus === 4) {
               return h('Tooltip', {
+                props: {
+                  content: this.list[params.index].transferFaildReason,
+                  placement: 'top'
+                }
+              },
+              [
+                h('Icon', {
                   props: {
-                    content: '转入失败，已退款',
-                    placement: "top"
+                    custom: 'i-icon i-icon-tips',
+                    size: '16'
+                  },
+                  style: {
+                    margin: '0 5px 0 0',
+                    color: '#48affe'
                   }
-                },
-                [
-                  h('Icon', {
-                    props: {
-                      custom: 'i-icon i-icon-tips',
-                      size: "16"
-                    },
-                    style: {
-                      margin: "0 5px 0 0",
-                      color: "#48affe"
-                    }
-                  }),
-                  h('a', {
-                    props: {
-                      href: ''
-                    },
-                    style: {
-                      color: "#f00"
-                    }
-                  }, this.DATAS.DOMAIN_TRANSFER_STATUS[this.list[params.index].transferStatus])
-                ]
-              )
+                }),
+                h('a', {
+                  props: {
+                    href: ''
+                  },
+                  style: {
+                    color: '#f00'
+                  }
+                }, this.DATAS.DOMAIN_TRANSFER_STATUS[this.list[params.index].transferStatus])
+              ])
             }
-
-            if (this.list[params.index].transferStatus!==4) {
+            if (this.list[params.index].transferStatus !== 4) {
               return h('div', [
                 h('a', {
                   props: {
@@ -140,7 +144,6 @@ export default {
       this.drawerTransferIn = false
     },
     drawerChange () {
-      this.refresh = this.drawerTransferIn ? true : false
     },
     queryListParam (obj) {
       this.page.pageNo = obj.pageNum
@@ -159,7 +162,7 @@ export default {
         callback: (response) => {
           this.loadingBtn = false
           this.loadingTable = false
-          if (response.data.code === '1000'){
+          if (response.data.code === '1000') {
             this.list = response.data.data.list
             this.page.pageItems = response.data.data.totalNum
           } else {
@@ -183,7 +186,7 @@ export default {
   beforeMount () {
   },
   mounted () {
-    this.statusList = function (vm) {
+    this.statusList = (function (vm) {
       let array = [{
         label: '全部',
         value: ''
@@ -195,7 +198,7 @@ export default {
         })
       }
       return array
-    }(this)
+    })(this)
     this.queryTransferInList(this.queryListParam({pageNum: 1}))
   }
 }

@@ -8,8 +8,6 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
-import * as types from '@/store/types'
 import compCompanyDetailInfo from './compCompanyDetailInfo'
 import compCompanyDetailGroup from './compCompanyDetailGroup'
 export default {
@@ -45,7 +43,7 @@ export default {
   },
   methods: {
     baseInfo (obj) {
-      this.$emit('resetDetailData',obj)
+      this.$emit('resetDetailData', obj)
     }
   },
   computed: {
@@ -55,7 +53,7 @@ export default {
   mounted () {
     this.value = this.detailData.tabIdx
     this.groupData = this.detailData.groups.map((v) => {
-      v.status = "view"
+      v.status = 'view'
       return v
     })
   },

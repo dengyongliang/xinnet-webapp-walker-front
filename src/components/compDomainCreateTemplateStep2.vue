@@ -10,7 +10,6 @@
     span(v-if="templateData.verifyStatus===3", style="color:#f00") 审核拒绝
     p.reason(v-if="templateData.verifyStatus===3") 审核失败原因：{{templateData.faildReason}}
 
-
   Form(:label-width="180")
     FormItem(label="模板名称：")
       span.text {{templateData.templateName}}
@@ -24,7 +23,6 @@
     FormItem(label="域名所有者证件号码：", v-if="type==='view'")
       span.text {{templateData.fileCode}}
 
-
     FormItem(label="域名所有者类型：", required, v-if="type!=='view'")
       comp-radio(:list="registrantTypeList", :onParentmethod="changeRegistrantType", ref="registrantType", :defaultValue="(type!=='create'?templateData.registrantType:'I')")
       Tooltip(placement="top-start")
@@ -36,6 +34,7 @@
     FormItem(label="域名所有者证件号码：", required, v-if="type!=='view'")
       comp-input(name='idCode',label="域名所有者证件号码",ref="idCode",styles="width:300px",:maxLength="100", :defaultValue="(type!=='create'?templateData.fileCode:'')")
     FormItem(label="域名所有人证件扫描件：", required, v-if="type!=='view'")
+
       comp-img-upload(:status="status",ref="upfile",name="upfile",errorText="请上传证件扫描件！",tips="支持jpg、jpge格式，图片需大于50k，小于1M",:uploadAction="uploadAction", :on-beforecallback="changeUploadStatus", :showCover="showCover", :modify="modify", creatText="点击上传", )
         p(slot="unit") 请确保上传的<span style="color:#f00">证件图片与证件类型及证件号码完全一致</span>；若不一致将会导致域名实名不通过
         p.example(slot="last")
@@ -47,7 +46,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
+import {mapActions} from 'vuex'
 import * as types from '@/store/types'
 import compInput from './compInput'
 import compSelect from './compSelect'
@@ -93,7 +92,7 @@ export default {
   },
   data () {
     return {
-      value:'',
+      value: '',
       loadingBtn: false,
       uploadAction: links.UPLOAD_FILE_TEMPLATE,
       registrantType: 'I',
@@ -108,7 +107,7 @@ export default {
         }
       ],
       idTypeListI: [],
-      idTypeListE: [],
+      idTypeListE: []
     }
   },
   methods: {
@@ -124,7 +123,7 @@ export default {
       this.loadingBtn = true
       let result = validateFormResult([
         this.$refs.registrantType,
-        this.$refs['idType'+this.$refs.registrantType.value],
+        this.$refs['idType' + this.$refs.registrantType.value],
         this.$refs.idCode,
         this.$refs.upfile
       ])
@@ -139,16 +138,16 @@ export default {
           },
           callback: (response) => {
             this.loadingBtn = false
-            if (response.data.code === '1000'){
+            if (response.data.code === '1000') {
               this.$Message.success('模板资料提交成功')
-              this.$emit("refreshData")
+              this.$emit('refreshData')
             } else {
               this.$Message.error('模板资料提交失败')
             }
           }
         }
 
-        if (this.$refs.registrantType.value==='I') {
+        if (this.$refs.registrantType.value === 'I') {
           params.param.idType = this.$refs.idTypeI.value
         } else {
           params.param.idType = this.$refs.idTypeE.value
@@ -167,7 +166,7 @@ export default {
 
   },
   beforeMount () {
-    this.idTypeListI = function (vm) {
+    this.idTypeListI = (function (vm) {
       let array = []
       for (var i in vm.DATAS.REGISTRANT_ID_TYPE_I) {
         array.push({
@@ -176,8 +175,8 @@ export default {
         })
       }
       return array
-    }(this)
-    this.idTypeListE = function (vm) {
+    })(this)
+    this.idTypeListE = (function (vm) {
       let array = []
       for (var i in vm.DATAS.REGISTRANT_ID_TYPE_E) {
         array.push({
@@ -186,7 +185,7 @@ export default {
         })
       }
       return array
-    }(this)
+    })(this)
   },
   mounted () {
   },

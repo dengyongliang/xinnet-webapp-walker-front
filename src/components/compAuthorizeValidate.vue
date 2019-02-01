@@ -12,10 +12,9 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
+import {mapActions} from 'vuex'
 import * as types from '@/store/types'
 import compInput from './compInput'
-import validateFormResult from '@/global/validateForm'
 export default {
   components: {
     compInput
@@ -31,7 +30,7 @@ export default {
     },
     onClose: {
       type: Function
-    },
+    }
   },
   data () {
     return {
@@ -47,7 +46,7 @@ export default {
         },
         callback: (response) => {
           this.loadingBtn = false
-          if( response.data.code === '1000' ){
+          if (response.data.code === '1000') {
             this.$Message.success('发送成功')
           } else {
             if (response.data.code === '300') {
@@ -62,7 +61,7 @@ export default {
       this.getDomainMgmtVCode(params)
     },
     submitForm () {
-      this.$emit("parentEvent", this.$refs.verificationCode.value)
+      this.$emit('parentEvent', this.$refs.verificationCode.value)
     },
     ...mapActions({
       getDomainMgmtVCode: types.GET_DOMAIN_MGMT_V_CODE

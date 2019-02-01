@@ -53,7 +53,6 @@ div.list
 <script>
 import { mapState, mapActions } from 'vuex'
 import * as types from '@/store/types'
-import compInput from '@/components/compInput'
 import compCompanyDetail from '@/components/compCompanyDetail'
 export default {
   components: {
@@ -98,17 +97,17 @@ export default {
     },
     showCompanyDetail (id, tabIdx) {
       let params = {
-        param:{
+        param: {
           companyId: id
         },
         callback: (response) => {
           this.loadingBtn = false
-          if (response.data.code === '1000'){
+          if (response.data.code === '1000') {
             this.companyDetailData = response.data.data
             if (typeof tabIdx !== 'undefined') {
               this.companyDetailData.tabIdx = tabIdx
             } else {
-              this.companyDetailData.tabIdx = "name1"
+              this.companyDetailData.tabIdx = 'name1'
             }
             this.drawerCompanyDetail = true
           } else {
@@ -130,7 +129,7 @@ export default {
             },
             callback: (response) => {
               this.$Modal.remove()
-              if (response.data.code === '1000'){
+              if (response.data.code === '1000') {
                 this.$Message.success('企业删除成功')
                 this.$emit('refreshData')
               } else {

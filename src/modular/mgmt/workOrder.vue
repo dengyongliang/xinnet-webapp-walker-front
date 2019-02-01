@@ -15,7 +15,7 @@
   <!-- 提交工单 抽屉 -->
   Drawer(:closable="true", width="640", v-model="drawerWorkOrderSubmit", title="提交工单", :mask-closable="maskClosable", @on-visible-change="drawerChange")
     comp-work-order-submit(
-      v-if="refresh",
+      v-if="drawerWorkOrderSubmit",
       :on-close="closeDrawer",
       @refreshData="searchListData"
     )
@@ -23,7 +23,7 @@
   <!-- 详情工单 抽屉 -->
   Drawer(:closable="true", width="640", v-model="drawerWorkOrderDetail", title="工单详情", :mask-closable="maskClosable", @on-visible-change="drawerChange")
     comp-work-order-detail(
-      v-if="refresh",
+      v-if="drawerWorkOrderDetail",
       :on-close="closeDrawer",
       :orderData = "orderDetailInfo"
     )
@@ -56,7 +56,7 @@ export default {
         {
           title: '用户ID',
           key: 'userId',
-          className: 'col3',
+          className: 'col3'
         },
         {
           title: '问题类型',
@@ -142,19 +142,17 @@ export default {
       this.drawerWorkOrderSubmit = false
     },
     drawerChange () {
-      this.refresh = (this.drawerWorkOrderSubmit || this.drawerWorkOrderDetail) ? true : false
     },
     showDetail (id) {
-      let vm = this
       let params = {
         param: {
           id: id
         },
-        callback: function(response){
-          if (response.data.code === '1000'){
-            vm.orderDetailInfo = response.data.data
+        callback: (response) => {
+          if (response.data.code === '1000') {
+            this.orderDetailInfo = response.data.data
           } else {
-            vm.$Message.error('查询失败')
+            this.$Message.error('查询失败')
           }
         }
       }
@@ -166,21 +164,20 @@ export default {
       this.loadingBtn = true
       this.loadingTable = true
 
-      let vm = this
       let params = {
         param: {
           pageNum: obj.pageNum,
           pageSize: 20
         },
-        callback: function(response){
-          vm.loadingBtn = false
-          vm.loadingTable = false
-          if (response.data.code === '1000'){
-            vm.list = response.data.data.list
-            vm.page.pageItems = response.data.data.totalNum
+        callback: (response) => {
+          this.loadingBtn = false
+          this.loadingTable = false
+          if (response.data.code === '1000') {
+            this.list = response.data.data.list
+            this.page.pageItems = response.data.data.totalNum
           } else {
             if (response.data.code === '900') {
-              vm.$Message.error('查询失败')
+              this.$Message.error('查询失败')
             }
           }
         }

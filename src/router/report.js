@@ -7,7 +7,7 @@ export default {
   children: [
     {
       path: '/',
-      name: 'REPORT_CENTER',
+      name: 'report_center',
       component (resolve) {
         return require(['@/modular/report/center'], resolve)
       },
@@ -17,7 +17,7 @@ export default {
     },
     {
       path: 'own',
-      name: 'REPORT_OWN',
+      name: 'report_own',
       component (resolve) {
         return require(['@/modular/report/own'], resolve)
       },
@@ -27,7 +27,7 @@ export default {
     },
     {
       path: 'assets',
-      name: 'REPORT_ASSETS',
+      name: 'report_assets',
       component (resolve) {
         return require(['@/modular/report/assets'], resolve)
       },
@@ -37,7 +37,7 @@ export default {
     },
     {
       path: 'budget',
-      name: 'budget',
+      name: 'report_budget',
       component (resolve) {
         return require(['@/modular/report/budget'], resolve)
       },
@@ -48,7 +48,7 @@ export default {
     },
     {
       path: 'spending',
-      name: 'REPORT_SPENDING',
+      name: 'report_spending',
       component (resolve) {
         return require(['@/modular/report/spending'], resolve)
       },

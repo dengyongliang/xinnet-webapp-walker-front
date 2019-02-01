@@ -61,7 +61,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
+import {mapActions} from 'vuex'
 import * as types from '@/store/types'
 import compRadio from './compRadio'
 import compSelect from './compSelect'
@@ -80,29 +80,29 @@ export default {
       rangeList: [
         {
           value: '仅通知域名所在分组负责人',
-          label: "1"
+          label: '1'
         },
         {
           value: '通知域名所在分组全部管理人员',
-          label: "2"
+          label: '2'
         }
       ],
       wayList: [
         {
           label: '不通知',
-          value: "1"
+          value: '1'
         },
         {
           label: '短信通知',
-          value: "2"
+          value: '2'
         },
         {
           label: '邮件通知',
-          value: "3"
+          value: '3'
         },
         {
           label: '短信和邮件通知',
-          value: "4"
+          value: '4'
         }
       ]
     }
@@ -111,37 +111,37 @@ export default {
     saveForm () {
       let params = {
         param: {
-          notifyInfo: function (vm) {
+          notifyInfo: (function (vm) {
             let arr = []
-            for(var i=1; i<=9; i++ ) {
-              if (i===5) {
+            for (var i = 1; i <= 9; i++) {
+              if (i === 5) {
                 arr.push({
                   type: i,
                   way: vm.$refs.way4.value * 1,
-                  range: vm.$refs.way4.value * 1,
+                  range: vm.$refs.way4.value * 1
                 })
-              } else if (i===7) {
+              } else if (i === 7) {
                 arr.push({
                   type: i,
                   way: vm.$refs.way6.value * 1,
-                  range: vm.$refs.way6.value * 1,
+                  range: vm.$refs.way6.value * 1
                 })
               } else {
                 arr.push({
                   type: i,
-                  way: vm.$refs['way'+i].value * 1,
-                  range: vm.$refs['range'+i].value * 1
+                  way: vm.$refs['way' + i].value * 1,
+                  range: vm.$refs['range' + i].value * 1
                 })
               }
             }
             return arr
-          }(this)
+          })(this)
         },
         callback: (response) => {
           this.loadingBtn = false
-          if( response.data.code === '1000' ){
+          if (response.data.code === '1000') {
             this.$Message.success('保存成功')
-            this.$emit("refreshData")
+            this.$emit('refreshData')
           } else {
           }
         }
@@ -150,7 +150,7 @@ export default {
       this.setNotify(params)
     },
     getIdxItem (v) {
-      return this.notifyDetail.findIndex((item)=>(item.notifyType === v))
+      return this.notifyDetail.findIndex((item) => (item.notifyType === v))
     },
     ...mapActions({
       setNotify: types.SET_NOTIFY,
@@ -164,7 +164,7 @@ export default {
       param: {},
       callback: (response) => {
         this.loadingBtn = false
-        if( response.data.code === '1000' ){
+        if (response.data.code === '1000') {
           this.notifyDetail = response.data.data.list
         } else {
         }

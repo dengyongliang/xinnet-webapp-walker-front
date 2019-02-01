@@ -25,14 +25,14 @@ export default {
       let myChart = this.$echarts.init(document.getElementById('myChart1'))
       // 绘制图表
       myChart.setOption({
-        title : {
+        title: {
           text: '',
           subtext: '',
-          x:'center'
+          x: 'center'
         },
-        tooltip : {
+        tooltip: {
           trigger: 'item',
-          formatter: "{b} : {c} ({d}%)"
+          formatter: '{b} : {c} ({d}%)'
         },
         legend: {
           orient: 'vertical',
@@ -40,19 +40,19 @@ export default {
           top: 'center',
           itemWidth: 10,
           itemHeight: 10,
-          data:['新域名注册','域名续费','域名安全保护','域名回购']
+          data: ['新域名注册', '域名续费', '域名安全保护', '域名回购']
         },
-        series : [
+        series: [
           {
             name: '域名预算',
             type: 'pie',
-            radius : '85%',
+            radius: '85%',
             center: ['40%', '50%'],
-            data:[
-                {value: datas.registerMoney, name: '新域名注册'},
-                {value: datas.renewMoney, name: '域名续费'},
-                {value: datas.safeMoney, name: '域名安全保护'},
-                {value: datas.repurchaseMoney, name: '域名回购'}
+            data: [
+              {value: datas.registerMoney, name: '新域名注册'},
+              {value: datas.renewMoney, name: '域名续费'},
+              {value: datas.safeMoney, name: '域名安全保护'},
+              {value: datas.repurchaseMoney, name: '域名回购'}
             ],
             label: {
               normal: {
@@ -62,9 +62,9 @@ export default {
               }
             },
             labelLine: {
-                normal: {
-                    show: false
-                }
+              normal: {
+                show: false
+              }
             },
             itemStyle: {
               emphasis: {

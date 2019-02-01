@@ -25,11 +25,11 @@ export default {
       let myChart = this.$echarts.init(document.getElementById('myChart4'))
       // 绘制图表
       myChart.setOption({
-        tooltip : {
-            trigger: 'axis',
-            axisPointer : {            // 坐标轴指示器，坐标轴触发有效
-                type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
-            }
+        tooltip: {
+          trigger: 'axis',
+          axisPointer: {
+            type: 'shadow'
+          }
         },
         legend: {
           top: '95%',
@@ -38,18 +38,18 @@ export default {
           })
         },
         grid: {
-            top: '5%',
-            left: '3%',
-            right: '4%',
-            bottom: '10%',
-            containLabel: true
+          top: '5%',
+          left: '3%',
+          right: '4%',
+          bottom: '10%',
+          containLabel: true
         },
-        xAxis:  {
-            type: 'category',
-            data: datas.companyNameList
+        xAxis: {
+          type: 'category',
+          data: datas.companyNameList
         },
         yAxis: {
-            type: 'value'
+          type: 'value'
         },
         series: datas.goodTypeList.map((v) => {
           return {
@@ -57,10 +57,10 @@ export default {
             type: 'bar',
             stack: '总量',
             label: {
-                normal: {
-                    show: true,
-                    position: 'insideRight'
-                }
+              normal: {
+                show: true,
+                position: 'insideRight'
+              }
             },
             data: datas.statisticsMap[v]
           }
@@ -78,7 +78,7 @@ export default {
   },
   watch: {
     charData: {
-      handler(val, oldVal) {
+      handler (val, oldVal) {
         this.drawChart(val)
       },
       deep: true

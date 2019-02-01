@@ -1,6 +1,6 @@
 <template lang="pug">
 .frameTop.clear
-  .logo
+  router-link.logo(to="/")
     img(src="../../static/img/logo.png")
   .right
     Poptip(:title="myUserInfo.userName", content="content <a>sfs</a>", placement="bottom")
@@ -36,7 +36,7 @@
 import { mapState, mapActions } from 'vuex'
 import * as types from '@/store/types'
 import compSwitchClient from '@/components/compSwitchClient'
-//import mixinsWebSocket from '@/mixins/mixinsWebSocket'
+// import mixinsWebSocket from '@/mixins/mixinsWebSocket'
 import { emitter as restEmitter } from '@/global/rest'
 export default {
   components: {
@@ -63,10 +63,10 @@ export default {
     logout () {
       let params = {
         callback: (response) => {
-          if( response.data.code === '1000' ){
+          if (response.data.code === '1000') {
             restEmitter.emit('closeWebSocket')
             this.$Message.success('登出成功')
-            this.$router.replace({ path: '/login' })
+            this.$router.replace({path: '/login'})
           } else {
           }
         }
@@ -99,7 +99,7 @@ export default {
         ]).then((response) => {
           // 获取信息成功
           // 开启websocket
-          //this.initWebSocket(manageCustomerId)
+          // this.initWebSocket(manageCustomerId)
           restEmitter.emit('openWebSocket', manageCustomerId)
         }).catch((error) => {
           console.log(error)

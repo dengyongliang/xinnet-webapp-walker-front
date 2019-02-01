@@ -63,14 +63,14 @@ export default {
                   href: 'javascript:;'
                 },
                 style: {
-                  "display": this.list[params.index].roleCode.indexOf('super') >= 0 ? 'none' : 'inline-block'
+                  'display': this.list[params.index].roleCode.indexOf('super') >= 0 ? 'none' : 'inline-block'
                 },
                 on: {
                   click: () => {
                     this.showDrawerRole({
                       type: 'modify',
                       roleName: this.list[params.index].roleName,
-                      roleId: this.list[params.index].id,
+                      roleId: this.list[params.index].id
                     })
                   }
                 }
@@ -80,7 +80,7 @@ export default {
                   href: 'javascript:;'
                 },
                 style: {
-                  "display": this.list[params.index].roleCode.indexOf('super') >= 0 ? 'none' : 'inline-block'
+                  'display': this.list[params.index].roleCode.indexOf('super') >= 0 ? 'none' : 'inline-block'
                 },
                 on: {
                   click: () => {
@@ -105,11 +105,11 @@ export default {
   methods: {
     searchListData () {
       this.drawerRolesSet = false
-      this.queryRoleList(this.queryParam({pageNum:1}))
+      this.queryRoleList(this.queryParam({pageNum: 1}))
     },
     pageChange: function (curPage) {
       // 根据当前页获取数据
-      this.queryRoleList(this.queryParam({pageNum:curPage}))
+      this.queryRoleList(this.queryParam({pageNum: curPage}))
     },
     showDelRole (roleId) {
       this.$Modal.confirm({
@@ -117,26 +117,25 @@ export default {
         content: '<p>请确认是否要删除此角色！</p>',
         loading: true,
         onOk: () => {
-          let vm = this
           let params = {
             param: {
               roleId: roleId
             },
-            callback: function (response) {
-              vm.$Modal.remove()
-              if( response.data.code === '1000' ){
-                vm.$Message.success('删除成功')
+            callback: (response) => {
+              this.$Modal.remove()
+              if (response.data.code === '1000') {
+                this.$Message.success('删除成功')
                 // 删除成功，重新加载用户列表数据
-                vm.page.pageNo = 1
-                vm.loadingTable = true
-                vm.searchListData()
+                this.page.pageNo = 1
+                this.loadingTable = true
+                this.searchListData()
               } else {
                 if (response.data.code === '100') {
-                  vm.$Message.error('角色下有用户，不可删除')
+                  this.$Message.error('角色下有用户，不可删除')
                 } else if (response.data.code === '200') {
-                  vm.$Message.error('角色不存在')
+                  this.$Message.error('角色不存在')
                 } else {
-                  vm.$Message.error('删除失败')
+                  this.$Message.error('删除失败')
                 }
               }
             }
@@ -155,16 +154,15 @@ export default {
       } else {
         this.drawerT = '修改角色'
       }
-      let vm = this
       let params = {
         param: {
         },
-        callback: function (response) {
+        callback: (response) => {
           let obj = {
             type: paramObj.type,
             roleName: paramObj.roleName,
             roleId: paramObj.roleId,
-            list: vm.GLOBALS.CONVERT_TREE(response.data.data,
+            list: this.GLOBALS.CONVERT_TREE(response.data.data,
               {
                 title: 'id',
                 label: 'menuName',
@@ -173,8 +171,8 @@ export default {
               }
             )
           }
-          vm.rolesData = obj
-          vm.drawerRolesSet = true
+          this.rolesData = obj
+          this.drawerRolesSet = true
         }
       }
       if (paramObj.roleId) {
@@ -197,20 +195,19 @@ export default {
     queryParam (obj) {
       this.page.pageNo = obj.pageNum
       this.loadingTable = true
-      let vm = this
       let params = {
         param: {
           pageNum: obj.pageNum,
           pageSize: 20
         },
-        callback: function(response){
-          vm.loadingTable = false
-          if (response.data.code === '1000'){
-            vm.list = response.data.data.list
-            vm.page.pageItems = response.data.data.totalNum
+        callback: (response) => {
+          this.loadingTable = false
+          if (response.data.code === '1000') {
+            this.list = response.data.data.list
+            this.page.pageItems = response.data.data.totalNum
           } else {
             if (response.data.code === '900') {
-              vm.$Message.error('查询失败')
+              this.$Message.error('查询失败')
             }
           }
         }
@@ -220,7 +217,7 @@ export default {
     ...mapActions({
       queryRoleList: types.QUERY_ROLE_LIST,
       queryRoleMenus: types.QUERY_ROLE_MENUS,
-      roleDelete: types.ROLE_DELETE,
+      roleDelete: types.ROLE_DELETE
     })
   },
   computed: {
@@ -231,7 +228,7 @@ export default {
     })
   },
   beforeMount () {
-    this.queryRoleList(this.queryParam({pageNum:1}))
+    this.queryRoleList(this.queryParam({pageNum: 1}))
   },
   watch: {
   }

@@ -71,7 +71,7 @@
       li.menuItem.lv2(v-if="myUserInfo.keeperFlag || (myUserInfo.userRoles && myUserInfo.userRoles[0].roleCode.indexOf('super')>=0) || menus.indexOf('client_user_roleManage')>=0")
         router-link(to="/mgmt/roles") 角色管理
       li.menuItem.lv2(v-if="myUserInfo.keeperFlag || (myUserInfo.userRoles && myUserInfo.userRoles[0].roleCode.indexOf('super')>=0) || menus.indexOf('client_user_workOrderManage')>=0")
-        router-link(to="/workorder/order") 工单管理
+        router-link(to="/mgmt/workorder") 工单管理
   .menuBox(v-if="myUserInfo.keeperFlag || (myUserInfo.userRoles && myUserInfo.userRoles[0].roleCode.indexOf('super')>=0) || menus.indexOf('client_log')>=0")
     h3.menuT.lv1
       Icon.fontL(custom="i-icon i-icon-diary" size="16")

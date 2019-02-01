@@ -9,20 +9,19 @@ Collapse(v-model="value")
   Panel(name="3") <Icon custom="i-icon iconL i-icon-report1" size="24" />域名预算报告
     ul(slot="content")
       li.clear(v-for="item in budgetList")
-        router-link(tag="a", target="_blank", :to="{path: '/report/budget', query: {reportId: item.id, type: 'budget', start: item.budgetCycleStart, end: item.budgetCycleEnd}}") {{item.budgetCycleStart}} ~ {{item.budgetCycleEnd}} 域名预算报告
-        span.right {{item.modifyTime?item.modifyTime:item.createTime}} 更新
+        router-link(tag="a", target="_blank", :to="{path: '/report/budget', query: {reportId: item.id, type: 'budget', start: item.budgetCycleStart, end: item.budgetCycleEnd}}") {{item.budgetCycleStart | dateformat}} ~ {{item.budgetCycleEnd | dateformat}} 域名预算报告
+        span.right {{item.modifyTime ? item.modifyTime : item.createTime | dateformat}} 更新
 
   Panel(name="4") <Icon custom="i-icon iconL i-icon-report3" size="24" />域名消费报告
     ul(slot="content")
       li.clear(v-for="item in consumptionList")
         router-link(tag="a", target="_blank", :to="{path: '/report/spending', query: {customerId: item.id, type: 'spending', start: item.thisCycle.split('~')[0], end: item.thisCycle.split('~')[1]}}") {{item.thisCycle}} 域名消费报告
-        span.right {{item.payBillDate}} 更新
+        span.right {{item.payBillDate | dateformat}} 更新
 </template>
 
 <script>
-import { mapState, mapActions, mapMutations } from 'vuex'
+import {mapActions} from 'vuex'
 import * as types from '@/store/types'
-
 export default {
   components: {
   },
@@ -48,7 +47,7 @@ export default {
         pageSize: 20
       },
       callback: (response) => {
-        if( response.data.code === '1000' ){
+        if (response.data.code === '1000') {
           this.budgetList = response.data.data.list
         } else {
         }
@@ -61,7 +60,7 @@ export default {
         pageSize: 20
       },
       callback: (response) => {
-        if( response.data.code === '1000' ){
+        if (response.data.code === '1000') {
           this.consumptionList = response.data.data.list
         } else {
         }
@@ -69,7 +68,7 @@ export default {
     }
     this.queryDomainConsumptionReportList(params2)
   },
-  mounted(){
+  mounted () {
   },
   watch: {
   }

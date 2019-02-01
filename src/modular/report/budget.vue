@@ -101,7 +101,7 @@
 </template>
 
 <script>
-import { mapState, mapActions, mapMutations } from 'vuex'
+import {mapActions} from 'vuex'
 import * as types from '@/store/types'
 import compInput from '@/components/compInput'
 import compSelect from '@/components/compSelect'
@@ -118,7 +118,6 @@ export default {
     compChartReportBudgetSafe
   },
   props: {
-    reportId: ''
   },
   data () {
     return {
@@ -151,7 +150,7 @@ export default {
       domainBudget: {},
       renewAndSafe: {},
       register: {},
-      reportId: 0,
+      reportId: null,
       companyName: '',
       start: '',
       end: ''
@@ -180,7 +179,7 @@ export default {
           reportId: this.reportId
         },
         callback: (response) => {
-          if( response.data.code === '1000' ){
+          if (response.data.code === '1000') {
             this.domainBudget = response.data.data
           } else {
           }
@@ -192,7 +191,7 @@ export default {
           reportId: this.reportId
         },
         callback: (response) => {
-          if( response.data.code === '1000' ){
+          if (response.data.code === '1000') {
             this.list = response.data.data.list
           } else {
           }
@@ -204,7 +203,7 @@ export default {
           reportId: this.reportId
         },
         callback: (response) => {
-          if( response.data.code === '1000' ){
+          if (response.data.code === '1000') {
             this.renewAndSafe = response.data.data
           } else {
           }
@@ -217,7 +216,7 @@ export default {
           reportId: this.reportId
         },
         callback: (response) => {
-          if( response.data.code === '1000' ){
+          if (response.data.code === '1000') {
             this.register = response.data.data
             let arr = []
             this.register.newList.forEach((v, i) => {
@@ -257,7 +256,7 @@ export default {
       this.queryDomainRegisterReport(params4)
     }
   },
-  mounted(){
+  mounted () {
   },
   watch: {
   }

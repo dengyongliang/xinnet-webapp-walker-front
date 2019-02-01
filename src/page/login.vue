@@ -24,15 +24,14 @@
             Button(type="primary", @click="submit", :loading="loadingBtn") 立即登录
             a(href="javascript:;" @click="",class="forgetPw") 忘记密码
       .footer
-        span Copyright © 1993-2018<br />北京新网数码信息技术有限公司 版权所有
+        span Copyright © 1993-2019<br />北京新网数码信息技术有限公司 版权所有
 
 </template>
 
 <script>
-import { mapActions, mapMutations } from 'vuex'
+import {mapActions} from 'vuex'
 import * as types from '@/store/types'
 import compInput from '@/components/compInput'
-import validateFormResult from '@/global/validateForm'
 export default {
   components: {
     compInput
@@ -57,7 +56,7 @@ export default {
     },
     getVerificationCode (e) {
       if (this.$refs.account.value === '') {
-        this.$refs.account.showValidateResult({text:''})
+        this.$refs.account.showValidateResult({text: ''})
         this.onShowError('请输入登录名')
         this.loadingBtn = false
         return false
@@ -73,7 +72,7 @@ export default {
             this.success = true
             this.countDown()
           } else if (data.code === '100') {
-            this.$refs.account.showValidateResult({text:'手机号码不存在'})
+            this.$refs.account.showValidateResult({text: '手机号码不存在'})
           } else if (data.code === '200') {
             this.onShowError('获取短信验证码已超上限')
           } else if (data.code === '300') {
@@ -90,84 +89,84 @@ export default {
       let vc = this.$refs.verificationCode.value
       if (!account) {
         this.loadingBtn = false
-        this.$refs.account.showValidateResult({text:''})
+        this.$refs.account.showValidateResult({text: ''})
         this.onShowError('请输入登录名')
         return false
       }
       if (!pw) {
         this.loadingBtn = false
-        this.$refs.password.showValidateResult({text:''})
+        this.$refs.password.showValidateResult({text: ''})
         this.onShowError('请输入密码')
         return false
       }
       if (!vc) {
         this.loadingBtn = false
-        this.$refs.verificationCode.showValidateResult({text:''})
+        this.$refs.verificationCode.showValidateResult({text: ''})
         this.onShowError('请输入验证码')
         return false
       }
       if (vc && vc.length < 6) {
         this.loadingBtn = false
-        this.$refs.verificationCode.showValidateResult({text:''})
+        this.$refs.verificationCode.showValidateResult({text: ''})
         this.onShowError('请输入6位的数字')
         return false
       }
-      let vm = this
       let params = {
         param: {
           account: account,
           password: pw,
           verificationCode: vc
         },
-        callback: function (response) {
+        callback: (response) => {
           let data = response.data
           if (data.code === '1000') {
-            vm.$Message.success('登录成功！')
+            this.$Message.success('登录成功！')
             setTimeout(() => {
               if (data.keeperFlag * 1) {
-                vm.$router.replace({ path: '/client' })
+                this.$router.replace({path: '/client'})
               } else {
-                vm.$router.replace({ path: '/home' })
+                this.$router.replace({path: '/home'})
               }
-            },500)
+            }, 500)
           } else {
-            vm.loadingBtn = false
+            this.loadingBtn = false
             if (data.code === '100') {
-              vm.onShowError('用户不存在')
-              vm.$refs.account.showValidateResult({text:'用户不存在'})
+              this.onShowError('用户不存在')
+              this.$refs.account.showValidateResult({text: '用户不存在'})
             } else if (data.code === '200') {
-              vm.onShowError('用户已登录')
-              vm.$refs.account.showValidateResult({text:'用户已登录'})
+              this.onShowError('用户已登录')
+              this.$refs.account.showValidateResult({text: '用户已登录'})
             } else if (data.code === '300') {
-              vm.onShowError('手机验证码错误')
-              vm.$refs.verificationCode.showValidateResult({text:'手机验证码错误'})
+              this.onShowError('手机验证码错误')
+              this.$refs.verificationCode.showValidateResult({text: '手机验证码错误'})
             } else if (data.code === '400') {
-              vm.onShowError('密码错误')
-              vm.$refs.password.showValidateResult({text:'密码错误'})
+              this.onShowError('密码错误')
+              this.$refs.password.showValidateResult({text: '密码错误'})
             } else if (data.code === '600') {
-              vm.onShowError('用户被锁定')
-              vm.$refs.account.showValidateResult({text:'用户被锁定'})
+              this.onShowError('用户被锁定')
+              this.$refs.account.showValidateResult({text: '用户被锁定'})
             } else if (data.code === '700') {
-              vm.onShowError('用户权限异常')
-              vm.$refs.account.showValidateResult({text:'用户权限异常'})
+              this.onShowError('用户权限异常')
+              this.$refs.account.showValidateResult({text: '用户权限异常'})
             } else if (data.code === '800') {
-              vm.onShowError('非法登录')
-              vm.$refs.account.showValidateResult({text:'非法登录'})
+              this.onShowError('非法登录')
+              this.$refs.account.showValidateResult({text: '非法登录'})
             }
           }
         }
       }
       this.loginSubmit(params)
     },
-    countDown() {
+    countDown () {
       let clock = window.setInterval(() => {
         this.downTime--
-        if (this.downTime < 0) {     //当倒计时小于0时清除定时器
+        // 当倒计时小于0时清除定时器
+        if (this.downTime < 0) {
           window.clearInterval(clock)
           this.success = false
           this.downTime = 60
         }
-      },1000)
+      }, 1000)
     },
     ...mapActions({
       loginSubmit: types.LOGIN_SUBMIT,
@@ -178,7 +177,7 @@ export default {
   },
   beforeMount () {
   },
-  mounted(){
+  mounted () {
   }
 }
 </script>

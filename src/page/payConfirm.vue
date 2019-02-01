@@ -6,16 +6,16 @@
     <!-- 列表主体 -->
     .secTable
       <Table :columns="columns" :data="payConfirmData.jsonObj" :loading="loadingTable"></Table>
-      .total 合计：<em>{{total}}</em>元
-      .readme
+      .total(v-show="payConfirmData.jsonObj.length") 合计：<em>{{total}}</em>元
+      .readme(v-show="payConfirmData.jsonObj.length")
         Checkbox(v-model="readme", @on-change="readmeChange") 我已阅读并同意
         a(href="#") 《域名注册协议》
-    .btn
+    .btn(v-show="payConfirmData.jsonObj.length")
       Button(type="primary", @click="nextForm", :loading="loadingBtn", :disabled="disabled") 下一步
 </template>
 
 <script>
-import { mapState, mapActions, mapMutations } from 'vuex'
+import {mapState} from 'vuex'
 import * as types from '@/store/types'
 import headerBody from '../modular/header'
 export default {
@@ -60,35 +60,44 @@ export default {
           }
         },
         {
-           title: '数量',
-           key: 'action',
-           width: 150,
-           align: 'center',
-           render: (h, params) => {
-            return h('Select',{
-                props:{
+          title: '数量',
+          key: 'action',
+          width: 170,
+          align: 'center',
+          render: (h, params) => {
+            return h('div', [
+              h('Select', {
+                props: {
                   value: this.payConfirmData.jsonObj[params.index].price,
-                  "label-in-value": true
+                  'label-in-value': true
                 },
                 on: {
-                 'on-change':(event) => {
+                  'on-change': (event) => {
                     console.log(event)
                     this.payConfirmData.jsonObj[params.index].num = event.label
                     this.payConfirmData.jsonObj[params.index].price = event.value
-                    this.payConfirmData.jsonObj[params.index].unit = event.value.split("_")[1]
+                    this.payConfirmData.jsonObj[params.index].unit = event.value.split('_')[1]
                     localStorage.setItem('data_pay_confirm', JSON.stringify(this.payConfirmData))
                   }
                 },
+                style: {
+                  'display': this.payConfirmData.jsonObj[params.index].num ? 'inline-block' : 'none'
+                }
               },
-              params.row.goodsNumAndPrice.map((item) =>{
+              params.row.goodsNumAndPrice.map((item) => {
                 return h('Option', {
                   props: {
-                    value: item.price+'_'+item.unit,
+                    value: item.price + '_' + item.unit,
                     label: item.num
                   }
                 })
-              })
-            )
+              })),
+              h('span', {
+                style: {
+                  display: !this.payConfirmData.jsonObj[params.index].num ? 'inline-block' : 'none'
+                }
+              }, '已超最大续费年限')
+            ])
           }
         },
         {
@@ -99,9 +108,9 @@ export default {
             return h('div', [
               h('span', {
                 style: {
-                  color:'#f00'
+                  color: '#f00'
                 }
-              }, this.payConfirmData.jsonObj[params.index].price.split("_")[0] + '元')
+              }, this.payConfirmData.jsonObj[params.index].num ? (this.payConfirmData.jsonObj[params.index].price.split('_')[0] + '元') : '-')
             ])
           }
         },
@@ -112,7 +121,7 @@ export default {
           render: (h, params) => {
             return h('div', [
               h('span', {
-              }, '信用消费')
+              }, this.payConfirmData.jsonObj[params.index].num ? '信用消费' : '-')
             ])
           }
         },
@@ -125,7 +134,7 @@ export default {
               h('Icon', {
                 props: {
                   custom: 'i-icon i-icon-error1',
-                  size: "16"
+                  size: '16'
                 },
                 on: {
                   click: () => {
@@ -156,11 +165,11 @@ export default {
   computed: {
     total () {
       if (typeof this.payConfirmData.jsonObj !== 'undefined' && this.payConfirmData.jsonObj.length) {
-        return this.payConfirmData.jsonObj.reduce(function(prev, cur) {
-          return (cur.price.split("_")[0] * 1) + prev
+        return this.payConfirmData.jsonObj.reduce((prev, cur) => {
+          return (cur.price.split('_')[0] * 1) + prev
         }, 0)
       }
-        return 0
+      return 0
     },
     ...mapState([
       'payOrders'
@@ -173,12 +182,12 @@ export default {
     if (this.payOrders.jsonObj.length) {
       this.payConfirmData = this.payOrders
       localStorage.setItem('data_pay_confirm', JSON.stringify(this.payOrders))
-    } else if (localStorage.getItem("data_pay_confirm")) {
+    } else if (localStorage.getItem('data_pay_confirm')) {
       this.payConfirmData = JSON.parse(localStorage.getItem('data_pay_confirm'))
     } else {
     }
   },
-  mounted(){
+  mounted () {
   },
   watch: {
     payOrders: {

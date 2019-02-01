@@ -6,9 +6,8 @@
 </template>
 
 <script>
-import { mapState, mapActions, mapMutations } from 'vuex'
-import * as types from '@/store/types'
-import { emitter as restEmitter } from '@/global/rest'
+import {mapState} from 'vuex'
+import {emitter as restEmitter} from '@/global/rest'
 import mixinsWebSocket from '@/mixins/mixinsWebSocket'
 export default {
   name: 'App',
@@ -25,13 +24,13 @@ export default {
       vm.$Message.error('登录超时，请重新登录！')
       setTimeout(() => {
         vm.$router.replace({ path: '/login' })
-      },300)
+      }, 300)
     })
     restEmitter.on('noPermission', () => {
       vm.$Message.error('权限错误！')
       setTimeout(() => {
         vm.$router.replace({ path: '/' })
-      },300)
+      }, 300)
     })
     restEmitter.on('paramError', () => {
       vm.$Message.error('参数错误！')
@@ -70,14 +69,12 @@ export default {
 
 <style>
 @import 'iview/dist/styles/iview.css';
-@import 'vuescroll/dist/vuescroll.css';
 @import 'assets/css/main.css';
 @import 'nprogress/nprogress.css';
 @import 'assets/css/iconfont.css';
 @import 'assets/css/xwNormalize.css';
 @import 'assets/css/xwCommon.css';
 @import 'assets/css/iviewRest.css';
-@import 'assets/css/ivu_drawer.css';
 #app{
   height:100%;
 }
@@ -101,6 +98,4 @@ export default {
 .spinBody .ivu-spin-main .ivu-spin-dot{
   display:inline-block;
 }
-
-
 </style>

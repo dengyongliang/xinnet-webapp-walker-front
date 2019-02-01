@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
+import {mapActions} from 'vuex'
 import * as types from '@/store/types'
 import compMonitorFocusDetail from '@/components/compMonitorFocusDetail'
 export default {
@@ -50,9 +50,9 @@ export default {
             return h('div', [
               h('i', {
                 class: this.list1[params.index].readFlag === 1 ? 'unRead' : ''
-              }, '●' ),
+              }, '●'),
               h('span', {
-              }, this.list1[params.index].sendTime )
+              }, this.list1[params.index].sendTime)
             ])
           }
         },
@@ -65,19 +65,19 @@ export default {
               h('Icon', {
                 props: {
                   type: 'md-alert',
-                  size: "17"
+                  size: '17'
                 },
                 style: {
                   color: '#f00',
                   margin: '0 5px 0 0',
-                  display: this.list1[params.index].sendType === 2 ? "inline-block" : "none"
+                  display: this.list1[params.index].sendType === 2 ? 'inline-block' : 'none'
                 }
-              }, this.list1[params.index].title ),
+              }, this.list1[params.index].title),
               h('a', {
                 style: {
                   color: '#2271f4'
                 }
-              }, this.list1[params.index].title )
+              }, this.list1[params.index].title)
             ])
           }
         }
@@ -103,7 +103,7 @@ export default {
           className: 'col3',
           render: (h, params) => {
             return h('div', [
-              h('span', {}, this.DATAS.RECORD_DOMAIN_EVENT_TYPE[this.list[params.index].type] )
+              h('span', {}, this.DATAS.RECORD_DOMAIN_EVENT_TYPE[this.list[params.index].type])
             ])
           }
         },
@@ -157,12 +157,12 @@ export default {
       let params = {
         param: {
           pageNum: obj.pageNum,
-          pageSize: 20,
+          pageSize: 20
         },
         callback: (response) => {
           this.loadingBtn = false
           this.loadingTable = false
-          if (response.data.code === '1000'){
+          if (response.data.code === '1000') {
             this.list = response.data.data.list
             this.page.pageItems = response.data.data.totalNum
           } else {
@@ -186,7 +186,7 @@ export default {
       callback: (response) => {
         this.loadingTable = false
         this.loadingBtn = false
-        if (response.data.code === '1000'){
+        if (response.data.code === '1000') {
           this.list1 = response.data.data.list
         } else {
         }

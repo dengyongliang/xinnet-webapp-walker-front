@@ -85,7 +85,7 @@ td{
   height:29px;
   line-height:29px;
   border-bottom:1px dashed #eee;
-  padding:0 20px;
+  padding:0 10px;
   font-size:12px;
 }
 td .v{

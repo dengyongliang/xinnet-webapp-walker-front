@@ -4,7 +4,7 @@ import NProgress from 'nprogress'
 import Event from './event'
 
 export const emitter = new Event()
-let cancel, promiseArr = {}
+let cancel = {}
 const CancelToken = axios.CancelToken
 
 axios.defaults.baseURL = '/'
@@ -59,7 +59,7 @@ axios.interceptors.response.use(response => {
     }
   } else {
     emitter.emit('errorServer')
-    //err.message = '连接到服务器失败'
+    // err.message = '连接到服务器失败'
   }
   // message.err(err.message)
   return Promise.resolve(err.response)
@@ -67,7 +67,7 @@ axios.interceptors.response.use(response => {
 
 export default {
   // get请求
-  get(url, param, callback) {
+  get (url, param, callback) {
     NProgress.start()
     return new Promise((resolve, reject) => {
       axios({
@@ -87,7 +87,7 @@ export default {
     })
   },
   // post请求
-  post(url, param, callback) {
+  post (url, param, callback) {
     NProgress.start()
     return new Promise((resolve, reject) => {
       axios({

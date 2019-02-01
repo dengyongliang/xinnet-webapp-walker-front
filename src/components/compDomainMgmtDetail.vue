@@ -10,7 +10,7 @@ div.compDomainMgmtDetail
 
     span.item <Icon custom="i-icon i-icon-test_" size="16" />实名认证：<em :style="detailData.verifyStatus===2?'color:#46a405':'color:#aaa'">{{this.DATAS.REAL_NAME_VERIFY_STATUS[detailData.verifyStatus]}}</em>
 
-    span.item <Icon custom="i-icon i-icon-state" size="16" />域名状态：<em>{{this.DATAS.SERVICE_STATE[detailData.serviceStatus]}}</em>
+    span.item <Icon custom="i-icon i-icon-state" size="16" />服务状态：<em>{{this.DATAS.SERVICE_STATE[detailData.serviceStatus]}}</em>
 
     Button(type="primary", @click="modifyDns", v-show="detailData.depositFlag===0 && detailData.updateFlag===0") 修改DNS
     Button(type="primary", @click="", v-show="detailData.depositFlag===0") 解析设置
@@ -38,7 +38,7 @@ div.compDomainMgmtDetail
   <!-- 提交工单 抽屉 -->
   Drawer(:closable="true", width="640", v-model="drawerWorkOrderSubmit", title="提交工单", :mask-closable="maskClosable", @on-visible-change="drawerChange")
     comp-work-order-submit(
-      v-if="refresh",
+      v-if="drawerWorkOrderSubmit",
       @refreshData="callbackEvent"
     )
 
@@ -53,8 +53,7 @@ div.compDomainMgmtDetail
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
-import * as types from '@/store/types'
+import {mapState} from 'vuex'
 import compWorkOrderSubmit from '@/components/compWorkOrderSubmit'
 import compDomainMgmtDetailInfo from './compDomainMgmtDetailInfo'
 import compDomainMgmtDetailOwner from './compDomainMgmtDetailOwner'
@@ -91,9 +90,9 @@ export default {
     }
   },
   methods: {
-    parentEvent (v='') {
+    parentEvent (v = '') {
       this.$emit('showDnsFun')
-      this.$emit('setVerificationCode',v)
+      this.$emit('setVerificationCode', v)
     },
     callbackEvent () {
 
@@ -102,7 +101,7 @@ export default {
       this.tabs = v * 1
     },
     setDetailFun2 (obj) {
-      this.$emit("setDetailFun", obj)
+      this.$emit('setDetailFun', obj)
     },
     closeModal () {
       this.showModals = false
@@ -111,7 +110,6 @@ export default {
       this.showModals = true
     },
     drawerChange () {
-      this.refresh = this.drawerWorkOrderSubmit ? true : false
     },
     showWorkOrder () {
       this.drawerWorkOrderSubmit = true

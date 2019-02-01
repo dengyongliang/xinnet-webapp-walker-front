@@ -91,7 +91,7 @@ export default {
         {
           title: '域名所有者',
           key: 'organizeNameCn',
-          className: 'col2',
+          className: 'col2'
         },
         {
           title: '联系邮箱',
@@ -108,34 +108,33 @@ export default {
           key: 'rnvcStatus',
           className: 'col5',
           render: (h, params) => {
-            if (this.list[params.index].rnvcStatus===3) {
+            if (this.list[params.index].rnvcStatus === 3) {
               return h('Tooltip', {
+                props: {
+                  content: this.list[params.index].rnvcFaildReason,
+                  placement: 'top'
+                }
+              },
+              [
+                h('Icon', {
                   props: {
-                    content: this.list[params.index].rnvcFaildReason,
-                    placement: "top"
+                    custom: 'i-icon i-icon-tips',
+                    size: '16'
+                  },
+                  style: {
+                    margin: '0 5px 0 0',
+                    color: '#48affe'
                   }
-                },
-                [
-                  h('Icon', {
-                    props: {
-                      custom: 'i-icon i-icon-tips',
-                      size: "16"
-                    },
-                    style: {
-                      margin: "0 5px 0 0",
-                      color: "#48affe"
-                    }
-                  }),
-                  h('a', {
-                    props: {
-                      href: ''
-                    },
-                    style: {
-                      color: "#f00"
-                    }
-                  }, '审核拒绝')
-                ]
-              )
+                }),
+                h('a', {
+                  props: {
+                    href: ''
+                  },
+                  style: {
+                    color: '#f00'
+                  }
+                }, '审核拒绝')
+              ])
             } else {
               return h('div', [
                 h('span', {
@@ -149,34 +148,33 @@ export default {
           key: 'dnvcStatus',
           className: 'col6',
           render: (h, params) => {
-            if (this.list[params.index].dnvcStatus===3) {
+            if (this.list[params.index].dnvcStatus === 3) {
               return h('Tooltip', {
+                props: {
+                  content: this.list[params.index].dnvcFaildReason,
+                  placement: 'top'
+                }
+              },
+              [
+                h('Icon', {
                   props: {
-                    content: this.list[params.index].dnvcFaildReason,
-                    placement: "top"
+                    custom: 'i-icon i-icon-tips',
+                    size: '16'
+                  },
+                  style: {
+                    margin: '0 5px 0 0',
+                    color: '#48affe'
                   }
-                },
-                [
-                  h('Icon', {
-                    props: {
-                      custom: 'i-icon i-icon-tips',
-                      size: "16"
-                    },
-                    style: {
-                      margin: "0 5px 0 0",
-                      color: "#48affe"
-                    }
-                  }),
-                  h('a', {
-                    props: {
-                      href: ''
-                    },
-                    style: {
-                      color: "#f00"
-                    }
-                  }, '审核拒绝')
-                ]
-              )
+                }),
+                h('a', {
+                  props: {
+                    href: ''
+                  },
+                  style: {
+                    color: '#f00'
+                  }
+                }, '审核拒绝')
+              ])
             } else {
               return h('div', [
                 h('span', {
@@ -190,7 +188,7 @@ export default {
           key: 'operate',
           className: 'operate',
           render: (h, params) => {
-            if (this.list[params.index].rnvcStatus===0 || this.list[params.index].rnvcStatus===3) {
+            if (this.list[params.index].rnvcStatus === 0 || this.list[params.index].rnvcStatus === 3) {
               return h('div', [
                 h('a', {
                   props: {
@@ -232,25 +230,25 @@ export default {
     },
     tableSelectChange (selected) {
       this.selectData = selected
-      this.btnUpdateStatusDisabled = selected.length ? false : true
+      this.btnUpdateStatusDisabled = !selected.length
       var result = false
-      if (selected.length>1) {
-        this.btnRealNameDisabled = function (vm) {
-          selected.reduce(function(cur, next) {
+      if (selected.length > 1) {
+        this.btnRealNameDisabled = (function (vm) {
+          selected.reduce((cur, next) => {
             if (cur.organizeNameCn !== next.organizeNameCn) {
               vm.$Message.error('不同域名所有者，请重选')
               result = true
             }
-            if (cur.rnvcStatus===1 || cur.rnvcStatus===2 || next.rnvcStatus===1 || next.rnvcStatus===2) {
+            if (cur.rnvcStatus === 1 || cur.rnvcStatus === 2 || next.rnvcStatus === 1 || next.rnvcStatus === 2) {
               vm.$Message.error('审核状态不符，请重选')
               result = true
             }
             return next
           })
           return result
-        }(this)
-      } else if (selected.length===1) {
-        if (selected[0].rnvcStatus===1 || selected[0].rnvcStatus===2) {
+        })(this)
+      } else if (selected.length === 1) {
+        if (selected[0].rnvcStatus === 1 || selected[0].rnvcStatus === 2) {
           this.$Message.error('审核状态不符，请重选')
           this.btnRealNameDisabled = true
         } else {
@@ -270,7 +268,7 @@ export default {
         },
         callback: (response) => {
           this.loadingBtn = false
-          if (response.data.code === '1000'){
+          if (response.data.code === '1000') {
             this.$Message.success('更新成功')
             this.searchListData()
           } else {
@@ -283,18 +281,17 @@ export default {
     asideFilterSubmit (result) {
       console.log(result)
       // 返回 参数 处理
-      this.asideFilterResult.groupIds = result.dataMgmtCompany.reduce((pre, cur)=>{
+      this.asideFilterResult.groupIds = result.dataMgmtCompany.reduce((pre, cur) => {
         console.log(pre)
         console.log(cur)
         return pre.concat(cur)
-      }, []).join(",")
-      this.asideFilterResult.serviceState = result.dataServiceState.join(",")
-      this.asideFilterResult.rnvcStatus = result.dataRealName.join(",")
-      this.asideFilterResult.dnvcStatus = result.dataNamingState.join(",")
-      this.asideFilterResult.verifyDay = result.dataTimeSubmit.value==='custom'?'':result.dataTimeSubmit.value
-      this.asideFilterResult.verifyTimeBegin = result.dataTimeSubmit.value==='custom'?result.dataTimeSubmit.time[0]:''
-      this.asideFilterResult.verifyTimeEnd = result.dataTimeSubmit.value==='custom'?result.dataTimeSubmit.time[1]:''
-      //console.log(this.asideFilterResult)
+      }, []).join(',')
+      this.asideFilterResult.serviceState = result.dataServiceState.join(',')
+      this.asideFilterResult.rnvcStatus = result.dataRealName.join(',')
+      this.asideFilterResult.dnvcStatus = result.dataNamingState.join(',')
+      this.asideFilterResult.verifyDay = result.dataTimeSubmit.value === 'custom' ? '' : result.dataTimeSubmit.value
+      this.asideFilterResult.verifyTimeBegin = result.dataTimeSubmit.value === 'custom' ? result.dataTimeSubmit.time[0] : ''
+      this.asideFilterResult.verifyTimeEnd = result.dataTimeSubmit.value === 'custom' ? result.dataTimeSubmit.time[1] : ''
       // 加载数据
       this.queryList(this.queryListParam({pageNum: 1}))
     },
@@ -329,7 +326,7 @@ export default {
         callback: (response) => {
           this.loadingBtn = false
           this.loadingTable = false
-          if (response.data.code === '1000'){
+          if (response.data.code === '1000') {
             this.list = response.data.data.list
             this.page.pageItems = response.data.data.totalNum
           } else {
@@ -349,7 +346,7 @@ export default {
       console.log(this.selectData)
       return this.selectData.map((v) => {
         return v.id
-      }).join(",")
+      }).join(',')
     },
     ...mapState({
       maskClosable (state) {
@@ -360,10 +357,9 @@ export default {
   beforeMount () {
     let params = {
       param: {
-
       },
       callback: (response) => {
-        if( response.data.code === '1000' ){
+        if (response.data.code === '1000') {
           this.templateList = this.GLOBALS.CONVERT_SELECT(response.data.data, {
             label: 'templateName',
             value: 'id'

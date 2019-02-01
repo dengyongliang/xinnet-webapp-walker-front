@@ -8,8 +8,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
-import * as types from '@/store/types'
+import {mapActions} from 'vuex'
 import compAccountStaffInfo from './compAccountStaffInfo'
 import compAccountStaffJurisdiction from './compAccountStaffJurisdiction'
 export default {
@@ -24,7 +23,7 @@ export default {
   },
   data () {
     return {
-      value:'',
+      value: '',
       loadingBtn: false,
       tabDisabled: true,
       baseInfoData: {}

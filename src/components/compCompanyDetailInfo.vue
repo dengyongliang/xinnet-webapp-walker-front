@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
+import {mapActions} from 'vuex'
 import * as types from '@/store/types'
 import compInput from '@/components/compInput'
 import compImgUpload from '@/components/compImgUpload'
@@ -61,8 +61,8 @@ export default {
       this.modify = true
     },
     nextForm () {
-      console.log('logoFile')
-      console.log(this.$refs.logoFile.$refs.upload.fileList[0])
+      // console.log('logoFile')
+      // console.log(this.$refs.logoFile.$refs.upload.fileList[0])
       this.loadingBtn = true
       let result = validateFormResult([
         this.$refs.name,
@@ -83,10 +83,10 @@ export default {
           },
           callback: (response) => {
             this.loadingBtn = false
-            if (response.data.code === '1000'){
+            if (response.data.code === '1000') {
               this.loadingBtn = false
               this.$Message.success('保存成功')
-              this.$emit('getBaseInfo',params.param)
+              this.$emit('getBaseInfo', params.param)
             } else {
               this.$Message.error('保存失败')
             }
