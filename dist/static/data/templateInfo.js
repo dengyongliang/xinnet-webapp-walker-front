@@ -1,0 +1,30 @@
+{
+  "msg": "query is success",
+  "code": "1000",
+  "data": {
+    "id": 13,
+    "userCode":"XZec22gjk45c2140",
+    "templateName": "转入模板测试",
+    "registrantType": "I",
+    "organizeNameCn": "白羽",
+    "organizeNameUk": "baiyu",
+    "userNameCn": "白羽",
+    "userNameUk": "baiyu",
+    "publicStreetCn": "北京市大兴区地盛西路1号",
+    "publicStreetUk": "beijingshidaxingqu",
+    "publicCityCn": "北京市",
+    "publicCityUk": "110100",
+    "publicProvinceCn": "北京市",
+    "publicProvinceUk": "110000",
+    "publicCountryCn": "中国",
+    "publicZipCode": "100176",
+    "userPhoneInter": "086",
+    "userPhoneArea": "010",
+    "userPhoneNumber": "15848555554",
+    "userFaxInter": "046",
+    "userFaxArea": "022",
+    "userFaxNumber": "15848555554",
+    "userEmail": "baiyu@xinnet.com",
+    "verifyStatus": 2
+  }
+}
