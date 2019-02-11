@@ -22,7 +22,7 @@
 
           FormItem
             Button(type="primary", @click="submit", :loading="loadingBtn") 立即登录
-            a(href="javascript:;" @click="",class="forgetPw") 忘记密码
+            router-link(to="/findPw",class="forgetPw") 忘记密码
       .footer
         span Copyright © 1993-2019<br />北京新网数码信息技术有限公司 版权所有
 
@@ -226,19 +226,12 @@ export default {
 .pageLogin .compInput {
   position:relative;
 }
-.pageLogin .compInput .iconleft{
-  position:absolute;
-  top: 15px;
-  left:20px;
-  z-index:1;
-  color:#bcbcbc;
-}
 .pageLogin .compInput input{
   height:46px;
   line-height:46px;
   padding-left:55px;
 }
--.pageLogin .verificationCodeInput{
+.pageLogin .verificationCodeInput{
   margin-bottom:30px;
 }
 .pageLogin .verificationCodeInput a{

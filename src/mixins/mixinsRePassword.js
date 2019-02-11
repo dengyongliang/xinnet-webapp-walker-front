@@ -46,6 +46,16 @@ export default {
     show: {
       type: Boolean,
       default: true
+    },
+    errorInCompInput: {
+      type: Boolean,
+      default: true
+    },
+    onErrorparent: {
+      type: Function
+    },
+    onFocusparent: {
+      type: Function
     }
   },
   data () {
@@ -71,6 +81,16 @@ export default {
   computed: {
   },
   methods: {
+    showErrorParent (errText) {
+      if (typeof this.onErrorparent !== 'undefined') {
+        this.onErrorparent(errText)
+      }
+    },
+    hideErrorParent () {
+      if (typeof this.onFocusparent !== 'undefined') {
+        this.onFocusparent()
+      }
+    },
     showValidateResult1 (v) {
       this.showPasswordError = true
       this.errorTextPassword = v.text
@@ -105,8 +125,10 @@ export default {
             this.ok1 = false
             this.showPasswordError = true
             this.errorTextPassword = '密码由8-16位字母、数字、符号组成，区分大小写，且至少包含有字母、数字、符号、大小写中的两种组合！'
+            this.showErrorParent(this.errorTextPassword)
           } else {
             this.ok1 = true
+            this.hideErrorParent()
           }
         }
         if (name === 'rePassword') {
@@ -114,12 +136,15 @@ export default {
             this.ok2 = false
             this.showRePasswordError = true
             this.errorTextRePassword = '密码由8-16位字母、数字、符号组成，区分大小写，且至少包含有字母、数字、符号、大小写中的两种组合！'
+            this.showErrorParent(this.errorTextRePassword)
           } else if (this.GLOBALS.IS_PWD_AVAILABLE(val) && this.value1 !== val) {
             this.ok2 = false
             this.showRePasswordError = true
             this.errorTextRePassword = '重复输入密码与新密码不一致！'
+            this.showErrorParent(this.errorTextRePassword)
           } else {
             this.ok2 = true
+            this.hideErrorParent()
           }
         }
       }

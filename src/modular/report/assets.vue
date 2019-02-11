@@ -249,8 +249,6 @@ export default {
   text-align:center;
   padding: 45px 0 0 0;
 }
-.contAssetsDomain .secBox2{
-}
 .contAssetsDomain .secBox5{
   padding-bottom: 50px;
 }

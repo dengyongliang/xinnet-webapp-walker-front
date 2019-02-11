@@ -3,7 +3,7 @@
     FormItem(label="姓名：")
       comp-input(name='userName',label="姓名",ref="userName")
     FormItem(label="电子邮件：")
-      comp-input(name='userEmail',label="电子邮件",ref="userEmail")
+      comp-input(name='userEmail',label="电子邮件",ref="userEmail",validate="email")
     FormItem(label="所属企业：")
       comp-select(name="companyId",:list="companysList",ref="companyId",styles="width:240px")
     FormItem(label="")

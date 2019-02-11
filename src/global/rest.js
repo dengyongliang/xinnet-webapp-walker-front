@@ -4,8 +4,6 @@ import NProgress from 'nprogress'
 import Event from './event'
 
 export const emitter = new Event()
-let cancel = {}
-const CancelToken = axios.CancelToken
 
 axios.defaults.baseURL = '/'
 axios.defaults.headers = {
@@ -73,10 +71,7 @@ export default {
       axios({
         method: 'get',
         url,
-        params: param,
-        cancelToken: new CancelToken(c => {
-          cancel = c
-        })
+        params: param
       }).then(res => {
         // resolve(res)
         NProgress.done()
@@ -93,10 +88,7 @@ export default {
       axios({
         method: 'post',
         url,
-        data: param,
-        cancelToken: new CancelToken(c => {
-          cancel = c
-        })
+        data: param
       }).then(res => {
         // resolve(res)
         NProgress.done()

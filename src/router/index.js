@@ -37,10 +37,10 @@ const RouterMain = new Router({
       }
     },
     {
-      path: '/forgetPw',
+      path: '/findpw',
       name: 'findpw',
       component (resolve) {
-        return require(['@/page/forgetPw'], resolve)
+        return require(['@/page/findPw'], resolve)
       },
       meta: {
         title: '找回密码'

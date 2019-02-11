@@ -13,7 +13,7 @@
     FormItem(label="订单编号：", v-show="showOrderCode")
       comp-input(name='orderCode',label="订单编号",ref="orderCode",defaultValue="",placeholder="请用简要描述您需要管家帮您解决的问题",styles="width:350px")
     FormItem(label="预算：",required, v-show="showMoney")
-      comp-input(name='money',label="预算",ref="money",defaultValue="",placeholder="请给出您能接受的收购以上全部域名的最高花费",styles="width:350px",:number="true")
+      comp-input(name='money',label="预算",ref="money",defaultValue="",placeholder="请给出您能接受的收购以上全部域名的最高花费",styles="width:350px",validate="number")
     FormItem(label="修改类型：",required, v-show="showUpdateType")
       comp-select(name="updateType",:list="updateTypeList",ref="updateType",styles="width:350px")
     FormItem(label="安全问题类型：",required, v-show="showSafeType")

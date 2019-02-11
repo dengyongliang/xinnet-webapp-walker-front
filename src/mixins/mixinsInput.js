@@ -49,6 +49,10 @@ export default {
     show: {
       type: Boolean,
       default: true
+    },
+    validate: {
+      type: String,
+      default: ''
     }
   },
   data () {
@@ -88,27 +92,26 @@ export default {
     },
     onBlur (e) {
       let val = this.value
-      let name = this.name
+      let validate = this.validate
       if (val !== '') {
-        if (this.isnumber && isNaN(val)) {
-          this.showError = true
-          this.errorText = '只允许输入数字！'
-        } else {
-          if (name === 'userEmail') {
-            if (val !== '' && !this.GLOBALS.IS_EMAIL_AVAILABLE(val)) {
-              this.showError = true
-              this.errorText = '请输入正确的邮件地址，如xinnet@xinnet.com！'
-            }
-            if (val !== '' && !this.GLOBALS.IS_EMAIL_AVAILABLE(val) && val > 64) {
-              this.showError = true
-              this.errorText = '最多允许输入64个字符！！'
-            }
+        if (validate === 'number') {
+          if (isNaN(val)) {
+            this.showError = true
+            this.errorText = '只允许输入数字！'
           }
-          if (name === 'userMobile') {
-            if (val !== '' && !this.GLOBALS.IS_PHONE_AVAILABLE(val)) {
-              this.showError = true
-              this.errorText = '请输入11位的手机号码！'
-            }
+        } else if (validate === 'email') {
+          if (val !== '' && !this.GLOBALS.IS_EMAIL_AVAILABLE(val)) {
+            this.showError = true
+            this.errorText = '请输入正确的邮件地址，如xinnet@xinnet.com！'
+          }
+          if (val !== '' && !this.GLOBALS.IS_EMAIL_AVAILABLE(val) && val > 64) {
+            this.showError = true
+            this.errorText = '最多允许输入64个字符！！'
+          }
+        } else if (validate === 'mobile') {
+          if (val !== '' && !this.GLOBALS.IS_PHONE_AVAILABLE(val)) {
+            this.showError = true
+            this.errorText = '请输入11位的手机号码！'
           }
         }
       }

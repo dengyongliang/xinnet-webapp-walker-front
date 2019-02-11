@@ -14,7 +14,7 @@
         v-model = "value1",
         :required = "required1",
         :disabled = "disabled",
-        :isnumber = "number1",
+        :validate="validate1",
         :class="{ 'error': showError1 }"
       )
       span.text -
@@ -31,7 +31,7 @@
         v-model = "value2",
         :required = "required2",
         :disabled = "disabled",
-        :isnumber = "number2",
+        :validate="validate2",
         :class="{ 'error': showError2 }"
       )
       span.text -
@@ -48,7 +48,7 @@
         v-model = "value3",
         :required = "required3",
         :disabled = "disabled",
-        :isnumber = "number3",
+        :validate="validate3",
         :class="{ 'error': showError3 }"
       )
       slot(name="right")
@@ -151,17 +151,17 @@ export default {
       type: Boolean,
       default: false
     },
-    number1: {
-      type: Boolean,
-      default: true
+    validate1: {
+      type: String,
+      default: 'number'
     },
-    number2: {
-      type: Boolean,
-      default: true
+    validate2: {
+      type: String,
+      default: 'number'
     },
-    number3: {
-      type: Boolean,
-      default: true
+    validate3: {
+      type: String,
+      default: 'number'
     }
   },
   data () {

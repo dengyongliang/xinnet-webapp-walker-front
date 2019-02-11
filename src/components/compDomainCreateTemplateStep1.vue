@@ -25,7 +25,7 @@ div.step1
     FormItem(label="邮政编码：", required)
       comp-input(name='zipCode',label="邮政编码",ref="zipCode",styles="width:300px",:maxLength="6", :defaultValue="(type!=='create'?templateData.publicZipCode:'')", :disabled="disabled")
     FormItem(label="电子邮件：", required)
-      comp-input(name='userEmail',label="电子邮件",ref="userEmail",styles="width:300px",:maxLength="64", :defaultValue="(type!=='create'?templateData.userEmail:'')", :disabled="disabled")
+      comp-input(name='userEmail',label="电子邮件",ref="userEmail",validate="email",styles="width:300px",:maxLength="64", :defaultValue="(type!=='create'?templateData.userEmail:'')", :disabled="disabled")
     FormItem(label="电话：", required)
       comp-three-input(name='userTel',label="电话",ref="userTel",:defaultValue1="(type!=='create'?templateData.userPhoneInter:'')", :defaultValue2="(type!=='create'?templateData.userPhoneArea:'')", :defaultValue3="(type!=='create'?templateData.userPhoneNumber:'')", :disabled="disabled")
     FormItem(label="传真：", required)

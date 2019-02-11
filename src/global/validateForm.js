@@ -5,29 +5,30 @@ export default function validateFormResult (validateArray) {
   for (var i = 0; i < len; i++) {
     let v = validateArray[i]
     if (v.type === 'text' || v.type === 'textarea') {
-      let name = v.name
       let value = v.value
       let required = v.required
       let label = v.label
-      let number = v.isnumber
+      let validate = v.validate
       if (value === '' && required) {
         v.showValidateResult({text: '请输入' + (label || '') + '！'})
         flag = false
         // break
       } else {
-        if (number && isNaN(value)) {
-          v.showValidateResult({text: '只允许输入数字！'})
-          flag = false
+        if (validate === 'number') {
+          if (isNaN(value)) {
+            v.showValidateResult({text: '只允许输入数字！'})
+            flag = false
+          }
         }
-        if (name === 'userEmail') {
-          if (value !== '' && !GLOBAL.IS_EMAIL_AVAILABLE(value)) {
+        if (validate === 'email') {
+          if (!GLOBAL.IS_EMAIL_AVAILABLE(value)) {
             v.showValidateResult({text: '请输入正确的邮件地址，如xinnet@xinnet.com！'})
             flag = false
             // break
           }
         }
-        if (name === 'userMobile') {
-          if (value !== '' && !GLOBAL.IS_PHONE_AVAILABLE(value)) {
+        if (validate === 'mobile') {
+          if (!GLOBAL.IS_PHONE_AVAILABLE(value)) {
             v.showValidateResult({text: '请输入11位的手机号码！'})
             flag = false
             // break
@@ -92,20 +93,20 @@ export default function validateFormResult (validateArray) {
     } else if (v.type === 'threeInput') {
       if (!v.value1 || !v.value2 || !v.value3) {
         [v.showError1, v.showError2, v.showError3] = [true, true, true]
-        v.errorText = `请填写${v.label}！`
+        v.errorText = `请填写！`
         flag = false
       } else {
-        if (v.value1 !== '' && v.isnumber1 && isNaN(v.value1)) {
+        if (isNaN(v.value1)) {
           flag = false
           v.showError1 = true
           v.errorText = `${v.label1}只允许输入数字`
         }
-        if (v.value2 !== '' && v.isnumber2 && isNaN(v.value2)) {
+        if (isNaN(v.value2)) {
           flag = false
           v.showError2 = true
           v.errorText += v.errorText.length ? ` - ${v.label2}只允许输入数字` : `${v.label2}只允许输入数字`
         }
-        if (v.value3 !== '' && v.isnumber3 && isNaN(v.value3)) {
+        if (isNaN(v.value3)) {
           flag = false
           v.showError3 = true
           v.errorText += v.errorText.length ? ` - ${v.label3}只允许输入数字` : `${v.label3}只允许输入数字`

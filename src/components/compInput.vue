@@ -14,8 +14,8 @@ div(class="compInput")
     v-model = "value",
     :required = "required",
     :disabled = "disabled",
-    :isnumber = "number",
-    :class="{ 'error': showError }"
+    :class="{ 'error': showError }",
+    :validate="validate"
   )
   Input(
     type="password",
@@ -30,8 +30,8 @@ div(class="compInput")
     v-model = "value",
     :required = "required",
     :disabled = "disabled",
-    :isnumber = "number",
-    :class="{ 'error': showError }"
+    :class="{ 'error': showError }",
+    :validate="validate"
   )
   Input(
     type="textarea",
@@ -46,8 +46,8 @@ div(class="compInput")
     v-model = "value",
     :required = "required",
     :disabled = "disabled",
-    :isnumber = "number",
-    :class="{ 'error': showError }"
+    :class="{ 'error': showError }",
+    :validate="validate"
   )
   slot(name="right")
   Alert(type="error",show-icon, style="display:inline-block",v-show="showError && errorInCompInput",ref="msgError") {{errorText}}
@@ -75,3 +75,13 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.compInput .iconleft{
+  position:absolute;
+  top: 15px;
+  left:20px;
+  z-index:1;
+  color:#bcbcbc;
+}
+</style>

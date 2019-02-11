@@ -5,11 +5,11 @@
     FormItem(label="姓名：")
       span.text {{getBaseInfo.userName}}
     FormItem(label="手机：")
-      comp-input(name='userMobile',label="手机",ref="userMobile", :defaultValue="getBaseInfo.userMobile",:disabled="!getBaseInfo.status")
+      comp-input(name='userMobile',label="手机",ref="userMobile", validate="mobile", :defaultValue="getBaseInfo.userMobile",:disabled="!getBaseInfo.status")
     FormItem(label="座机：")
       comp-input(name='userTel',label="座机",ref="userTel",:defaultValue="getBaseInfo.userTel",:disabled="!getBaseInfo.status")
     FormItem(label="电子邮件：")
-      comp-input(name='userEmail',label="电子邮件",ref="userEmail",:defaultValue="getBaseInfo.userEmail",:disabled="!getBaseInfo.status")
+      comp-input(name='userEmail',label="电子邮件",ref="userEmail",validate="email",:defaultValue="getBaseInfo.userEmail",:disabled="!getBaseInfo.status")
     FormItem(label="所属企业：")
       comp-select(name="companyId",:list="companysList",ref="companyId",styles="width:240px", :defaultValue="companySelected", :disabled="!getBaseInfo.status")
     FormItem(label="", v-show="getBaseInfo.status")

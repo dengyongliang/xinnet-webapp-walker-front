@@ -10,7 +10,7 @@
         Button(type="primary",@click="nextForm",:loading="loadingBtn") 下一步
     .step2(v-show="step===2")
       FormItem(label="")
-        comp-input(name='userMobile',label="新手机号码",ref="userMobile",defaultValue="",placeholder="请输入新手机号码",:maxLength="11")
+        comp-input(name='userMobile',label="新手机号码",ref="userMobile",validate="mobile",defaultValue="",placeholder="请输入新手机号码",:maxLength="11")
       FormItem(label="")
         comp-input(name='verificationCode',label="短信验证码",ref="verificationCode2",defaultValue="",placeholder="短信验证码",styles="width:118px",:maxLength="6")
           Button.verificationCode(@click="getVerificationCode2", :loading="loadingBtn",slot="right") 获取短信验证码

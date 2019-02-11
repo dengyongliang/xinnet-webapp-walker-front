@@ -20,7 +20,7 @@ div.compDomainMgmtDetailOwner
         FormItem(label="邮政编码：", required)
           comp-input(name='zipCode',label="邮政编码",ref="zipCode",styles="width:300px",:maxLength="6", :defaultValue="detailData.regUserInfo?detailData.regUserInfo.publicZipCode:''",)
         FormItem(label="电子邮件：", required)
-          comp-input(name='userEmail',label="电子邮件",ref="userEmail",styles="width:300px",:maxLength="64", :defaultValue="detailData.regUserInfo?detailData.regUserInfo.userEmail:''",)
+          comp-input(name='userEmail',label="电子邮件",ref="userEmail",validate="email",styles="width:300px",:maxLength="64", :defaultValue="detailData.regUserInfo?detailData.regUserInfo.userEmail:''",)
         FormItem(label="电话：", required)
           comp-three-input(name='userTel',label="电话",ref="userTel",:defaultValue1="detailData.regUserInfo?detailData.regUserInfo.userPhoneInter:''", :defaultValue2="detailData.regUserInfo?detailData.regUserInfo.userPhoneArea:''", :defaultValue3="detailData.regUserInfo?detailData.regUserInfo.userPhoneNumber:''",)
         FormItem(label="传真：", required)

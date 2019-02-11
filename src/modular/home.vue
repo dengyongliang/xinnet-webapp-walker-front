@@ -207,7 +207,6 @@ export default {
   height:80px;
   border-radius:100%;
   overflow:hidden;
-  display:inline-block;
   border:5px solid #fff;
   vertical-align:middle;
   margin-right: 20px;

@@ -17,7 +17,7 @@
     FormItem(label="微信：",v-if="activation.keeperFlag")
       comp-input(name='wx',label="微信",ref="wx",defaultValue="",placeholder="请输入微信",)
     FormItem(label="手机号：")
-      comp-input(name='userMobile',label="手机号",ref="userMobile",defaultValue="",placeholder="请输入手机号",:maxLength="11")
+      comp-input(name='userMobile',label="手机号",ref="userMobile",validate="mobile",defaultValue="",placeholder="请输入手机号",:maxLength="11")
     FormItem(label="短信验证码：")
       comp-input(name='verificationCode',label="短信验证码",ref="verificationCode",defaultValue="",placeholder="请输入短信验证码",styles="width:118px",:maxLength="6")
         Button.verificationCode(@click="getVerificationCode", :loading="loadingBtn",slot="right") 获取短信验证码

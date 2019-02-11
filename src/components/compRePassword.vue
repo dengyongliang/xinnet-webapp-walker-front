@@ -1,6 +1,6 @@
 <template lang="pug">
-  div
-    FormItem(:label="label1",class="compInput")
+  div(class="compRePassword")
+    FormItem(:label="label1")
       slot(name="left1")
       Input(
         type="password",
@@ -14,10 +14,10 @@
         v-model = "value1",
         :class="{ 'error': showPasswordError }"
       )
-      Icon.ok(custom="i-icon i-icon-correct_",size="16",v-show="ok1")
+      Icon.ok.iconright(custom="i-icon i-icon-correct_",size="16",v-show="ok1")
       slot(name="right1")
-      Alert(type="error",show-icon, style="display:inline-block;max-width:350px;",v-show="showPasswordError",ref="msgErrorPw") {{errorTextPassword}}
-    FormItem(:label="label2",class="compInput")
+      Alert(type="error",show-icon, style="display:inline-block;max-width:350px;",v-show="showPasswordError && errorInCompInput",ref="msgErrorPw") {{errorTextPassword}}
+    FormItem(:label="label2")
       slot(name="left2")
       Input(
         type="password",
@@ -31,9 +31,9 @@
         v-model = "value2",
         :class="{ 'error': showRePasswordError }"
       )
-      Icon.ok(custom="i-icon i-icon-correct_",size="16",v-show="ok2")
+      Icon.ok.iconright(custom="i-icon i-icon-correct_",size="16",v-show="ok2")
       slot(name="right2")
-      Alert(type="error",show-icon, style="display:inline-block;max-width:350px;",v-show="showRePasswordError",ref="msgErrorRePw") {{errorTextRePassword}}
+      Alert(type="error",show-icon, style="display:inline-block;max-width:350px;",v-show="showRePasswordError && errorInCompInput",ref="msgErrorRePw") {{errorTextRePassword}}
 </template>
 
 <script>
@@ -55,8 +55,27 @@ export default {
   }
 }
 </script>
-<style scoped>
-.ok{
+<style>
+.compRePassword input{
+  height:46px;
+  line-height:46px;
+  padding-left:55px;
+}
+.compRePassword .iconleft{
+  position:absolute;
+  top: 15px;
+  left:20px;
+  z-index:1;
+  color:#bcbcbc;
+}
+.compRePassword .iconright{
+  font-size:20px;
+  right:-30px;
+  top:13px;
+  position:absolute;
+  color:#77c936;
+}
+.compRePassword .ok{
   color:#7aca33;
 }
 </style>
