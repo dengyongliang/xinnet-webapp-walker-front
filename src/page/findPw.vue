@@ -1,5 +1,5 @@
 <template lang="pug">
-  Row(type="flex", justify="center", align="middle", class="code-row-bg pageLogin")
+  Row(type="flex", justify="center", align="middle", class="code-row-bg pageFindPw")
     Col.main.clear
       .logo
         img(src="../../static/img/login/logo.png")
@@ -12,7 +12,7 @@
             .setp1(v-show="step===1")
               FormItem.mobileInput
                 comp-input(name='userName',ref="userName",defaultValue="",placeholder="输入账号绑定手机号",styles="width:100%",:on-errorparent="onShowError",:on-focusparent="onHideError",:errorInCompInput="false")
-                  Icon.iconleft(custom="i-icon i-icon-people",slot="left")
+                  Icon.iconleft(custom="i-icon i-icon-mobile",slot="left")
                 a(href="javascript:;" @click="getVerificationCode", v-if="!success") 获取短信验证码
                 span.tips
                   i(v-if="success") 发送成功
@@ -172,27 +172,27 @@ export default {
 </script>
 
 <style scope>
-.pageLogin{
+.pageFindPw{
   height:100%;
   background:#f7f8fa;
 }
-.pageLogin .main{
+.pageFindPw .main{
   width:1200px;
 }
-.pageLogin .logo{
+.pageFindPw .logo{
   padding-bottom:18px;
 }
-.pageLogin form{
+.pageFindPw form{
   height:600px;
   background:#fff url(../../static/img/login/bg.png) no-repeat 100% 0;
   box-shadow:2px 2px 5px rgba(0,0,0,0.2)
 }
-.pageLogin form .wrap{
+.pageFindPw form .wrap{
   width:400px;
   margin: 0 0 0 150px;
   padding-top: 68px;
 }
-.pageLogin form strong{
+.pageFindPw form strong{
   height:50px;
   line-height:50px;
   font-size:15px;
@@ -200,7 +200,7 @@ export default {
   border-bottom:1px solid #e1dfe0;
   margin-bottom:20px;
 }
-.pageLogin form strong span{
+.pageFindPw form strong span{
   padding: 0 15px;
   display:inline-block;
   text-align:center;
@@ -209,18 +209,18 @@ export default {
   position:relative;
   top:-3px;
 }
-.pageLogin .ivu-form-item{
+.pageFindPw .ivu-form-item{
   margin-bottom:20px;
 }
-.pageLogin .compInput {
+.pageFindPw .compInput {
   position:relative;
 }
-.pageLogin .compInput input{
+.pageFindPw .compInput input{
   height:46px;
   line-height:46px;
   padding-left:55px;
 }
-.pageLogin .mobileInput a{
+.pageFindPw .mobileInput a{
   position:absolute;
   right:10px;
   top:13px;
@@ -228,55 +228,55 @@ export default {
   text-decoration: underline;
   line-height:20px;
 }
-.pageLogin .verificationCodeInput{
+.pageFindPw .verificationCodeInput{
   margin-bottom:30px;
 }
-.pageLogin .ivu-btn{
+.pageFindPw .ivu-btn{
   width:180px;
   height:50px;
   line-height: 34px;
   font-size:15px;
 }
-.pageLogin .ivu-alert-error{
+.pageFindPw .ivu-alert-error{
   padding-top:16px;
   padding-bottom:16px;
   padding-left:55px;
   margin-bottom:20px;
 }
-.pageLogin .ivu-alert-error .ivu-alert-icon{
+.pageFindPw .ivu-alert-error .ivu-alert-icon{
   left:20px;
   top:50%;
   margin-top:-9px;
 }
-.pageLogin .ivu-alert-error .ivu-icon{
+.pageFindPw .ivu-alert-error .ivu-icon{
   color:#f34d4d;
 }
-.pageLogin .ivu-alert-error .ivu-alert-message{
+.pageFindPw .ivu-alert-error .ivu-alert-message{
   color:#ea7a79;
 }
-.pageLogin .setp3{
+.pageFindPw .setp3{
   text-align:center;
   padding-top:100px;
 }
-.pageLogin .setp3 .p1{
+.pageFindPw .setp3 .p1{
   padding-bottom:20px;
 }
-.pageLogin .setp3 .p1 .ivu-icon{
+.pageFindPw .setp3 .p1 .ivu-icon{
   font-size:50px;
   color:#34a702;
 }
-.pageLogin .setp3 .p2{
+.pageFindPw .setp3 .p2{
   font-size:24px;
 }
-.pageLogin .setp3 .p3{
+.pageFindPw .setp3 .p3{
   padding:20px 0;
   margin-bottom:30px;
 }
-.pageLogin .footer{
+.pageFindPw .footer{
   text-align:center;
   padding:30px 0;
 }
-.pageLogin .footer span{
+.pageFindPw .footer span{
   font-size:12px;
   color: #98999b;
   line-height:20px;

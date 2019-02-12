@@ -1,7 +1,7 @@
 import * as types from './types'
-import rest from '../global/rest.js'
+import rest from '../global/http.js'
 import * as links from '../global/linkdo.js'
-// import * as links from '../global/linkdo_json.js'
+
 export default {
   state: {
     myUserInfo: {
@@ -82,31 +82,31 @@ export default {
       rest.get(links.GET_CURRENT_USER_DATA, '', callback)
     },
     [types.UPDATE_USER_INFO] ({ commit, rootState }, params) {
-      rest.post(links.UPDATE_USER_INFO, JSON.stringify(params.param), params.callback)
+      rest.post(links.UPDATE_USER_INFO, params.param, params.callback)
     },
     [types.UPDATE_USER_PASSWORD] ({ commit, rootState }, params) {
-      rest.post(links.UPDATE_USER_PASSWORD, JSON.stringify(params.param), params.callback)
+      rest.post(links.UPDATE_USER_PASSWORD, params.param, params.callback)
     },
     [types.QUERY_USER_LIST] ({ commit, rootState }, params) {
-      rest.post(links.QUERY_USER_LIST, JSON.stringify(params.param), params.callback)
+      rest.post(links.QUERY_USER_LIST, params.param, params.callback)
     },
     [types.ADD_USER] ({ commit, rootState }, params) {
-      rest.post(links.ADD_USER, JSON.stringify(params.param), params.callback)
+      rest.post(links.ADD_USER, params.param, params.callback)
     },
     [types.QUERY_USER_COMPANYS] ({ commit, rootState }, params) {
-      rest.post(links.QUERY_USER_COMPANYS, JSON.stringify(params.param), params.callback)
+      rest.post(links.QUERY_USER_COMPANYS, params.param, params.callback)
     },
     [types.DELETE_USER_INFO] ({ commit, rootState }, params) {
-      rest.post(links.DELETE_USER_INFO, JSON.stringify(params.param), params.callback)
+      rest.post(links.DELETE_USER_INFO, params.param, params.callback)
     },
     [types.QUERY_USER_INFO] ({ commit, rootState }, params) {
-      rest.post(links.QUERY_USER_INFO, JSON.stringify(params.param), params.callback)
+      rest.post(links.QUERY_USER_INFO, params.param, params.callback)
     },
     [types.UPDATE_USER_AUTH] ({ commit, rootState }, params) {
-      rest.post(links.UPDATE_USER_AUTH, JSON.stringify(params.param), params.callback)
+      rest.post(links.UPDATE_USER_AUTH, params.param, params.callback)
     },
     [types.UPDATE_USER] ({ commit, rootState }, params) {
-      rest.post(links.UPDATE_USER, JSON.stringify(params.param), params.callback)
+      rest.post(links.UPDATE_USER, params.param, params.callback)
     },
     [types.GET_USER_ROLES] ({ commit, rootState }) {
       rest.get(links.GET_USER_ROLES, '', function (response) {
@@ -136,7 +136,7 @@ export default {
       })
     },
     [types.GET_USER_AUTH_GROUPS] ({ commit, rootState }) {
-      rest.post(links.GET_USER_AUTH_GROUPS, JSON.stringify({userId: ''}), function (response) {
+      rest.post(links.GET_USER_AUTH_GROUPS, {userId: ''}, function (response) {
         if (response.data.code === '1000') {
           commit(types.SET_USER_AUTH_GROUPS, response.data)
           commit(types.SET_USER_AUTH_GROUPS_ORIGINAL, response.data)
