@@ -45,6 +45,9 @@ export default {
   },
   beforeMount () {
     this.queryUserCustomersList((response) => {
+      if (!response) {
+        return false
+      }
       if (response.data.code === '1000') {
         this.list = response.data.data
       }
@@ -93,7 +96,6 @@ export default {
   width:220px;
   font-size:16px;
   display:block;
-  vertical-align:middle;
   line-height:24px;
   padding: 0 40px;
 }

@@ -67,6 +67,9 @@ export default {
           userCode: this.$refs.account.value
         },
         callback: (response) => {
+          if (!response) {
+            return false
+          }
           let data = response.data
           if (data.code === '1000') {
             this.success = true
@@ -118,6 +121,9 @@ export default {
           verificationCode: vc
         },
         callback: (response) => {
+          if (!response) {
+            return false
+          }
           let data = response.data
           if (data.code === '1000') {
             this.$Message.success('登录成功！')

@@ -157,6 +157,9 @@ export default {
             }
           },
           callback: (response) => {
+            if (!response) {
+              return false
+            }
             let data = response.data
             if (data.code === '1000') {
               this.realPrice += this.payFinishData.jsonObj[i].price.split('_')[0] * 1

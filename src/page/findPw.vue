@@ -88,6 +88,9 @@ export default {
           verificationCode: this.$refs.verificationCode.value
         },
         callback: (response) => {
+          if (!response) {
+            return false
+          }
           let data = response.data
           if (data.code === '1000') {
             this.step = 3
@@ -138,6 +141,9 @@ export default {
           userCode: this.$refs.account.value
         },
         callback: (response) => {
+          if (!response) {
+            return false
+          }
           let data = response.data
           if (data.code === '1000') {
             this.success = true
