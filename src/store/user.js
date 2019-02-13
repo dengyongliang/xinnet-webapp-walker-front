@@ -79,71 +79,95 @@ export default {
   },
   actions: {
     [types.GET_CURRENT_USER_DATA] ({ commit, rootState }, callback) {
-      rest.get(links.GET_CURRENT_USER_DATA, '', callback)
+      rest.get(links.GET_CURRENT_USER_DATA, '')
+        .then(callback)
+        .catch()
     },
     [types.UPDATE_USER_INFO] ({ commit, rootState }, params) {
-      rest.post(links.UPDATE_USER_INFO, params.param, params.callback)
+      rest.post(links.UPDATE_USER_INFO, params.param)
+        .then(params.callback)
+        .catch()
     },
     [types.UPDATE_USER_PASSWORD] ({ commit, rootState }, params) {
-      rest.post(links.UPDATE_USER_PASSWORD, params.param, params.callback)
+      rest.post(links.UPDATE_USER_PASSWORD, params.param)
+        .then(params.callback)
+        .catch()
     },
     [types.QUERY_USER_LIST] ({ commit, rootState }, params) {
-      rest.post(links.QUERY_USER_LIST, params.param, params.callback)
+      rest.post(links.QUERY_USER_LIST, params.param)
+        .then(params.callback)
+        .catch()
     },
     [types.ADD_USER] ({ commit, rootState }, params) {
-      rest.post(links.ADD_USER, params.param, params.callback)
+      rest.post(links.ADD_USER, params.param)
+        .then(params.callback)
+        .catch()
     },
     [types.QUERY_USER_COMPANYS] ({ commit, rootState }, params) {
-      rest.post(links.QUERY_USER_COMPANYS, params.param, params.callback)
+      rest.post(links.QUERY_USER_COMPANYS, params.param)
+        .then(params.callback)
+        .catch()
     },
     [types.DELETE_USER_INFO] ({ commit, rootState }, params) {
-      rest.post(links.DELETE_USER_INFO, params.param, params.callback)
+      rest.post(links.DELETE_USER_INFO, params.param)
+        .then(params.callback)
+        .catch()
     },
     [types.QUERY_USER_INFO] ({ commit, rootState }, params) {
-      rest.post(links.QUERY_USER_INFO, params.param, params.callback)
+      rest.post(links.QUERY_USER_INFO, params.param)
+        .then(params.callback)
+        .catch()
     },
     [types.UPDATE_USER_AUTH] ({ commit, rootState }, params) {
-      rest.post(links.UPDATE_USER_AUTH, params.param, params.callback)
+      rest.post(links.UPDATE_USER_AUTH, params.param)
+        .then(params.callback)
+        .catch()
     },
     [types.UPDATE_USER] ({ commit, rootState }, params) {
-      rest.post(links.UPDATE_USER, params.param, params.callback)
+      rest.post(links.UPDATE_USER, params.param)
+        .then(params.callback)
+        .catch()
     },
     [types.GET_USER_ROLES] ({ commit, rootState }) {
-      rest.get(links.GET_USER_ROLES, '', function (response) {
-        if (response.data.code === '1000') {
-          commit(types.SET_USER_ROLES, response.data)
-        } else {
-        }
-        return response
-      })
+      rest.get(links.GET_USER_ROLES, '')
+        .then(function (response) {
+          if (response.data.code === '1000') {
+            commit(types.SET_USER_ROLES, response.data)
+          } else {
+          }
+        })
+        .catch()
     },
     [types.GET_USERS] ({ commit, rootState }) {
-      rest.get(links.GET_USERS, '', function (response) {
-        if (response.data.code === '1000') {
-          commit(types.SET_USERS, response.data)
-        } else {
-        }
-        return response
-      })
+      rest.get(links.GET_USERS, '')
+        .then(function (response) {
+          if (response.data.code === '1000') {
+            commit(types.SET_USERS, response.data)
+          } else {
+          }
+        })
+        .catch()
     },
     [types.GET_COMPANYS] ({ commit, rootState }) {
-      rest.get(links.GET_COMPANYS, '', function (response) {
-        if (response.data.code === '1000') {
-          commit(types.SET_COMPANYS, response.data)
-        } else {
-        }
-        return response
-      })
+      rest.get(links.GET_COMPANYS, '')
+        .then(function (response) {
+          if (response.data.code === '1000') {
+            commit(types.SET_COMPANYS, response.data)
+          } else {
+          }
+        })
+        .catch()
     },
     [types.GET_USER_AUTH_GROUPS] ({ commit, rootState }) {
-      rest.post(links.GET_USER_AUTH_GROUPS, {userId: ''}, function (response) {
-        if (response.data.code === '1000') {
-          commit(types.SET_USER_AUTH_GROUPS, response.data)
-          commit(types.SET_USER_AUTH_GROUPS_ORIGINAL, response.data)
-        } else {
-        }
-        return response
-      })
+      rest.post(links.GET_USER_AUTH_GROUPS, {userId: ''})
+        .then(function (response) {
+          if (response.data.code === '1000') {
+            commit(types.SET_USER_AUTH_GROUPS, response.data)
+            commit(types.SET_USER_AUTH_GROUPS_ORIGINAL, response.data)
+          } else {
+          }
+        })
+        .catch()
     }
   }
 }

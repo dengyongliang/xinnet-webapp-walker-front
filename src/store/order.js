@@ -9,10 +9,14 @@ export default {
   },
   actions: {
     [types.QUERY_ORDER_LIST] ({ commit, rootState }, params) {
-      rest.post(links.QUERY_ORDER_LIST, params.param, params.callback)
+      rest.post(links.QUERY_ORDER_LIST, params.param)
+        .then(params.callback)
+        .catch()
     },
     [types.EXPORT_ORDER_LIST] ({ commit, rootState }, params) {
-      rest.post(links.EXPORT_ORDER_LIST, params.param, params.callback)
+      rest.post(links.EXPORT_ORDER_LIST, params.param)
+        .then(params.callback)
+        .catch()
     }
   }
 }

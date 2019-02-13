@@ -117,21 +117,20 @@ export default {
    * get方法，对应get请求
    * @param {String} url [请求的url地址]
    * @param {Object} params [请求时携带的参数]
-   * @param {function} callback [回调函数]
    */
-  get (url, params, callback) {
+  get (url, params) {
     NProgress.start()
     return new Promise((resolve, reject) => {
       axios.get(url, params)
         .then(res => {
           NProgress.done()
-          // resolve(res.data)
-          if (res && callback && typeof callback === 'function') {
-            callback(res)
-          }
+          resolve(res)
+          // if (res && callback && typeof callback === 'function') {
+          //   callback(res)
+          // }
         })
         .catch(err => {
-          reject(err.data)
+          reject(err)
         })
     })
   },
@@ -139,21 +138,20 @@ export default {
      * post方法，对应post请求
      * @param {String} url [请求的url地址]
      * @param {Object} params [请求时携带的参数]
-     * @param {function} callback [回调函数]
      */
-  post (url, params, callback) {
+  post (url, params) {
     NProgress.start()
     return new Promise((resolve, reject) => {
       axios.post(url, JSON.stringify(params))
         .then(res => {
           NProgress.done()
-          // resolve(res.data)
-          if (res && callback && typeof callback === 'function') {
-            callback(res)
-          }
+          resolve(res)
+          // if (res && callback && typeof callback === 'function') {
+          //   callback(res)
+          // }
         })
         .catch(err => {
-          reject(err.data)
+          reject(err)
         })
     })
   }

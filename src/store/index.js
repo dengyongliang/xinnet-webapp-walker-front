@@ -58,57 +58,91 @@ export default function makeStore () {
     },
     actions: {
       [types.LOGIN_VERIFICATIONCODE] ({ commit, rootState }, params) {
-        rest.post(links.LOGIN_VERIFICATIONCODE, params.param, params.callback)
+        rest.post(links.LOGIN_VERIFICATIONCODE, params.param)
+          .then(params.callback)
+          .catch()
       },
       [types.LOGIN_SUBMIT] ({ commit, rootState }, params) {
-        rest.post(links.LOGIN_SUBMIT, params.param, params.callback)
+        rest.post(links.LOGIN_SUBMIT, params.param)
+          .then(params.callback)
+          .catch()
       },
       [types.LOGIN_OUT] ({ commit, rootState }, params) {
-        rest.post(links.LOGIN_OUT, {}, params.callback)
+        rest.post(links.LOGIN_OUT, {})
+          .then(params.callback)
+          .catch()
       },
       [types.CHECK_VALID_USER] ({ commit, rootState }, params) {
-        rest.post(links.CHECK_VALID_USER, params.param, params.callback)
+        rest.post(links.CHECK_VALID_USER, params.param)
+          .then(params.callback)
+          .catch()
       },
       [types.ACTIVATION_VERIFICATIONCODE] ({ commit, rootState }, params) {
-        rest.post(links.ACTIVATION_VERIFICATIONCODE, params.param, params.callback)
+        rest.post(links.ACTIVATION_VERIFICATIONCODE, params.param)
+          .then(params.callback)
+          .catch()
       },
       [types.SUBMIT_ACTIVATION_USER_INFO] ({ commit, rootState }, params) {
-        rest.post(links.SUBMIT_ACTIVATION_USER_INFO, params.param, params.callback)
+        rest.post(links.SUBMIT_ACTIVATION_USER_INFO, params.param)
+          .then(params.callback)
+          .catch()
       },
       [types.SUBMIT_ACTIVATION_USER_PWD] ({ commit, rootState }, params) {
-        rest.post(links.SUBMIT_ACTIVATION_USER_PWD, params.param, params.callback)
+        rest.post(links.SUBMIT_ACTIVATION_USER_PWD, params.param)
+          .then(params.callback)
+          .catch()
       },
       [types.QUERY_USER_CUSTOMERS_LIST] ({ commit, rootState }, callback) {
-        rest.get(links.QUERY_USER_CUSTOMERS_LIST, {}, callback)
+        rest.get(links.QUERY_USER_CUSTOMERS_LIST, {})
+          .then(callback)
+          .catch()
       },
       [types.CHANGE_CUSTOMERS] ({ commit, rootState }, params) {
-        rest.post(links.CHANGE_CUSTOMERS, params.param, function () {
-          window.location.href = '/home'
-        })
+        rest.post(links.CHANGE_CUSTOMERS, params.param)
+          .then(function () {
+            window.location.href = '/home'
+          })
+          .catch()
       },
       [types.GET_OLD_PHONE_CODE] ({ commit, rootState }, params) {
-        rest.post(links.GET_OLD_PHONE_CODE, params.param, params.callback)
+        rest.post(links.GET_OLD_PHONE_CODE, params.param)
+          .then(params.callback)
+          .catch()
       },
       [types.GET_UPDATE_PHONE_CODE] ({ commit, rootState }, params) {
-        rest.post(links.GET_UPDATE_PHONE_CODE, params.param, params.callback)
+        rest.post(links.GET_UPDATE_PHONE_CODE, params.param)
+          .then(params.callback)
+          .catch()
       },
       [types.CHECK_OLD_PHONE_CODE] ({ commit, rootState }, params) {
-        rest.post(links.CHECK_OLD_PHONE_CODE, params.param, params.callback)
+        rest.post(links.CHECK_OLD_PHONE_CODE, params.param)
+          .then(params.callback)
+          .catch()
       },
       [types.ORDER_SETTLEMENT] ({ commit, rootState }, params) {
-        rest.post(links.ORDER_SETTLEMENT, params.param, params.callback)
+        rest.post(links.ORDER_SETTLEMENT, params.param)
+          .then(params.callback)
+          .catch()
       },
       [types.BUY_BACKEND_LOCK] ({ commit, rootState }, params) {
-        rest.post(links.BUY_BACKEND_LOCK, params.param, params.callback)
+        rest.post(links.BUY_BACKEND_LOCK, params.param)
+          .then(params.callback)
+          .catch()
       },
       [types.RENEW_BACKEND_LOCK] ({ commit, rootState }, params) {
-        rest.post(links.RENEW_BACKEND_LOCK, params.param, params.callback)
+        rest.post(links.RENEW_BACKEND_LOCK, params.param)
+          .then(params.callback)
+          .catch()
       },
       [types.GET_DOMAIN_MGMT_V_CODE] ({ commit, rootState }, params) {
-        rest.post(links.GET_DOMAIN_MGMT_V_CODE, params.param, params.callback)
+        rest.post(links.GET_DOMAIN_MGMT_V_CODE, params.param)
+          .then(params.callback)
+          .catch()
       },
       [types.ORDER_PAYMENT] ({ commit, rootState }, params) {
-        rest.post(links.ORDER_PAYMENT, params.param, params.callback)
+        rest.post(links.ORDER_PAYMENT, params.param)
+          .then(params.callback)
+          .catch()
       }
     },
     getters: {
