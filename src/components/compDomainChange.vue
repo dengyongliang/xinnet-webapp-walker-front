@@ -72,6 +72,9 @@ export default {
           },
           callback: (response) => {
             this.loadingBtn = false
+            if (!response) {
+              return false
+            }
             if (response.data.code === '1000') {
               this.$Message.success(`提交过户成功：${response.data.countSuccess}个，失败：${response.data.countFaild}个`)
               this.$emit('refreshData')
@@ -104,6 +107,9 @@ export default {
 
       },
       callback: (response) => {
+        if (!response) {
+          return false
+        }
         if (response.data.code === '1000') {
           this.templateList = this.GLOBALS.CONVERT_SELECT(response.data.data, {
             label: 'templateName',

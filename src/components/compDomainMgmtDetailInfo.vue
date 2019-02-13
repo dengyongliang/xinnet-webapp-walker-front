@@ -75,6 +75,9 @@ export default {
         },
         callback: (response) => {
           this.loadingBtn = false
+          if (!response) {
+            return false
+          }
           if (response.data.code === '1000') {
             response.data.type = '2_2'
             response.data.jsonObj.map((v) => {

@@ -46,14 +46,16 @@ export default {
         },
         callback: (response) => {
           this.loadingBtn = false
-          if (response.data.code === '1000') {
-            this.$Message.success('发送成功')
-          } else {
-            if (response.data.code === '300') {
-              this.$Message.error('短信验证码已发送')
-            } else if (response.data.code === '500') {
-              this.$Message.error('手机号码错误')
+          if (response) {
+            if (response.data.code === '1000') {
+              this.$Message.success('发送成功')
             } else {
+              if (response.data.code === '300') {
+                this.$Message.error('短信验证码已发送')
+              } else if (response.data.code === '500') {
+                this.$Message.error('手机号码错误')
+              } else {
+              }
             }
           }
         }

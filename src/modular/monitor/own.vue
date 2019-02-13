@@ -250,6 +250,9 @@ export default {
         callback: (response) => {
           this.loadingBtn = false
           this.loadingTable = false
+          if (!response) {
+            return false
+          }
           if (response.data.code === '1000') {
             this.list = response.data.data.list
             this.page.pageItems = response.data.data.totalNum
@@ -273,6 +276,9 @@ export default {
       callback: (response) => {
         this.loadingTable = false
         this.loadingBtn = false
+        if (!response) {
+          return false
+        }
         if (response.data.code === '1000') {
           this.listTop = response.data.data.list
         } else {

@@ -69,6 +69,9 @@ export default {
           historyCycle: this.$refs.historyCycle.value
         },
         callback: (response) => {
+          if (!response) {
+            return false
+          }
           if (response.data.code === '1000') {
             if (!this.historyCycleList.length) {
               this.historyCycleList = response.data.data.historyCycleList.map((value, key, arr) => {

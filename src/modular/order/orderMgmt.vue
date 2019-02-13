@@ -261,7 +261,9 @@ export default {
         callback: (response) => {
           this.loadingBtn = false
           this.loadingTable = false
-          // console.log(response)
+          if (!response) {
+            return false
+          }
           if (response.data.code === '1000') {
             this.orderList = response.data.data.list
             this.page.pageItems = response.data.data.totalNum

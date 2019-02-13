@@ -52,6 +52,9 @@ export default {
           },
           callback: (response) => {
             this.loadingBtn = false
+            if (!response) {
+              return false
+            }
             if (response.data.code === '1000') {
               this.loadingBtn = false
               this.$Message.success('设置保护等级成功')

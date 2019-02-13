@@ -87,6 +87,9 @@ export default {
           },
           callback: (response) => {
             this.loadingBtn = false
+            if (!response) {
+              return false
+            }
             if (response.data.code === '1000') {
               response.data.jsonObj.map((v) => {
                 v.price = v.goodsNumAndPrice[0].price + '_' + v.goodsNumAndPrice[0].unit
@@ -138,6 +141,9 @@ export default {
       param: {
       },
       callback: (response) => {
+        if (!response) {
+          return false
+        }
         if (response.data.code === '1000') {
           this.templateList = this.GLOBALS.CONVERT_SELECT(response.data.data, {
             label: 'templateName',

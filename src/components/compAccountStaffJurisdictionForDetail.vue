@@ -99,18 +99,20 @@ export default {
           },
           callback: (response) => {
             this.loadingBtn = false
-            if (response.data.code === '1000') {
-              this.$Message.success('修改成功!')
-              this.$emit('closeDrawer')
-            } else {
-              if (response.data.code === '100') {
-                this.$Message.error('角色编码错误')
-              } else if (response.data.code === '200') {
-                this.$Message.error('用户已存在')
-              } else if (response.data.code === '300') {
-                this.$Message.error('企业不存在')
-              } else if (response.data.code === '400') {
-                this.$Message.error('超级管理员只允许存在一个')
+            if (response) {
+              if (response.data.code === '1000') {
+                this.$Message.success('修改成功!')
+                this.$emit('closeDrawer')
+              } else {
+                if (response.data.code === '100') {
+                  this.$Message.error('角色编码错误')
+                } else if (response.data.code === '200') {
+                  this.$Message.error('用户已存在')
+                } else if (response.data.code === '300') {
+                  this.$Message.error('企业不存在')
+                } else if (response.data.code === '400') {
+                  this.$Message.error('超级管理员只允许存在一个')
+                }
               }
             }
           }

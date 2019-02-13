@@ -183,6 +183,9 @@ export default {
         callback: (response) => {
           this.loadingBtn = false
           this.loadingTable = false
+          if (!response) {
+            return false
+          }
           if (response.data.code === '1000') {
             this.list = response.data.data.list
             this.page.pageItems = response.data.data.totalNum
@@ -211,6 +214,9 @@ export default {
   },
   mounted () {
     this.payStatisticsUnBilled((response) => {
+      if (!response) {
+        return false
+      }
       if (response.data.code === '1000') {
         this.payStatisticsUnBilledData = response.data.data
       } else {
@@ -221,6 +227,9 @@ export default {
     })
     this.queryFinanceCustomerFlowList(this.queryFinanceCustomerFlowListParam({pageNum: 1}))
     this.queryPayStatisticsBalance((response) => {
+      if (!response) {
+        return false
+      }
       if (response.data.code === '1000') {
         this.chartCreditQuotaData = response.data.data
       } else {

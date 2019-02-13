@@ -158,6 +158,9 @@ export default {
             id: v
           },
           callback: (response) => {
+            if (!response) {
+              return false
+            }
             if (response.data.code === '1000') {
               // 查找 所在 索引值
               let idx = this.list.findIndex((item) => (item.id === v))
@@ -186,6 +189,9 @@ export default {
         callback: (response) => {
           this.loadingBtn = false
           this.loadingTable = false
+          if (!response) {
+            return false
+          }
           if (response.data.code === '1000') {
             this.list = response.data.data.list
             this.page.pageItems = response.data.data.totalNum

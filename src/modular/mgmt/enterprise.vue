@@ -59,6 +59,9 @@ export default {
           companyName: this.value
         },
         callback: (response) => {
+          if (!response) {
+            return false
+          }
           if (response.data.code === '1000') {
             this.list = response.data.data
           } else {

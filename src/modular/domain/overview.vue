@@ -165,6 +165,9 @@ export default {
         },
         callback: (response) => {
           this.loadingBtn = false
+          if (!response) {
+            return false
+          }
           if (response.data.code === '1000') {
             console.log(response.data.data)
             this.overviewDomainCount = response.data.data

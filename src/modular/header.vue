@@ -29,7 +29,7 @@
     :loading="loadingBtn",
     :footer-hide="true"
   )
-    comp-switch-client(:onClose="closeModal", @parentEvent="parentEvent")
+    comp-switch-client(:onClose="closeModal", @parentEvent="parentEvent", v-if="showModals")
 </template>
 
 <script>
@@ -63,6 +63,9 @@ export default {
     logout () {
       let params = {
         callback: (response) => {
+          if (!response) {
+            return false
+          }
           if (response.data.code === '1000') {
             restEmitter.emit('closeWebSocket')
             this.$Message.success('登出成功')
@@ -86,6 +89,9 @@ export default {
   },
   beforeMount () {
     this.getCurrentUserData((response) => {
+      if (!response) {
+        return false
+      }
       if (response.data.code === '1000') {
         this.$store.commit(types.SET_LOGINED)
         this.$store.commit(types.SET_CURRENT_USER_DATA, response.data)

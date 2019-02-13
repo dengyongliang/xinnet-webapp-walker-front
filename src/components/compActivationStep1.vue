@@ -39,16 +39,18 @@ export default {
           },
           callback: (response) => {
             this.loadingBtn = false
-            if (response.data.code === '1000') {
-              this.$Message.success('验证成功')
-              this.$store.commit(types.SET_ACTIVATION_DATA, response.data)
-              this.$store.commit(types.SET_ACTIVATION_DATA, params.param)
-              this.$emit('submitStep')
-            } else {
-              if (response.data.code === '200') {
-                this.$Message.error('用户不存在')
+            if (response) {
+              if (response.data.code === '1000') {
+                this.$Message.success('验证成功')
+                this.$store.commit(types.SET_ACTIVATION_DATA, response.data)
+                this.$store.commit(types.SET_ACTIVATION_DATA, params.param)
+                this.$emit('submitStep')
               } else {
-                this.$Message.error('验证失败')
+                if (response.data.code === '200') {
+                  this.$Message.error('用户不存在')
+                } else {
+                  this.$Message.error('验证失败')
+                }
               }
             }
           }

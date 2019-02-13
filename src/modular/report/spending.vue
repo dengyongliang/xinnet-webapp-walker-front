@@ -168,6 +168,9 @@ export default {
       callback: (response) => {
         this.loadingBtn = false
         this.loadingTable = false
+        if (!response) {
+          return false
+        }
         if (response.data.code === '1000') {
           this.domainConsumptionReport.totalMoney = response.data.data.totalMoney
           this.domainConsumptionReport.businessList = (function (vm) {
@@ -191,6 +194,9 @@ export default {
       callback: (response) => {
         this.loadingBtn = false
         this.loadingTable = false
+        if (!response) {
+          return false
+        }
         if (response.data.code === '1000') {
           this.domainConsumptionSortReport = response.data.data
           let arr = {}
@@ -216,6 +222,9 @@ export default {
       callback: (response) => {
         this.loadingBtn = false
         this.loadingTable = false
+        if (!response) {
+          return false
+        }
         if (response.data.code === '1000') {
           this.domainConsumptionCompanyReport = response.data.data
         } else {
@@ -229,6 +238,9 @@ export default {
       callback: (response) => {
         this.loadingBtn = false
         this.loadingTable = false
+        if (!response) {
+          return false
+        }
         if (response.data.code === '1000') {
           this.domainConsumptionCompanySortReport = response.data.data
           let arr = {}
@@ -254,6 +266,9 @@ export default {
       callback: (response) => {
         this.loadingBtn = false
         this.loadingTable = false
+        if (!response) {
+          return false
+        }
         if (response.data.code === '1000') {
           this.domainConsumptionCompanyMonthReport = response.data.data
           let arr = {}
@@ -279,6 +294,9 @@ export default {
       callback: (response) => {
         this.loadingBtn = false
         this.loadingTable = false
+        if (!response) {
+          return false
+        }
         if (response.data.code === '1000') {
           this.list = (function (vm) {
             let arr = []

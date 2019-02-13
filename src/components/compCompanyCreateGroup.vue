@@ -120,6 +120,9 @@ export default {
           },
           callback: (response) => {
             this.loadingBtn = false
+            if (!response) {
+              return false
+            }
             if (response.data.code === '1000') {
               this.showMgmtBtn = false
               this.$Message.success('分组' + text + '成功')
@@ -189,6 +192,9 @@ export default {
           },
           callback: (response) => {
             this.loadingBtn = false
+            if (!response) {
+              return false
+            }
             if (response.data.code === '1000') {
               this.showMgmtBtn = false
               this.$Message.success('删除分组成功')

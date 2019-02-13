@@ -123,6 +123,9 @@ export default {
             },
             callback: (response) => {
               this.$Modal.remove()
+              if (!response) {
+                return false
+              }
               if (response.data.code === '1000') {
                 this.$Message.success('删除成功')
                 // 删除成功，重新加载用户列表数据
@@ -202,6 +205,9 @@ export default {
         },
         callback: (response) => {
           this.loadingTable = false
+          if (!response) {
+            return false
+          }
           if (response.data.code === '1000') {
             this.list = response.data.data.list
             this.page.pageItems = response.data.data.totalNum

@@ -51,17 +51,19 @@ export default {
           },
           callback: (response) => {
             this.loadingBtn = false
-            if (response.data.code === '1000') {
-              this.$Message.success('座机更新成功')
-              this.$store.commit(types.UPDATE_USER_TEL, this.$refs.userTel.value)
-              this.close()
-            } else {
-              if (response.data.code === '200') {
-                this.$Message.error('用户不存在')
-              } else if (response.data.code === '300') {
-                this.$Message.error('用户被锁定')
+            if (response) {
+              if (response.data.code === '1000') {
+                this.$Message.success('座机更新成功')
+                this.$store.commit(types.UPDATE_USER_TEL, this.$refs.userTel.value)
+                this.close()
               } else {
-                this.$Message.error('更新失败')
+                if (response.data.code === '200') {
+                  this.$Message.error('用户不存在')
+                } else if (response.data.code === '300') {
+                  this.$Message.error('用户被锁定')
+                } else {
+                  this.$Message.error('更新失败')
+                }
               }
             }
           }

@@ -58,6 +58,9 @@ export default {
   },
   beforeMount () {
     this.queryUserCustomersList((response) => {
+      if (!response) {
+        return false
+      }
       if (response.data.code === '1000') {
         this.list = this.GLOBALS.CONVERT_SELECT(response.data.data, {
           value: 'id',

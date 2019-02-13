@@ -89,21 +89,23 @@ export default {
           },
           callback: (response) => {
             this.loadingBtn = false
-            if (response.data.code === '1000') {
-              this.$Message.success('设置个人信息成功')
-              this.$store.commit(types.CLEAR_ACTIVATION_DATA)
-              this.$emit('submitStep')
-            } else {
-              if (response.data.code === '100') {
-                this.$refs.verificationCode.showValidateResult({text: '验证码错误或已失效'})
-              } else if (response.data.code === '200') {
-                this.$Message.error('用户不存在')
-              } else if (response.data.code === '300') {
-                this.$Message.error('用户已激活')
-              } else if (response.data.code === '400') {
-                this.$Message.error('手机号码已存在')
+            if (response) {
+              if (response.data.code === '1000') {
+                this.$Message.success('设置个人信息成功')
+                this.$store.commit(types.CLEAR_ACTIVATION_DATA)
+                this.$emit('submitStep')
               } else {
-                this.$Message.error('发送失败')
+                if (response.data.code === '100') {
+                  this.$refs.verificationCode.showValidateResult({text: '验证码错误或已失效'})
+                } else if (response.data.code === '200') {
+                  this.$Message.error('用户不存在')
+                } else if (response.data.code === '300') {
+                  this.$Message.error('用户已激活')
+                } else if (response.data.code === '400') {
+                  this.$Message.error('手机号码已存在')
+                } else {
+                  this.$Message.error('发送失败')
+                }
               }
             }
           }
@@ -129,15 +131,17 @@ export default {
           },
           callback: (response) => {
             this.loadingBtn = false
-            if (response.data.code === '1000') {
-              this.$Message.success('发送成功')
-            } else {
-              if (response.data.code === '300') {
-                this.$Message.error('短信验证码已发送')
-              } else if (response.data.code === '500') {
-                this.$Message.error('手机号码错误')
+            if (response) {
+              if (response.data.code === '1000') {
+                this.$Message.success('发送成功')
               } else {
-                this.$Message.error('发送失败')
+                if (response.data.code === '300') {
+                  this.$Message.error('短信验证码已发送')
+                } else if (response.data.code === '500') {
+                  this.$Message.error('手机号码错误')
+                } else {
+                  this.$Message.error('发送失败')
+                }
               }
             }
           }

@@ -76,18 +76,20 @@ export default {
           },
           callback: (response) => {
             this.loadingBtn = false
-            if (response.data.code === '1000') {
-              this.$Message.success('修改成功!')
-              this.$emit('closeDrawer')
-            } else {
-              if (response.data.code === '200') {
-                this.$Message.error('用户不存在')
-              } else if (response.data.code === '300') {
-                this.$Message.error('用户被锁定')
-              } else if (response.data.code === '600') {
-                this.$refs.userMobile.showValidateResult({text: '手机号码已存在'})
-              } else if (response.data.code === '700') {
-                this.$refs.userEmail.showValidateResult({text: '邮箱已存在'})
+            if (response) {
+              if (response.data.code === '1000') {
+                this.$Message.success('修改成功!')
+                this.$emit('closeDrawer')
+              } else {
+                if (response.data.code === '200') {
+                  this.$Message.error('用户不存在')
+                } else if (response.data.code === '300') {
+                  this.$Message.error('用户被锁定')
+                } else if (response.data.code === '600') {
+                  this.$refs.userMobile.showValidateResult({text: '手机号码已存在'})
+                } else if (response.data.code === '700') {
+                  this.$refs.userEmail.showValidateResult({text: '邮箱已存在'})
+                }
               }
             }
           }

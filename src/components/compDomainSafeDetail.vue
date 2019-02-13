@@ -233,6 +233,9 @@ export default {
         },
         callback: (response) => {
           this.loadingBtn = false
+          if (!response) {
+            return false
+          }
           if (response.data.code === '1000') {
             response.data.type = '4_' + (type === 'new' ? 1 : 2)
             response.data.jsonObj.map((v) => {
@@ -267,6 +270,9 @@ export default {
         },
         callback: (response) => {
           this.loadingBtn = false
+          if (!response) {
+            return false
+          }
           if (response.data.code === '1000') {
             this.loadingBtn = false
             this.$Message.success(`自动续费${flag === 1 ? '开启' : '关闭'}成功`)
@@ -297,6 +303,9 @@ export default {
         },
         callback: (response) => {
           this.loadingBtn = false
+          if (!response) {
+            return false
+          }
           if (response.data.code === '1000') {
             this.loadingBtn = false
             this.$Message.success(`禁止更新${flag === 1 ? '开启' : '关闭'}成功`)

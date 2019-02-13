@@ -138,6 +138,9 @@ export default {
           },
           callback: (response) => {
             this.loadingBtn = false
+            if (!response) {
+              return false
+            }
             if (response.data.code === '1000') {
               this.$Message.success('模板资料提交成功')
               this.$emit('refreshData')

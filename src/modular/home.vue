@@ -133,28 +133,68 @@ export default {
   },
   beforeMount () {
     this.indexMyCompany((response) => {
-      this.myCompany = response.data.data
+      if (!response) {
+        return false
+      }
+      if (response.data.code === '1000') {
+        this.myCompany = response.data.data
+      }
     })
     this.indexMyKeeper((response) => {
-      this.myKeeper = response.data.data
+      if (!response) {
+        return false
+      }
+      if (response.data.code === '1000') {
+        this.myKeeper = response.data.data
+      }
     })
     this.indexDomainStatistics((response) => {
-      this.domainStatistics = response.data.data
+      if (!response) {
+        return false
+      }
+      if (response.data.code === '1000') {
+        this.domainStatistics = response.data.data
+      }
     })
     this.indexCompanyStatistics((response) => {
-      this.companyStatistics = response.data.data
+      if (!response) {
+        return false
+      }
+      if (response.data.code === '1000') {
+        this.companyStatistics = response.data.data
+      }
     })
     this.indexUserStatistics((response) => {
-      this.userStatistics = response.data.data
+      if (!response) {
+        return false
+      }
+      if (response.data.code === '1000') {
+        this.userStatistics = response.data.data
+      }
     })
     this.indexPayStatisticsUnBilled((response) => {
-      this.payStatisticsUnBilled = response.data.data
+      if (!response) {
+        return false
+      }
+      if (response.data.code === '1000') {
+        this.payStatisticsUnBilled = response.data.data
+      }
     })
     this.indexPayStatisticsHistoryBill((response) => {
-      this.payStatisticsHistoryBill = response.data.data
+      if (!response) {
+        return false
+      }
+      if (response.data.code === '1000') {
+        this.payStatisticsHistoryBill = response.data.data
+      }
     })
     this.indexAccountStatistics((response) => {
-      this.accountStatistics = response.data.data.customerAccountInfo
+      if (!response) {
+        return false
+      }
+      if (response.data.code === '1000') {
+        this.accountStatistics = response.data.data.customerAccountInfo
+      }
     })
   },
   mounted () {

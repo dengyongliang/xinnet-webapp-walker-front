@@ -228,6 +228,9 @@ export default {
           cycleTime: v * 1
         },
         callback: (response) => {
+          if (!response) {
+            return false
+          }
           if (response.data.code === '1000') {
             this.reportChange = response.data.data
           } else {
@@ -247,12 +250,18 @@ export default {
   beforeMount () {
     this.getChangeReport()
     this.queryDomainMonitorSafeReport((response) => {
+      if (!response) {
+        return false
+      }
       if (response.data.code === '1000') {
         this.reportSafe = response.data.data
       } else {
       }
     })
     this.queryDomainMonitorExpireReport((response) => {
+      if (!response) {
+        return false
+      }
       if (response.data.code === '1000') {
         this.reportExpire = response.data.data
       } else {

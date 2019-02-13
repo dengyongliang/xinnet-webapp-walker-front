@@ -36,16 +36,18 @@ export default {
           },
           callback: (response) => {
             this.loadingBtn = false
-            if (response.data.code === '1000') {
-              this.$Message.success('激活成功')
-              this.$emit('submitStep')
-            } else {
-              if (response.data.code === '200') {
-                this.$Message.error('用户不存在')
-              } else if (response.data.code === '300') {
-                this.$Message.error('用户已激活')
+            if (response) {
+              if (response.data.code === '1000') {
+                this.$Message.success('激活成功')
+                this.$emit('submitStep')
               } else {
-                this.$Message.error('激活失败')
+                if (response.data.code === '200') {
+                  this.$Message.error('用户不存在')
+                } else if (response.data.code === '300') {
+                  this.$Message.error('用户已激活')
+                } else {
+                  this.$Message.error('激活失败')
+                }
               }
             }
           }

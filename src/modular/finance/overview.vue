@@ -160,6 +160,9 @@ export default {
         callback: (response) => {
           this.loadingTable = false
           console.log(response.data)
+          if (!response) {
+            return false
+          }
           if (response.data.code === '1000') {
             this.creditMoney = response.data.data.creditMoney
             this.payMoney = response.data.data.payMoney
@@ -195,6 +198,9 @@ export default {
         callback: (response) => {
           this.loadingBtn = false
           console.log(response)
+          if (!response) {
+            return false
+          }
           if (response.data.code === '1000') {
             this.payStatisticsTrendData = {
               legend: [],

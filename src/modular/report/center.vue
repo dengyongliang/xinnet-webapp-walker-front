@@ -47,6 +47,9 @@ export default {
         pageSize: 20
       },
       callback: (response) => {
+        if (!response) {
+          return false
+        }
         if (response.data.code === '1000') {
           this.budgetList = response.data.data.list
         } else {
@@ -60,6 +63,9 @@ export default {
         pageSize: 20
       },
       callback: (response) => {
+        if (!response) {
+          return false
+        }
         if (response.data.code === '1000') {
           this.consumptionList = response.data.data.list
         } else {

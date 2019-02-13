@@ -217,6 +217,9 @@ export default {
           param: param,
           callback: (response) => {
             this.loadingBtn = false
+            if (!response) {
+              return false
+            }
             if (response.data.code === '1000') {
               this.$Message.success('工单提交成功')
               // 重置列表

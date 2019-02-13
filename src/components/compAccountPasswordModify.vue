@@ -60,15 +60,17 @@ export default {
         },
         callback: (response) => {
           this.loadingBtn = false
-          if (response.data.code === '1000') {
-            this.$Message.success('发送成功')
-          } else {
-            if (response.data.code === '300') {
-              this.$Message.error('短信验证码已发送')
-            } else if (response.data.code === '500') {
-              this.$Message.error('手机号码错误')
+          if (response) {
+            if (response.data.code === '1000') {
+              this.$Message.success('发送成功')
             } else {
-              this.$Message.error('发送失败')
+              if (response.data.code === '300') {
+                this.$Message.error('短信验证码已发送')
+              } else if (response.data.code === '500') {
+                this.$Message.error('手机号码错误')
+              } else {
+                this.$Message.error('发送失败')
+              }
             }
           }
         }
@@ -87,7 +89,7 @@ export default {
           },
           callback: (response) => {
             this.loadingBtn = false
-            if (response.data.code === '1000') {
+            if (response && response.data.code === '1000') {
               this.$Message.success('验证成功')
               this.step = 2
             } else {
@@ -113,18 +115,20 @@ export default {
           },
           callback: (response) => {
             this.loadingBtn = false
-            if (response.data.code === '1000') {
-              this.$Message.success('登录密码更新成功')
-              this.close()
-            } else {
-              if (response.data.code === '200') {
-                this.$Message.error('用户不存在')
-              } else if (response.data.code === '300') {
-                this.$Message.error('用户被锁定')
-              } else if (response.data.code === '400') {
-                this.$Message.error('原始密码错误')
+            if (response) {
+              if (response.data.code === '1000') {
+                this.$Message.success('登录密码更新成功')
+                this.close()
               } else {
-                this.$Message.error('登录密码更新失败')
+                if (response.data.code === '200') {
+                  this.$Message.error('用户不存在')
+                } else if (response.data.code === '300') {
+                  this.$Message.error('用户被锁定')
+                } else if (response.data.code === '400') {
+                  this.$Message.error('原始密码错误')
+                } else {
+                  this.$Message.error('登录密码更新失败')
+                }
               }
             }
           }

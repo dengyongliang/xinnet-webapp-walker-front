@@ -179,6 +179,9 @@ export default {
           reportId: this.reportId
         },
         callback: (response) => {
+          if (!response) {
+            return false
+          }
           if (response.data.code === '1000') {
             this.domainBudget = response.data.data
           } else {
@@ -191,6 +194,9 @@ export default {
           reportId: this.reportId
         },
         callback: (response) => {
+          if (!response) {
+            return false
+          }
           if (response.data.code === '1000') {
             this.list = response.data.data.list
           } else {
@@ -203,6 +209,9 @@ export default {
           reportId: this.reportId
         },
         callback: (response) => {
+          if (!response) {
+            return false
+          }
           if (response.data.code === '1000') {
             this.renewAndSafe = response.data.data
           } else {
@@ -216,6 +225,9 @@ export default {
           reportId: this.reportId
         },
         callback: (response) => {
+          if (!response) {
+            return false
+          }
           if (response.data.code === '1000') {
             this.register = response.data.data
             let arr = []

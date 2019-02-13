@@ -62,15 +62,17 @@ export default {
         },
         callback: (response) => {
           this.loadingBtn = false
-          if (response.data.code === '1000') {
-            this.$Message.success('发送成功')
-          } else {
-            if (response.data.code === '300') {
-              this.$Message.error('短信验证码已发送')
-            } else if (response.data.code === '500') {
-              this.$Message.error('手机号码错误')
+          if (response) {
+            if (response.data.code === '1000') {
+              this.$Message.success('发送成功')
             } else {
-              this.$Message.error('发送失败')
+              if (response.data.code === '300') {
+                this.$Message.error('短信验证码已发送')
+              } else if (response.data.code === '500') {
+                this.$Message.error('手机号码错误')
+              } else {
+                this.$Message.error('发送失败')
+              }
             }
           }
         }
@@ -89,15 +91,17 @@ export default {
           },
           callback: (response) => {
             this.loadingBtn = false
-            if (response.data.code === '1000') {
-              this.$Message.success('发送成功')
-            } else {
-              if (response.data.code === '300') {
-                this.$Message.error('短信验证码已发送')
-              } else if (response.data.code === '500') {
-                this.$refs.userMobile.showValidateResult({text: '手机号码错误'})
+            if (response) {
+              if (response.data.code === '1000') {
+                this.$Message.success('发送成功')
               } else {
-                this.$Message.error('发送失败')
+                if (response.data.code === '300') {
+                  this.$Message.error('短信验证码已发送')
+                } else if (response.data.code === '500') {
+                  this.$refs.userMobile.showValidateResult({text: '手机号码错误'})
+                } else {
+                  this.$Message.error('发送失败')
+                }
               }
             }
           }
@@ -119,7 +123,7 @@ export default {
           },
           callback: (response) => {
             this.loadingBtn = false
-            if (response.data.code === '1000') {
+            if (response && response.data.code === '1000') {
               this.$Message.success('验证成功')
               this.step = 2
             } else {
@@ -147,19 +151,21 @@ export default {
           },
           callback: (response) => {
             this.loadingBtn = false
-            if (response.data.code === '1000') {
-              this.$Message.success('手机更新成功')
-              this.$store.commit(types.UPDATE_USER_MOBILE, this.$refs.userMobile.value)
-              this.close()
-            } else {
-              if (response.data.code === '200') {
-                this.$Message.error('用户不存在')
-              } else if (response.data.code === '300') {
-                this.$Message.error('用户被锁定')
-              } else if (response.data.code === '400') {
-                this.$refs.verificationCode2.showValidateResult({text: '手机验证码错误'})
-              } else if (response.data.code === '600') {
-                this.$refs.userMobile.showValidateResult({text: '手机号码已存在'})
+            if (response) {
+              if (response.data.code === '1000') {
+                this.$Message.success('手机更新成功')
+                this.$store.commit(types.UPDATE_USER_MOBILE, this.$refs.userMobile.value)
+                this.close()
+              } else {
+                if (response.data.code === '200') {
+                  this.$Message.error('用户不存在')
+                } else if (response.data.code === '300') {
+                  this.$Message.error('用户被锁定')
+                } else if (response.data.code === '400') {
+                  this.$refs.verificationCode2.showValidateResult({text: '手机验证码错误'})
+                } else if (response.data.code === '600') {
+                  this.$refs.userMobile.showValidateResult({text: '手机号码已存在'})
+                }
               }
             }
           }

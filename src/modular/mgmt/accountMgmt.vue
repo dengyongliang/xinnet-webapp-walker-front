@@ -204,6 +204,9 @@ export default {
           userCode: this.value
         },
         callback: (response) => {
+          if (!response) {
+            return false
+          }
           if (response.data.code === '1000') {
             this.list = response.data.data.list
             this.page.pageItems = response.data.data.totalNum
@@ -225,6 +228,9 @@ export default {
           companyId: obj.companyId
         },
         callback: (response) => {
+          if (!response) {
+            return false
+          }
           if (response.data.code === '1000') {
             this.list = response.data.data.list
             this.page.pageItems = response.data.data.totalNum
@@ -245,6 +251,9 @@ export default {
           domainGroupId: obj.domainGroupId
         },
         callback: (response) => {
+          if (!response) {
+            return false
+          }
           if (response.data.code === '1000') {
             this.list = response.data.data.list
             this.page.pageItems = response.data.data.totalNum
@@ -306,6 +315,9 @@ export default {
           userCode: userCode
         },
         callback: (response) => {
+          if (!response) {
+            return false
+          }
           if (response.data.code === '1000') {
             this.staffData = response.data.data
             this.drawerDetailStaff = true
@@ -333,6 +345,9 @@ export default {
             },
             callback: (response) => {
               this.$Modal.remove()
+              if (!response) {
+                return false
+              }
               if (response.data.code === '1000') {
                 this.$Message.success('删除成功')
                 // 删除成功，重新加载用户列表数据
@@ -410,6 +425,9 @@ export default {
     let params = {
       param: {},
       callback: (response) => {
+        if (!response) {
+          return false
+        }
         if (response.data.code === '1000') {
           this.userCompanys.push({
             title: response.data.data.id,

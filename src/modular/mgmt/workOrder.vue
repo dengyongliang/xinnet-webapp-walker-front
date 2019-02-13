@@ -149,6 +149,9 @@ export default {
           id: id
         },
         callback: (response) => {
+          if (!response) {
+            return false
+          }
           if (response.data.code === '1000') {
             this.orderDetailInfo = response.data.data
           } else {
@@ -172,6 +175,9 @@ export default {
         callback: (response) => {
           this.loadingBtn = false
           this.loadingTable = false
+          if (!response) {
+            return false
+          }
           if (response.data.code === '1000') {
             this.list = response.data.data.list
             this.page.pageItems = response.data.data.totalNum

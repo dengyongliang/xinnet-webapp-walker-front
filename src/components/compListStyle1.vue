@@ -102,6 +102,9 @@ export default {
         },
         callback: (response) => {
           this.loadingBtn = false
+          if (!response) {
+            return false
+          }
           if (response.data.code === '1000') {
             this.companyDetailData = response.data.data
             if (typeof tabIdx !== 'undefined') {
@@ -129,6 +132,9 @@ export default {
             },
             callback: (response) => {
               this.$Modal.remove()
+              if (!response) {
+                return false
+              }
               if (response.data.code === '1000') {
                 this.$Message.success('企业删除成功')
                 this.$emit('refreshData')
