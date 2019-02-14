@@ -7,7 +7,7 @@
 
 <script>
 import {mapState} from 'vuex'
-import {emitter as restEmitter} from '@/global/rest'
+import {emitter as restEmitter} from '@/global/http'
 import mixinsWebSocket from '@/mixins/mixinsWebSocket'
 export default {
   name: 'App',

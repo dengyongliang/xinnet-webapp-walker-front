@@ -37,7 +37,7 @@ import { mapState, mapActions } from 'vuex'
 import * as types from '@/store/types'
 import compSwitchClient from '@/components/compSwitchClient'
 // import mixinsWebSocket from '@/mixins/mixinsWebSocket'
-import { emitter as restEmitter } from '@/global/rest'
+import { emitter as restEmitter } from '@/global/http'
 export default {
   components: {
     compSwitchClient
