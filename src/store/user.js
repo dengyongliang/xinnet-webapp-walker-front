@@ -131,6 +131,9 @@ export default {
     [types.GET_USER_ROLES] ({ commit, rootState }) {
       rest.get(links.GET_USER_ROLES, '')
         .then(function (response) {
+          if (!response) {
+            return false
+          }
           if (response.data.code === '1000') {
             commit(types.SET_USER_ROLES, response.data)
           } else {
@@ -141,6 +144,9 @@ export default {
     [types.GET_USERS] ({ commit, rootState }) {
       rest.get(links.GET_USERS, '')
         .then(function (response) {
+          if (!response) {
+            return false
+          }
           if (response.data.code === '1000') {
             commit(types.SET_USERS, response.data)
           } else {
@@ -151,6 +157,9 @@ export default {
     [types.GET_COMPANYS] ({ commit, rootState }) {
       rest.get(links.GET_COMPANYS, '')
         .then(function (response) {
+          if (!response) {
+            return false
+          }
           if (response.data.code === '1000') {
             commit(types.SET_COMPANYS, response.data)
           } else {
@@ -161,6 +170,9 @@ export default {
     [types.GET_USER_AUTH_GROUPS] ({ commit, rootState }) {
       rest.post(links.GET_USER_AUTH_GROUPS, {userId: ''})
         .then(function (response) {
+          if (!response) {
+            return false
+          }
           if (response.data.code === '1000') {
             commit(types.SET_USER_AUTH_GROUPS, response.data)
             commit(types.SET_USER_AUTH_GROUPS_ORIGINAL, response.data)

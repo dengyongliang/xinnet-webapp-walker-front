@@ -2,6 +2,7 @@
 .pageSelectClient
   header-body
   .mainBody
+    h1 请选择客户
     ul.list.clear(v-show="list.length")
       li(v-for="item in list")
         a(href="javascript:;",@click="changeCustomersEv(item.id)")
@@ -64,6 +65,12 @@ export default {
   margin:0 auto;
   padding-top:100px;
 }
+.mainBody h1{
+  text-align: center;
+  font-size: 30px;
+  font-weight: normal;
+  padding-bottom: 40px;
+}
 .list li{
   float:left;
   width:380px;
@@ -78,7 +85,11 @@ export default {
   display:block;
   border:1px solid #e0e0e0;
   border-radius: 10px;
-  background:#fff;
+  /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#ffffff+1,fbfdff+100 */
+  background: rgb(255,255,255); /* Old browsers */
+  background: -moz-linear-gradient(top,  rgba(255,255,255,1) 1%, rgba(251,253,255,1) 100%); /* FF3.6-15 */
+  background: -webkit-linear-gradient(top,  rgba(255,255,255,1) 1%,rgba(251,253,255,1) 100%); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to bottom,  rgba(255,255,255,1) 1%,rgba(251,253,255,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
   -moz-box-shadow:0px 0px 10px rgba(0,0,0,0.2);
   -webkit-box-shadow:0px 0px 10px rgba(0,0,0,0.2);
   box-shadow:0px 0px 10px rgba(0,0,0,0.2)
@@ -93,7 +104,6 @@ export default {
   height:100%;
 }
 .list li strong{
-  width:220px;
   font-size:16px;
   display:block;
   line-height:24px;

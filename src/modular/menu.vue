@@ -182,7 +182,7 @@ export default {
     display:block;
 }
 .menuBody .menuItem:hover a{
-    color: #e50012;
+    color: #2271f4;
 }
 .menuBody .menuItem .router-link-active{
   color:#2271f4;
