@@ -11,22 +11,22 @@ export default {
     [types.QUERY_MAIL_MANAGE_TOP] ({ commit, rootState }, params) {
       rest.post(links.QUERY_MAIL_MANAGE_TOP, params.param)
         .then(params.callback)
-        .catch()
+        .catch(() => {})
     },
     [types.QUERY_DOMAIN_MONITOR] ({ commit, rootState }, params) {
       rest.post(links.QUERY_DOMAIN_MONITOR, params.param)
         .then(params.callback)
-        .catch()
+        .catch(() => {})
     },
     [types.QUERY_DOMAIN_MONITOR_DETAIL] ({ commit, rootState }, params) {
       rest.post(links.QUERY_DOMAIN_MONITOR_DETAIL, params.param)
         .then(params.callback)
-        .catch()
+        .catch(() => {})
     },
     [types.QUERY_DOMAIN_MONITOR_LOG] ({ commit, rootState }, params) {
       rest.post(links.QUERY_DOMAIN_MONITOR_LOG, params.param)
         .then(params.callback)
-        .catch()
+        .catch(() => {})
     }
   }
 }

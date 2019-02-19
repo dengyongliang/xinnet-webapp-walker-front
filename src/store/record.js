@@ -11,12 +11,12 @@ export default {
     [types.QUERY_DOMAIN_MONITOR_MANAGE] ({ commit, rootState }, params) {
       rest.post(links.QUERY_DOMAIN_MONITOR_MANAGE, params.param)
         .then(params.callback)
-        .catch()
+        .catch(() => {})
     },
     [types.QUERY_USER_MONITOR_MANAGE] ({ commit, rootState }, params) {
       rest.post(links.QUERY_USER_MONITOR_MANAGE, params.param)
         .then(params.callback)
-        .catch()
+        .catch(() => {})
     }
   }
 }

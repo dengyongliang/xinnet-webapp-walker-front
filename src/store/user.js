@@ -81,52 +81,52 @@ export default {
     [types.GET_CURRENT_USER_DATA] ({ commit, rootState }, callback) {
       rest.get(links.GET_CURRENT_USER_DATA, '')
         .then(callback)
-        .catch()
+        .catch(() => {})
     },
     [types.UPDATE_USER_INFO] ({ commit, rootState }, params) {
       rest.post(links.UPDATE_USER_INFO, params.param)
         .then(params.callback)
-        .catch()
+        .catch(() => {})
     },
     [types.UPDATE_USER_PASSWORD] ({ commit, rootState }, params) {
       rest.post(links.UPDATE_USER_PASSWORD, params.param)
         .then(params.callback)
-        .catch()
+        .catch(() => {})
     },
     [types.QUERY_USER_LIST] ({ commit, rootState }, params) {
       rest.post(links.QUERY_USER_LIST, params.param)
         .then(params.callback)
-        .catch()
+        .catch(() => {})
     },
     [types.ADD_USER] ({ commit, rootState }, params) {
       rest.post(links.ADD_USER, params.param)
         .then(params.callback)
-        .catch()
+        .catch(() => {})
     },
     [types.QUERY_USER_COMPANYS] ({ commit, rootState }, params) {
       rest.post(links.QUERY_USER_COMPANYS, params.param)
         .then(params.callback)
-        .catch()
+        .catch(() => {})
     },
     [types.DELETE_USER_INFO] ({ commit, rootState }, params) {
       rest.post(links.DELETE_USER_INFO, params.param)
         .then(params.callback)
-        .catch()
+        .catch(() => {})
     },
     [types.QUERY_USER_INFO] ({ commit, rootState }, params) {
       rest.post(links.QUERY_USER_INFO, params.param)
         .then(params.callback)
-        .catch()
+        .catch(() => {})
     },
     [types.UPDATE_USER_AUTH] ({ commit, rootState }, params) {
       rest.post(links.UPDATE_USER_AUTH, params.param)
         .then(params.callback)
-        .catch()
+        .catch(() => {})
     },
     [types.UPDATE_USER] ({ commit, rootState }, params) {
       rest.post(links.UPDATE_USER, params.param)
-        .then(params.callback)
-        .catch()
+        .then(params.callback_resolved)
+        .catch(() => {})
     },
     [types.GET_USER_ROLES] ({ commit, rootState }) {
       rest.get(links.GET_USER_ROLES, '')
@@ -139,7 +139,7 @@ export default {
           } else {
           }
         })
-        .catch()
+        .catch(() => {})
     },
     [types.GET_USERS] ({ commit, rootState }) {
       rest.get(links.GET_USERS, '')
@@ -152,7 +152,7 @@ export default {
           } else {
           }
         })
-        .catch()
+        .catch(() => {})
     },
     [types.GET_COMPANYS] ({ commit, rootState }) {
       rest.get(links.GET_COMPANYS, '')
@@ -165,7 +165,7 @@ export default {
           } else {
           }
         })
-        .catch()
+        .catch(() => {})
     },
     [types.GET_USER_AUTH_GROUPS] ({ commit, rootState }) {
       rest.post(links.GET_USER_AUTH_GROUPS, {userId: ''})
@@ -179,7 +179,7 @@ export default {
           } else {
           }
         })
-        .catch()
+        .catch(() => {})
     }
   }
 }
