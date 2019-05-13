@@ -15,7 +15,7 @@
       <Table :columns="columns" :data="list" :loading="loadingTable"></Table>
 
   <!-- 翻页区 -->
-  Page(:total="page.pageItems",:current="page.pageNo",show-elevator,show-total,prev-text="上一页",next-text="下一页",@on-change="pageChange",:page-size=20)
+  Page(:total="page.pageItems",:current="page.pageNo",show-elevator,show-total,prev-text="上一页",next-text="下一页",@on-change="pageChange",:page-size='20')
 
   <!-- 创建模板 抽屉 -->
   Drawer(:closable="true", width="800", v-model="drawerCreateTemplate", title="创建模板", :mask-closable="maskClosable", @on-visible-change="drawerChange",)
@@ -94,8 +94,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
-import * as types from '@/store/types'
+import { mapState } from 'vuex'
 import compDomainCreateTemplateStep1 from '@/components/compDomainCreateTemplateStep1'
 import compDomainCreateTemplateStep2 from '@/components/compDomainCreateTemplateStep2'
 import compSelect from '@/components/compSelect'
@@ -261,11 +260,11 @@ export default {
   methods: {
     searchListData () {
       this.closeDrawer()
-      this.queryTemplateList(this.queryTemplateListParam({pageNum: 1}))
+      this.queryTemplateList(1)
     },
     pageChange: function (curPage) {
       // 根据当前页获取数据
-      this.queryTemplateList(this.queryTemplateListParam({pageNum: curPage}))
+      this.queryTemplateList(curPage)
     },
     closeDrawer () {
       this.drawerCreateTemplate = false
@@ -284,48 +283,25 @@ export default {
       this.templateData = obj
     },
     queryInfo (id, type) {
-      let params = {
-        param: {
-          templateId: id
-        },
-        callback: (response) => {
-          if (!response) {
-            return false
-          }
-          if (response.data.code === '1000') {
-            this.templateData = response.data.data
-          } else {
-            if (response.data.code === '100') {
-              this.$Message.error('模板不存在')
-            }
-          }
-        }
-      }
       if (type === 'modifyTemplate') {
         this.drawerModifyTemplate = true
       } else if (type === 'viewTemplate') {
         this.drawerDetailTemplate = true
       }
-      this.queryTemplateInfo(params)
-    },
-    queryMaterialInfo (id, type) {
-      let params = {
-        param: {
-          templateId: id
-        },
-        callback: (response) => {
-          if (!response) {
-            return false
-          }
-          if (response.data.code === '1000') {
-            this.templateData = response.data.data
-          } else {
-            if (response.data.code === '100') {
-              this.$Message.error('模板不存在')
-            }
+      this.$store.dispatch('TEMPLATE_INFO', {templateId: id}).then(response => {
+        if (!response) {
+          return false
+        }
+        if (response.data.code === '1000') {
+          this.templateData = response.data.data
+        } else {
+          if (response.data.code === '100') {
+            this.$Message.error('模板不存在')
           }
         }
-      }
+      }).catch(() => {})
+    },
+    queryMaterialInfo (id, type) {
       if (type === 'modifyMaterial') {
         this.drawerModifyMaterial = true
       } else if (type === 'createMaterial') {
@@ -333,7 +309,19 @@ export default {
       } else if (type === 'viewMaterial') {
         this.drawerViewMaterial = true
       }
-      this.queryVerifyInfo(params)
+
+      this.$store.dispatch('TEMPLATE_VERIFY_INFO', {templateId: id}).then(response => {
+        if (!response) {
+          return false
+        }
+        if (response.data.code === '1000') {
+          this.templateData = response.data.data
+        } else {
+          if (response.data.code === '100') {
+            this.$Message.error('模板不存在')
+          }
+        }
+      }).catch(() => {})
     },
     delTemplate (id) {
       this.$Modal.confirm({
@@ -341,28 +329,22 @@ export default {
         content: '<p>请确认是否删除此模板</p>',
         loading: true,
         onOk: () => {
-          let params = {
-            param: {
-              templateId: id
-            },
-            callback: (response) => {
-              this.$Modal.remove()
-              if (!response) {
-                return false
-              }
-              if (response.data.code === '1000') {
-                this.$Message.success('删除成功')
-                this.searchListData()
+          this.$store.dispatch('DELETE_TEMPLATE', {templateId: id}).then(response => {
+            this.$Modal.remove()
+            if (!response) {
+              return false
+            }
+            if (response.data.code === '1000') {
+              this.$Message.success('删除成功')
+              this.searchListData()
+            } else {
+              if (response.data.code === '100') {
+                this.$Message.error('模板不存在')
               } else {
-                if (response.data.code === '100') {
-                  this.$Message.error('模板不存在')
-                } else {
-                  this.$Message.error('删除失败')
-                }
+                this.$Message.error('删除失败')
               }
             }
-          }
-          this.deleteTemplate(params)
+          }).catch(() => {})
         },
         onCancel: () => {
         }
@@ -374,36 +356,30 @@ export default {
       this.loadingTable = true
 
       let params = {
-        param: {
-          pageNum: obj.pageNum,
-          pageSize: 20,
-          templateName: this.value,
-          verifyStatus: this.$refs.verifyStatus.value
-        },
-        callback: (response) => {
-          this.loadingBtn = false
-          this.loadingTable = false
-          if (!response) {
-            return false
-          }
-          if (response.data.code === '1000') {
-            this.list = response.data.data.list
-            this.page.pageItems = response.data.data.totalNum
-          } else {
-            if (response.data.code === '900') {
-              this.$Message.error('查询失败')
-            }
-          }
-        }
+        pageNum: obj.pageNum,
+        pageSize: 20,
+        templateName: this.value,
+        verifyStatus: this.$refs.verifyStatus.value
       }
       return params
     },
-    ...mapActions({
-      queryTemplateList: types.QUERY_TEMPLATE_LIST,
-      deleteTemplate: types.DELETE_TEMPLATE,
-      queryTemplateInfo: types.QUERY_TEMPLATE_INFO,
-      queryVerifyInfo: types.QUERY_VERIFY_INFO
-    })
+    queryTemplateList (num) {
+      this.$store.dispatch('TEMPLATE_LIST', this.queryTemplateListParam({pageNum: num})).then(response => {
+        this.loadingBtn = false
+        this.loadingTable = false
+        if (!response) {
+          return false
+        }
+        if (response.data.code === '1000') {
+          this.list = response.data.data.list
+          this.page.pageItems = response.data.data.totalNum
+        } else {
+          if (response.data.code === '900') {
+            this.$Message.error('查询失败')
+          }
+        }
+      }).catch(() => {})
+    }
   },
   computed: {
     ...mapState({
@@ -430,7 +406,7 @@ export default {
     })(this)
   },
   mounted () {
-    this.queryTemplateList(this.queryTemplateListParam({pageNum: 1}))
+    this.queryTemplateList(1)
   }
 }
 </script>

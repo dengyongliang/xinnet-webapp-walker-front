@@ -40,8 +40,6 @@ div(:class="historyData.thisCycle !== '' ? ('status_'+historyData.status) : ''")
 </template>
 
 <script>
-import {mapActions} from 'vuex'
-import * as types from '@/store/types'
 import compSelect from '@/components/compSelect'
 export default {
   name: 'compPastBill',
@@ -61,45 +59,42 @@ export default {
   },
   methods: {
     queryHistoryCycle () {
-      this.payStatisticsHistoryBill(this.getHistoryCycleParam())
+      this.payStatisticsHistoryBill()
     },
     getHistoryCycleParam () {
       let params = {
-        param: {
-          historyCycle: this.$refs.historyCycle.value
-        },
-        callback: (response) => {
-          if (!response) {
-            return false
-          }
-          if (response.data.code === '1000') {
-            if (!this.historyCycleList.length) {
-              this.historyCycleList = response.data.data.historyCycleList.map((value, key, arr) => {
-                return {
-                  value: value,
-                  label: value
-                }
-              })
-            }
-            this.historyData = response.data.data
-          } else {
-            if (response.data.code === '900') {
-              this.$Message.error('查询失败')
-            }
-          }
-        }
+        historyCycle: this.$refs.historyCycle.value
       }
       console.log(params.param)
       return params
     },
-    ...mapActions({
-      payStatisticsHistoryBill: types.PAY_STATISTICS_HISTORY_BILL
-    })
+    payStatisticsHistoryBill () {
+      this.$store.dispatch('PAY_STATISTICS_HISTORY_BILL', this.getHistoryCycleParam()).then(response => {
+        if (!response) {
+          return false
+        }
+        if (response.data.code === '1000') {
+          if (!this.historyCycleList.length) {
+            this.historyCycleList = response.data.data.historyCycleList.map((value, key, arr) => {
+              return {
+                value: value,
+                label: value
+              }
+            })
+          }
+          this.historyData = response.data.data
+        } else {
+          if (response.data.code === '900') {
+            this.$Message.error('查询失败')
+          }
+        }
+      }).catch(() => {})
+    }
   },
   beforeMount () {
   },
   mounted () {
-    this.payStatisticsHistoryBill(this.getHistoryCycleParam())
+    this.payStatisticsHistoryBill()
   },
   computed: {
   }

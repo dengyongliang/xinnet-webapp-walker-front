@@ -11,8 +11,6 @@
 </template>
 
 <script>
-import {mapActions} from 'vuex'
-import * as types from '@/store/types'
 import compInput from './compInput'
 import validateFormResult from '@/global/validateForm'
 export default {
@@ -48,23 +46,18 @@ export default {
         this.$refs.roleName
       ])
       if (result) {
-        let text = ''
-        if (this.roleData.type === 'new') {
-          text = '新建'
-        } else {
-          text = '修改'
-        }
         let params = {
-          param: {
-            menuIds: this.getCheckedNodes().join(',')
-          },
-          callback: (response) => {
+          menuIds: this.getCheckedNodes().join(',')
+        }
+        if (this.roleData.type === 'new') {
+          params.roleName = this.$refs.roleName.value
+          this.$store.dispatch('ROLE_CREATE', params).then(response => {
             this.loadingBtn = false
             if (!response) {
               return false
             }
             if (response.data.code === '1000') {
-              this.$Message.success(text + '成功！')
+              this.$Message.success('新建成功！')
               this.$emit('refreshData')
             } else {
               if (response.data.code === '100') {
@@ -73,17 +66,28 @@ export default {
                 this.$Message.error('操作失败')
               }
             }
-          }
-        }
-        if (this.roleData.type === 'new') {
-          params.param.roleName = this.$refs.roleName.value
-          this.roleCreate(params)
+          }).catch(() => {})
         } else {
           if (this.roleData.roleName !== this.$refs.roleName.value) {
-            params.param.roleName = this.$refs.roleName.value
+            params.roleName = this.$refs.roleName.value
           }
-          params.param.roleId = this.$refs.roleId.value
-          this.roleUpdate(params)
+          params.roleId = this.$refs.roleId.value
+          this.$store.dispatch('ROLE_UPDATE', params).then(response => {
+            this.loadingBtn = false
+            if (!response) {
+              return false
+            }
+            if (response.data.code === '1000') {
+              this.$Message.success('修改成功！')
+              this.$emit('refreshData')
+            } else {
+              if (response.data.code === '100') {
+                this.$Message.error('角色名称已存在')
+              } else {
+                this.$Message.error('操作失败')
+              }
+            }
+          }).catch(() => {})
         }
       } else {
         this.loadingBtn = false
@@ -119,11 +123,7 @@ export default {
       )
     },
     updateForm () {
-    },
-    ...mapActions({
-      roleCreate: types.ROLE_CREATE,
-      roleUpdate: types.ROLE_UPDATE
-    })
+    }
   },
   computed: {
   },

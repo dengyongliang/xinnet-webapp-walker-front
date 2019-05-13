@@ -1,51 +1,81 @@
-import * as types from './types'
-import rest from '../global/http.js'
-import * as links from '../global/linkdo.js'
+import * as api from '@/api/company'
 export default {
   state: {
   },
   mutations: {
   },
   actions: {
-    [types.QUERY_COMPANY_LIST] ({ commit, rootState }, params) {
-      rest.post(links.QUERY_COMPANY_LIST, params.param)
-        .then(params.callback)
-        .catch(() => {})
+    COMPANY_LIST ({ commit }, params) {
+      return new Promise((resolve, reject) => {
+        api.COMPANY_LIST(params.companyName).then(response => {
+          resolve(response)
+        }).catch(error => {
+          reject(error)
+        })
+      })
     },
-    [types.CREATE_COMPANY] ({ commit, rootState }, params) {
-      rest.post(links.CREATE_COMPANY, params.param)
-        .then(params.callback)
-        .catch(() => {})
+    COMPANY_CREATE ({ commit }, params) {
+      return new Promise((resolve, reject) => {
+        api.COMPANY_CREATE(params.logoFile, params.name, params.contactor, params.mobile, params.email, params.tel).then(response => {
+          resolve(response)
+        }).catch(error => {
+          reject(error)
+        })
+      })
     },
-    [types.QUERY_COMPANY_INFO] ({ commit, rootState }, params) {
-      rest.post(links.QUERY_COMPANY_INFO, params.param)
-        .then(params.callback)
-        .catch(() => {})
+    COMPANY_INFO ({ commit }, params) {
+      return new Promise((resolve, reject) => {
+        api.COMPANY_INFO(params.companyId).then(response => {
+          resolve(response)
+        }).catch(error => {
+          reject(error)
+        })
+      })
     },
-    [types.CREATE_GROUP] ({ commit, rootState }, params) {
-      rest.post(links.CREATE_GROUP, params.param)
-        .then(params.callback)
-        .catch(() => {})
+    GROUP_CREATE ({ commit }, params) {
+      return new Promise((resolve, reject) => {
+        api.GROUP_CREATE(params.companyId, params.manageId, params.name).then(response => {
+          resolve(response)
+        }).catch(error => {
+          reject(error)
+        })
+      })
     },
-    [types.UPDATE_GROUP] ({ commit, rootState }, params) {
-      rest.post(links.UPDATE_GROUP, params.param)
-        .then(params.callback)
-        .catch(() => {})
+    GROUP_UPDATE ({ commit }, params) {
+      return new Promise((resolve, reject) => {
+        api.GROUP_UPDATE(params.manageId, params.groupId, params.name).then(response => {
+          resolve(response)
+        }).catch(error => {
+          reject(error)
+        })
+      })
     },
-    [types.DELETE_GROUP] ({ commit, rootState }, params) {
-      rest.post(links.DELETE_GROUP, params.param)
-        .then(params.callback)
-        .catch(() => {})
+    GROUP_DELETE ({ commit }, params) {
+      return new Promise((resolve, reject) => {
+        api.GROUP_DELETE(params.groupId).then(response => {
+          resolve(response)
+        }).catch(error => {
+          reject(error)
+        })
+      })
     },
-    [types.UPDATE_COMPANY] ({ commit, rootState }, params) {
-      rest.post(links.UPDATE_COMPANY, params.param)
-        .then(params.callback)
-        .catch(() => {})
+    COMPANY_UPDATE ({ commit }, params) {
+      return new Promise((resolve, reject) => {
+        api.COMPANY_UPDATE(params.companyId, params.logoFile, params.name, params.contactor, params.mobile, params.email, params.tel).then(response => {
+          resolve(response)
+        }).catch(error => {
+          reject(error)
+        })
+      })
     },
-    [types.DELETE_COMPANY] ({ commit, rootState }, params) {
-      rest.post(links.DELETE_COMPANY, params.param)
-        .then(params.callback)
-        .catch(() => {})
+    COMPANY_DELETE ({ commit }, params) {
+      return new Promise((resolve, reject) => {
+        api.COMPANY_DELETE(params.companyId).then(response => {
+          resolve(response)
+        }).catch(error => {
+          reject(error)
+        })
+      })
     }
   }
 }

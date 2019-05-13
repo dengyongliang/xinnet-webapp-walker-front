@@ -38,8 +38,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
-import * as types from '@/store/types'
+import { mapState } from 'vuex'
 import compSelect from '@/components/compSelect'
 import compDomainTransferIn from '@/components/compDomainTransferIn'
 import moment from 'moment'
@@ -134,11 +133,11 @@ export default {
   },
   methods: {
     searchListData () {
-      this.queryTransferInList(this.queryListParam({pageNum: 1}))
+      this.queryList(1)
     },
     pageChange: function (curPage) {
       // 根据当前页获取数据
-      this.queryTransferInList(this.queryListParam({pageNum: curPage}))
+      this.queryList(curPage)
     },
     closeDrawer () {
       this.drawerTransferIn = false
@@ -151,33 +150,30 @@ export default {
       this.loadingTable = true
 
       let params = {
-        param: {
-          pageNum: obj.pageNum,
-          pageSize: 20,
-          domainName: this.value,
-          transferStatus: this.$refs.transferStatus.value,
-          createTimeBegin: this.times[0] !== '' ? moment(this.times[0]).format('YYYY-MM-DD') + ' 00:00:00' : '',
-          createTimeEnd: this.times[1] !== '' ? moment(this.times[1]).format('YYYY-MM-DD') + ' 23:59:59' : ''
-        },
-        callback: (response) => {
-          this.loadingBtn = false
-          this.loadingTable = false
-          if (!response) {
-            return false
-          }
-          if (response.data.code === '1000') {
-            this.list = response.data.data.list
-            this.page.pageItems = response.data.data.totalNum
-          } else {
-
-          }
-        }
+        pageNum: obj.pageNum,
+        pageSize: 20,
+        domainName: this.value,
+        transferStatus: this.$refs.transferStatus.value,
+        createTimeBegin: this.times[0] !== '' ? moment(this.times[0]).format('YYYY-MM-DD') + ' 00:00:00' : '',
+        createTimeEnd: this.times[1] !== '' ? moment(this.times[1]).format('YYYY-MM-DD') + ' 23:59:59' : ''
       }
       return params
     },
-    ...mapActions({
-      queryTransferInList: types.QUERY_TRANSFER_IN_LIST
-    })
+    queryList (num) {
+      this.$store.dispatch('TRANSFER_IN_LIST', this.queryListParam({pageNum: num})).then(response => {
+        this.loadingBtn = false
+        this.loadingTable = false
+        if (!response) {
+          return false
+        }
+        if (response.data.code === '1000') {
+          this.list = response.data.data.list
+          this.page.pageItems = response.data.data.totalNum
+        } else {
+
+        }
+      }).catch(() => {})
+    }
   },
   computed: {
     ...mapState({
@@ -202,7 +198,7 @@ export default {
       }
       return array
     })(this)
-    this.queryTransferInList(this.queryListParam({pageNum: 1}))
+    this.queryList(1)
   }
 }
 </script>

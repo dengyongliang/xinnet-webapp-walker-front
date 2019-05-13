@@ -20,8 +20,6 @@
 </template>
 
 <script>
-import {mapActions} from 'vuex'
-import * as types from '@/store/types'
 import compInput from './compInput'
 import validateFormResult from '@/global/validateForm'
 export default {
@@ -57,10 +55,30 @@ export default {
     },
     getVerificationCode1 () {
       this.loadingBtn = true
-      let params = {
-        param: {
-        },
-        callback: (response) => {
+      this.$store.dispatch('SEND_OLD_PHONE_CODE').then(response => {
+        this.loadingBtn = false
+        if (response) {
+          if (response.data.code === '1000') {
+            this.$Message.success('发送成功')
+          } else {
+            if (response.data.code === '300') {
+              this.$Message.error('短信验证码已发送')
+            } else if (response.data.code === '500') {
+              this.$Message.error('手机号码错误')
+            } else {
+              this.$Message.error('发送失败')
+            }
+          }
+        }
+      }).catch(() => {})
+    },
+    getVerificationCode2 () {
+      this.loadingBtn = true
+      let result = validateFormResult([
+        this.$refs.userMobile
+      ])
+      if (result) {
+        this.$store.dispatch('UPDATE_PHONE_CODE', {userMobile: this.$refs.userMobile.value}).then(response => {
           this.loadingBtn = false
           if (response) {
             if (response.data.code === '1000') {
@@ -69,44 +87,13 @@ export default {
               if (response.data.code === '300') {
                 this.$Message.error('短信验证码已发送')
               } else if (response.data.code === '500') {
-                this.$Message.error('手机号码错误')
+                this.$refs.userMobile.showValidateResult({text: '手机号码错误'})
               } else {
                 this.$Message.error('发送失败')
               }
             }
           }
-        }
-      }
-      this.getOldPhoneCode(params)
-    },
-    getVerificationCode2 () {
-      this.loadingBtn = true
-      let result = validateFormResult([
-        this.$refs.userMobile
-      ])
-      if (result) {
-        let params = {
-          param: {
-            userMobile: this.$refs.userMobile.value
-          },
-          callback: (response) => {
-            this.loadingBtn = false
-            if (response) {
-              if (response.data.code === '1000') {
-                this.$Message.success('发送成功')
-              } else {
-                if (response.data.code === '300') {
-                  this.$Message.error('短信验证码已发送')
-                } else if (response.data.code === '500') {
-                  this.$refs.userMobile.showValidateResult({text: '手机号码错误'})
-                } else {
-                  this.$Message.error('发送失败')
-                }
-              }
-            }
-          }
-        }
-        this.getUpdatePhoneCode(params)
+        }).catch(() => {})
       } else {
         this.loadingBtn = false
       }
@@ -117,21 +104,15 @@ export default {
         this.$refs.verificationCode1
       ])
       if (result) {
-        var params = {
-          param: {
-            verificationCode: this.$refs.verificationCode1.value
-          },
-          callback: (response) => {
-            this.loadingBtn = false
-            if (response && response.data.code === '1000') {
-              this.$Message.success('验证成功')
-              this.step = 2
-            } else {
-              this.$Message.error('验证失败')
-            }
+        this.$store.dispatch('CHECK_OLD_PHONE_CODE', {verificationCode: this.$refs.verificationCode1.value}).then(response => {
+          this.loadingBtn = false
+          if (response && response.data.code === '1000') {
+            this.$Message.success('验证成功')
+            this.step = 2
+          } else {
+            this.$Message.error('验证失败')
           }
-        }
-        this.checkOldPhoneCode(params)
+        }).catch(() => {})
       } else {
         this.loadingBtn = false
       }
@@ -144,43 +125,34 @@ export default {
       ])
       if (result) {
         var params = {
-          param: {
-            userCode: this.$refs.userCode.value,
-            userMobile: this.$refs.userMobile.value,
-            verificationCode: this.$refs.verificationCode2.value
-          },
-          callback: (response) => {
-            this.loadingBtn = false
-            if (response) {
-              if (response.data.code === '1000') {
-                this.$Message.success('手机更新成功')
-                this.$store.commit(types.UPDATE_USER_MOBILE, this.$refs.userMobile.value)
-                this.close()
-              } else {
-                if (response.data.code === '200') {
-                  this.$Message.error('用户不存在')
-                } else if (response.data.code === '300') {
-                  this.$Message.error('用户被锁定')
-                } else if (response.data.code === '400') {
-                  this.$refs.verificationCode2.showValidateResult({text: '手机验证码错误'})
-                } else if (response.data.code === '600') {
-                  this.$refs.userMobile.showValidateResult({text: '手机号码已存在'})
-                }
+          userCode: this.$refs.userCode.value,
+          userMobile: this.$refs.userMobile.value,
+          verificationCode: this.$refs.verificationCode2.value
+        }
+        this.$store.dispatch('UPDATE_USER_INFO', params).then(response => {
+          this.loadingBtn = false
+          if (response) {
+            if (response.data.code === '1000') {
+              this.$Message.success('手机更新成功')
+              this.$store.commit('UPDATE_USER_MOBILE', this.$refs.userMobile.value)
+              this.close()
+            } else {
+              if (response.data.code === '200') {
+                this.$Message.error('用户不存在')
+              } else if (response.data.code === '300') {
+                this.$Message.error('用户被锁定')
+              } else if (response.data.code === '400') {
+                this.$refs.verificationCode2.showValidateResult({text: '手机验证码错误'})
+              } else if (response.data.code === '600') {
+                this.$refs.userMobile.showValidateResult({text: '手机号码已存在'})
               }
             }
           }
-        }
-        this.updateUserInfo(params)
+        }).catch(() => {})
       } else {
         this.loadingBtn = false
       }
-    },
-    ...mapActions({
-      updateUserInfo: types.UPDATE_USER_INFO,
-      getOldPhoneCode: types.GET_OLD_PHONE_CODE,
-      getUpdatePhoneCode: types.GET_UPDATE_PHONE_CODE,
-      checkOldPhoneCode: types.CHECK_OLD_PHONE_CODE
-    })
+    }
   },
   computed: {
   },

@@ -35,6 +35,7 @@ export default {
           subtext: '',
           x: 'center'
         },
+        color: this.echartsColorList,
         tooltip: {
           trigger: 'axis',
           axisPointer: {

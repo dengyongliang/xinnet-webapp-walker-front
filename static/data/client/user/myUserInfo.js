@@ -24,7 +24,7 @@
     "description": "管家"
    }],
    "menus": [],
-   "keeperFlag": 0,
+   "keeperFlag": 1,
    "manageCustomerId": 10,
    "manageCustomerName": "还是数码集团",
    "domainAuths": []

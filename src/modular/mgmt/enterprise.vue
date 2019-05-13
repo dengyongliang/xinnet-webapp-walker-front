@@ -22,8 +22,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
-import * as types from '@/store/types'
+import { mapState } from 'vuex'
 import compListStyle1 from '@/components/compListStyle1'
 import compCompanyCreate from '@/components/compCompanyCreate'
 export default {
@@ -43,7 +42,7 @@ export default {
   },
   methods: {
     searchListData () {
-      this.queryCompanyList(this.queryParam())
+      this.queryList()
     },
     closeDrawer () {
       this.drawerCompanyCreate = false
@@ -53,27 +52,18 @@ export default {
         this.searchListData()
       }
     },
-    queryParam () {
-      let params = {
-        param: {
-          companyName: this.value
-        },
-        callback: (response) => {
-          if (!response) {
-            return false
-          }
-          if (response.data.code === '1000') {
-            this.list = response.data.data
-          } else {
-            this.$Message.error('查询失败')
-          }
+    queryList () {
+      this.$store.dispatch('COMPANY_LIST', {companyName: this.value}).then(response => {
+        if (!response) {
+          return false
         }
-      }
-      return params
-    },
-    ...mapActions({
-      queryCompanyList: types.QUERY_COMPANY_LIST
-    })
+        if (response.data.code === '1000') {
+          this.list = response.data.data
+        } else {
+          this.$Message.error('查询失败')
+        }
+      }).catch(() => {})
+    }
   },
   computed: {
     ...mapState({
@@ -86,7 +76,7 @@ export default {
     })
   },
   beforeMount () {
-    this.queryCompanyList(this.queryParam())
+    this.queryList()
   },
   watch: {
   }

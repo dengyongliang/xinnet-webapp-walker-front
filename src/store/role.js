@@ -1,6 +1,4 @@
-import * as types from './types'
-import rest from '../global/http.js'
-import * as links from '../global/linkdo.js'
+import * as api from '@/api/role'
 
 export default {
   state: {
@@ -8,30 +6,58 @@ export default {
   mutations: {
   },
   actions: {
-    [types.QUERY_ROLE_LIST] ({ commit, rootState }, params) {
-      rest.post(links.QUERY_ROLE_LIST, params.param)
-        .then(params.callback)
-        .catch(() => {})
+    ROLE_LIST ({ commit }, params) {
+      return new Promise((resolve, reject) => {
+        api.ROLE_LIST(params.pageNum, params.pageSize).then((response) => {
+          resolve(response)
+        }).catch(error => {
+          reject(error)
+        })
+      })
     },
-    [types.QUERY_ROLE_MENUS] ({ commit, rootState }, params) {
-      rest.post(links.QUERY_ROLE_MENUS, params.param)
-        .then(params.callback)
-        .catch(() => {})
+    MENUS ({ commit }, params) {
+      params = Object.assign({
+        roleId: ''
+      }, params)
+      return new Promise((resolve, reject) => {
+        api.MENUS(params.roleId).then((response) => {
+          resolve(response)
+        }).catch(error => {
+          reject(error)
+        })
+      })
     },
-    [types.ROLE_CREATE] ({ commit, rootState }, params) {
-      rest.post(links.ROLE_CREATE, params.param)
-        .then(params.callback)
-        .catch(() => {})
+    ROLE_CREATE ({ commit }, params) {
+      return new Promise((resolve, reject) => {
+        api.ROLE_CREATE(params.menuIds, params.roleName).then((response) => {
+          resolve(response)
+        }).catch(error => {
+          reject(error)
+        })
+      })
     },
-    [types.ROLE_UPDATE] ({ commit, rootState }, params) {
-      rest.post(links.ROLE_UPDATE, params.param)
-        .then(params.callback)
-        .catch(() => {})
+    ROLE_UPDATE ({ commit }, params) {
+      params = Object.assign({
+        menuIds: '',
+        roleId: '',
+        roleName: ''
+      }, params)
+      return new Promise((resolve, reject) => {
+        api.ROLE_UPDATE(params.menuIds, params.roleId, params.roleName).then((response) => {
+          resolve(response)
+        }).catch(error => {
+          reject(error)
+        })
+      })
     },
-    [types.ROLE_DELETE] ({ commit, rootState }, params) {
-      rest.post(links.ROLE_DELETE, params.param)
-        .then(params.callback)
-        .catch(() => {})
+    ROLE_DELETE ({ commit }, params) {
+      return new Promise((resolve, reject) => {
+        api.ROLE_DELETE(params.roleId).then((response) => {
+          resolve(response)
+        }).catch(error => {
+          reject(error)
+        })
+      })
     }
   }
 }

@@ -29,8 +29,6 @@
 </template>
 
 <script>
-import {mapActions} from 'vuex'
-import * as types from '@/store/types'
 import compRadio from './compRadio'
 import compInput from './compInput'
 export default {
@@ -76,49 +74,12 @@ export default {
     submitXinnet () {
       this.loadingBtn = true
       let params = {
-        param: {
-          domainId: this.detailData.id,
-          xinnet: 1,
-          verificationCode: this.verificationCode,
-          dns: ''
-        },
-        callback: (response) => {
-          this.loadingBtn = false
-          if (!response) {
-            return false
-          }
-          if (response.data.code === '1000') {
-            this.$Message.success('DNS修改成功')
-            let params = {
-              param: {
-                domainId: this.detailData.id
-              },
-              callback: (response) => {
-                if (response.data.code === '1000') {
-                  this.$emit('setDetailFun', response.data.data)
-                } else {
-
-                }
-              }
-            }
-            this.queryDomainManageDetail(params)
-          } else {
-            if (response.data.code === '100') {
-              this.$Message.error('域名不存在')
-            } else if (response.data.code === '200') {
-              this.$Message.error('域名禁止更新')
-            } else if (response.data.code === '300') {
-              this.$Message.error('域名被锁定')
-            } else if (response.data.code === '400') {
-              this.$Message.error('验证码错误')
-            } else {
-
-            }
-          }
-        }
+        domainId: this.detailData.id,
+        xinnet: 1,
+        verificationCode: this.verificationCode,
+        dns: ''
       }
-      console.log(params.param)
-      this.setDomainDns(params)
+      this.submitFun(params)
     },
     submitNotXinnet () {
       this.loadingBtn = true
@@ -134,56 +95,44 @@ export default {
         this.loadingBtn = false
       } else {
         let params = {
-          param: {
-            domainId: this.detailData.id,
-            xinnet: 0,
-            verificationCode: this.verificationCode,
-            dns: arr.join(',')
-          },
-          callback: (response) => {
-            this.loadingBtn = false
-            if (!response) {
-              return false
-            }
-            if (response.data.code === '1000') {
-              this.$Message.success('DNS修改成功')
-
-              let params = {
-                param: {
-                  domainId: this.detailData.id
-                },
-                callback: (response) => {
-                  if (response.data.code === '1000') {
-                    this.$emit('setDetailFun', response.data.data)
-                  } else {
-
-                  }
-                }
-              }
-              this.queryDomainManageDetail(params)
-            } else {
-              if (response.data.code === '100') {
-                this.$Message.error('域名不存在')
-              } else if (response.data.code === '200') {
-                this.$Message.error('域名禁止更新')
-              } else if (response.data.code === '300') {
-                this.$Message.error('域名被锁定')
-              } else if (response.data.code === '400') {
-                this.$Message.error('验证码错误')
-              } else {
-
-              }
-            }
-          }
+          domainId: this.detailData.id,
+          xinnet: 0,
+          verificationCode: this.verificationCode,
+          dns: arr.join(',')
         }
-        console.log(params.param)
-        this.setDomainDns(params)
+        this.submitFun(params)
       }
     },
-    ...mapActions({
-      setDomainDns: types.SET_DOMAIN_DNS,
-      queryDomainManageDetail: types.QUERY_DOMAIN_MANAGE_DETAIL
-    })
+    submitFun (params) {
+      this.$store.dispatch('SET_DOMAIN_DNS', params).then(response => {
+        this.loadingBtn = false
+        if (!response) {
+          return false
+        }
+        if (response.data.code === '1000') {
+          this.$Message.success('DNS修改成功')
+          this.$store.dispatch('DOMAIN_MANAGE', {domainId: this.detailData.id}).then(response => {
+            if (response.data.code === '1000') {
+              this.$emit('setDetailFun', response.data.data)
+            } else {
+
+            }
+          }).catch(() => {})
+        } else {
+          if (response.data.code === '100') {
+            this.$Message.error('域名不存在')
+          } else if (response.data.code === '200') {
+            this.$Message.error('域名禁止更新')
+          } else if (response.data.code === '300') {
+            this.$Message.error('域名被锁定')
+          } else if (response.data.code === '400') {
+            this.$Message.error('验证码错误')
+          } else {
+
+          }
+        }
+      }).catch(() => {})
+    }
   },
   beforeMount () {
   },

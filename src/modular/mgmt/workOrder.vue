@@ -30,8 +30,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
-import * as types from '@/store/types'
+import { mapState } from 'vuex'
 import compWorkOrderSubmit from '@/components/compWorkOrderSubmit'
 import compWorkOrderDetail from '@/components/compWorkOrderDetail'
 
@@ -132,11 +131,11 @@ export default {
   methods: {
     searchListData () {
       // 查询数据
-      this.queryWorkOrderManageList(this.queryOrderListParam({pageNum: 1}))
+      this.queryList(1)
     },
     pageChange: function (curPage) {
       // 根据当前页获取数据
-      this.queryWorkOrderManageList(this.queryOrderListParam({pageNum: curPage}))
+      this.queryList(curPage)
     },
     closeDrawer () {
       this.drawerWorkOrderSubmit = false
@@ -144,22 +143,16 @@ export default {
     drawerChange () {
     },
     showDetail (id) {
-      let params = {
-        param: {
-          id: id
-        },
-        callback: (response) => {
-          if (!response) {
-            return false
-          }
-          if (response.data.code === '1000') {
-            this.orderDetailInfo = response.data.data
-          } else {
-            this.$Message.error('查询失败')
-          }
+      this.$store.dispatch('WORK_ORDER_DETAIL', {id: id}).then(response => {
+        if (!response) {
+          return false
         }
-      }
-      this.queryWorkOrderDetail(params)
+        if (response.data.code === '1000') {
+          this.orderDetailInfo = response.data.data
+        } else {
+          this.$Message.error('查询失败')
+        }
+      }).catch(() => {})
       this.drawerWorkOrderDetail = true
     },
     queryOrderListParam (obj) {
@@ -168,32 +161,28 @@ export default {
       this.loadingTable = true
 
       let params = {
-        param: {
-          pageNum: obj.pageNum,
-          pageSize: 20
-        },
-        callback: (response) => {
-          this.loadingBtn = false
-          this.loadingTable = false
-          if (!response) {
-            return false
-          }
-          if (response.data.code === '1000') {
-            this.list = response.data.data.list
-            this.page.pageItems = response.data.data.totalNum
-          } else {
-            if (response.data.code === '900') {
-              this.$Message.error('查询失败')
-            }
-          }
-        }
+        pageNum: obj.pageNum,
+        pageSize: 20
       }
       return params
     },
-    ...mapActions({
-      queryWorkOrderManageList: types.QUERY_WORK_ORDER_MANAGE_LIST,
-      queryWorkOrderDetail: types.QUERY_WORK_ORDER_DETAIL
-    })
+    queryList (num) {
+      this.$store.dispatch('WORK_ORDER_MANAGE', this.queryOrderListParam({pageNum: num})).then(response => {
+        this.loadingBtn = false
+        this.loadingTable = false
+        if (!response) {
+          return false
+        }
+        if (response.data.code === '1000') {
+          this.list = response.data.data.list
+          this.page.pageItems = response.data.data.totalNum
+        } else {
+          if (response.data.code === '900') {
+            this.$Message.error('查询失败')
+          }
+        }
+      }).catch(() => {})
+    }
   },
   computed: {
     ...mapState({
@@ -203,7 +192,7 @@ export default {
     })
   },
   beforeMount () {
-    this.queryWorkOrderManageList(this.queryOrderListParam({pageNum: 1}))
+    this.queryList(1)
   }
 }
 </script>

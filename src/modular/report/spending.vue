@@ -67,8 +67,7 @@
 </template>
 
 <script>
-import {mapState, mapActions} from 'vuex'
-import * as types from '@/store/types'
+import {mapState} from 'vuex'
 import compChartReportSpendingCate from '@/components/compChartReportSpendingCate'
 import compChartReportSpendingCompany from '@/components/compChartReportSpendingCompany'
 import compChartReportSpendingMonth from '@/components/compChartReportSpendingMonth'
@@ -135,14 +134,6 @@ export default {
     }
   },
   methods: {
-    ...mapActions({
-      queryDomainConsumptionReport: types.QUERY_DOMAIN_CONSUMPTION_REPORT,
-      queryDomainConsumptionDetailReport: types.QUERY_DOMAIN_CONSUMPTION_DETAIL_REPORT,
-      queryDomainConsumptionSortReport: types.QUERY_DOMAIN_CONSUMPTION_SORT_REPORT,
-      queryDomainConsumptionCompanySortReport: types.QUERY_DOMAIN_CONSUMPTION_COMPANY_SORT_REPORT,
-      queryDomainConsumptionCompanyMonthReport: types.QUERY_DOMAIN_CONSUMPTION_COMPANY_MONTH_REPORT,
-      queryDomainConsumptionCompanyReport: types.QUERY_DOMAIN_CONSUMPTION_COMPANY_REPORT
-    })
   },
   computed: {
     ...mapState({
@@ -157,163 +148,142 @@ export default {
     this.start = this.$route.query.start
     this.end = this.$route.query.end
 
-    let param = {
+    let params = {
       customerId: this.customerId,
       backCycleStart: this.start,
       backCycleEnd: this.end
     }
     // 域名预算总额
-    let params = {
-      param: param,
-      callback: (response) => {
-        this.loadingBtn = false
-        this.loadingTable = false
-        if (!response) {
-          return false
-        }
-        if (response.data.code === '1000') {
-          this.domainConsumptionReport.totalMoney = response.data.data.totalMoney
-          this.domainConsumptionReport.businessList = (function (vm) {
-            let arr = []
-            for (var i in vm.DATAS.BUSINESS_LIST) {
-              arr.push({
-                type: vm.DATAS.BUSINESS_LIST[i],
-                money: response.data.data.businessList[0][i]
-              })
-            }
-            return arr
-          })(this)
-        } else {
-        }
+    this.$store.dispatch('DOMAIN_CONSUMPTION_REPORT', params).then(response => {
+      this.loadingBtn = false
+      this.loadingTable = false
+      if (!response) {
+        return false
       }
-    }
-    this.queryDomainConsumptionReport(params)
+      if (response.data.code === '1000') {
+        this.domainConsumptionReport.totalMoney = response.data.data.totalMoney
+        this.domainConsumptionReport.businessList = (function (vm) {
+          let arr = []
+          for (var i in vm.DATAS.BUSINESS_LIST) {
+            arr.push({
+              type: vm.DATAS.BUSINESS_LIST[i],
+              money: response.data.data.businessList[0][i]
+            })
+          }
+          return arr
+        })(this)
+      } else {
+      }
+    }).catch(() => {})
+
     // 每月消费类别及金额
-    let params2 = {
-      param: param,
-      callback: (response) => {
-        this.loadingBtn = false
-        this.loadingTable = false
-        if (!response) {
-          return false
-        }
-        if (response.data.code === '1000') {
-          this.domainConsumptionSortReport = response.data.data
-          let arr = {}
-          Object.values(response.data.data.result).map((v) => {
-            v.map((v2) => {
-              if (arr[v2.orderGoodsType]) {
-                arr[v2.orderGoodsType].push(v2.orderTotalMoney)
-              } else {
-                arr[v2.orderGoodsType] = []
-                arr[v2.orderGoodsType].push(v2.orderTotalMoney)
-              }
-            })
-          })
-          this.domainConsumptionSortReport.result = arr
-        } else {
-        }
+    this.$store.dispatch('DOMAIN_CONSUMPTION_SORT_REPORT', params).then(response => {
+      this.loadingBtn = false
+      this.loadingTable = false
+      if (!response) {
+        return false
       }
-    }
-    this.queryDomainConsumptionSortReport(params2)
-    // 各企业消费金额及占比
-    let params3 = {
-      param: param,
-      callback: (response) => {
-        this.loadingBtn = false
-        this.loadingTable = false
-        if (!response) {
-          return false
-        }
-        if (response.data.code === '1000') {
-          this.domainConsumptionCompanyReport = response.data.data
-        } else {
-        }
-      }
-    }
-    this.queryDomainConsumptionCompanyReport(params3)
-    // 各企业消费类别统计
-    let params4 = {
-      param: param,
-      callback: (response) => {
-        this.loadingBtn = false
-        this.loadingTable = false
-        if (!response) {
-          return false
-        }
-        if (response.data.code === '1000') {
-          this.domainConsumptionCompanySortReport = response.data.data
-          let arr = {}
-          Object.values(response.data.data.statisticsMap).map((v) => {
-            v.map((v2) => {
-              if (arr[v2.orderGoodsType]) {
-                arr[v2.orderGoodsType].push(v2.orderTotalMoney)
-              } else {
-                arr[v2.orderGoodsType] = []
-                arr[v2.orderGoodsType].push(v2.orderTotalMoney)
-              }
-            })
-          })
-          this.domainConsumptionCompanySortReport.statisticsMap = arr
-        } else {
-        }
-      }
-    }
-    this.queryDomainConsumptionCompanySortReport(params4)
-    // 各企业每月消费类别统计
-    let params5 = {
-      param: param,
-      callback: (response) => {
-        this.loadingBtn = false
-        this.loadingTable = false
-        if (!response) {
-          return false
-        }
-        if (response.data.code === '1000') {
-          this.domainConsumptionCompanyMonthReport = response.data.data
-          let arr = {}
-          Object.values(response.data.data.result).map((v) => {
-            v.map((v2) => {
-              if (arr[v2.companyName]) {
-                arr[v2.companyName].push(v2.totalMoney)
-              } else {
-                arr[v2.companyName] = []
-                arr[v2.companyName].push(v2.totalMoney)
-              }
-            })
-          })
-          this.domainConsumptionCompanyMonthReport.result = arr
-        } else {
-        }
-      }
-    }
-    this.queryDomainConsumptionCompanyMonthReport(params5)
-    // 消费明细
-    let params6 = {
-      param: param,
-      callback: (response) => {
-        this.loadingBtn = false
-        this.loadingTable = false
-        if (!response) {
-          return false
-        }
-        if (response.data.code === '1000') {
-          this.list = (function (vm) {
-            let arr = []
-            for (var i in vm.DATAS.BUSINESS_LIST) {
-              arr.push({
-                type: vm.DATAS.BUSINESS_LIST[i],
-                num: response.data.data.businessList[0][i + 'PayNumber'] + '个',
-                total: response.data.data.businessList[0][i] + '元'
-              })
+      if (response.data.code === '1000') {
+        this.domainConsumptionSortReport = response.data.data
+        let arr = {}
+        Object.values(response.data.data.result).map((v) => {
+          v.map((v2) => {
+            if (arr[v2.orderGoodsType]) {
+              arr[v2.orderGoodsType].push(v2.orderTotalMoney)
+            } else {
+              arr[v2.orderGoodsType] = []
+              arr[v2.orderGoodsType].push(v2.orderTotalMoney)
             }
-            return arr
-          })(this)
-        } else {
-        }
+          })
+        })
+        this.domainConsumptionSortReport.result = arr
+      } else {
       }
-    }
-    this.queryDomainConsumptionDetailReport(params6)
+    }).catch(() => {})
+
+    // 各企业消费金额及占比
+    this.$store.dispatch('DOMAIN_CONSUMPTION_COMPANY_REPORT', params).then(response => {
+      this.loadingBtn = false
+      this.loadingTable = false
+      if (!response) {
+        return false
+      }
+      if (response.data.code === '1000') {
+        this.domainConsumptionCompanyReport = response.data.data
+      } else {
+      }
+    }).catch(() => {})
+    // 各企业消费类别统计
+    this.$store.dispatch('DOMAIN_CONSUMPTION_COMPANY_SORT_REPORT', params).then(response => {
+      this.loadingBtn = false
+      this.loadingTable = false
+      if (!response) {
+        return false
+      }
+      if (response.data.code === '1000') {
+        this.domainConsumptionCompanySortReport = response.data.data
+        let arr = {}
+        Object.values(response.data.data.statisticsMap).map((v) => {
+          v.map((v2) => {
+            if (arr[v2.orderGoodsType]) {
+              arr[v2.orderGoodsType].push(v2.orderTotalMoney)
+            } else {
+              arr[v2.orderGoodsType] = []
+              arr[v2.orderGoodsType].push(v2.orderTotalMoney)
+            }
+          })
+        })
+        this.domainConsumptionCompanySortReport.statisticsMap = arr
+      } else {
+      }
+    }).catch(() => {})
+
+    // 各企业每月消费类别统计
+    this.$store.dispatch('DOMAIN_CONSUMPTION_COMPANY_MONTH_REPORT', params).then(response => {
+      this.loadingBtn = false
+      this.loadingTable = false
+      if (!response) {
+        return false
+      }
+      if (response.data.code === '1000') {
+        this.domainConsumptionCompanyMonthReport = response.data.data
+        let arr = {}
+        Object.values(response.data.data.result).map((v) => {
+          v.map((v2) => {
+            if (arr[v2.companyName]) {
+              arr[v2.companyName].push(v2.totalMoney)
+            } else {
+              arr[v2.companyName] = []
+              arr[v2.companyName].push(v2.totalMoney)
+            }
+          })
+        })
+        this.domainConsumptionCompanyMonthReport.result = arr
+      } else {
+      }
+    }).catch(() => {})
+    // 消费明细
+    this.$store.dispatch('DOMAIN_CONSUMPTION_DETAIL_REPORT', params).then(response => {
+      this.loadingBtn = false
+      this.loadingTable = false
+      if (!response) {
+        return false
+      }
+      if (response.data.code === '1000') {
+        this.list = (function (vm) {
+          let arr = []
+          for (var i in vm.DATAS.BUSINESS_LIST) {
+            arr.push({
+              type: vm.DATAS.BUSINESS_LIST[i],
+              num: response.data.data.businessList[0][i + 'PayNumber'] + '个',
+              total: response.data.data.businessList[0][i] + '元'
+            })
+          }
+          return arr
+        })(this)
+      } else {
+      }
+    }).catch(() => {})
   },
   mounted () {
   },

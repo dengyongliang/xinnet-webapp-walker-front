@@ -13,8 +13,6 @@
 </template>
 
 <script>
-import {mapActions} from 'vuex'
-import * as types from '@/store/types'
 import compListNone from '@/components/compListNone'
 import headerBody from '../modular/headerNoLogin'
 export default {
@@ -30,29 +28,22 @@ export default {
   methods: {
     changeCustomersEv (id) {
       let params = {
-        param: {
-          customerId: id
-        },
-        vm: this
+        customerId: id
       }
-      this.changeCustomers(params)
-    },
-    ...mapActions({
-      queryUserCustomersList: types.QUERY_USER_CUSTOMERS_LIST,
-      changeCustomers: types.CHANGE_CUSTOMERS
-    })
+      this.$store.dispatch('CHANGE_CUSTOMERS', params).then(() => {}).catch(() => {})
+    }
   },
   computed: {
   },
   beforeMount () {
-    this.queryUserCustomersList((response) => {
+    this.$store.dispatch('USER_CUSTOMERS').then(response => {
       if (!response) {
         return false
       }
       if (response.data.code === '1000') {
         this.list = response.data.data
       }
-    })
+    }).catch(() => {})
   },
   mounted () {
   }

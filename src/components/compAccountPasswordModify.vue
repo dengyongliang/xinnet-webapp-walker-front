@@ -1,5 +1,5 @@
 <template lang="pug">
-  Form(:label-width="150")
+  Form(:label-width="150", class="compAccountPasswordModify")
     .step1(v-show="step===1")
       FormItem(label="")
         p.tips 请使用账号{{userName}}（{{userCode}}）绑定手机号<em>{{userMobile}}</em> <br />接收短信验证码
@@ -16,8 +16,6 @@
 </template>
 
 <script>
-import {mapActions} from 'vuex'
-import * as types from '@/store/types'
 import compInput from './compInput'
 import compRePassword from './compRePassword'
 import validateFormResult from '@/global/validateForm'
@@ -55,27 +53,22 @@ export default {
     },
     getVerificationCode () {
       this.loadingBtn = true
-      let params = {
-        param: {
-        },
-        callback: (response) => {
-          this.loadingBtn = false
-          if (response) {
-            if (response.data.code === '1000') {
-              this.$Message.success('发送成功')
+      this.$store.dispatch('SEND_OLD_PHONE_CODE').then(response => {
+        this.loadingBtn = false
+        if (response) {
+          if (response.data.code === '1000') {
+            this.$Message.success('发送成功')
+          } else {
+            if (response.data.code === '300') {
+              this.$Message.error('短信验证码已发送')
+            } else if (response.data.code === '500') {
+              this.$Message.error('手机号码错误')
             } else {
-              if (response.data.code === '300') {
-                this.$Message.error('短信验证码已发送')
-              } else if (response.data.code === '500') {
-                this.$Message.error('手机号码错误')
-              } else {
-                this.$Message.error('发送失败')
-              }
+              this.$Message.error('发送失败')
             }
           }
         }
-      }
-      this.getOldPhoneCode(params)
+      }).catch(() => {})
     },
     nextForm () {
       this.loadingBtn = true
@@ -83,21 +76,15 @@ export default {
         this.$refs.verificationCode
       ])
       if (result) {
-        var params = {
-          param: {
-            verificationCode: this.$refs.verificationCode.value
-          },
-          callback: (response) => {
-            this.loadingBtn = false
-            if (response && response.data.code === '1000') {
-              this.$Message.success('验证成功')
-              this.step = 2
-            } else {
-              this.$Message.error('验证失败')
-            }
+        this.$store.dispatch('CHECK_OLD_PHONE_CODE', {verificationCode: this.$refs.verificationCode.value}).then(response => {
+          this.loadingBtn = false
+          if (response && response.data.code === '1000') {
+            this.$Message.success('验证成功')
+            this.step = 2
+          } else {
+            this.$Message.error('验证失败')
           }
-        }
-        this.checkOldPhoneCode(params)
+        }).catch(() => {})
       } else {
         this.loadingBtn = false
       }
@@ -109,41 +96,32 @@ export default {
       ])
       if (result) {
         var params = {
-          param: {
-            userCode: this.$refs.userCode.value,
-            newPassword: this.$refs.compRePassword.$refs.password.value
-          },
-          callback: (response) => {
-            this.loadingBtn = false
-            if (response) {
-              if (response.data.code === '1000') {
-                this.$Message.success('登录密码更新成功')
-                this.close()
+          userCode: this.$refs.userCode.value,
+          newPassword: this.$refs.compRePassword.$refs.password.value
+        }
+        this.$store.dispatch('UPDATE_USER_PASSWORD', params).then(response => {
+          this.loadingBtn = false
+          if (response) {
+            if (response.data.code === '1000') {
+              this.$Message.success('登录密码更新成功')
+              this.close()
+            } else {
+              if (response.data.code === '200') {
+                this.$Message.error('用户不存在')
+              } else if (response.data.code === '300') {
+                this.$Message.error('用户被锁定')
+              } else if (response.data.code === '400') {
+                this.$Message.error('原始密码错误')
               } else {
-                if (response.data.code === '200') {
-                  this.$Message.error('用户不存在')
-                } else if (response.data.code === '300') {
-                  this.$Message.error('用户被锁定')
-                } else if (response.data.code === '400') {
-                  this.$Message.error('原始密码错误')
-                } else {
-                  this.$Message.error('登录密码更新失败')
-                }
+                this.$Message.error('登录密码更新失败')
               }
             }
           }
-        }
-        this.updateUserPassword(params)
+        }).catch(() => {})
       } else {
         this.loadingBtn = false
       }
-    },
-    ...mapActions({
-      updateUserInfo: types.UPDATE_USER_INFO,
-      getOldPhoneCode: types.GET_OLD_PHONE_CODE,
-      checkOldPhoneCode: types.CHECK_OLD_PHONE_CODE,
-      updateUserPassword: types.UPDATE_USER_PASSWORD
-    })
+    }
   },
   computed: {
   },
@@ -151,14 +129,19 @@ export default {
   }
 }
 </script>
-<style scoped>
-form{
+<style>
+.compAccountPasswordModify{
   padding:50px 0 0 0;
 }
-form .tips{
+.compAccountPasswordModify .tips{
   font-size:15px;
 }
-form .tips em{
+.compAccountPasswordModify .tips em{
   color:#ff7101;
+}
+.compAccountPasswordModify .compRePassword input{
+  height: 32px;
+  line-height: 32px;
+  padding: 4px 7px;
 }
 </style>

@@ -17,8 +17,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
-import * as types from '@/store/types'
+import { mapState } from 'vuex'
 import compInput from './compInput'
 import compSelect from './compSelect'
 import validateFormResult from '@/global/validateForm'
@@ -73,55 +72,47 @@ export default {
 
       if (result) {
         var params = {
-          param: {
-            templateId: this.$refs.templateId.value,
-            groupId: this.$refs.groupId.value,
-            jsonObj: this.$refs.domain.value.replace(/[\n\r]/g, ',').split(',').map((v) => {
-              return {
-                domainName: v.split(' ')[0],
-                domainPwd: v.split(' ')[1],
-                orderGoodsType: 5,
-                orderType: 4
-              }
-            })
-          },
-          callback: (response) => {
-            this.loadingBtn = false
-            if (!response) {
-              return false
+          templateId: this.$refs.templateId.value,
+          groupId: this.$refs.groupId.value,
+          jsonObj: this.$refs.domain.value.replace(/[\n\r]/g, ',').split(',').map((v) => {
+            return {
+              domainName: v.split(' ')[0],
+              domainPwd: v.split(' ')[1],
+              orderGoodsType: 5,
+              orderType: 4
             }
-            if (response.data.code === '1000') {
-              response.data.jsonObj.map((v) => {
-                v.price = v.goodsNumAndPrice[0].price + '_' + v.goodsNumAndPrice[0].unit
-                v.num = v.goodsNumAndPrice[0].num
-                v.unit = v.goodsNumAndPrice[0].unit
-              })
-              this.$store.commit(types.SET_PAY_ORDERS, response.data)
-              this.$router.push({path: '/payConfirm'})
+          })
+        }
+        this.$store.dispatch('ORDER_CONFIRM', params).then(response => {
+          this.loadingBtn = false
+          if (!response) {
+            return false
+          }
+          if (response.data.code === '1000') {
+            response.data.jsonObj.map((v) => {
+              v.price = v.goodsNumAndPrice[0].price + '_' + v.goodsNumAndPrice[0].unit
+              v.num = v.goodsNumAndPrice[0].num
+              v.unit = v.goodsNumAndPrice[0].unit
+            })
+            this.$store.commit('SET_PAY_ORDERS', response.data)
+            this.$router.push({path: '/payConfirm'})
+          } else {
+            if (response.data.code === '100') {
+              this.$Message.error('模板不存在')
+            } else if (response.data.code === '200') {
+              this.$Message.error('分组不存在')
+            } else if (response.data.code === '300') {
+              this.$Message.error('账户错误')
+            } else if (response.data.code === '400') {
+              this.$Message.error('json数据错误')
             } else {
-              if (response.data.code === '100') {
-                this.$Message.error('模板不存在')
-              } else if (response.data.code === '200') {
-                this.$Message.error('分组不存在')
-              } else if (response.data.code === '300') {
-                this.$Message.error('账户错误')
-              } else if (response.data.code === '400') {
-                this.$Message.error('json数据错误')
-              } else {
-              }
             }
           }
-        }
-        console.log(params.param)
-        this.queryOrderConfirm(params)
+        }).catch(() => {})
       } else {
         this.loadingBtn = false
       }
-    },
-    ...mapActions({
-      queryOrderConfirm: types.QUERY_ORDER_CONFIRM,
-      queryTemplates: types.QUERY_TEMPLATES
-    })
+    }
   },
   computed: {
     ...mapState({
@@ -137,23 +128,18 @@ export default {
     })
   },
   beforeMount () {
-    let params = {
-      param: {
-      },
-      callback: (response) => {
-        if (!response) {
-          return false
-        }
-        if (response.data.code === '1000') {
-          this.templateList = this.GLOBALS.CONVERT_SELECT(response.data.data, {
-            label: 'templateName',
-            value: 'id'
-          })
-        } else {
-        }
+    this.$store.dispatch('TEMPLATES').then(response => {
+      if (!response) {
+        return false
       }
-    }
-    this.queryTemplates(params)
+      if (response.data.code === '1000') {
+        this.templateList = this.GLOBALS.CONVERT_SELECT(response.data.data, {
+          label: 'templateName',
+          value: 'id'
+        })
+      } else {
+      }
+    }).catch(() => {})
   },
   watch: {
   }

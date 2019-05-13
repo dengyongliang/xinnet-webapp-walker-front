@@ -8,7 +8,6 @@
 </template>
 
 <script>
-import {mapActions} from 'vuex'
 import compAccountStaffInfo from './compAccountStaffInfo'
 import compAccountStaffJurisdiction from './compAccountStaffJurisdiction'
 export default {
@@ -34,9 +33,7 @@ export default {
       this.tabDisabled = false
       this.value = 'name2'
       this.baseInfoData = obj
-    },
-    ...mapActions({
-    })
+    }
   },
   computed: {
 

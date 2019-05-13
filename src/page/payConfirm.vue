@@ -16,7 +16,6 @@
 
 <script>
 import {mapState} from 'vuex'
-import * as types from '@/store/types'
 import headerBody from '../modular/header'
 export default {
   components: {
@@ -158,7 +157,7 @@ export default {
         v.payStatus = null
         v.errorText = ''
       })
-      this.$store.commit(types.SET_PAY_ORDERS_FINISH, this.payConfirmData)
+      this.$store.commit('SET_PAY_ORDERS_FINISH', this.payConfirmData)
       this.$router.push({path: '/pay'})
     }
   },

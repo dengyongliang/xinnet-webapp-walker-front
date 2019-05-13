@@ -22,8 +22,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
-import * as types from '@/store/types'
+import { mapState } from 'vuex'
 import compRolesSet from '@/components/compRolesSet'
 export default {
   components: {
@@ -105,11 +104,11 @@ export default {
   methods: {
     searchListData () {
       this.drawerRolesSet = false
-      this.queryRoleList(this.queryParam({pageNum: 1}))
+      this.queryList(1)
     },
     pageChange: function (curPage) {
       // 根据当前页获取数据
-      this.queryRoleList(this.queryParam({pageNum: curPage}))
+      this.queryList(curPage)
     },
     showDelRole (roleId) {
       this.$Modal.confirm({
@@ -117,33 +116,27 @@ export default {
         content: '<p>请确认是否要删除此角色！</p>',
         loading: true,
         onOk: () => {
-          let params = {
-            param: {
-              roleId: roleId
-            },
-            callback: (response) => {
-              this.$Modal.remove()
-              if (!response) {
-                return false
-              }
-              if (response.data.code === '1000') {
-                this.$Message.success('删除成功')
-                // 删除成功，重新加载用户列表数据
-                this.page.pageNo = 1
-                this.loadingTable = true
-                this.searchListData()
+          this.$store.dispatch('ROLE_DELETE', {roleId: roleId}).then(response => {
+            this.$Modal.remove()
+            if (!response) {
+              return false
+            }
+            if (response.data.code === '1000') {
+              this.$Message.success('删除成功')
+              // 删除成功，重新加载用户列表数据
+              this.page.pageNo = 1
+              this.loadingTable = true
+              this.searchListData()
+            } else {
+              if (response.data.code === '100') {
+                this.$Message.error('角色下有用户，不可删除')
+              } else if (response.data.code === '200') {
+                this.$Message.error('角色不存在')
               } else {
-                if (response.data.code === '100') {
-                  this.$Message.error('角色下有用户，不可删除')
-                } else if (response.data.code === '200') {
-                  this.$Message.error('角色不存在')
-                } else {
-                  this.$Message.error('删除失败')
-                }
+                this.$Message.error('删除失败')
               }
             }
-          }
-          this.roleDelete(params)
+          }).catch(() => {})
         },
         onCancel: () => {
         }
@@ -157,32 +150,27 @@ export default {
       } else {
         this.drawerT = '修改角色'
       }
-      let params = {
-        param: {
-        },
-        callback: (response) => {
-          let obj = {
-            type: paramObj.type,
-            roleName: paramObj.roleName,
-            roleId: paramObj.roleId,
-            list: this.GLOBALS.CONVERT_TREE(response.data.data,
-              {
-                title: 'id',
-                label: 'menuName',
-                children: 'subMenus',
-                checked: 'checked'
-              }
-            )
-          }
-          this.rolesData = obj
-          this.drawerRolesSet = true
-        }
-      }
+      let params = {}
       if (paramObj.roleId) {
-        params.param.roleId = paramObj.roleId
+        params.roleId = paramObj.roleId
       }
-      console.log(params.param)
-      this.queryRoleMenus(params)
+      this.$store.dispatch('MENUS', params).then(response => {
+        let obj = {
+          type: paramObj.type,
+          roleName: paramObj.roleName,
+          roleId: paramObj.roleId,
+          list: this.GLOBALS.CONVERT_TREE(response.data.data,
+            {
+              title: 'id',
+              label: 'menuName',
+              children: 'subMenus',
+              checked: 'checked'
+            }
+          )
+        }
+        this.rolesData = obj
+        this.drawerRolesSet = true
+      }).catch(() => {})
     },
     drawerChange () {
       if (this.drawerRolesSet) {
@@ -199,32 +187,27 @@ export default {
       this.page.pageNo = obj.pageNum
       this.loadingTable = true
       let params = {
-        param: {
-          pageNum: obj.pageNum,
-          pageSize: 20
-        },
-        callback: (response) => {
-          this.loadingTable = false
-          if (!response) {
-            return false
-          }
-          if (response.data.code === '1000') {
-            this.list = response.data.data.list
-            this.page.pageItems = response.data.data.totalNum
-          } else {
-            if (response.data.code === '900') {
-              this.$Message.error('查询失败')
-            }
-          }
-        }
+        pageNum: obj.pageNum,
+        pageSize: 20
       }
       return params
     },
-    ...mapActions({
-      queryRoleList: types.QUERY_ROLE_LIST,
-      queryRoleMenus: types.QUERY_ROLE_MENUS,
-      roleDelete: types.ROLE_DELETE
-    })
+    queryList (num) {
+      this.$store.dispatch('ROLE_LIST', this.queryParam({pageNum: num})).then(response => {
+        this.loadingTable = false
+        if (!response) {
+          return false
+        }
+        if (response.data.code === '1000') {
+          this.list = response.data.data.list
+          this.page.pageItems = response.data.data.totalNum
+        } else {
+          if (response.data.code === '900') {
+            this.$Message.error('查询失败')
+          }
+        }
+      }).catch(() => {})
+    }
   },
   computed: {
     ...mapState({
@@ -234,7 +217,7 @@ export default {
     })
   },
   beforeMount () {
-    this.queryRoleList(this.queryParam({pageNum: 1}))
+    this.queryList(1)
   },
   watch: {
   }

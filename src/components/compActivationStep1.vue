@@ -8,8 +8,7 @@
 </template>
 
 <script>
-import {mapState, mapActions} from 'vuex'
-import * as types from '@/store/types'
+import {mapState} from 'vuex'
 import compInput from '@/components/compInput'
 import validateFormResult from '@/global/validateForm'
 export default {
@@ -33,36 +32,30 @@ export default {
       ])
       if (result) {
         var params = {
-          param: {
-            userCode: this.userCode,
-            userName: this.$refs.userName.value
-          },
-          callback: (response) => {
-            this.loadingBtn = false
-            if (response) {
-              if (response.data.code === '1000') {
-                this.$Message.success('验证成功')
-                this.$store.commit(types.SET_ACTIVATION_DATA, response.data)
-                this.$store.commit(types.SET_ACTIVATION_DATA, params.param)
-                this.$emit('submitStep')
+          userCode: this.userCode,
+          userName: this.$refs.userName.value
+        }
+        this.$store.dispatch('VALID_USER', params).then(response => {
+          this.loadingBtn = false
+          if (response) {
+            if (response.data.code === '1000') {
+              this.$Message.success('验证成功')
+              this.$store.commit('SET_ACTIVATION_DATA', response.data)
+              this.$store.commit('SET_ACTIVATION_DATA', params.param)
+              this.$emit('submitStep')
+            } else {
+              if (response.data.code === '200') {
+                this.$Message.error('用户不存在')
               } else {
-                if (response.data.code === '200') {
-                  this.$Message.error('用户不存在')
-                } else {
-                  this.$Message.error('验证失败')
-                }
+                this.$Message.error('验证失败')
               }
             }
           }
-        }
-        this.checkValidUser(params)
+        }).catch(() => {})
       } else {
         this.loadingBtn = false
       }
-    },
-    ...mapActions({
-      checkValidUser: types.CHECK_VALID_USER
-    })
+    }
   },
   beforeMount () {
   },

@@ -50,8 +50,6 @@ div.compDomainMgmtDetailOwner
 </template>
 
 <script>
-import {mapActions} from 'vuex'
-import * as types from '@/store/types'
 import compInput from './compInput'
 import compCascader from './compCascader'
 import compThreeInput from './compThreeInput'
@@ -101,53 +99,46 @@ export default {
       ])
       if (result) {
         let params = {
-          param: {
-            domainId: this.$refs.domainId.value,
-            userNameCn: this.$refs.userNameCn.value,
-            countryCode: 'cn',
-            cityCode: this.$refs.area.value[1],
-            streetCn: this.$refs.streetCn.value,
-            zipCode: this.$refs.zipCode.value,
-            email: this.$refs.userEmail.value,
-            phoneInter: this.$refs.userTel.value1,
-            phoneArea: this.$refs.userTel.value2,
-            phoneNumber: this.$refs.userTel.value3,
-            faxInter: this.$refs.userFax.value1,
-            faxArea: this.$refs.userFax.value2,
-            faxNumber: this.$refs.userFax.value3,
-            userSureNameUk: this.$refs.userSureNameUk.value,
-            userNameUk: this.$refs.userNameUk.value,
-            streetUk: this.$refs.streetUk.value
-          },
-          callback: (response) => {
-            this.loadingBtn = false
-            if (!response) {
-              return false
-            }
-            if (response.data.code === '1000') {
-              this.$Message.success('保存成功')
+          domainId: this.$refs.domainId.value,
+          userNameCn: this.$refs.userNameCn.value,
+          countryCode: 'cn',
+          cityCode: this.$refs.area.value[1],
+          streetCn: this.$refs.streetCn.value,
+          zipCode: this.$refs.zipCode.value,
+          email: this.$refs.userEmail.value,
+          phoneInter: this.$refs.userTel.value1,
+          phoneArea: this.$refs.userTel.value2,
+          phoneNumber: this.$refs.userTel.value3,
+          faxInter: this.$refs.userFax.value1,
+          faxArea: this.$refs.userFax.value2,
+          faxNumber: this.$refs.userFax.value3,
+          userSureNameUk: this.$refs.userSureNameUk.value,
+          userNameUk: this.$refs.userNameUk.value,
+          streetUk: this.$refs.streetUk.value
+        }
+        this.$store.dispatch('MOD_DOMAIN_REG_USER', params).then(response => {
+          this.loadingBtn = false
+          if (!response) {
+            return false
+          }
+          if (response.data.code === '1000') {
+            this.$Message.success('保存成功')
+          } else {
+            if (response.data.code === '100') {
+              this.$Message.error('域名不存在')
+            } else if (response.data.code === '200') {
+              this.$Message.error('域名禁止更新')
+            } else if (response.data.code === '300') {
+              this.$Message.error('域名被锁定')
             } else {
-              if (response.data.code === '100') {
-                this.$Message.error('域名不存在')
-              } else if (response.data.code === '200') {
-                this.$Message.error('域名禁止更新')
-              } else if (response.data.code === '300') {
-                this.$Message.error('域名被锁定')
-              } else {
 
-              }
             }
           }
-        }
-        console.log(params.param)
-        this.submitModDomainRegUser(params)
+        }).catch(() => {})
       } else {
         this.loadingBtn = false
       }
-    },
-    ...mapActions({
-      submitModDomainRegUser: types.SUBMIT_MOD_DOMAIN_REG_USER
-    })
+    }
   },
   computed: {
 

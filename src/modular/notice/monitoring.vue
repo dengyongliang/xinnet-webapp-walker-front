@@ -41,8 +41,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
-import * as types from '@/store/types'
+import { mapState } from 'vuex'
 import compNoticeSet from '@/components/compNoticeSet'
 import moment from 'moment'
 export default {
@@ -133,11 +132,11 @@ export default {
     searchListData () {
       // 查询数据
       this.drawerNoticeSet = false
-      this.queryList(this.queryListParam({pageNum: 1}))
+      this.queryList(1)
     },
     pageChange: function (curPage) {
       // 根据当前页获取数据
-      this.queryList(this.queryListParam({pageNum: curPage}))
+      this.queryList(curPage)
     },
     closeDrawer () {
       this.drawerNoticeSet = false
@@ -153,24 +152,18 @@ export default {
     },
     setRead () {
       this.getDomainId.map((v) => {
-        let params = {
-          param: {
-            id: v
-          },
-          callback: (response) => {
-            if (!response) {
-              return false
-            }
-            if (response.data.code === '1000') {
-              // 查找 所在 索引值
-              let idx = this.list.findIndex((item) => (item.id === v))
-              // 设为已读
-              this.list[idx].readFlag = 2
-            } else {
-            }
+        this.$store.dispatch('MAIL_RECORD_READ', {id: v}).then(response => {
+          if (!response) {
+            return false
           }
-        }
-        this.setMailRecordRead(params)
+          if (response.data.code === '1000') {
+            // 查找 所在 索引值
+            let idx = this.list.findIndex((item) => (item.id === v))
+            // 设为已读
+            this.list[idx].readFlag = 2
+          } else {
+          }
+        }).catch(() => {})
       })
     },
     queryListParam (obj) {
@@ -179,32 +172,28 @@ export default {
       this.loadingTable = true
 
       let params = {
-        param: {
-          pageNum: obj.pageNum,
-          pageSize: 20,
-          createTimeBegin: this.time[0] !== '' ? moment(this.time[0]).format('YYYY-MM-DD') + ' 00:00:00' : '',
-          createTimeEnd: this.time[1] !== '' ? moment(this.time[1]).format('YYYY-MM-DD') + ' 23:59:59' : '',
-          type: this.type
-        },
-        callback: (response) => {
-          this.loadingBtn = false
-          this.loadingTable = false
-          if (!response) {
-            return false
-          }
-          if (response.data.code === '1000') {
-            this.list = response.data.data.list
-            this.page.pageItems = response.data.data.totalNum
-          } else {
-          }
-        }
+        pageNum: obj.pageNum,
+        pageSize: 20,
+        createTimeBegin: this.time[0] !== '' ? moment(this.time[0]).format('YYYY-MM-DD') + ' 00:00:00' : '',
+        createTimeEnd: this.time[1] !== '' ? moment(this.time[1]).format('YYYY-MM-DD') + ' 23:59:59' : '',
+        type: this.type
       }
       return params
     },
-    ...mapActions({
-      queryList: types.QUERY_MAIL_MANAGE,
-      setMailRecordRead: types.SET_MAIL_RECORD_READ
-    })
+    queryList (num) {
+      this.$store.dispatch('MAIL_MANAGE', this.queryListParam({pageNum: num})).then(response => {
+        this.loadingBtn = false
+        this.loadingTable = false
+        if (!response) {
+          return false
+        }
+        if (response.data.code === '1000') {
+          this.list = response.data.data.list
+          this.page.pageItems = response.data.data.totalNum
+        } else {
+        }
+      }).catch(() => {})
+    }
   },
   computed: {
     getDomainId () {
@@ -219,7 +208,7 @@ export default {
     })
   },
   beforeMount () {
-    this.queryList(this.queryListParam({pageNum: 1}))
+    this.queryList(1)
   }
 }
 </script>

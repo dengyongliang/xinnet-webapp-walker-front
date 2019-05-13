@@ -1,38 +1,27 @@
-export default {
-  path: '/finance',
-  component (resolve) {
-    return require(['@/page/main'], resolve)
+export default [
+  {
+    path: 'finance',
+    name: 'finance_overview',
+    redirect: 'finance/overview'
   },
-  children: [
-    {
-      path: '/',
-      name: 'finance_overview',
-      component (resolve) {
-        return require(['@/modular/finance/overview'], resolve)
-      },
-      meta: {
-        title: '财务总览'
-      }
+  {
+    path: 'finance/overview',
+    name: 'finance_overview',
+    component (resolve) {
+      return require(['@/modular/finance/overview'], resolve)
     },
-    {
-      path: 'overview',
-      name: 'finance_overview',
-      component (resolve) {
-        return require(['@/modular/finance/overview'], resolve)
-      },
-      meta: {
-        title: '财务总览'
-      }
-    },
-    {
-      path: 'billMgmt',
-      name: 'finance_billmgmt',
-      component (resolve) {
-        return require(['@/modular/finance/billMgmt'], resolve)
-      },
-      meta: {
-        title: '账单管理'
-      }
+    meta: {
+      title: '财务总览'
     }
-  ]
-}
+  },
+  {
+    path: 'finance/billMgmt',
+    name: 'finance_billmgmt',
+    component (resolve) {
+      return require(['@/modular/finance/billMgmt'], resolve)
+    },
+    meta: {
+      title: '账单管理'
+    }
+  }
+]

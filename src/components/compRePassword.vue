@@ -70,7 +70,7 @@ export default {
 }
 .compRePassword .iconright{
   font-size:20px;
-  right:-30px;
+  right:-17px;
   top:13px;
   position:absolute;
   color:#77c936;

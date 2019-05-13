@@ -75,7 +75,7 @@ export default {
   display: none;
 }
 .compCompanyCreate .modify .ivu-upload{
-  position: absolute;
+  position: relative;
   left: 0px;
   top: 0px;
 }

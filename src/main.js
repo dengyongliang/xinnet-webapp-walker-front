@@ -16,6 +16,16 @@ require('es6-promise').polyfill()
 Vue.prototype.$echarts = echarts
 Vue.prototype.GLOBALS = GLOBAL
 Vue.prototype.DATAS = DATAS
+Vue.prototype.echartsColorList = [
+  '#4f7acb',
+  '#ff9019',
+  '#5b9bd5',
+  '#ffc000',
+  '#ff6666',
+  '#1bb3f3',
+  '#29cb97',
+  '#ca65ff'
+]
 Vue.config.productionTip = false
 Vue.use(iView)
 Vue.use(directives)

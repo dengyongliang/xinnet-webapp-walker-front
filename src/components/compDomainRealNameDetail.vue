@@ -27,13 +27,11 @@
 </template>
 
 <script>
-import {mapActions} from 'vuex'
-import * as types from '@/store/types'
 import compRadio from '@/components/compRadio'
 import compSelect from '@/components/compSelect'
 import compInput from '@/components/compInput'
 import compImgUpload from '@/components/compImgUpload'
-import * as links from '@/global/linkdo.js'
+import * as actions from '@/actions/domainVerify.js'
 import validateFormResult from '@/global/validateForm'
 export default {
   components: {
@@ -92,7 +90,7 @@ export default {
           label: '0'
         }
       ],
-      uploadAction: links.UPLOAD_FILE_DOMAIN_VERIFY
+      uploadAction: actions.UPLOAD_FILE
     }
   },
   methods: {
@@ -127,24 +125,10 @@ export default {
 
       if (result) {
         let params = {
-          param: {
-            domainIds: this.domainIds
-          },
-          callback: (response) => {
-            this.loadingBtn = false
-            if (!response) {
-              return false
-            }
-            if (response.data.code === '1000') {
-              this.$Message.success('模板资料提交成功')
-              this.$emit('refreshData')
-            } else {
-              this.$Message.error('模板资料提交失败')
-            }
-          }
+          domainIds: this.domainIds
         }
         if (this.isTemp === 0) {
-          Object.assign(params.param, {
+          Object.assign(params, {
             registrantType: this.$refs.registrantType.value,
             idCode: this.$refs.idCode.value,
             idType: this.$refs['idType' + this.registrantType].value,
@@ -152,20 +136,27 @@ export default {
             idFileName: this.$refs.upfile.$refs.upload.fileList[0].name
           })
         } else if (this.isTemp === 1) {
-          Object.assign(params.param, {
+          Object.assign(params, {
             templateId: this.$refs.templateId.value
           })
         }
-        console.log(params.param)
-        this.submitDomainVerify(params)
+
+        this.$store.dispatch('UPLOAD_DOMAIN_VERIFY', params).then(response => {
+          this.loadingBtn = false
+          if (!response) {
+            return false
+          }
+          if (response.data.code === '1000') {
+            this.$Message.success('模板资料提交成功')
+            this.$emit('refreshData')
+          } else {
+            this.$Message.error('模板资料提交失败')
+          }
+        }).catch(() => {})
       } else {
         this.loadingBtn = false
       }
-    },
-    ...mapActions({
-      queryOrderConfirm: types.QUERY_ORDER_CONFIRM,
-      submitDomainVerify: types.SUBMIT_DOMAIN_VERIFY
-    })
+    }
   },
   computed: {
   },

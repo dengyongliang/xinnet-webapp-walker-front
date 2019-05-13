@@ -42,7 +42,7 @@ export default {
       }
       // 绘制图表
       myChart.setOption({
-        color: ['#006699', '#aaaaaa'],
+        color: ['#4f7acb', '#d5d5d5'],
         title: {
           text: '',
           subtext: '',

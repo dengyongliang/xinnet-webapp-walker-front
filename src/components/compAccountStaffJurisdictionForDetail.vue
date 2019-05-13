@@ -14,8 +14,6 @@ Form.compStaffJurisdiction(:label-width="0")
 </template>
 
 <script>
-import {mapActions} from 'vuex'
-import * as types from '@/store/types'
 import compRadio from '@/components/compRadio'
 import validateFormResult from '@/global/validateForm'
 export default {
@@ -92,40 +90,33 @@ export default {
       ])
       if (result) {
         let params = {
-          param: {
-            userCode: this.$refs.userCode.value,
-            roleId: this.$refs.roleId.value,
-            groups: this.getCheckedNodes().slice(1).join(',')
-          },
-          callback: (response) => {
-            this.loadingBtn = false
-            if (response) {
-              if (response.data.code === '1000') {
-                this.$Message.success('修改成功!')
-                this.$emit('closeDrawer')
-              } else {
-                if (response.data.code === '100') {
-                  this.$Message.error('角色编码错误')
-                } else if (response.data.code === '200') {
-                  this.$Message.error('用户已存在')
-                } else if (response.data.code === '300') {
-                  this.$Message.error('企业不存在')
-                } else if (response.data.code === '400') {
-                  this.$Message.error('超级管理员只允许存在一个')
-                }
+          userCode: this.$refs.userCode.value,
+          roleId: this.$refs.roleId.value,
+          groups: this.getCheckedNodes().slice(1).join(',')
+        }
+        this.$store.dispatch('UPDATE_USER_AUTH', params).then(response => {
+          this.loadingBtn = false
+          if (response) {
+            if (response.data.code === '1000') {
+              this.$Message.success('修改成功!')
+              this.$emit('closeDrawer')
+            } else {
+              if (response.data.code === '100') {
+                this.$Message.error('角色编码错误')
+              } else if (response.data.code === '200') {
+                this.$Message.error('用户已存在')
+              } else if (response.data.code === '300') {
+                this.$Message.error('企业不存在')
+              } else if (response.data.code === '400') {
+                this.$Message.error('超级管理员只允许存在一个')
               }
             }
           }
-        }
-        console.log(params.param)
-        this.updateUserAuth(params)
+        }).catch(() => {})
       } else {
         this.loadingBtn = false
       }
-    },
-    ...mapActions({
-      updateUserAuth: types.UPDATE_USER_AUTH
-    })
+    }
   },
   beforeMount () {
   },

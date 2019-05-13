@@ -1,6 +1,4 @@
-import * as types from './types'
-import rest from '../global/http.js'
-import * as links from '../global/linkdo.js'
+import * as api from '@/api/order'
 
 export default {
   state: {
@@ -8,15 +6,46 @@ export default {
   mutations: {
   },
   actions: {
-    [types.QUERY_ORDER_LIST] ({ commit, rootState }, params) {
-      rest.post(links.QUERY_ORDER_LIST, params.param)
-        .then(params.callback)
-        .catch(() => {})
+    ORDER_PAYMENT ({ commit }, params) {
+      return new Promise((resolve, reject) => {
+        api.ORDER_PAYMENT(params).then(response => {
+          resolve(response)
+        }).catch(error => {
+          reject(error)
+        })
+      })
     },
-    [types.EXPORT_ORDER_LIST] ({ commit, rootState }, params) {
-      rest.post(links.EXPORT_ORDER_LIST, params.param)
-        .then(params.callback)
-        .catch(() => {})
+    ORDER_CONFIRM ({ commit }, params) {
+      params = Object.assign({
+        templateId: '',
+        groupId: '',
+        jsonObj: []
+      }, params)
+      return new Promise((resolve, reject) => {
+        api.ORDER_CONFIRM(params.templateId, params.groupId, params.jsonObj).then(response => {
+          resolve(response)
+        }).catch(error => {
+          reject(error)
+        })
+      })
+    },
+    ORDER_SETTLEMENT ({ commit }, params) {
+      return new Promise((resolve, reject) => {
+        api.ORDER_SETTLEMENT(params).then(response => {
+          resolve(response)
+        }).catch(error => {
+          reject(error)
+        })
+      })
+    },
+    ORDER_MANAGE ({ commit }, params) {
+      return new Promise((resolve, reject) => {
+        api.ORDER_MANAGE(params.pageNum, params.pageSize, params.createTimeBegin, params.createTimeEnd, params.orderGoodsInfo, params.orderGoodsType, params.orderMode, params.orderPayType, params.orderType).then(response => {
+          resolve(response)
+        }).catch(error => {
+          reject(error)
+        })
+      })
     }
   }
 }

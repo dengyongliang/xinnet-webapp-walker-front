@@ -126,8 +126,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
-import * as types from '@/store/types'
+import { mapState } from 'vuex'
 import compChartOverviewCompany from '@/components/compChartOverviewCompany'
 import compChartOverviewSuffix from '@/components/compChartOverviewSuffix'
 import compChartOverviewExpire from '@/components/compChartOverviewExpire'
@@ -159,34 +158,18 @@ export default {
   methods: {
     getOverviewDomainCount () {
       this.loadingBtn = true
-      let params = {
-        param: {
-          days: 7
-        },
-        callback: (response) => {
-          this.loadingBtn = false
-          if (!response) {
-            return false
-          }
-          if (response.data.code === '1000') {
-            console.log(response.data.data)
-            this.overviewDomainCount = response.data.data
-          } else {
-          }
+      this.$store.dispatch('DOMAIN_COUNT_STATISTICS', {days: 7}).then(response => {
+        this.loadingBtn = false
+        if (!response) {
+          return false
         }
-      }
-      this.overviewDomainCountStatistics(params)
-    },
-    ...mapActions({
-      overviewDomainStatistics: types.OVERVIEW_DOMAIN_STATISTICS,
-      overviewDomainCountStatistics: types.OVERVIEW_DOMAIN_COUNT_STATISTICS,
-      overviewTemplateStatistics: types.OVERVIEW_TEMPLATE_STATISTICS,
-      overviewBackendLockStatistics: types.OVERVIEW_BACKEND_LOCK_STATISTICS,
-      overviewDomainVerifyStatistics: types.OVERVIEW_DOMAIN_VERIFY_STATISTICS,
-      overviewDomainRenewStatistics: types.OVERVIEW_DOMAIN_RENEW_STATISTICS,
-      overviewDomainTransferInStatistics: types.OVERVIEW_DOMAIN_TRANSFER_IN_STATISTICS,
-      overviewDomainChangeStatistics: types.OVERVIEW_DOMAIN_CHANGE_STATISTICS
-    })
+        if (response.data.code === '1000') {
+          console.log(response.data.data)
+          this.overviewDomainCount = response.data.data
+        } else {
+        }
+      }).catch(() => {})
+    }
   },
   computed: {
     ...mapState({
@@ -199,30 +182,35 @@ export default {
     })
   },
   beforeMount () {
-    this.overviewDomainStatistics((response) => {
+    this.$store.dispatch('DOMAIN_STATISTICS').then(response => {
       this.overviewDomain = response.data.data
-    })
+    }).catch(() => {})
 
     this.getOverviewDomainCount()
 
-    this.overviewTemplateStatistics((response) => {
+    this.$store.dispatch('TEMPLATE_STATISTICS').then(response => {
       this.overviewTemplate = response.data.data
-    })
-    this.overviewBackendLockStatistics((response) => {
+    }).catch(() => {})
+
+    this.$store.dispatch('BACKEND_LOCK_STATISTICS').then(response => {
       this.overviewBackendLock = response.data.data
-    })
-    this.overviewDomainVerifyStatistics((response) => {
+    }).catch(() => {})
+
+    this.$store.dispatch('DOMAIN_VERIFY_STATISTICS').then(response => {
       this.overviewDomainVerify = response.data.data
-    })
-    this.overviewDomainRenewStatistics((response) => {
+    }).catch(() => {})
+
+    this.$store.dispatch('DOMAIN_RENEW_STATISTICS').then(response => {
       this.overviewDomainRenew = response.data.data
-    })
-    this.overviewDomainTransferInStatistics((response) => {
+    }).catch(() => {})
+
+    this.$store.dispatch('DOMAIN_TRANSFER_IN_STATISTICS').then(response => {
       this.overviewDomainTransferIn = response.data.data
-    })
-    this.overviewDomainChangeStatistics((response) => {
+    }).catch(() => {})
+
+    this.$store.dispatch('DOMAIN_CHANGE_STATISTICS').then(response => {
       this.overviewDomainChange = response.data.data
-    })
+    }).catch(() => {})
   },
   mounted () {
   }

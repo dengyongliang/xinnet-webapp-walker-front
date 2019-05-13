@@ -16,8 +16,7 @@
 </template>
 
 <script>
-import {mapState, mapActions} from 'vuex'
-import * as types from '@/store/types'
+import {mapState} from 'vuex'
 import headerBody from '../modular/header'
 export default {
   components: {
@@ -142,46 +141,38 @@ export default {
       let groupId = this.payFinishData.groupId
       this.payFinishData.jsonObj.map((v, i, arr) => {
         this.$set(v, 'payStatus', 'ing')
-        let params = {
-          param: {
-            jsonObj: {
-              domainName: v.domainName,
-              orderPayType: 1,
-              orderMoney: v.price.split('_')[0] * 1,
-              orderGoodsNum: v.num,
-              orderType: v.orderType,
-              orderGoodsType: v.orderGoodsType,
-              domainPassword: v.domainPwd,
-              templateId: templateId,
-              groupId: groupId
-            }
-          },
-          callback: (response) => {
-            if (!response) {
-              return false
-            }
-            let data = response.data
-            if (data.code === '1000') {
-              this.realPrice += this.payFinishData.jsonObj[i].price.split('_')[0] * 1
-              this.payFinishData.creditBalance -= this.payFinishData.jsonObj[i].price.split('_')[0] * 1
-              // this.payFinishData.jsonObj[i].payStatus = 'success'
-              let v = this.payFinishData.jsonObj[i]
-              v.payStatus = 'success'
-              this.$set(this.payFinishData.jsonObj, i, v)
-            } else {
-              let v = this.payFinishData.jsonObj[i]
-              v.payStatus = 'fail'
-              v.errorText = data.msg
-              this.$set(this.payFinishData.jsonObj, i, v)
-            }
-          }
+        let jsonObj = {
+          domainName: v.domainName,
+          orderPayType: 1,
+          orderMoney: v.price.split('_')[0] * 1,
+          orderGoodsNum: v.num,
+          orderType: v.orderType,
+          orderGoodsType: v.orderGoodsType,
+          domainPassword: v.domainPwd,
+          templateId: templateId,
+          groupId: groupId
         }
-        this.orderPayment(params)
+        this.$store.dispatch('ORDER_PAYMENT', jsonObj).then(response => {
+          if (!response) {
+            return false
+          }
+          let data = response.data
+          if (data.code === '1000') {
+            this.realPrice += this.payFinishData.jsonObj[i].price.split('_')[0] * 1
+            this.payFinishData.creditBalance -= this.payFinishData.jsonObj[i].price.split('_')[0] * 1
+            // this.payFinishData.jsonObj[i].payStatus = 'success'
+            let v = this.payFinishData.jsonObj[i]
+            v.payStatus = 'success'
+            this.$set(this.payFinishData.jsonObj, i, v)
+          } else {
+            let v = this.payFinishData.jsonObj[i]
+            v.payStatus = 'fail'
+            v.errorText = data.msg
+            this.$set(this.payFinishData.jsonObj, i, v)
+          }
+        }).catch(() => {})
       })
-    },
-    ...mapActions({
-      orderPayment: types.ORDER_PAYMENT
-    })
+    }
   },
   computed: {
     total () {

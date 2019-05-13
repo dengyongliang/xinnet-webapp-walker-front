@@ -3,10 +3,11 @@
   router-link.logo(to="/")
     img(src="../../static/img/logo.png")
   .right
-    Poptip(:title="myUserInfo.userName", content="content <a>sfs</a>", placement="bottom")
+    span(v-if="!myUserInfo.keeperFlag") {{myUserInfo.userName}}
+    Poptip(v-if="myUserInfo.keeperFlag", :title="myUserInfo.userName", content="", placement="bottom")
       div(slot="content")
         span {{myUserInfo.manageCustomerName}}
-        a(href="javascript:;",@click="showModals=true",class="btnSwitch") 切换
+        a(href="javascript:;",@click="showModals=true",class="btnSwitch" v-if="myUserInfo.keeperFlag") 切换
       span.avatar
         Avatar(:src="myUserInfo.companyLogoFile",size="small")
         span.name {{myUserInfo.userName}}
@@ -33,11 +34,10 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
-import * as types from '@/store/types'
+import { mapState } from 'vuex'
 import compSwitchClient from '@/components/compSwitchClient'
 // import mixinsWebSocket from '@/mixins/mixinsWebSocket'
-import { emitter as restEmitter } from '@/global/http'
+import { emitter as restEmitter } from '@/global/axios'
 export default {
   components: {
     compSwitchClient
@@ -61,47 +61,38 @@ export default {
   },
   methods: {
     logout () {
-      let params = {
-        callback: (response) => {
-          if (!response) {
-            return false
-          }
-          if (response.data.code === '1000') {
-            restEmitter.emit('closeWebSocket')
-            this.$Message.success('登出成功')
-            this.$router.replace({path: '/login'})
-          } else {
-          }
+      this.$store.dispatch('LOGOUT').then(response => {
+        if (!response) {
+          return false
         }
-      }
-      this.loginOut(params)
+        if (response.data.code === '1000') {
+          restEmitter.emit('closeWebSocket')
+          this.$Message.success('登出成功')
+          this.$router.replace({path: '/login'})
+        }
+      }).catch(() => {})
     },
     closeModal () {
       this.showModals = false
     },
     parentEvent () {
-
-    },
-    ...mapActions({
-      loginOut: types.LOGIN_OUT,
-      getCurrentUserData: types.GET_CURRENT_USER_DATA
-    })
+    }
   },
   beforeMount () {
-    this.getCurrentUserData((response) => {
+    this.$store.dispatch('MY_USER_INFO').then(response => {
       if (!response) {
         return false
       }
       if (response.data.code === '1000') {
-        this.$store.commit(types.SET_LOGINED)
-        this.$store.commit(types.SET_CURRENT_USER_DATA, response.data)
-        this.$store.commit(types.SET_MENUS, response.data)
+        this.$store.commit('SET_LOGINED')
+        this.$store.commit('SET_CURRENT_USER_DATA', response.data)
+        this.$store.commit('SET_MENUS', response.data)
         let manageCustomerId = response.data.data.manageCustomerId
         Promise.all([
-          this.$store.dispatch(types.GET_USER_ROLES),
-          this.$store.dispatch(types.GET_USERS),
-          this.$store.dispatch(types.GET_COMPANYS),
-          this.$store.dispatch(types.GET_USER_AUTH_GROUPS)
+          this.$store.dispatch('USER_ROLES'),
+          this.$store.dispatch('USERS'),
+          this.$store.dispatch('COMPANYS'),
+          this.$store.dispatch('USER_AUTH_GROUPS')
         ]).then((response) => {
           // 获取信息成功
           // 开启websocket
@@ -111,9 +102,12 @@ export default {
           console.log(error)
         })
       } else {
+        this.$store.commit('SET_LOGOUT')
+        this.$store.commit('SET_CURRENT_USER_DATA', {})
+        this.$store.commit('SET_MENUS', {})
         this.$router.replace({ path: '/login' })
       }
-    })
+    }).catch(() => {})
   }
 }
 </script>

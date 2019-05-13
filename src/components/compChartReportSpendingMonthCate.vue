@@ -33,6 +33,7 @@ export default {
             type: 'shadow'
           }
         },
+        color: this.echartsColorList,
         legend: {
           top: '95%',
           data: datas.companyNameList

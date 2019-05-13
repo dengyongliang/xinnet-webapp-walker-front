@@ -111,8 +111,6 @@
 </template>
 
 <script>
-import {mapActions} from 'vuex'
-import * as types from '@/store/types'
 import compInput from '@/components/compInput'
 import compSelect from '@/components/compSelect'
 import compChartReportOwnDueTime from '@/components/compChartReportOwnDueTime'
@@ -224,32 +222,24 @@ export default {
     },
     getChangeReport (v = 30) {
       let params = {
-        param: {
-          cycleTime: v * 1
-        },
-        callback: (response) => {
-          if (!response) {
-            return false
-          }
-          if (response.data.code === '1000') {
-            this.reportChange = response.data.data
-          } else {
-          }
-        }
+        cycleTime: v * 1
       }
-      this.queryDomainMonitorChangeReport(params)
-    },
-    ...mapActions({
-      queryDomainMonitorChangeReport: types.QUERY_DOMAIN_MONITOR_CHANGE_REPORT,
-      queryDomainMonitorSafeReport: types.QUERY_DOMAIN_MONITOR_SAFE_REPORT,
-      queryDomainMonitorExpireReport: types.QUERY_DOMAIN_MONITOR_EXPIRE_REPORT
-    })
+      this.$store.dispatch('DOMAIN_MONITOR_CHANGE_REPORT', params).then(response => {
+        if (!response) {
+          return false
+        }
+        if (response.data.code === '1000') {
+          this.reportChange = response.data.data
+        } else {
+        }
+      }).catch(() => {})
+    }
   },
   computed: {
   },
   beforeMount () {
     this.getChangeReport()
-    this.queryDomainMonitorSafeReport((response) => {
+    this.$store.dispatch('DOMAIN_MONITOR_SAFE_REPORT').then(response => {
       if (!response) {
         return false
       }
@@ -257,8 +247,8 @@ export default {
         this.reportSafe = response.data.data
       } else {
       }
-    })
-    this.queryDomainMonitorExpireReport((response) => {
+    }).catch(() => {})
+    this.$store.dispatch('DOMAIN_MONITOR_EXPIRE_REPORT').then(response => {
       if (!response) {
         return false
       }
@@ -266,7 +256,7 @@ export default {
         this.reportExpire = response.data.data
       } else {
       }
-    })
+    }).catch(() => {})
   },
   mounted () {
   },

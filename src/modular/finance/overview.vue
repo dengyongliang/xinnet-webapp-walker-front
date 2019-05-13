@@ -43,8 +43,6 @@
 </template>
 
 <script>
-import {mapActions} from 'vuex'
-import * as types from '@/store/types'
 import compChartSpendTrend from '@/components/compChartSpendTrend'
 import compChartSpendTotal from '@/components/compChartSpendTotal'
 import moment from 'moment'
@@ -153,114 +151,104 @@ export default {
     getFinancePayStatisticsParam (obj) {
       this.loadingTable = true
       let params = {
-        param: {
-          startTime: this.time1[0] !== '' ? moment(this.time1[0]).format('YYYY-MM-DD') + ' 00:00:00' : '',
-          endTime: this.time1[1] !== '' ? moment(this.time1[1]).format('YYYY-MM-DD') + ' 23:59:59' : ''
-        },
-        callback: (response) => {
-          this.loadingTable = false
-          console.log(response.data)
-          if (!response) {
-            return false
-          }
-          if (response.data.code === '1000') {
-            this.creditMoney = response.data.data.creditMoney
-            this.payMoney = response.data.data.payMoney
-            this.totalMoney = response.data.data.totalMoney
-            this.list = response.data.data.list
-            let charData = {}
-            charData.legend = []
-            charData.series = response.data.data.businessList.map((value, idx, arr) => {
-              let name = this.DATAS.BUSINESS_LIST[Object.keys(value)]
-              charData.legend.push(name)
-              return {
-                name: name,
-                value: value[Object.keys(value)]
-              }
-            })
-            this.payStatisticsTotalData = charData
-          } else {
-            if (response.data.code === '900') {
-              this.$Message.error('查询失败')
-            }
-          }
-        }
+        startTime: this.time1[0] !== '' ? moment(this.time1[0]).format('YYYY-MM-DD') + ' 00:00:00' : '',
+        endTime: this.time1[1] !== '' ? moment(this.time1[1]).format('YYYY-MM-DD') + ' 23:59:59' : ''
       }
       return params
     },
     getFinancePayStatisticsTrendParam (obj) {
       this.loadingBtn = true
       let params = {
-        param: {
-          startTime: this.time2[0] !== '' ? moment(this.time2[0]).format('YYYY-MM-DD') + ' 00:00:00' : '',
-          endTime: this.time2[1] !== '' ? moment(this.time2[1]).format('YYYY-MM-DD') + ' 23:59:59' : ''
-        },
-        callback: (response) => {
-          this.loadingBtn = false
-          console.log(response)
-          if (!response) {
-            return false
-          }
-          if (response.data.code === '1000') {
-            this.payStatisticsTrendData = {
-              legend: [],
-              xAxis: [],
-              series: []
-            }
-            this.payStatisticsTrendData.xAxis = response.data.data.dateList
-            this.payStatisticsTrendData.series = response.data.data.goodTypeList.map((value, idx, arr) => {
-              this.payStatisticsTrendData.legend.push(this.DATAS.ORDER_GOODS_TYPE[value])
-              var arrs = []
-              response.data.data.dateList.forEach((item1, index1) => {
-                if (response.data.data.result[item1]) {
-                  response.data.data.result[item1].forEach((item2, index2) => {
-                    if (item2.orderGoodsType === parseInt(value)) {
-                      arrs.push(item2.orderTotalMoney)
-                    }
-                  })
-                } else {
-                  return arrs.push(0)
-                }
-              })
-              return {
-                name: this.DATAS.ORDER_GOODS_TYPE[value],
-                type: 'bar',
-                stack: '总量',
-                label: {
-                  normal: {
-                    show: true,
-                    position: 'insideRight'
-                  }
-                },
-                data: arrs
-              }
-            })
-            // console.log(vm.payStatisticsTrendData.series)
-          } else {
-            if (response.data.code === '900') {
-              this.$Message.error('查询失败')
-            }
-          }
-        }
+        startTime: this.time2[0] !== '' ? moment(this.time2[0]).format('YYYY-MM-DD') + ' 00:00:00' : '',
+        endTime: this.time2[1] !== '' ? moment(this.time2[1]).format('YYYY-MM-DD') + ' 23:59:59' : ''
       }
       return params
     },
     queryPayStatistics () {
-      this.financePayStatistics(this.getFinancePayStatisticsParam())
+      this.$store.dispatch('PAY_STATISTICS', this.getFinancePayStatisticsParam()).then(response => {
+        this.loadingTable = false
+        console.log(response.data)
+        if (!response) {
+          return false
+        }
+        if (response.data.code === '1000') {
+          this.creditMoney = response.data.data.creditMoney
+          this.payMoney = response.data.data.payMoney
+          this.totalMoney = response.data.data.totalMoney
+          this.list = response.data.data.list
+          let charData = {}
+          charData.legend = []
+          charData.series = response.data.data.businessList.map((value, idx, arr) => {
+            let name = this.DATAS.BUSINESS_LIST[Object.keys(value)]
+            charData.legend.push(name)
+            return {
+              name: name,
+              value: value[Object.keys(value)]
+            }
+          })
+          this.payStatisticsTotalData = charData
+        } else {
+          if (response.data.code === '900') {
+            this.$Message.error('查询失败')
+          }
+        }
+      }).catch(() => {})
     },
     queryPayStatisticsTrend () {
-      this.financePayStatisticsTrend(this.getFinancePayStatisticsTrendParam())
-    },
-    ...mapActions({
-      financePayStatistics: types.FINANCE_PAY_STATISTICS,
-      financePayStatisticsTrend: types.FINANCE_PAY_STATISTICS_TREND
-    })
+      this.$store.dispatch('PAY_STATISTICS_TREND', this.getFinancePayStatisticsTrendParam()).then(response => {
+        this.loadingBtn = false
+        console.log(response)
+        if (!response) {
+          return false
+        }
+        if (response.data.code === '1000') {
+          this.payStatisticsTrendData = {
+            legend: [],
+            xAxis: [],
+            series: []
+          }
+          this.payStatisticsTrendData.xAxis = response.data.data.dateList
+          this.payStatisticsTrendData.series = response.data.data.goodTypeList.map((value, idx, arr) => {
+            this.payStatisticsTrendData.legend.push(this.DATAS.ORDER_GOODS_TYPE[value])
+            var arrs = []
+            response.data.data.dateList.forEach((item1, index1) => {
+              if (response.data.data.result[item1]) {
+                response.data.data.result[item1].forEach((item2, index2) => {
+                  if (item2.orderGoodsType === parseInt(value)) {
+                    arrs.push(item2.orderTotalMoney)
+                  }
+                })
+              } else {
+                return arrs.push(0)
+              }
+            })
+            return {
+              name: this.DATAS.ORDER_GOODS_TYPE[value],
+              type: 'bar',
+              stack: '总量',
+              label: {
+                normal: {
+                  show: true,
+                  position: 'insideRight'
+                }
+              },
+              data: arrs
+            }
+          })
+          // console.log(vm.payStatisticsTrendData.series)
+        } else {
+          if (response.data.code === '900') {
+            this.$Message.error('查询失败')
+          }
+        }
+      }).catch(() => {})
+    }
   },
   computed: {
   },
   beforeMount () {
-    this.financePayStatistics(this.getFinancePayStatisticsParam())
-    this.financePayStatisticsTrend(this.getFinancePayStatisticsTrendParam())
+    this.queryPayStatistics()
+    this.queryPayStatisticsTrend()
   },
   mounted () {
     console.log(moment().subtract(1, 'months').format('YYYY-MM-DD'))

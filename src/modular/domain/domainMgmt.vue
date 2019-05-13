@@ -7,13 +7,19 @@
     <span @click="" v-show="showDns" > > 修改DNS</span>
 
     form.tR(v-show="!showDetail && !showDns", ref="exportForm",target="_blank" method="post" accept-charset="utf-8" :action="exportLink")
-      input(type="hidden", value='', name="domainSuffixs")
-      input(type="hidden", value='', name="otherSuffix")
-      input(type="hidden", value='', name="allSuffix")
-      input(type="hidden", value='', name="groupIds")
-      input(type="hidden", value='', name="serviceState")
-      input(type="hidden", value='', name="createDay")
-      input(type="hidden", value='', name="expireDay")
+      input(type="hidden", :value='this.value', name="domainName")
+      input(type="hidden", :value='this.asideFilterResult.domainSuffixs', name="domainSuffixs")
+      input(type="hidden", :value='this.asideFilterResult.otherSuffix', name="otherSuffix")
+      input(type="hidden", :value='this.asideFilterResult.allSuffix', name="allSuffix")
+      input(type="hidden", :value='this.asideFilterResult.groupIds', name="groupIds")
+      input(type="hidden", :value='this.asideFilterResult.serviceState', name="serviceState")
+      input(type="hidden", :value='this.asideFilterResult.createDay', name="createDay")
+      input(type="hidden", :value='this.asideFilterResult.expireDay', name="expireDay")
+      input(type="hidden", :value='this.asideFilterResult.createTimeBegin', name="createTimeBegin")
+      input(type="hidden", :value='this.asideFilterResult.createTimeEnd', name="createTimeEnd")
+      input(type="hidden", :value='this.asideFilterResult.expireTimeBegin', name="expireTimeBegin")
+      input(type="hidden", :value='this.asideFilterResult.expireTimeEnd', name="expireTimeEnd")
+
       span 搜索
       Input(style="width:200px",placeholder="请输入域名", name="domainName", v-model.trim="value")
       Button(type="primary", @click="searchListData",:loading="loadingBtn") 查询
@@ -69,14 +75,13 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
-import * as types from '@/store/types'
+import { mapState } from 'vuex'
 import compDomainChange from '@/components/compDomainChange'
 import compUserAuthGroups from '@/components/compUserAuthGroups'
 import compDomainMgmtDetail from '@/components/compDomainMgmtDetail'
 import compDomainModifyDns from '@/components/compDomainModifyDns'
 import compAsideFilter from '@/components/compAsideFilter'
-import * as links from '@/global/linkdo.js'
+import * as actions from '@/actions/domain.js'
 export default {
   components: {
     compUserAuthGroups,
@@ -104,7 +109,7 @@ export default {
       renewDisabled: true,
       defaultValueChange: '',
       detailData: {},
-      exportLink: links.EXPORT_DOMAIN_LIST,
+      exportLink: actions.EXPORT_DOMAIN,
       list: [],
       page: {
         pageNo: 1,
@@ -219,10 +224,10 @@ export default {
   methods: {
     searchListData () {
       this.moveGroupDisabled = true
-      this.queryList(this.queryListParam({pageNum: 1}))
+      this.queryList(1)
     },
     pageChange: function (curPage) {
-      this.queryList(this.queryListParam({pageNum: curPage}))
+      this.queryList(curPage)
     },
     exportOrder () {
       this.$refs.exportForm.submit()
@@ -255,45 +260,43 @@ export default {
     },
     renewFun () {
       var params = {
-        param: {
-          jsonObj: this.selectData.map((v) => {
-            return {
-              domainName: v.domainName,
-              orderGoodsType: 2,
-              orderType: 2
-            }
-          })
-        },
-        callback: (response) => {
-          this.loadingBtn = false
-          if (!response) {
-            return false
+        jsonObj: this.selectData.map((v) => {
+          return {
+            domainName: v.domainName,
+            orderGoodsType: 2,
+            orderType: 2
           }
-          if (response.data.code === '1000') {
-            response.data.type = '2_2'
-            response.data.jsonObj.map((v) => {
-              v.price = v.goodsNumAndPrice[0].price + '_' + v.goodsNumAndPrice[0].unit
-              v.num = v.goodsNumAndPrice[0].num
-              v.unit = v.goodsNumAndPrice[0].unit
-            })
-            this.$store.commit(types.SET_PAY_ORDERS, response.data)
-            this.$router.push({path: '/payConfirm'})
+        })
+      }
+      console.log(params)
+
+      this.$store.dispatch('ORDER_CONFIRM', params).then(response => {
+        this.loadingBtn = false
+        if (!response) {
+          return false
+        }
+        if (response.data.code === '1000') {
+          response.data.type = '2_2'
+          response.data.jsonObj.map((v) => {
+            v.price = v.goodsNumAndPrice[0].price + '_' + v.goodsNumAndPrice[0].unit
+            v.num = v.goodsNumAndPrice[0].num
+            v.unit = v.goodsNumAndPrice[0].unit
+          })
+          this.$store.commit('SET_PAY_ORDERS', response.data)
+          this.$router.push({path: '/payConfirm'})
+        } else {
+          if (response.data.code === '100') {
+            this.$Message.error('模板不存在')
+          } else if (response.data.code === '200') {
+            this.$Message.error('分组不存在')
+          } else if (response.data.code === '300') {
+            this.$Message.error('账户错误')
+          } else if (response.data.code === '400') {
+            this.$Message.error('json数据错误')
           } else {
-            if (response.data.code === '100') {
-              this.$Message.error('模板不存在')
-            } else if (response.data.code === '200') {
-              this.$Message.error('分组不存在')
-            } else if (response.data.code === '300') {
-              this.$Message.error('账户错误')
-            } else if (response.data.code === '400') {
-              this.$Message.error('json数据错误')
-            } else {
-            }
           }
         }
-      }
-      console.log(params.param)
-      this.queryOrderConfirm(params)
+      }).catch(() => {})
     },
     domainChangeFun () {
       let flag = true
@@ -315,22 +318,19 @@ export default {
       this.domainType = item.depositFlag
       this.showDetail = true
       let params = {
-        param: {
-          domainId: item.id
-        },
-        callback: (response) => {
-          this.loadingBtn = false
-          if (!response) {
-            return false
-          }
-          if (response.data.code === '1000') {
-            this.detailData = response.data.data
-          } else {
-
-          }
-        }
+        domainId: item.id
       }
-      this.queryDomainManageDetail(params)
+      this.$store.dispatch('DOMAIN_DOMAIN_MANAGE', params).then(response => {
+        this.loadingBtn = false
+        if (!response) {
+          return false
+        }
+        if (response.data.code === '1000') {
+          this.detailData = response.data.data
+        } else {
+
+        }
+      }).catch(() => {})
     },
     setDetailFun (obj) {
       this.detailData = obj
@@ -364,7 +364,7 @@ export default {
 
       console.log(this.asideFilterResult)
       // 加载数据
-      this.queryList(this.queryListParam({pageNum: 1}))
+      this.queryList(1)
     },
     asideFilterReset () {
       this.asideFilterResult.domainSuffixs = ''
@@ -379,7 +379,7 @@ export default {
       this.asideFilterResult.expireTimeBegin = ''
       this.asideFilterResult.expireTimeEnd = ''
 
-      this.queryList(this.queryListParam({pageNum: 1}))
+      this.queryList(1)
     },
     queryListParam (obj) {
       this.page.pageNo = obj.pageNum
@@ -387,42 +387,37 @@ export default {
       this.loadingTable = true
 
       let params = {
-        param: {
-          pageNum: obj.pageNum,
-          pageSize: 20,
-          domainName: this.value,
-          domainSuffixs: this.asideFilterResult.domainSuffixs,
-          otherSuffix: this.asideFilterResult.otherSuffix,
-          allSuffix: this.asideFilterResult.allSuffix,
-          groupIds: this.asideFilterResult.groupIds,
-          serviceState: this.asideFilterResult.serviceState,
-          createDay: this.asideFilterResult.createDay,
-          expireDay: this.asideFilterResult.expireDay,
-          createTimeBegin: this.asideFilterResult.createTimeBegin,
-          createTimeEnd: this.asideFilterResult.createTimeEnd,
-          expireTimeBegin: this.asideFilterResult.expireTimeBegin,
-          expireTimeEnd: this.asideFilterResult.expireTimeEnd
-        },
-        callback: (response) => {
-          this.loadingBtn = false
-          this.loadingTable = false
-          if (!response) {
-            return false
-          }
-          if (response.data.code === '1000') {
-            this.list = response.data.data.list
-            this.page.pageItems = response.data.data.totalNum
-          } else {
-          }
-        }
+        pageNum: obj.pageNum,
+        pageSize: 20,
+        domainName: this.value,
+        domainSuffixs: this.asideFilterResult.domainSuffixs,
+        otherSuffix: this.asideFilterResult.otherSuffix,
+        allSuffix: this.asideFilterResult.allSuffix,
+        groupIds: this.asideFilterResult.groupIds,
+        serviceState: this.asideFilterResult.serviceState,
+        createDay: this.asideFilterResult.createDay,
+        expireDay: this.asideFilterResult.expireDay,
+        createTimeBegin: this.asideFilterResult.createTimeBegin,
+        createTimeEnd: this.asideFilterResult.createTimeEnd,
+        expireTimeBegin: this.asideFilterResult.expireTimeBegin,
+        expireTimeEnd: this.asideFilterResult.expireTimeEnd
       }
       return params
     },
-    ...mapActions({
-      queryList: types.QUERY_DOMAIN_LIST,
-      queryDomainManageDetail: types.QUERY_DOMAIN_MANAGE_DETAIL,
-      queryOrderConfirm: types.QUERY_ORDER_CONFIRM
-    })
+    queryList (num) {
+      this.$store.dispatch('DOMAIN_LIST', this.queryListParam({pageNum: num})).then(response => {
+        this.loadingBtn = false
+        this.loadingTable = false
+        if (!response) {
+          return false
+        }
+        if (response.data.code === '1000') {
+          this.list = response.data.data.list
+          this.page.pageItems = response.data.data.totalNum
+        } else {
+        }
+      }).catch(() => {})
+    }
   },
   computed: {
     getDomainId () {
@@ -454,7 +449,7 @@ export default {
   beforeMount () {
   },
   mounted () {
-    this.queryList(this.queryListParam({pageNum: 1}))
+    this.queryList(1)
   },
   watch: {
     userAuthGroups: {

@@ -16,11 +16,10 @@ if (process.env.NODE_ENV === 'development') {
 } else if (process.env.NODE_ENV === 'production') {
   axios.defaults.baseURL = '/client-api'
 }
-
 /**
-* 请求失败后的错误统一处理
-* @param {Number} status 请求失败的状态码
-*/
+ * 请求失败后的错误统一处理
+ * @param {Number} status 请求失败的状态码
+ */
 const errorHandle = (status, other) => {
   // 状态码判断
   switch (status) {
@@ -42,9 +41,9 @@ const errorHandle = (status, other) => {
 }
 
 /**
-* 请求成功后统一处理
-* @param {String} code 请求成功的状态码
-*/
+ * 请求成功后统一处理
+ * @param {String} code 请求成功的状态码
+ */
 const successHandle = (code) => {
   // 状态码判断
   switch (code) {
@@ -66,9 +65,9 @@ axios.defaults.timeout = 10000
 axios.defaults.headers = {'Content-Type': 'application/json; charset=utf-8'}
 
 /**
-  * 请求拦截器
-  * 每次请求前，如果存在token则在请求头中携带token
-  */
+   * 请求拦截器
+   * 每次请求前，如果存在token则在请求头中携带token
+   */
 // axios.interceptors.request.use(
 //   config => {
 //     // 登录流程控制中，根据本地是否存在token判断用户的登录情况
@@ -83,6 +82,9 @@ axios.defaults.headers = {'Content-Type': 'application/json; charset=utf-8'}
 // )
 axios.interceptors.request.use(function (config) {
   // 在发送请求之前做些什么
+  if (config.method === 'post') {
+    config.data = JSON.stringify(config.data)
+  }
   NProgress.start()
   return config
 }, function (error) {
@@ -110,7 +112,7 @@ axios.interceptors.response.use(
     if (response) {
       // 请求已发出，但是不在2xx的范围
       errorHandle(response.status, response.data.message)
-      return Promise.reject(error)
+      return Promise.reject(response)
     } else {
       // 处理断网的情况
       // eg:请求超时或断网时，更新state的network状态
@@ -120,43 +122,4 @@ axios.interceptors.response.use(
     }
   }
 )
-export default {
-/**
-   * get方法，对应get请求
-   * @param {String} url [请求的url地址]
-   * @param {Object} params [请求时携带的参数]
-   */
-  get (url, params) {
-    return new Promise((resolve, reject) => {
-      axios.get(url, params)
-        .then(res => {
-          resolve(res)
-          // if (res && callback && typeof callback === 'function') {
-          //   callback(res)
-          // }
-        })
-        .catch(err => {
-          reject(err)
-        })
-    })
-  },
-  /**
-     * post方法，对应post请求
-     * @param {String} url [请求的url地址]
-     * @param {Object} params [请求时携带的参数]
-     */
-  post (url, params) {
-    return new Promise((resolve, reject) => {
-      axios.post(url, JSON.stringify(params))
-        .then(res => {
-          resolve(res)
-          // if (res && callback && typeof callback === 'function') {
-          //   callback(res)
-          // }
-        })
-        .catch(err => {
-          reject(err)
-        })
-    })
-  }
-}
+export default axios

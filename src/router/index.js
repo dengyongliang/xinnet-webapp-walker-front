@@ -116,17 +116,17 @@ const RouterMain = new Router({
           meta: {
             title: '首页'
           }
-        }
+        },
+        ...domain,
+        ...finance,
+        ...mgmt,
+        ...order,
+        ...notice,
+        ...record,
+        ...monitor
       ]
     },
-    domain,
-    finance,
-    mgmt,
-    order,
-    notice,
-    record,
-    report,
-    monitor
+    report
   ],
   base: '/',
   scrollBehavior (to, from, savedPosition) {

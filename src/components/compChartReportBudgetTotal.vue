@@ -30,6 +30,7 @@ export default {
           subtext: '',
           x: 'center'
         },
+        color: this.echartsColorList,
         tooltip: {
           trigger: 'item',
           formatter: '{b} : {c} ({d}%)'

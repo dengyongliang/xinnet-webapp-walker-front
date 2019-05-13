@@ -46,14 +46,12 @@
 </template>
 
 <script>
-import {mapActions} from 'vuex'
-import * as types from '@/store/types'
 import compInput from './compInput'
 import compSelect from './compSelect'
 import compRadio from './compRadio'
 import compImgUpload from './compImgUpload'
 import validateFormResult from '@/global/validateForm'
-import * as links from '../global/linkdo.js'
+import * as actions from '../actions/template.js'
 export default {
   components: {
     compInput,
@@ -94,7 +92,7 @@ export default {
     return {
       value: '',
       loadingBtn: false,
-      uploadAction: links.UPLOAD_FILE_TEMPLATE,
+      uploadAction: actions.UPLOAD_FILE,
       registrantType: 'I',
       registrantTypeList: [
         {
@@ -129,41 +127,35 @@ export default {
       ])
       if (result) {
         let params = {
-          param: {
-            userCode: this.$refs.userCode.value,
-            registrantType: this.$refs.registrantType.value,
-            idCode: this.$refs.idCode.value,
-            idFileUrl: this.$refs.upfile.$refs.upload.fileList[0].file,
-            idFileName: this.$refs.upfile.$refs.upload.fileList[0].name
-          },
-          callback: (response) => {
-            this.loadingBtn = false
-            if (!response) {
-              return false
-            }
-            if (response.data.code === '1000') {
-              this.$Message.success('模板资料提交成功')
-              this.$emit('refreshData')
-            } else {
-              this.$Message.error('模板资料提交失败')
-            }
-          }
+          userCode: this.$refs.userCode.value,
+          registrantType: this.$refs.registrantType.value,
+          idCode: this.$refs.idCode.value,
+          idFileUrl: this.$refs.upfile.$refs.upload.fileList[0].file,
+          idFileName: this.$refs.upfile.$refs.upload.fileList[0].name
         }
 
         if (this.$refs.registrantType.value === 'I') {
-          params.param.idType = this.$refs.idTypeI.value
+          params.idType = this.$refs.idTypeI.value
         } else {
-          params.param.idType = this.$refs.idTypeE.value
+          params.idType = this.$refs.idTypeE.value
         }
-        console.log(params.param)
-        this.submitTemplate(params)
+
+        this.$store.dispatch('TEMPLATE_VERIFY', params).then(response => {
+          this.loadingBtn = false
+          if (!response) {
+            return false
+          }
+          if (response.data.code === '1000') {
+            this.$Message.success('模板资料提交成功')
+            this.$emit('refreshData')
+          } else {
+            this.$Message.error('模板资料提交失败')
+          }
+        }).catch(() => {})
       } else {
         this.loadingBtn = false
       }
-    },
-    ...mapActions({
-      submitTemplate: types.SUBMIT_TEMPLATE
-    })
+    }
   },
   computed: {
 
@@ -283,7 +275,7 @@ export default {
   line-height: 150px!important;
 }
 .compDomainCreateTemplate .modify .ivu-upload{
-  position: absolute;
+  position: relative;
   left: 0px;
   top: 0px;
 }

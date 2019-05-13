@@ -11,8 +11,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
-// import * as types from '@/store/types'
+import { mapState } from 'vuex'
 import compInput from '@/components/compInput'
 import compSelect from '@/components/compSelect'
 import validateFormResult from '@/global/validateForm'
@@ -49,9 +48,7 @@ export default {
       } else {
         this.loadingBtn = false
       }
-    },
-    ...mapActions({
-    })
+    }
   },
   beforeMount () {
   },

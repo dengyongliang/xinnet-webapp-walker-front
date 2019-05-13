@@ -61,8 +61,6 @@
 </template>
 
 <script>
-import {mapActions} from 'vuex'
-import * as types from '@/store/types'
 import compRadio from './compRadio'
 import compSelect from './compSelect'
 
@@ -110,73 +108,61 @@ export default {
   methods: {
     saveForm () {
       let params = {
-        param: {
-          notifyInfo: (function (vm) {
-            let arr = []
-            for (var i = 1; i <= 9; i++) {
-              if (i === 5) {
-                arr.push({
-                  type: i,
-                  way: vm.$refs.way4.value * 1,
-                  range: vm.$refs.way4.value * 1
-                })
-              } else if (i === 7) {
-                arr.push({
-                  type: i,
-                  way: vm.$refs.way6.value * 1,
-                  range: vm.$refs.way6.value * 1
-                })
-              } else {
-                arr.push({
-                  type: i,
-                  way: vm.$refs['way' + i].value * 1,
-                  range: vm.$refs['range' + i].value * 1
-                })
-              }
+        notifyInfo: (function (vm) {
+          let arr = []
+          for (var i = 1; i <= 9; i++) {
+            if (i === 5) {
+              arr.push({
+                type: i,
+                way: vm.$refs.way4.value * 1,
+                range: vm.$refs.way4.value * 1
+              })
+            } else if (i === 7) {
+              arr.push({
+                type: i,
+                way: vm.$refs.way6.value * 1,
+                range: vm.$refs.way6.value * 1
+              })
+            } else {
+              arr.push({
+                type: i,
+                way: vm.$refs['way' + i].value * 1,
+                range: vm.$refs['range' + i].value * 1
+              })
             }
-            return arr
-          })(this)
-        },
-        callback: (response) => {
-          this.loadingBtn = false
-          if (!response) {
-            return false
           }
-          if (response.data.code === '1000') {
-            this.$Message.success('保存成功')
-            this.$emit('refreshData')
-          } else {
-          }
-        }
+          return arr
+        })(this)
       }
-      console.log(params.param)
-      this.setNotify(params)
-    },
-    getIdxItem (v) {
-      return this.notifyDetail.findIndex((item) => (item.notifyType === v))
-    },
-    ...mapActions({
-      setNotify: types.SET_NOTIFY,
-      queryNotifyDetail: types.QUERY_NOTIFY_DETAIL
-    })
-  },
-  computed: {
-  },
-  beforeMount () {
-    let params = {
-      param: {},
-      callback: (response) => {
+      this.$store.dispatch('NOTIFY_SET', params).then(response => {
         this.loadingBtn = false
         if (!response) {
           return false
         }
         if (response.data.code === '1000') {
-          this.notifyDetail = response.data.data.list
+          this.$Message.success('保存成功')
+          this.$emit('refreshData')
         } else {
         }
-      }
+      }).catch(() => {})
+    },
+    getIdxItem (v) {
+      return this.notifyDetail.findIndex((item) => (item.notifyType === v))
     }
-    this.queryNotifyDetail(params)
+  },
+  computed: {
+  },
+  beforeMount () {
+    this.$store.dispatch('NOTIFY_SET_DETAIL').then(response => {
+      this.loadingBtn = false
+      if (!response) {
+        return false
+      }
+      if (response.data.code === '1000') {
+        this.notifyDetail = response.data.data.list
+      } else {
+      }
+    }).catch(() => {})
   },
   watch: {
   }

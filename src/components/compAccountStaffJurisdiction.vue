@@ -13,8 +13,7 @@ Form.compStaffJurisdiction(:label-width="0")
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
-import * as types from '@/store/types'
+import { mapState } from 'vuex'
 import compRadio from '@/components/compRadio'
 import validateFormResult from '@/global/validateForm'
 export default {
@@ -73,48 +72,40 @@ export default {
       ])
       if (result) {
         let params = {
-          param: {
-            roleId: this.$refs.roleId.value,
-            groups: this.getCheckedNodes().slice(1).join(',')
-          },
-          callback: (response) => {
-            this.loadingBtn = false
-            if (response) {
-              if (response.data.code === '1000') {
-                this.$Message.success('账号创建成功!')
-                this.$emit('closeDrawer')
-              } else {
-                if (response.data.code === '100') {
-                  this.$Message.error('角色编码错误')
-                } else if (response.data.code === '200') {
-                  this.$Message.error('用户已存在')
-                } else if (response.data.code === '300') {
-                  this.$Message.error('企业不存在')
-                } else if (response.data.code === '400') {
-                  this.$Message.error('超级管理员只允许存在一个')
-                } else if (response.data.code === '700') {
-                  this.$Message.error('邮箱已存在')
-                }
+          roleId: this.$refs.roleId.value,
+          groups: this.getCheckedNodes().slice(1).join(',')
+        }
+        console.log(params)
+        Object.assign(params, this.baseInfoData)
+        this.$store.dispatch('ADD_USER', params).then(response => {
+          this.loadingBtn = false
+          if (response) {
+            if (response.data.code === '1000') {
+              this.$Message.success('账号创建成功!')
+              this.$emit('closeDrawer')
+            } else {
+              if (response.data.code === '100') {
+                this.$Message.error('角色编码错误')
+              } else if (response.data.code === '200') {
+                this.$Message.error('用户已存在')
+              } else if (response.data.code === '300') {
+                this.$Message.error('企业不存在')
+              } else if (response.data.code === '400') {
+                this.$Message.error('超级管理员只允许存在一个')
+              } else if (response.data.code === '700') {
+                this.$Message.error('邮箱已存在')
               }
             }
           }
-        }
-        console.log(params.param)
-        Object.assign(params.param, this.baseInfoData)
-        this.addUser(params)
+        }).catch(() => {})
       } else {
         this.loadingBtn = false
       }
-    },
-    ...mapActions({
-      addUser: types.ADD_USER,
-      getUserRoles: types.GET_USER_ROLES,
-      getUserAuthGroups: types.GET_USER_AUTH_GROUPS
-    })
+    }
   },
   beforeMount () {
-    this.getUserRoles()
-    this.getUserAuthGroups()
+    // this.getUserRoles()
+    // this.getUserAuthGroups()
   },
   mounted () {
   },

@@ -29,8 +29,6 @@
 </template>
 
 <script>
-import {mapActions} from 'vuex'
-import * as types from '@/store/types'
 import compInput from '@/components/compInput'
 export default {
   components: {
@@ -63,27 +61,24 @@ export default {
       }
 
       let params = {
-        param: {
-          userCode: this.$refs.account.value
-        },
-        callback: (response) => {
-          if (!response) {
-            return false
-          }
-          let data = response.data
-          if (data.code === '1000') {
-            this.success = true
-            this.countDown()
-          } else if (data.code === '100') {
-            this.$refs.account.showValidateResult({text: '手机号码不存在'})
-          } else if (data.code === '200') {
-            this.onShowError('获取短信验证码已超上限')
-          } else if (data.code === '300') {
-            this.onShowError('短信验证码已发送')
-          }
-        }
+        userCode: this.$refs.account.value
       }
-      this.loginVerificationCode(params)
+      this.$store.dispatch('CLIENT_LOGIN', params).then(response => {
+        if (!response) {
+          return false
+        }
+        let data = response.data
+        if (data.code === '1000') {
+          this.success = true
+          this.countDown()
+        } else if (data.code === '100') {
+          this.$refs.account.showValidateResult({text: '手机号码不存在'})
+        } else if (data.code === '200') {
+          this.onShowError('获取短信验证码已超上限')
+        } else if (data.code === '300') {
+          this.onShowError('短信验证码已发送')
+        }
+      }).catch(() => {})
     },
     submit () {
       this.loadingBtn = true
@@ -115,53 +110,50 @@ export default {
         return false
       }
       let params = {
-        param: {
-          account: account,
-          password: pw,
-          verificationCode: vc
-        },
-        callback: (response) => {
-          if (!response) {
-            return false
-          }
-          let data = response.data
-          if (data.code === '1000') {
-            this.$Message.success('登录成功！')
-            setTimeout(() => {
-              if (data.keeperFlag * 1) {
-                this.$router.replace({path: '/client'})
-              } else {
-                this.$router.replace({path: '/home'})
-              }
-            }, 500)
-          } else {
-            this.loadingBtn = false
-            if (data.code === '100') {
-              this.onShowError('用户不存在')
-              this.$refs.account.showValidateResult({text: '用户不存在'})
-            } else if (data.code === '200') {
-              this.onShowError('用户已登录')
-              this.$refs.account.showValidateResult({text: '用户已登录'})
-            } else if (data.code === '300') {
-              this.onShowError('手机验证码错误')
-              this.$refs.verificationCode.showValidateResult({text: '手机验证码错误'})
-            } else if (data.code === '400') {
-              this.onShowError('密码错误')
-              this.$refs.password.showValidateResult({text: '密码错误'})
-            } else if (data.code === '600') {
-              this.onShowError('用户被锁定')
-              this.$refs.account.showValidateResult({text: '用户被锁定'})
-            } else if (data.code === '700') {
-              this.onShowError('用户权限异常')
-              this.$refs.account.showValidateResult({text: '用户权限异常'})
-            } else if (data.code === '800') {
-              this.onShowError('非法登录')
-              this.$refs.account.showValidateResult({text: '非法登录'})
+        account: account,
+        password: pw,
+        verificationCode: vc
+      }
+      this.$store.dispatch('LOGIN', params).then(response => {
+        if (!response) {
+          return false
+        }
+        let data = response.data
+        if (data.code === '1000') {
+          this.$Message.success('登录成功！')
+          setTimeout(() => {
+            if (data.keeperFlag * 1) {
+              this.$router.replace({path: '/client'})
+            } else {
+              this.$router.replace({path: '/home'})
             }
+          }, 500)
+        } else {
+          this.loadingBtn = false
+          if (data.code === '100') {
+            this.onShowError('用户不存在')
+            this.$refs.account.showValidateResult({text: '用户不存在'})
+          } else if (data.code === '200') {
+            this.onShowError('用户已登录')
+            this.$refs.account.showValidateResult({text: '用户已登录'})
+          } else if (data.code === '300') {
+            this.onShowError('手机验证码错误')
+            this.$refs.verificationCode.showValidateResult({text: '手机验证码错误'})
+          } else if (data.code === '400') {
+            this.onShowError('密码错误')
+            this.$refs.password.showValidateResult({text: '密码错误'})
+          } else if (data.code === '600') {
+            this.onShowError('用户被锁定')
+            this.$refs.account.showValidateResult({text: '用户被锁定'})
+          } else if (data.code === '700') {
+            this.onShowError('用户权限异常')
+            this.$refs.account.showValidateResult({text: '用户权限异常'})
+          } else if (data.code === '800') {
+            this.onShowError('非法登录')
+            this.$refs.account.showValidateResult({text: '非法登录'})
           }
         }
-      }
-      this.loginSubmit(params)
+      }).catch(() => {})
     },
     countDown () {
       let clock = window.setInterval(() => {
@@ -173,11 +165,7 @@ export default {
           this.downTime = 60
         }
       }, 1000)
-    },
-    ...mapActions({
-      loginSubmit: types.LOGIN_SUBMIT,
-      loginVerificationCode: types.LOGIN_VERIFICATIONCODE
-    })
+    }
   },
   computed: {
   },

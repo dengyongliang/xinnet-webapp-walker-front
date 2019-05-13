@@ -18,8 +18,6 @@
 </template>
 
 <script>
-import {mapActions} from 'vuex'
-import * as types from '@/store/types'
 import compInput from '@/components/compInput'
 import compSelect from '@/components/compSelect'
 import validateFormResult from '@/global/validateForm'
@@ -67,42 +65,37 @@ export default {
       ])
       if (result) {
         let params = {
-          param: {
-            userMobile: this.$refs.userMobile.value,
-            userCode: this.$refs.userCode.value,
-            userTel: this.$refs.userTel.value,
-            userEmail: this.$refs.userEmail.value,
-            companyId: this.$refs.companyId.value
-          },
-          callback: (response) => {
-            this.loadingBtn = false
-            if (response) {
-              if (response.data.code === '1000') {
-                this.$Message.success('修改成功!')
-                this.$emit('closeDrawer')
-              } else {
-                if (response.data.code === '200') {
-                  this.$Message.error('用户不存在')
-                } else if (response.data.code === '300') {
-                  this.$Message.error('用户被锁定')
-                } else if (response.data.code === '600') {
-                  this.$refs.userMobile.showValidateResult({text: '手机号码已存在'})
-                } else if (response.data.code === '700') {
-                  this.$refs.userEmail.showValidateResult({text: '邮箱已存在'})
-                }
+          userMobile: this.$refs.userMobile.value,
+          userCode: this.$refs.userCode.value,
+          userTel: this.$refs.userTel.value,
+          userEmail: this.$refs.userEmail.value,
+          companyId: this.$refs.companyId.value
+        }
+        console.log(params)
+
+        this.$store.dispatch('UPDATE_USER', params).then(response => {
+          this.loadingBtn = false
+          if (response) {
+            if (response.data.code === '1000') {
+              this.$Message.success('修改成功!')
+              this.$emit('closeDrawer')
+            } else {
+              if (response.data.code === '200') {
+                this.$Message.error('用户不存在')
+              } else if (response.data.code === '300') {
+                this.$Message.error('用户被锁定')
+              } else if (response.data.code === '600') {
+                this.$refs.userMobile.showValidateResult({text: '手机号码已存在'})
+              } else if (response.data.code === '700') {
+                this.$refs.userEmail.showValidateResult({text: '邮箱已存在'})
               }
             }
           }
-        }
-        console.log(params.param)
-        this.updateUser(params)
+        }).catch(() => {})
       } else {
         this.loadingBtn = false
       }
-    },
-    ...mapActions({
-      updateUser: types.UPDATE_USER
-    })
+    }
   },
   beforeMount () {
   },

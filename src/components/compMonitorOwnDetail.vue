@@ -67,13 +67,11 @@
     .secTable.secTable2
       <Table :columns="columns" :data="list" :loading="loadingTable"></Table>
     <!-- 翻页区 -->
-    Page(:total="page.pageItems",:current="page.pageNo",show-elevator,show-total,prev-text="上一页",next-text="下一页",@on-change="pageChange",:page-size=20)
+    Page(:total="page.pageItems",:current="page.pageNo",:page-size=20,show-elevator,show-total,prev-text="上一页",next-text="下一页",@on-change="pageChange")
 </template>
 
 <script>
-import {mapActions} from 'vuex'
-import * as types from '@/store/types'
-import * as links from '@/global/linkdo.js'
+import * as actions from '@/actions/monitor.js'
 import moment from 'moment'
 export default {
   name: 'compMonitorOwnDetail',
@@ -92,7 +90,7 @@ export default {
       loadingTable: false,
       loadingBtn: false,
       detailData: {},
-      exportLink: links.EXPORT_DOMAIN_LOG,
+      exportLink: actions.EXPORT_DOMAIN_LOG,
       columns: [
         {
           title: '日志记录时间',
@@ -159,7 +157,7 @@ export default {
   },
   methods: {
     searchListData () {
-      this.queryDomainMonitorLog(this.getParamLog({pageNum: 1}))
+      this.queryDomainMonitorLog(1)
     },
     pageChange: function (curPage) {
     },
@@ -168,20 +166,7 @@ export default {
     },
     getParamDetail () {
       let params = {
-        param: {
-          domainName: this.domainName
-        },
-        callback: (response) => {
-          this.loadingBtn = false
-          this.loadingTable = false
-          if (!response) {
-            return false
-          }
-          if (response.data.code === '1000') {
-            this.detailData = response.data.data
-          } else {
-          }
-        }
+        domainName: this.domainName
       }
       return params
     },
@@ -191,40 +176,49 @@ export default {
       this.loadingTable = true
 
       let params = {
-        param: {
-          pageNum: obj.pageNum,
-          pageSize: 20,
-          domainName: this.domainName,
-          createTimeBegin: this.time[0] !== '' ? moment(this.time[0]).format('YYYY-MM-DD') + ' 00:00:00' : '',
-          createTimeEnd: this.time[1] !== '' ? moment(this.time[1]).format('YYYY-MM-DD') + ' 23:59:59' : '',
-          type: this.type
-        },
-        callback: (response) => {
-          this.loadingBtn = false
-          this.loadingTable = false
-          if (!response) {
-            return false
-          }
-          if (response.data.code === '1000') {
-            this.list = response.data.data.list
-          } else {
-          }
-        }
+        pageNum: obj.pageNum,
+        pageSize: 20,
+        domainName: this.domainName,
+        createTimeBegin: this.time[0] !== '' ? moment(this.time[0]).format('YYYY-MM-DD') + ' 00:00:00' : '',
+        createTimeEnd: this.time[1] !== '' ? moment(this.time[1]).format('YYYY-MM-DD') + ' 23:59:59' : '',
+        type: this.type
       }
       return params
     },
-    ...mapActions({
-      queryDomainMonitorDetail: types.QUERY_DOMAIN_MONITOR_DETAIL,
-      queryDomainMonitorLog: types.QUERY_DOMAIN_MONITOR_LOG
-    })
+    queryDomainMonitorDetail () {
+      this.$store.dispatch('DOMAIN_MONITOR_DETAIL', this.getParamDetail()).then(response => {
+        this.loadingBtn = false
+        this.loadingTable = false
+        if (!response) {
+          return false
+        }
+        if (response.data.code === '1000') {
+          this.detailData = response.data.data
+        } else {
+        }
+      }).catch(() => {})
+    },
+    queryDomainMonitorLog (num) {
+      this.$store.dispatch('DOMAIN_MONITOR_LOG', this.getParamLog({pageNum: num})).then(response => {
+        this.loadingBtn = false
+        this.loadingTable = false
+        if (!response) {
+          return false
+        }
+        if (response.data.code === '1000') {
+          this.list = response.data.data.list
+        } else {
+        }
+      }).catch(() => {})
+    }
   },
   beforeMount () {
 
   },
   mounted () {
     if (this.domainName !== '') {
-      this.queryDomainMonitorDetail(this.getParamDetail())
-      this.queryDomainMonitorLog(this.getParamLog({pageNum: 1}))
+      this.queryDomainMonitorDetail()
+      this.queryDomainMonitorLog(1)
     }
   },
   computed: {
@@ -233,8 +227,8 @@ export default {
     domainName: function (val, oldVal) {
       if (val !== '') {
         this.time = ['', '']
-        this.queryDomainMonitorDetail(this.getParamDetail())
-        this.queryDomainMonitorLog(this.getParamLog({pageNum: 1}))
+        this.queryDomainMonitorDetail()
+        this.queryDomainMonitorLog(1)
       }
     }
   }

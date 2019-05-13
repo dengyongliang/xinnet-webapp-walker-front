@@ -12,8 +12,6 @@
 </template>
 
 <script>
-import {mapActions} from 'vuex'
-import * as types from '@/store/types'
 import compInput from './compInput'
 export default {
   components: {
@@ -40,34 +38,25 @@ export default {
   methods: {
     getVerificationCode () {
       this.loadingBtn = true
-      let params = {
-        param: {
-          domainId: this.detailData.id
-        },
-        callback: (response) => {
-          this.loadingBtn = false
-          if (response) {
-            if (response.data.code === '1000') {
-              this.$Message.success('发送成功')
+      this.$store.dispatch('DOMAIN_MANAGE', {domainId: this.detailData.id}).then(response => {
+        this.loadingBtn = false
+        if (response) {
+          if (response.data.code === '1000') {
+            this.$Message.success('发送成功')
+          } else {
+            if (response.data.code === '300') {
+              this.$Message.error('短信验证码已发送')
+            } else if (response.data.code === '500') {
+              this.$Message.error('手机号码错误')
             } else {
-              if (response.data.code === '300') {
-                this.$Message.error('短信验证码已发送')
-              } else if (response.data.code === '500') {
-                this.$Message.error('手机号码错误')
-              } else {
-              }
             }
           }
         }
-      }
-      this.getDomainMgmtVCode(params)
+      }).catch(() => {})
     },
     submitForm () {
       this.$emit('parentEvent', this.$refs.verificationCode.value)
-    },
-    ...mapActions({
-      getDomainMgmtVCode: types.GET_DOMAIN_MGMT_V_CODE
-    })
+    }
   },
   computed: {
   },

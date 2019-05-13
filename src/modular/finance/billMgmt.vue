@@ -32,13 +32,11 @@
       .c
         Table(:columns="columns", :data="list", :loading="loadingTable",@on-sort-change="sortChange")
       <!-- 翻页区 -->
-      Page(:total="page.pageItems",:current="page.pageNo",show-elevator,show-total,prev-text="上一页",next-text="下一页",@on-change="pageChange",:page-size=20)
+      Page(:total="page.pageItems",:current="page.pageNo",:page-size=20,show-elevator,show-total,prev-text="上一页",next-text="下一页",@on-change="pageChange")
 </template>
 
 <script>
-import {mapActions} from 'vuex'
-import * as types from '@/store/types'
-import * as links from '@/global/linkdo.js'
+import * as actions from '@/actions/finance.js'
 import compSelect from '@/components/compSelect'
 import compNotOutBill from '@/components/compNotOutBill'
 import compPastBill from '@/components/compPastBill'
@@ -54,7 +52,7 @@ export default {
   },
   data () {
     return {
-      exportLink: links.EXPORT_FINANCE_CUSTOMER_FLOW_LIST,
+      exportLink: actions.EXPORT_CUSTOMER_FLOW,
       time: '',
       value: '',
       loadingTable: false,
@@ -151,17 +149,17 @@ export default {
   methods: {
     searchListData () {
       // 查询数据
-      this.queryFinanceCustomerFlowList(this.queryFinanceCustomerFlowListParam({pageNum: 1}))
+      this.queryFinanceCustomerFlowList({pageNum: 1})
     },
     pageChange: function (curPage) {
       // 根据当前页获取数据
-      this.queryFinanceCustomerFlowList(this.queryFinanceCustomerFlowListParam({pageNum: curPage}))
+      this.queryFinanceCustomerFlowList({pageNum: curPage})
     },
     sortChange (v) {
       let sort = {}
       sort.sortType = v.key === 'flowTime' ? 'time' : 'money'
       sort.sortValue = v.order
-      this.queryFinanceCustomerFlowList(this.queryFinanceCustomerFlowListParam({pageNum: 1, sort: sort}))
+      this.queryFinanceCustomerFlowList({pageNum: 1, sort: sort})
     },
     exportBill () {
       this.$refs.exportForm.submit()
@@ -172,29 +170,12 @@ export default {
       this.loadingTable = true
 
       let params = {
-        param: {
-          pageNum: obj.pageNum,
-          pageSize: 20,
-          createTimeBegin: this.time[0] !== '' ? moment(this.time[0]).format('YYYY-MM-DD') + ' 00:00:00' : '',
-          createTimeEnd: this.time[1] !== '' ? moment(this.time[1]).format('YYYY-MM-DD') + ' 23:59:59' : '',
-          flowCode: this.value,
-          payType: this.$refs.payType.value
-        },
-        callback: (response) => {
-          this.loadingBtn = false
-          this.loadingTable = false
-          if (!response) {
-            return false
-          }
-          if (response.data.code === '1000') {
-            this.list = response.data.data.list
-            this.page.pageItems = response.data.data.totalNum
-          } else {
-            if (response.data.code === '900') {
-              this.$Message.error('查询失败')
-            }
-          }
-        }
+        pageNum: obj.pageNum,
+        pageSize: 20,
+        createTimeBegin: this.time[0] !== '' ? moment(this.time[0]).format('YYYY-MM-DD') + ' 00:00:00' : '',
+        createTimeEnd: this.time[1] !== '' ? moment(this.time[1]).format('YYYY-MM-DD') + ' 23:59:59' : '',
+        flowCode: this.value,
+        payType: this.$refs.payType.value
       }
       if (obj.sort) {
         Object.assign(params.param, obj.sort)
@@ -202,18 +183,30 @@ export default {
       console.log(params.param)
       return params
     },
-    ...mapActions({
-      queryFinanceCustomerFlowList: types.QUERY_FINANCE_CUSTOMER_FLOW_LIST,
-      queryPayStatisticsBalance: types.QUERY_PAY_STATISTICS_BALANCE,
-      payStatisticsUnBilled: types.PAY_STATISTICS_UNBILLED
-    })
+    queryFinanceCustomerFlowList (obj) {
+      this.$store.dispatch('GET_CUSTOMER_FLOW_LIST', this.queryFinanceCustomerFlowListParam(obj)).then(response => {
+        this.loadingBtn = false
+        this.loadingTable = false
+        if (!response) {
+          return false
+        }
+        if (response.data.code === '1000') {
+          this.list = response.data.data.list
+          this.page.pageItems = response.data.data.totalNum
+        } else {
+          if (response.data.code === '900') {
+            this.$Message.error('查询失败')
+          }
+        }
+      }).catch(() => {})
+    }
   },
   computed: {
   },
   beforeMount () {
   },
   mounted () {
-    this.payStatisticsUnBilled((response) => {
+    this.$store.dispatch('PAY_STATISTICS_UNBILLED').then(response => {
       if (!response) {
         return false
       }
@@ -224,9 +217,9 @@ export default {
           this.$Message.error('查询失败')
         }
       }
-    })
-    this.queryFinanceCustomerFlowList(this.queryFinanceCustomerFlowListParam({pageNum: 1}))
-    this.queryPayStatisticsBalance((response) => {
+    }).catch(() => {})
+
+    this.$store.dispatch('PAY_STATISTICS_BALANCE').then(response => {
       if (!response) {
         return false
       }
@@ -237,7 +230,9 @@ export default {
           this.$Message.error('查询失败')
         }
       }
-    })
+    }).catch(() => {})
+
+    this.queryFinanceCustomerFlowList({pageNum: 1})
   }
 }
 </script>

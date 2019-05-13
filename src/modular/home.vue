@@ -99,8 +99,6 @@
 </template>
 
 <script>
-import {mapActions} from 'vuex'
-import * as types from '@/store/types'
 export default {
   components: {
   },
@@ -118,84 +116,30 @@ export default {
     }
   },
   methods: {
-    ...mapActions({
-      indexMyCompany: types.INDEX_MY_COMPANY,
-      indexMyKeeper: types.INDEX_MY_KEEPER,
-      indexDomainStatistics: types.INDEX_DOMAIN_STATISTICS,
-      indexCompanyStatistics: types.INDEX_COMPANY_STATISTICS,
-      indexUserStatistics: types.INDEX_USER_STATISTICS,
-      indexPayStatisticsUnBilled: types.INDEX_PAY_STATISTICS_UNBILLED,
-      indexPayStatisticsHistoryBill: types.INDEX_PAY_STATISTICS_HISTORY_BILL,
-      indexAccountStatistics: types.INDEX_ACCOUNT_STATISTICS
-    })
   },
   computed: {
   },
   beforeMount () {
-    this.indexMyCompany((response) => {
-      if (!response) {
-        return false
-      }
-      if (response.data.code === '1000') {
-        this.myCompany = response.data.data
-      }
-    })
-    this.indexMyKeeper((response) => {
-      if (!response) {
-        return false
-      }
-      if (response.data.code === '1000') {
-        this.myKeeper = response.data.data
-      }
-    })
-    this.indexDomainStatistics((response) => {
-      if (!response) {
-        return false
-      }
-      if (response.data.code === '1000') {
-        this.domainStatistics = response.data.data
-      }
-    })
-    this.indexCompanyStatistics((response) => {
-      if (!response) {
-        return false
-      }
-      if (response.data.code === '1000') {
-        this.companyStatistics = response.data.data
-      }
-    })
-    this.indexUserStatistics((response) => {
-      if (!response) {
-        return false
-      }
-      if (response.data.code === '1000') {
-        this.userStatistics = response.data.data
-      }
-    })
-    this.indexPayStatisticsUnBilled((response) => {
-      if (!response) {
-        return false
-      }
-      if (response.data.code === '1000') {
-        this.payStatisticsUnBilled = response.data.data
-      }
-    })
-    this.indexPayStatisticsHistoryBill((response) => {
-      if (!response) {
-        return false
-      }
-      if (response.data.code === '1000') {
-        this.payStatisticsHistoryBill = response.data.data
-      }
-    })
-    this.indexAccountStatistics((response) => {
-      if (!response) {
-        return false
-      }
-      if (response.data.code === '1000') {
-        this.accountStatistics = response.data.data.customerAccountInfo
-      }
-    })
+    Promise.all([
+      this.$store.dispatch('MY_COMPANY'),
+      this.$store.dispatch('MY_KEEPER'),
+      this.$store.dispatch('INDEX_DOMAIN_STATISTICS'),
+      this.$store.dispatch('COMPANY_STATISTICS'),
+      this.$store.dispatch('USER_STATISTICS'),
+      this.$store.dispatch('INDEX_PAY_STATISTICS_UNBILLED'),
+      this.$store.dispatch('INDEX_PAY_STATISTICS_HISTORY_BILL'),
+      this.$store.dispatch('ACCOUNT_STATISTICS')
+    ]).then(response => {
+      console.log(response)
+      this.myCompany = response[0].data.data
+      this.myKeeper = response[1].data.data
+      this.domainStatistics = response[2].data.data
+      this.companyStatistics = response[3].data.data
+      this.userStatistics = response[4].data.data
+      this.payStatisticsUnBilled = response[5].data.data
+      this.payStatisticsHistoryBill = response[6].data.data
+      this.accountStatistics = response[7].data.data.customerAccountInfo
+    }).catch(() => {})
   },
   mounted () {
   }

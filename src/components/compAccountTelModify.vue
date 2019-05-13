@@ -8,8 +8,6 @@
 </template>
 
 <script>
-import {mapActions} from 'vuex'
-import * as types from '@/store/types'
 import compInput from './compInput'
 import validateFormResult from '@/global/validateForm'
 export default {
@@ -35,9 +33,6 @@ export default {
     }
   },
   methods: {
-    close () {
-      this.onClose()
-    },
     updateForm () {
       this.loadingBtn = true
       let result = validateFormResult([
@@ -45,37 +40,31 @@ export default {
       ])
       if (result) {
         var params = {
-          param: {
-            userCode: this.$refs.userCode.value,
-            userTel: this.$refs.userTel.value
-          },
-          callback: (response) => {
-            this.loadingBtn = false
-            if (response) {
-              if (response.data.code === '1000') {
-                this.$Message.success('座机更新成功')
-                this.$store.commit(types.UPDATE_USER_TEL, this.$refs.userTel.value)
-                this.close()
+          userCode: this.$refs.userCode.value,
+          userTel: this.$refs.userTel.value
+        }
+        this.$store.dispatch('UPDATE_USER_INFO', params).then(response => {
+          this.loadingBtn = false
+          if (response) {
+            if (response.data.code === '1000') {
+              this.$Message.success('座机更新成功')
+              this.$store.commit('UPDATE_USER_TEL', this.$refs.userTel.value)
+              this.onClose()
+            } else {
+              if (response.data.code === '200') {
+                this.$Message.error('用户不存在')
+              } else if (response.data.code === '300') {
+                this.$Message.error('用户被锁定')
               } else {
-                if (response.data.code === '200') {
-                  this.$Message.error('用户不存在')
-                } else if (response.data.code === '300') {
-                  this.$Message.error('用户被锁定')
-                } else {
-                  this.$Message.error('更新失败')
-                }
+                this.$Message.error('更新失败')
               }
             }
           }
-        }
-        this.updateUserInfo(params)
+        }).catch(() => {})
       } else {
         this.loadingBtn = false
       }
-    },
-    ...mapActions({
-      updateUserInfo: types.UPDATE_USER_INFO
-    })
+    }
   },
   computed: {
   },

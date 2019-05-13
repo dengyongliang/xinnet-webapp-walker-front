@@ -31,6 +31,7 @@ export default {
             type: 'shadow'
           }
         },
+        color: this.echartsColorList,
         legend: {
           x: 'center',
           y: 'bottom',

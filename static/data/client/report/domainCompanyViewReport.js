@@ -7,6 +7,7 @@
         "name": "其他后缀",
         "value": 1
       }
-    }
+    },
+    "companyName": "companyName"
   }
 }

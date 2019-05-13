@@ -28,14 +28,12 @@
       <Table :columns="columns" :data="list" :loading="loadingTable"></Table>
 
   <!-- 翻页区 -->
-  Page(:total="page.pageItems",:current="page.pageNo",show-elevator,show-total,prev-text="上一页",next-text="下一页",@on-change="pageChange",:page-size=20)
+  Page(:total="page.pageItems",:current="page.pageNo",:page-size=20,show-elevator,show-total,prev-text="上一页",next-text="下一页",@on-change="pageChange")
 
 </template>
 
 <script>
-import {mapActions} from 'vuex'
-import * as types from '@/store/types'
-import * as links from '@/global/linkdo.js'
+import * as actions from '@/actions/monitor.js'
 import moment from 'moment'
 export default {
   components: {
@@ -45,7 +43,7 @@ export default {
       value: '',
       time: '',
       levelType: '',
-      exportLink: links.EXPORT_MONITOR_USER_LOG,
+      exportLink: actions.EXPORT_USER_LOG,
       typeList: [
         {
           value: '',
@@ -108,11 +106,11 @@ export default {
   methods: {
     searchListData () {
       // 查询数据
-      this.queryList(this.queryListParam({pageNum: 1}))
+      this.queryList(1)
     },
     pageChange: function (curPage) {
       // 根据当前页获取数据
-      this.queryList(this.queryListParam({pageNum: curPage}))
+      this.queryList(curPage)
     },
     exportOrder () {
       this.$refs.exportForm.submit()
@@ -123,38 +121,34 @@ export default {
       this.loadingTable = true
 
       let params = {
-        param: {
-          pageNum: obj.pageNum,
-          pageSize: 20,
-          userName: this.value,
-          createTimeBegin: this.time[0] !== '' ? moment(this.time[0]).format('YYYY-MM-DD') + ' 00:00:00' : '',
-          createTimeEnd: this.time[1] !== '' ? moment(this.time[1]).format('YYYY-MM-DD') + ' 23:59:59' : '',
-          levelType: this.levelType
-        },
-        callback: (response) => {
-          this.loadingBtn = false
-          this.loadingTable = false
-          if (!response) {
-            return false
-          }
-          if (response.data.code === '1000') {
-            this.list = response.data.data.list
-            this.page.pageItems = response.data.data.totalNum
-          } else {
-          }
-        }
+        pageNum: obj.pageNum,
+        pageSize: 20,
+        userName: this.value,
+        createTimeBegin: this.time[0] !== '' ? moment(this.time[0]).format('YYYY-MM-DD') + ' 00:00:00' : '',
+        createTimeEnd: this.time[1] !== '' ? moment(this.time[1]).format('YYYY-MM-DD') + ' 23:59:59' : '',
+        levelType: this.levelType
       }
       return params
     },
-    ...mapActions({
-      queryList: types.QUERY_USER_MONITOR_MANAGE,
-      setMailRecordRead: types.SET_MAIL_RECORD_READ
-    })
+    queryList (num) {
+      this.$store.dispatch('USER_MONITOR_MANAGE', this.queryListParam({pageNum: num})).then(response => {
+        this.loadingBtn = false
+        this.loadingTable = false
+        if (!response) {
+          return false
+        }
+        if (response.data.code === '1000') {
+          this.list = response.data.data.list
+          this.page.pageItems = response.data.data.totalNum
+        } else {
+        }
+      }).catch(() => {})
+    }
   },
   computed: {
   },
   beforeMount () {
-    this.queryList(this.queryListParam({pageNum: 1}))
+    this.queryList(1)
   }
 }
 </script>

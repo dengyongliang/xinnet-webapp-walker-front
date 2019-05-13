@@ -20,8 +20,6 @@ Collapse(v-model="value")
 </template>
 
 <script>
-import {mapActions} from 'vuex'
-import * as types from '@/store/types'
 export default {
   components: {
   },
@@ -33,46 +31,29 @@ export default {
     }
   },
   methods: {
-    ...mapActions({
-      queryDomainBudgetReportList: types.QUERY_DOMAIN_BUDGET_REPORT_LIST,
-      queryDomainConsumptionReportList: types.QUERY_DOMAIN_CONSUMPTION_REPORT_LIST
-    })
   },
   computed: {
   },
   beforeMount () {
-    let params = {
-      param: {
-        pageNum: 1,
-        pageSize: 20
-      },
-      callback: (response) => {
-        if (!response) {
-          return false
-        }
-        if (response.data.code === '1000') {
-          this.budgetList = response.data.data.list
-        } else {
-        }
+    this.$store.dispatch('DOMAIN_BUDGET_REPORT_LIST', {pageNum: 1, pageSize: 20}).then(response => {
+      if (!response) {
+        return false
       }
-    }
-    this.queryDomainBudgetReportList(params)
-    let params2 = {
-      param: {
-        pageNum: 1,
-        pageSize: 20
-      },
-      callback: (response) => {
-        if (!response) {
-          return false
-        }
-        if (response.data.code === '1000') {
-          this.consumptionList = response.data.data.list
-        } else {
-        }
+      if (response.data.code === '1000') {
+        this.budgetList = response.data.data.list
+      } else {
       }
-    }
-    this.queryDomainConsumptionReportList(params2)
+    }).catch(() => {})
+
+    this.$store.dispatch('DOMAIN_CONSUMPTION_REPORT_LIST', {pageNum: 1, pageSize: 20}).then(response => {
+      if (!response) {
+        return false
+      }
+      if (response.data.code === '1000') {
+        this.consumptionList = response.data.data.list
+      } else {
+      }
+    }).catch(() => {})
   },
   mounted () {
   },

@@ -30,8 +30,6 @@
 </template>
 
 <script>
-import {mapActions} from 'vuex'
-import * as types from '@/store/types'
 export default {
   name: 'compDomainMgmtDetailInfo',
   components: {
@@ -66,53 +64,46 @@ export default {
     },
     renewFun () {
       var params = {
-        param: {
-          jsonObj: [{
-            domainName: this.detailData.domainName,
-            orderGoodsType: 2,
-            orderType: 2
-          }]
-        },
-        callback: (response) => {
-          this.loadingBtn = false
-          if (!response) {
-            return false
-          }
-          if (response.data.code === '1000') {
-            response.data.type = '2_2'
-            response.data.jsonObj.map((v) => {
-              if (v.goodsNumAndPrice.length) {
-                v.price = v.goodsNumAndPrice[0].price + '_' + v.goodsNumAndPrice[0].unit
-                v.num = v.goodsNumAndPrice[0].num
-                v.unit = v.goodsNumAndPrice[0].unit
-              } else {
-                v.price = '0_null'
-                v.num = null
-                v.unit = null
-              }
-            })
-            this.$store.commit(types.SET_PAY_ORDERS, response.data)
-            this.$router.push({path: '/payConfirm'})
-          } else {
-            if (response.data.code === '100') {
-              this.$Message.error('模板不存在')
-            } else if (response.data.code === '200') {
-              this.$Message.error('分组不存在')
-            } else if (response.data.code === '300') {
-              this.$Message.error('账户错误')
-            } else if (response.data.code === '400') {
-              this.$Message.error('json数据错误')
+        jsonObj: [{
+          domainName: this.detailData.domainName,
+          orderGoodsType: 2,
+          orderType: 2
+        }]
+      }
+      this.$store.dispatch('ORDER_CONFIRM', params).then(response => {
+        this.loadingBtn = false
+        if (!response) {
+          return false
+        }
+        if (response.data.code === '1000') {
+          response.data.type = '2_2'
+          response.data.jsonObj.map((v) => {
+            if (v.goodsNumAndPrice.length) {
+              v.price = v.goodsNumAndPrice[0].price + '_' + v.goodsNumAndPrice[0].unit
+              v.num = v.goodsNumAndPrice[0].num
+              v.unit = v.goodsNumAndPrice[0].unit
             } else {
+              v.price = '0_null'
+              v.num = null
+              v.unit = null
             }
+          })
+          this.$store.commit('SET_PAY_ORDERS', response.data)
+          this.$router.push({path: '/payConfirm'})
+        } else {
+          if (response.data.code === '100') {
+            this.$Message.error('模板不存在')
+          } else if (response.data.code === '200') {
+            this.$Message.error('分组不存在')
+          } else if (response.data.code === '300') {
+            this.$Message.error('账户错误')
+          } else if (response.data.code === '400') {
+            this.$Message.error('json数据错误')
+          } else {
           }
         }
-      }
-      console.log(params.param)
-      this.queryOrderConfirm(params)
-    },
-    ...mapActions({
-      queryOrderConfirm: types.QUERY_ORDER_CONFIRM
-    })
+      }).catch(() => {})
+    }
   },
   beforeMount () {
   },

@@ -3,7 +3,7 @@
   <!-- 标题区 -->
   h1.pageTitle.clear
     <span @click="toBackList" class="backlist">域名安全服务</span>
-    <span @click="toDetail" v-show="showDetail" class="backDetail"> > 实名信息详情</span>
+    <span @click="toDetail" v-show="showDetail" class="backDetail"> > 域名安全服务详情</span>
     <span v-show="showLock"> > 注册局锁</span>
 
     .tR(v-show="!showDetail")
@@ -21,7 +21,7 @@
         a(href="javascript:;", @click="handleSelectAll(true)") 全选
         a(href="javascript:;", @click="handleSelectAll(false)") 取消全选
         Poptip(placement="top", width="240", v-model="visible")
-          Button(@click="", :disabled="disabledSafeLv", class="btnSafeLv") 设置保护等级
+          Button(@click="", :disabled="!disabledSafeLv", class="btnSafeLv") 设置保护等级
           comp-important-select(slot="content", :on-parentmethod="hidePop", :domainIds="getDomainId", @refreshData = "searchListData")
 
   <!-- 翻页区 -->
@@ -33,8 +33,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
-import * as types from '@/store/types'
+import { mapState } from 'vuex'
 import compImportantSelect from '@/components/compImportantSelect'
 import compDomainSafeDetail from '@/components/compDomainSafeDetail'
 import compAsideFilter from '@/components/compAsideFilter'
@@ -55,7 +54,7 @@ export default {
       loadingBtn: false,
       showDetail: false,
       showLock: false,
-      disabledSafeLv: true,
+      disabledSafeLv: false,
       detailData: {},
       list: [],
       page: {
@@ -182,10 +181,10 @@ export default {
   },
   methods: {
     searchListData () {
-      this.queryList(this.queryListParam({pageNum: 1}))
+      this.queryList(1)
     },
     pageChange: function (curPage) {
-      this.queryList(this.queryListParam({pageNum: curPage}))
+      this.queryList(curPage)
     },
     toBackList () {
       this.searchListData()
@@ -227,7 +226,7 @@ export default {
       this.asideFilterResult.updateFlag = result.dataSafe[3].join(',')
       console.log(this.asideFilterResult)
       // 加载数据
-      this.queryList(this.queryListParam({pageNum: 1}))
+      this.queryList(1)
     },
     asideFilterReset () {
       this.asideFilterResult.domainSuffixs = ''
@@ -239,7 +238,7 @@ export default {
       this.asideFilterResult.updateFlag = ''
       this.asideFilterResult.backendLockFlag = ''
 
-      this.queryList(this.queryListParam({pageNum: 1}))
+      this.queryList(1)
     },
     queryListParam (obj) {
       this.page.pageNo = obj.pageNum
@@ -247,37 +246,34 @@ export default {
       this.loadingTable = true
 
       let params = {
-        param: {
-          pageNum: obj.pageNum,
-          pageSize: 20,
-          domainName: this.value,
-          domainSuffixs: this.asideFilterResult.domainSuffixs,
-          otherSuffix: this.asideFilterResult.otherSuffix,
-          allSuffix: this.asideFilterResult.allSuffix,
-          groupIds: this.asideFilterResult.groupIds,
-          importantFlag: this.asideFilterResult.importantFlag,
-          renewFlag: this.asideFilterResult.renewFlag,
-          updateFlag: this.asideFilterResult.updateFlag,
-          backendLockFlag: this.asideFilterResult.backendLockFlag
-        },
-        callback: (response) => {
-          this.loadingBtn = false
-          this.loadingTable = false
-          if (!response) {
-            return false
-          }
-          if (response.data.code === '1000') {
-            this.list = response.data.data.list
-            this.page.pageItems = response.data.data.totalNum
-          } else {
-          }
-        }
+        pageNum: obj.pageNum,
+        pageSize: 20,
+        domainName: this.value,
+        domainSuffixs: this.asideFilterResult.domainSuffixs,
+        otherSuffix: this.asideFilterResult.otherSuffix,
+        allSuffix: this.asideFilterResult.allSuffix,
+        groupIds: this.asideFilterResult.groupIds,
+        importantFlag: this.asideFilterResult.importantFlag,
+        renewFlag: this.asideFilterResult.renewFlag,
+        updateFlag: this.asideFilterResult.updateFlag,
+        backendLockFlag: this.asideFilterResult.backendLockFlag
       }
       return params
     },
-    ...mapActions({
-      queryList: types.QUERY_DOMAIN_SAFE_LIST
-    })
+    queryList (num) {
+      this.$store.dispatch('DOMAIN_SAFE_LIST', this.queryListParam({pageNum: num})).then(response => {
+        this.loadingBtn = false
+        this.loadingTable = false
+        if (!response) {
+          return false
+        }
+        if (response.data.code === '1000') {
+          this.list = response.data.data.list
+          this.page.pageItems = response.data.data.totalNum
+        } else {
+        }
+      }).catch(() => {})
+    }
   },
   computed: {
     getDomainId () {
@@ -295,7 +291,7 @@ export default {
   beforeMount () {
   },
   mounted () {
-    this.queryList(this.queryListParam({pageNum: 1}))
+    this.queryList(1)
   }
 }
 </script>

@@ -6,8 +6,6 @@ div(class="importantPop",slot="content")
     Button(@click="close") 取消
 </template>
 <script>
-import {mapActions} from 'vuex'
-import * as types from '@/store/types'
 import compRadio from '@/components/compRadio'
 import validateFormResult from '@/global/validateForm'
 export default {
@@ -46,27 +44,23 @@ export default {
       ])
       if (result) {
         let params = {
-          param: {
-            protectLevel: this.$refs.protectLevel.value,
-            domainIds: this.domainIds
-          },
-          callback: (response) => {
-            this.loadingBtn = false
-            if (!response) {
-              return false
-            }
-            if (response.data.code === '1000') {
-              this.loadingBtn = false
-              this.$Message.success('设置保护等级成功')
-              this.close()
-              this.$emit('refreshData')
-            } else {
-              // this.$Message.error('设置保护等级失败')
-            }
-          }
+          protectLevel: this.$refs.protectLevel.value,
+          domainIds: this.domainIds
         }
-        console.log(params.param)
-        this.setProtectLevel(params)
+        this.$store.dispatch('SET_PROTECT_LEVEL', params).then(response => {
+          this.loadingBtn = false
+          if (!response) {
+            return false
+          }
+          if (response.data.code === '1000') {
+            this.loadingBtn = false
+            this.$Message.success('设置保护等级成功')
+            this.close()
+            this.$emit('refreshData')
+          } else {
+            // this.$Message.error('设置保护等级失败')
+          }
+        }).catch(() => {})
       } else {
         this.loadingBtn = false
       }
@@ -75,10 +69,7 @@ export default {
       if (this.onParentmethod && typeof this.onParentmethod === 'function') {
         this.onParentmethod()
       }
-    },
-    ...mapActions({
-      setProtectLevel: types.SET_PROTECT_LEVEL
-    })
+    }
   },
   computed: {
   },

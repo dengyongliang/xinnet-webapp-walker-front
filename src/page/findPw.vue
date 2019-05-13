@@ -51,8 +51,6 @@
 </template>
 
 <script>
-import { mapActions, mapMutations } from 'vuex'
-import * as types from '@/store/types'
 import compInput from '@/components/compInput'
 import compRePassword from '@/components/compRePassword'
 export default {
@@ -81,45 +79,6 @@ export default {
     submit () {
       this.step = 3
       this.loadingBtn = true
-      let params = {
-        param: {
-          account: this.$refs.account.value,
-          password: this.$refs.password.value,
-          verificationCode: this.$refs.verificationCode.value
-        },
-        callback: (response) => {
-          if (!response) {
-            return false
-          }
-          let data = response.data
-          if (data.code === '1000') {
-            this.step = 3
-          } else {
-            this.loadingBtn = false
-            if (data.code === '100') {
-              this.account.error = 2
-            } else if (data.code === '200') {
-              this.modalAlertInfo.show = true
-              this.modalAlertInfo.title = '失败'
-              this.modalAlertInfo.content = '用户已登录'
-            } else if (data.code === '300') {
-              this.verificationCode.error = 3
-            } else if (data.code === '400') {
-              this.password.error = 2
-            } else if (data.code === '600') {
-              this.modalAlertInfo.show = true
-              this.modalAlertInfo.title = '失败'
-              this.modalAlertInfo.content = '用户被锁定'
-            } else if (data.code === '700') {
-              this.modalAlertInfo.show = true
-              this.modalAlertInfo.title = '失败'
-              this.modalAlertInfo.content = '用户权限异常'
-            }
-          }
-        }
-      }
-
-      this.loginSubmit(params)
     },
     onShowError (errText) {
       this.showError = true
@@ -135,44 +94,13 @@ export default {
         this.loadingBtn = false
         return false
       }
-
-      let params = {
-        param: {
-          userCode: this.$refs.account.value
-        },
-        callback: (response) => {
-          if (!response) {
-            return false
-          }
-          let data = response.data
-          if (data.code === '1000') {
-            this.success = true
-            this.countDown()
-          } else if (data.code === '100') {
-            this.$refs.account.showValidateResult({text: '手机号码不存在'})
-          } else if (data.code === '200') {
-            this.onShowError('获取短信验证码已超上限')
-          } else if (data.code === '300') {
-            this.onShowError('短信验证码已发送')
-          }
-        }
-      }
-      this.loginVerificationCode(params)
-    },
-    ...mapActions({
-      loginSubmit: types.LOGIN_SUBMIT,
-      loginVerificationCode: types.LOGIN_VERIFICATIONCODE
-    })
+    }
   },
   computed: {
-    ...mapMutations([
-      'types.SHOW_BODY_SPIN'
-    ])
   },
   beforeMount () {
   },
   mounted () {
-    this.$store.commit(types.SHOW_BODY_SPIN)
   }
 }
 </script>

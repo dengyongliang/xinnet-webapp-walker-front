@@ -174,7 +174,7 @@ export default {
   border-radius: 4px;
   overflow: hidden;
   background: #fff;
-  position: relative;
+  position: absolute;
   box-shadow: 0 1px 1px rgba(0,0,0,.2);
   margin-right: 4px;
 }

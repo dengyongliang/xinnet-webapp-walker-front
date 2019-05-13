@@ -38,8 +38,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
-import * as types from '@/store/types'
+import { mapState } from 'vuex'
 import compDomainRealNameDetail from '@/components/compDomainRealNameDetail'
 import compAsideFilter from '@/components/compAsideFilter'
 export default {
@@ -212,10 +211,10 @@ export default {
       this.showSubmit = false
       this.btnRealNameDisabled = true
       this.btnUpdateStatusDisabled = true
-      this.queryList(this.queryListParam({pageNum: 1}))
+      this.queryList(1)
     },
     pageChange: function (curPage) {
-      this.queryList(this.queryListParam({pageNum: curPage}))
+      this.queryList(curPage)
     },
     toBackList () {
       this.showSubmit = false
@@ -231,42 +230,36 @@ export default {
     tableSelectChange (selected) {
       this.selectData = selected
       this.btnUpdateStatusDisabled = !selected.length
-      var result = false
-      if (selected.length > 1) {
-        this.btnRealNameDisabled = (function (vm) {
-          selected.reduce((cur, next) => {
-            if (cur.organizeNameCn !== next.organizeNameCn) {
-              vm.$Message.error('不同域名所有者，请重选')
-              result = true
-            }
-            if (cur.rnvcStatus === 1 || cur.rnvcStatus === 2 || next.rnvcStatus === 1 || next.rnvcStatus === 2) {
-              vm.$Message.error('审核状态不符，请重选')
-              result = true
-            }
-            return next
-          })
-          return result
-        })(this)
-      } else if (selected.length === 1) {
-        if (selected[0].rnvcStatus === 1 || selected[0].rnvcStatus === 2) {
-          this.$Message.error('审核状态不符，请重选')
-          this.btnRealNameDisabled = true
-        } else {
-          this.btnRealNameDisabled = false
-        }
-      }
+      this.btnRealNameDisabled = !selected.length
     },
     batchRealName () {
-      this.organizeNameCn = this.selectData[0].organizeNameCn
-      this.showSubmit = true
+      let flag = true
+      this.selectData.reduce((cur, next) => {
+        if (cur.organizeNameCn !== next.organizeNameCn) {
+          flag = false
+        }
+        return next
+      })
+      if (!flag) {
+        this.$Message.error('不同域名所有者，请重选')
+      } else {
+        this.organizeNameCn = this.selectData[0].organizeNameCn
+        this.showSubmit = true
+      }
     },
     batchUpdate () {
-      this.loadingBtn = true
-      let params = {
-        param: {
-          domainIds: this.getDomainId
-        },
-        callback: (response) => {
+      let flag = true
+      this.selectData.reduce((cur, next) => {
+        if (cur.rnvcStatus === 1 || cur.rnvcStatus === 2 || next.rnvcStatus === 1 || next.rnvcStatus === 2) {
+          flag = false
+        }
+        return next
+      }, {rnvcStatus: 0})
+      if (!flag) {
+        this.$Message.error('审核状态不符，请重选')
+      } else {
+        this.loadingBtn = true
+        this.$store.dispatch('UPDATE_DOMAIN_AUDIT_STATUS', {domainIds: this.getDomainId}).then(response => {
           this.loadingBtn = false
           if (!response) {
             return false
@@ -277,9 +270,8 @@ export default {
           } else {
             this.$Message.error('更新失败')
           }
-        }
+        }).catch(() => {})
       }
-      this.updateDomainAuditStatus(params)
     },
     asideFilterSubmit (result) {
       console.log(result)
@@ -296,7 +288,7 @@ export default {
       this.asideFilterResult.verifyTimeBegin = result.dataTimeSubmit.value === 'custom' ? result.dataTimeSubmit.time[0] : ''
       this.asideFilterResult.verifyTimeEnd = result.dataTimeSubmit.value === 'custom' ? result.dataTimeSubmit.time[1] : ''
       // 加载数据
-      this.queryList(this.queryListParam({pageNum: 1}))
+      this.queryList(1)
     },
     asideFilterReset () {
       this.asideFilterResult.groupIds = ''
@@ -306,7 +298,7 @@ export default {
       this.asideFilterResult.verifyDay = ''
       this.asideFilterResult.verifyTimeBegin = ''
       this.asideFilterResult.verifyTimeEnd = ''
-      this.queryList(this.queryListParam({pageNum: 1}))
+      this.queryList(1)
     },
     queryListParam (obj) {
       this.page.pageNo = obj.pageNum
@@ -314,38 +306,33 @@ export default {
       this.loadingTable = true
 
       let params = {
-        param: {
-          pageNum: obj.pageNum,
-          pageSize: 20,
-          domainName: this.value,
-          groupIds: this.asideFilterResult.groupIds,
-          serviceState: this.asideFilterResult.serviceState,
-          rnvcStatus: this.asideFilterResult.rnvcStatus,
-          dnvcStatus: this.asideFilterResult.dnvcStatus,
-          verifyDay: this.asideFilterResult.verifyDay,
-          verifyTimeBegin: this.asideFilterResult.verifyTimeBegin,
-          verifyTimeEnd: this.asideFilterResult.verifyTimeEnd
-        },
-        callback: (response) => {
-          this.loadingBtn = false
-          this.loadingTable = false
-          if (!response) {
-            return false
-          }
-          if (response.data.code === '1000') {
-            this.list = response.data.data.list
-            this.page.pageItems = response.data.data.totalNum
-          } else {
-          }
-        }
+        pageNum: obj.pageNum,
+        pageSize: 20,
+        domainName: this.value,
+        groupIds: this.asideFilterResult.groupIds,
+        serviceState: this.asideFilterResult.serviceState,
+        rnvcStatus: this.asideFilterResult.rnvcStatus,
+        dnvcStatus: this.asideFilterResult.dnvcStatus,
+        verifyDay: this.asideFilterResult.verifyDay,
+        verifyTimeBegin: this.asideFilterResult.verifyTimeBegin,
+        verifyTimeEnd: this.asideFilterResult.verifyTimeEnd
       }
       return params
     },
-    ...mapActions({
-      queryList: types.QUERY_DOMAIN_VERIFY_LIST,
-      queryTemplates: types.QUERY_TEMPLATES,
-      updateDomainAuditStatus: types.UPDATE_DOMAIN_AUDIT_STATUS
-    })
+    queryList (num) {
+      this.$store.dispatch('DOMAIN_VERIFY_LIST', this.queryListParam({pageNum: num})).then(response => {
+        this.loadingBtn = false
+        this.loadingTable = false
+        if (!response) {
+          return false
+        }
+        if (response.data.code === '1000') {
+          this.list = response.data.data.list
+          this.page.pageItems = response.data.data.totalNum
+        } else {
+        }
+      }).catch(() => {})
+    }
   },
   computed: {
     getDomainId () {
@@ -361,26 +348,21 @@ export default {
     })
   },
   beforeMount () {
-    let params = {
-      param: {
-      },
-      callback: (response) => {
-        if (!response) {
-          return false
-        }
-        if (response.data.code === '1000') {
-          this.templateList = this.GLOBALS.CONVERT_SELECT(response.data.data, {
-            label: 'templateName',
-            value: 'id'
-          })
-        } else {
-        }
+    this.$store.dispatch('TEMPLATES').then(response => {
+      if (!response) {
+        return false
       }
-    }
-    this.queryTemplates(params)
+      if (response.data.code === '1000') {
+        this.templateList = this.GLOBALS.CONVERT_SELECT(response.data.data, {
+          label: 'templateName',
+          value: 'id'
+        })
+      } else {
+      }
+    }).catch(() => {})
   },
   mounted () {
-    this.queryList(this.queryListParam({pageNum: 1}))
+    this.queryList(1)
   }
 }
 </script>

@@ -83,6 +83,12 @@ export default {
   height:38px;
   line-height:38px;
 }
+.pageActivation .compRePassword input{
+  padding-left: 7px;
+}
+.pageActivation .compRePassword .ivu-form-item-content{
+  display: inline-block;
+}
 .pageActivation .ivu-steps{
   padding: 36px 225px;
   text-align:center;

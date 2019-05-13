@@ -15,7 +15,7 @@ div.step1
     Divider(dashed)
 
     FormItem(label="域名持有者名称（中文）：", required)
-      comp-input(name='organizeNameCn',label="域名持有者名称",ref="organizeNameCn",:maxLength="100",styles="width:300px", :defaultValue="(type!=='create'?templateData.organizeNameCn:'')", :disabled="disabled")
+      comp-input(name='organizeNameCn',label="域名持有者名称",ref="organizeNameCn",:maxLength="100",styles="width:300px", :defaultValue="(type!=='create'?templateData.organizeNameCn:'')", :disabled="type==='modify' || disabled")
     FormItem(label="域名联系人（中文）：", required)
       comp-input(name='userNameCn',label="域名联系人",ref="userNameCn",styles="width:300px", :maxLength="100", :defaultValue="(type!=='create'?templateData.userNameCn:'')", :disabled="disabled")
     FormItem(label="所属区域：", required)
@@ -35,11 +35,11 @@ div.step1
     Divider(dashed)
 
     FormItem(label="域名持有者名称（英文）：", required)
-      comp-input(name='organizeNameUk',label="域名持有者名称",ref="organizeNameUk",styles="width:300px", :defaultValue="(type!=='create'?templateData.organizeNameUk:'')", :disabled="disabled")
+      comp-input(name='organizeNameUk',label="域名持有者名称",ref="organizeNameUk",styles="width:300px", :defaultValue="(type!=='create'?templateData.organizeNameUk:'')", :disabled="type==='modify' || disabled")
     FormItem(label="域名联系人（英文）：", required)
-      comp-input(name='userNameUk',label="英文名",ref="userNameUk",styles="width:300px", placeholder="英文名", :defaultValue="(type!=='create'?templateData.userNameUk:'')", :disabled="disabled")
+      comp-input(name='userNameUk',label="英文名",ref="userNameUk",styles="width:300px", placeholder="英文名", :defaultValue="(type!=='create'?templateData.userNameUk:'')", :disabled="type==='modify' || disabled")
     FormItem(label="")
-      comp-input(name='userSureNameUk',label="英文姓",ref="userSureNameUk",styles="width:300px", placeholder="英文姓", :defaultValue="(type!=='create'?templateData.userSureNameUk:'')", :disabled="disabled")
+      comp-input(name='userSureNameUk',label="英文姓",ref="userSureNameUk",styles="width:300px", placeholder="英文姓", :defaultValue="(type!=='create'?templateData.userSureNameUk:'')", :disabled="type==='modify' || disabled")
     FormItem(label="通讯地址：", required)
       comp-input(name='streetUk',label="通讯地址",ref="streetUk",styles="width:300px", :defaultValue="(type!=='create'?templateData.publicStreetUk:'')", :disabled="disabled")
     FormItem(label="", v-show="type==='create'")
@@ -49,8 +49,6 @@ div.step1
 </template>
 
 <script>
-import {mapActions} from 'vuex'
-import * as types from '@/store/types'
 import compInput from './compInput'
 import compCascader from './compCascader'
 import compThreeInput from './compThreeInput'
@@ -111,46 +109,42 @@ export default {
       ])
       if (result) {
         let params = {
-          param: {
-            templateName: this.$refs.templateName.value,
-            organizeNameCn: this.$refs.organizeNameCn.value,
-            userNameCn: this.$refs.userNameCn.value,
-            countryCode: 'cn',
-            cityCode: this.$refs.area.value[1],
-            streetCn: this.$refs.streetCn.value,
-            zipCode: this.$refs.zipCode.value,
-            email: this.$refs.userEmail.value,
-            phoneInter: this.$refs.userTel.value1,
-            phoneArea: this.$refs.userTel.value2,
-            phoneNumber: this.$refs.userTel.value3,
-            faxInter: this.$refs.userFax.value1,
-            faxArea: this.$refs.userFax.value2,
-            faxNumber: this.$refs.userFax.value3,
-            organizeNameUk: this.$refs.organizeNameUk.value,
-            userSureNameUk: this.$refs.userSureNameUk.value,
-            userNameUk: this.$refs.userNameUk.value,
-            streetUk: this.$refs.streetUk.value
-          },
-          callback: (response) => {
+          templateName: this.$refs.templateName.value,
+          organizeNameCn: this.$refs.organizeNameCn.value,
+          userNameCn: this.$refs.userNameCn.value,
+          countryCode: 'cn',
+          cityCode: this.$refs.area.value[1],
+          streetCn: this.$refs.streetCn.value,
+          zipCode: this.$refs.zipCode.value,
+          email: this.$refs.userEmail.value,
+          phoneInter: this.$refs.userTel.value1,
+          phoneArea: this.$refs.userTel.value2,
+          phoneNumber: this.$refs.userTel.value3,
+          faxInter: this.$refs.userFax.value1,
+          faxArea: this.$refs.userFax.value2,
+          faxNumber: this.$refs.userFax.value3,
+          organizeNameUk: this.$refs.organizeNameUk.value,
+          userSureNameUk: this.$refs.userSureNameUk.value,
+          userNameUk: this.$refs.userNameUk.value,
+          streetUk: this.$refs.streetUk.value
+        }
+        this.$store.dispatch('CREATE_TEMPLATE', params).then(response => {
+          this.loadingBtn = false
+          if (!response) {
+            return false
+          }
+          if (response.data.code === '1000') {
             this.loadingBtn = false
-            if (!response) {
-              return false
-            }
-            if (response.data.code === '1000') {
-              this.loadingBtn = false
-              this.$Message.success('模板创建成功')
-              params.param.userCode = response.data.userCode
-              this.$emit('setTemplateData', params.param)
-              this.$emit('showStep2')
-            } else {
-              if (response.data.code === '100' || response.data.code === '200') {
-                this.$Message.error('模板名称已存在')
-              }
+            this.$Message.success('模板创建成功')
+            params.param.userCode = response.data.userCode
+            this.$emit('setTemplateData', params.param)
+            this.$emit('showStep2')
+          } else {
+            if (response.data.code === '100' || response.data.code === '200') {
+              this.$Message.error('模板名称已存在')
             }
           }
-        }
-        console.log(params.param)
-        this.createTemplate(params)
+        }).catch(() => {})
       } else {
         this.loadingBtn = false
       }
@@ -174,53 +168,46 @@ export default {
       ])
       if (result) {
         let params = {
-          param: {
-            userCode: this.$refs.userCode.value,
-            templateName: this.$refs.templateName.value,
-            organizeNameCn: this.$refs.organizeNameCn.value,
-            userNameCn: this.$refs.userNameCn.value,
-            countryCode: 'cn',
-            cityCode: this.$refs.area.value[1],
-            streetCn: this.$refs.streetCn.value,
-            zipCode: this.$refs.zipCode.value,
-            email: this.$refs.userEmail.value,
-            phoneInter: this.$refs.userTel.value1,
-            phoneArea: this.$refs.userTel.value2,
-            phoneNumber: this.$refs.userTel.value3,
-            faxInter: this.$refs.userFax.value1,
-            faxArea: this.$refs.userFax.value2,
-            faxNumber: this.$refs.userFax.value3,
-            organizeNameUk: this.$refs.organizeNameUk.value,
-            userSureNameUk: this.$refs.userSureNameUk.value,
-            userNameUk: this.$refs.userNameUk.value,
-            streetUk: this.$refs.streetUk.value
-          },
-          callback: (response) => {
+          userCode: this.$refs.userCode.value,
+          templateName: this.$refs.templateName.value,
+          organizeNameCn: this.$refs.organizeNameCn.value,
+          userNameCn: this.$refs.userNameCn.value,
+          countryCode: 'cn',
+          cityCode: this.$refs.area.value[1],
+          streetCn: this.$refs.streetCn.value,
+          zipCode: this.$refs.zipCode.value,
+          email: this.$refs.userEmail.value,
+          phoneInter: this.$refs.userTel.value1,
+          phoneArea: this.$refs.userTel.value2,
+          phoneNumber: this.$refs.userTel.value3,
+          faxInter: this.$refs.userFax.value1,
+          faxArea: this.$refs.userFax.value2,
+          faxNumber: this.$refs.userFax.value3,
+          organizeNameUk: this.$refs.organizeNameUk.value,
+          userSureNameUk: this.$refs.userSureNameUk.value,
+          userNameUk: this.$refs.userNameUk.value,
+          streetUk: this.$refs.streetUk.value
+        }
+
+        this.$store.dispatch('UPDATE_TEMPLATE', params).then(response => {
+          this.loadingBtn = false
+          if (!response) {
+            return false
+          }
+          if (response.data.code === '1000') {
             this.loadingBtn = false
-            if (!response) {
-              return false
-            }
-            if (response.data.code === '1000') {
-              this.loadingBtn = false
-              this.$Message.success('模板修改成功')
-              this.$emit('refreshData')
-            } else {
-              if (response.data.code === '200') {
-                this.$Message.error('模板名称已存在')
-              }
+            this.$Message.success('模板修改成功')
+            this.$emit('refreshData')
+          } else {
+            if (response.data.code === '200') {
+              this.$Message.error('模板名称已存在')
             }
           }
-        }
-        console.log(params.param)
-        this.updateTemplate(params)
+        }).catch(() => {})
       } else {
         this.loadingBtn = false
       }
-    },
-    ...mapActions({
-      createTemplate: types.CREATE_TEMPLATE,
-      updateTemplate: types.UPDATE_TEMPLATE
-    })
+    }
   },
   computed: {
 

@@ -34,8 +34,6 @@
 </template>
 
 <script>
-import {mapActions} from 'vuex'
-import * as types from '@/store/types'
 import compMonitorOwnDetail from '@/components/compMonitorOwnDetail'
 import compAsideFilter from '@/components/compAsideFilter'
 
@@ -199,10 +197,10 @@ export default {
   },
   methods: {
     searchListData () {
-      this.queryList(this.queryListParam({pageNum: 1}))
+      this.queryList(1)
     },
     pageChange: function (curPage) {
-      this.queryList(this.queryListParam({pageNum: curPage}))
+      this.queryList(curPage)
     },
     showDetailFun (domainName) {
       this.domainName = domainName
@@ -243,50 +241,41 @@ export default {
       this.loadingTable = true
 
       let params = {
-        param: {
-          pageNum: obj.pageNum,
-          pageSize: 20
-        },
-        callback: (response) => {
-          this.loadingBtn = false
-          this.loadingTable = false
-          if (!response) {
-            return false
-          }
-          if (response.data.code === '1000') {
-            this.list = response.data.data.list
-            this.page.pageItems = response.data.data.totalNum
-          } else {
-          }
-        }
+        pageNum: obj.pageNum,
+        pageSize: 20
       }
       return params
     },
-    ...mapActions({
-      queryList: types.QUERY_DOMAIN_MONITOR,
-      queryListTop: types.QUERY_MAIL_MANAGE_TOP
-    })
-  },
-  computed: {
-  },
-  beforeMount () {
-    let params = {
-      param: {
-      },
-      callback: (response) => {
-        this.loadingTable = false
+    queryList (num) {
+      this.$store.dispatch('DOMAIN_MONITOR', this.queryListParam({pageNum: num})).then(response => {
         this.loadingBtn = false
+        this.loadingTable = false
         if (!response) {
           return false
         }
         if (response.data.code === '1000') {
-          this.listTop = response.data.data.list
+          this.list = response.data.data.list
+          this.page.pageItems = response.data.data.totalNum
         } else {
         }
-      }
+      }).catch(() => {})
     }
-    this.queryListTop(params)
-    this.queryList(this.queryListParam({pageNum: 1}))
+  },
+  computed: {
+  },
+  beforeMount () {
+    this.$store.dispatch('MAIL_MANAGE_TOP').then(response => {
+      this.loadingTable = false
+      this.loadingBtn = false
+      if (!response) {
+        return false
+      }
+      if (response.data.code === '1000') {
+        this.listTop = response.data.data.list
+      } else {
+      }
+    }).catch(() => {})
+    this.queryList(1)
   }
 }
 </script>

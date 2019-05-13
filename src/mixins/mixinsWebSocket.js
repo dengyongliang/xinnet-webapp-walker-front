@@ -1,4 +1,3 @@
-import * as types from '@/store/types'
 export default {
   components: {
   },
@@ -48,7 +47,7 @@ export default {
     websocketonmessage (data) {
       // 数据接收
       console.log(data)
-      this.$store.commit(types.SET_USER_MSG_NUM, data)
+      this.$store.commit('SET_USER_MSG_NUM', data)
     },
     websocketsend (data) {
       // 数据发送

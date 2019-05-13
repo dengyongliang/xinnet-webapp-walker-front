@@ -97,12 +97,10 @@
     <Table :columns="columns" :data="list" :loading="loadingTable"></Table>
 
   <!-- 翻页区 -->
-  Page(:total="page.pageItems",:current="page.pageNo",show-elevator,show-total,prev-text="上一页",next-text="下一页",@on-change="pageChange",:page-size=20)
+  Page(:total="page.pageItems",:current="page.pageNo",:page-size=20,show-elevator,show-total,prev-text="上一页",next-text="下一页",@on-change="pageChange")
 </template>
 
 <script>
-import {mapActions} from 'vuex'
-import * as types from '@/store/types'
 import compInput from '@/components/compInput'
 import compSelect from '@/components/compSelect'
 import compChartReportBudgetTotal from '@/components/compChartReportBudgetTotal'
@@ -159,113 +157,74 @@ export default {
   methods: {
     pageChange () {
 
-    },
-    ...mapActions({
-      queryDomainBudgetReport: types.QUERY_DOMAIN_BUDGET_REPORT,
-      queryDomainRepurchaseReport: types.QUERY_DOMAIN_REPURCHASE_REPORT,
-      queryDomainRenewAndSafeReport: types.QUERY_DOMAIN_RENEW_AND_SAFE_REPORT,
-      queryDomainRegisterReport: types.QUERY_DOMAIN_REGISTER_REPORT
-    })
+    }
   },
   computed: {
   },
   beforeMount () {
     // 获取reportId
     this.reportId = this.$route.query.reportId
-
-    if (this.reportId * 1 !== 0) {
-      let params = {
-        param: {
-          reportId: this.reportId
-        },
-        callback: (response) => {
-          if (!response) {
+    // this.reportId = 1
+    if (this.reportId * 1) {
+      Promise.all([
+        this.$store.dispatch('DOMAIN_BUDGET_REPORT', {reportId: this.reportId}),
+        this.$store.dispatch('DOMAIN_REPURCHASE_REPORT', {reportId: this.reportId}),
+        this.$store.dispatch('DOMAIN_RENEW_AND_SAFE_REPORT', {reportId: this.reportId}),
+        this.$store.dispatch('DOMAIN_REGISTER_REPORT', {reportId: this.reportId})
+      ]).then(response => {
+        response.map((v, i, arr) => {
+          if (!v) {
             return false
           }
-          if (response.data.code === '1000') {
-            this.domainBudget = response.data.data
-          } else {
-          }
-        }
-      }
-      this.queryDomainBudgetReport(params)
-      let params2 = {
-        param: {
-          reportId: this.reportId
-        },
-        callback: (response) => {
-          if (!response) {
-            return false
-          }
-          if (response.data.code === '1000') {
-            this.list = response.data.data.list
-          } else {
-          }
-        }
-      }
-      this.queryDomainRepurchaseReport(params2)
-      let params3 = {
-        param: {
-          reportId: this.reportId
-        },
-        callback: (response) => {
-          if (!response) {
-            return false
-          }
-          if (response.data.code === '1000') {
-            this.renewAndSafe = response.data.data
-          } else {
-          }
-        }
-      }
-      this.queryDomainRenewAndSafeReport(params3)
-
-      let params4 = {
-        param: {
-          reportId: this.reportId
-        },
-        callback: (response) => {
-          if (!response) {
-            return false
-          }
-          if (response.data.code === '1000') {
-            this.register = response.data.data
-            let arr = []
-            this.register.newList.forEach((v, i) => {
-              if (i > 2) {
-                if (arr.length === 3) {
-                  arr.push({
-                    domainSuffix: '其他',
-                    budgetNumber: 0
-                  })
+          if (v.data.code === '1000') {
+            if (i === 0) {
+              this.domainBudget = v.data.data
+            }
+            if (i === 1) {
+              this.list = v.data.data.list
+            }
+            if (i === 2) {
+              this.renewAndSafe = v.data.data
+            }
+            if (i === 3) {
+              this.register = v.data.data
+              console.log(this.register)
+              let arr = []
+              this.register.newList.forEach((v, i) => {
+                if (i > 2) {
+                  if (arr.length === 3) {
+                    arr.push({
+                      domainSuffix: '其他',
+                      budgetNumber: 0
+                    })
+                  }
+                  arr[3].budgetNumber = arr[3].budgetNumber + v.budgetNumber
+                } else {
+                  arr.push(v)
                 }
-                arr[3].budgetNumber = arr[3].budgetNumber + v.budgetNumber
-              } else {
-                arr.push(v)
-              }
-            })
-            this.$set(this.register, 'newList', arr)
+              })
+              this.$set(this.register, 'newList', arr)
 
-            arr = []
-            this.register.normalList.forEach((v, i) => {
-              if (i > 2) {
-                if (arr.length === 3) {
-                  arr.push({
-                    domainSuffix: '其他',
-                    budgetNumber: 0
-                  })
+              arr = []
+              this.register.normalList.forEach((v, i) => {
+                if (i > 2) {
+                  if (arr.length === 3) {
+                    arr.push({
+                      domainSuffix: '其他',
+                      budgetNumber: 0
+                    })
+                  }
+                  arr[3].budgetNumber = arr[3].budgetNumber + v.budgetNumber
+                } else {
+                  arr.push(v)
                 }
-                arr[3].budgetNumber = arr[3].budgetNumber + v.budgetNumber
-              } else {
-                arr.push(v)
-              }
-            })
-            this.$set(this.register, 'normalList', arr)
-          } else {
+              })
+              this.$set(this.register, 'normalList', arr)
+              console.log(this.register)
+            }
           }
-        }
-      }
-      this.queryDomainRegisterReport(params4)
+        })
+      }).catch(() => {})
     }
   },
   mounted () {

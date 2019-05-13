@@ -43,8 +43,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
-import * as types from '@/store/types'
+import { mapState } from 'vuex'
 import compSelect from '@/components/compSelect'
 import compDomainChangeDetail from '@/components/compDomainChangeDetail'
 import compDomainChange from '@/components/compDomainChange'
@@ -124,25 +123,22 @@ export default {
   methods: {
     searchListData () {
       this.closeDrawer()
-      this.queryChangeList(this.queryListParam({pageNum: 1}))
+      this.queryChangeList(1)
     },
     showDomainDetail (id) {
       let params = {
-        param: {
-          changeId: id
-        },
-        callback: (response) => {
-          if (!response) {
-            return false
-          }
-          if (response.data.code === '1000') {
-            this.detailData = response.data.data
-          } else {
-
-          }
-        }
+        changeId: id
       }
-      this.queryChangeInfo(params)
+      this.$store.dispatch('CHANGE_INFO', params).then(response => {
+        if (!response) {
+          return false
+        }
+        if (response.data.code === '1000') {
+          this.detailData = response.data.data
+        } else {
+
+        }
+      }).catch(() => {})
       this.showDetail = true
     },
     closeDrawer () {
@@ -155,7 +151,7 @@ export default {
     },
     pageChange: function (curPage) {
       // 根据当前页获取数据
-      this.queryChangeList(this.queryListParam({pageNum: curPage}))
+      this.queryChangeList(curPage)
     },
     queryListParam (obj) {
       this.page.pageNo = obj.pageNum
@@ -163,34 +159,30 @@ export default {
       this.loadingTable = true
 
       let params = {
-        param: {
-          pageNum: obj.pageNum,
-          pageSize: 20,
-          domainName: this.value,
-          changeStatus: this.$refs.changeStatus.value,
-          createTimeBegin: this.times[0] !== '' ? moment(this.times[0]).format('YYYY-MM-DD') + ' 00:00:00' : '',
-          createTimeEnd: this.times[1] !== '' ? moment(this.times[1]).format('YYYY-MM-DD') + ' 23:59:59' : ''
-        },
-        callback: (response) => {
-          this.loadingBtn = false
-          this.loadingTable = false
-          if (!response) {
-            return false
-          }
-          if (response.data.code === '1000') {
-            this.list = response.data.data.list
-            this.page.pageItems = response.data.data.totalNum
-          } else {
-
-          }
-        }
+        pageNum: obj.pageNum,
+        pageSize: 20,
+        domainName: this.value,
+        changeStatus: this.$refs.changeStatus.value,
+        createTimeBegin: this.times[0] !== '' ? moment(this.times[0]).format('YYYY-MM-DD') + ' 00:00:00' : '',
+        createTimeEnd: this.times[1] !== '' ? moment(this.times[1]).format('YYYY-MM-DD') + ' 23:59:59' : ''
       }
       return params
     },
-    ...mapActions({
-      queryChangeList: types.QUERY_CHANGE_LIST,
-      queryChangeInfo: types.QUERY_CHANGE_INFO
-    })
+    queryChangeList (num) {
+      this.$store.dispatch('CHANGE_LIST', this.queryListParam({pageNum: num})).then(response => {
+        this.loadingBtn = false
+        this.loadingTable = false
+        if (!response) {
+          return false
+        }
+        if (response.data.code === '1000') {
+          this.list = response.data.data.list
+          this.page.pageItems = response.data.data.totalNum
+        } else {
+
+        }
+      }).catch(() => {})
+    }
   },
   computed: {
     ...mapState({
@@ -215,7 +207,7 @@ export default {
       }
       return array
     })(this)
-    this.queryChangeList(this.queryListParam({pageNum: 1}))
+    this.queryChangeList(1)
   }
 }
 </script>

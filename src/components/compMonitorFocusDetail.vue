@@ -84,7 +84,7 @@
     .secTable.secTable2
       <Table :columns="columns" :data="list" :loading="loadingTable"></Table>
     <!-- 翻页区 -->
-    Page(:total="page.pageItems",:current="page.pageNo",show-elevator,show-total,prev-text="上一页",next-text="下一页",@on-change="pageChange",:page-size=20)
+    Page(:total="page.pageItems",:current="page.pageNo",:page-size=20,show-elevator,show-total,prev-text="上一页",next-text="下一页",@on-change="pageChange")
 </template>
 
 <script>

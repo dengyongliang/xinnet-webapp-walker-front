@@ -26,8 +26,7 @@
 </template>
 
 <script>
-import {mapState, mapActions} from 'vuex'
-import * as types from '@/store/types'
+import {mapState} from 'vuex'
 import compInput from '@/components/compInput'
 import compRadio from '@/components/compRadio'
 import validateFormResult from '@/global/validateForm'
@@ -80,41 +79,38 @@ export default {
 
       if (result) {
         let params = {
-          param: {
-            userCode: this.userCode,
-            userSex: this.$refs.userSex.value,
-            userTel: this.$refs.userTel.value,
-            userMobile: this.$refs.userMobile.value,
-            verificationCode: this.$refs.verificationCode.value
-          },
-          callback: (response) => {
-            this.loadingBtn = false
-            if (response) {
-              if (response.data.code === '1000') {
-                this.$Message.success('设置个人信息成功')
-                this.$store.commit(types.CLEAR_ACTIVATION_DATA)
-                this.$emit('submitStep')
+          userCode: this.userCode,
+          userSex: this.$refs.userSex.value,
+          userTel: this.$refs.userTel.value,
+          userMobile: this.$refs.userMobile.value,
+          verificationCode: this.$refs.verificationCode.value
+        }
+        if (this.activation.keeperFlag) {
+          params.qq = this.$refs.qq.value
+          params.wx = this.$refs.wx.value
+        }
+        this.$store.dispatch('ACTIVATION_USER_INFO', params).then(response => {
+          this.loadingBtn = false
+          if (response) {
+            if (response.data.code === '1000') {
+              this.$Message.success('设置个人信息成功')
+              this.$store.commit('CLEAR_ACTIVATION_DATA')
+              this.$emit('submitStep')
+            } else {
+              if (response.data.code === '100') {
+                this.$refs.verificationCode.showValidateResult({text: '验证码错误或已失效'})
+              } else if (response.data.code === '200') {
+                this.$Message.error('用户不存在')
+              } else if (response.data.code === '300') {
+                this.$Message.error('用户已激活')
+              } else if (response.data.code === '400') {
+                this.$Message.error('手机号码已存在')
               } else {
-                if (response.data.code === '100') {
-                  this.$refs.verificationCode.showValidateResult({text: '验证码错误或已失效'})
-                } else if (response.data.code === '200') {
-                  this.$Message.error('用户不存在')
-                } else if (response.data.code === '300') {
-                  this.$Message.error('用户已激活')
-                } else if (response.data.code === '400') {
-                  this.$Message.error('手机号码已存在')
-                } else {
-                  this.$Message.error('发送失败')
-                }
+                this.$Message.error('发送失败')
               }
             }
           }
-        }
-        if (this.activation.keeperFlag) {
-          params.param.qq = this.$refs.qq.value
-          params.param.wx = this.$refs.wx.value
-        }
-        this.submitActivationUserInfo(params)
+        }).catch(() => {})
       } else {
         this.loadingBtn = false
       }
@@ -125,36 +121,26 @@ export default {
         this.$refs.userMobile
       ])
       if (result) {
-        let params = {
-          param: {
-            userMobile: this.$refs.userMobile.value
-          },
-          callback: (response) => {
-            this.loadingBtn = false
-            if (response) {
-              if (response.data.code === '1000') {
-                this.$Message.success('发送成功')
+        this.$store.dispatch('ACTIVATION_CODE', {userMobile: this.$refs.userMobile.value}).then(response => {
+          this.loadingBtn = false
+          if (response) {
+            if (response.data.code === '1000') {
+              this.$Message.success('发送成功')
+            } else {
+              if (response.data.code === '300') {
+                this.$Message.error('短信验证码已发送')
+              } else if (response.data.code === '500') {
+                this.$Message.error('手机号码错误')
               } else {
-                if (response.data.code === '300') {
-                  this.$Message.error('短信验证码已发送')
-                } else if (response.data.code === '500') {
-                  this.$Message.error('手机号码错误')
-                } else {
-                  this.$Message.error('发送失败')
-                }
+                this.$Message.error('发送失败')
               }
             }
           }
-        }
-        this.getActivationVerificationCode(params)
+        }).catch(() => {})
       } else {
         this.loadingBtn = false
       }
-    },
-    ...mapActions({
-      submitActivationUserInfo: types.SUBMIT_ACTIVATION_USER_INFO,
-      getActivationVerificationCode: types.ACTIVATION_VERIFICATIONCODE
-    })
+    }
   },
   beforeMount () {
   },

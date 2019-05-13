@@ -20,12 +20,10 @@
 </template>
 
 <script>
-import {mapActions} from 'vuex'
-import * as types from '@/store/types'
 import compInput from '@/components/compInput'
 import compImgUpload from '@/components/compImgUpload'
 import validateFormResult from '@/global/validateForm'
-import * as links from '../global/linkdo.js'
+import * as actions from '../actions/company.js'
 export default {
   name: 'compCompanyCreateInfo',
   components: {
@@ -44,7 +42,7 @@ export default {
       status: 'creat',
       showCover: false,
       modify: false,
-      uploadAction: links.UPLOAD_COMPANY_LOGO
+      uploadAction: actions.UPLOAD_LOGO
     }
   },
   methods: {
@@ -64,38 +62,32 @@ export default {
       ])
       if (result) {
         let params = {
-          param: {
-            logoFile: this.$refs.logoFile.$refs.upload.fileList.length ? this.$refs.logoFile.$refs.upload.fileList[0].file : '',
-            name: this.$refs.name.value,
-            contactor: this.$refs.contactor.value,
-            mobile: this.$refs.userMobile.value,
-            email: this.$refs.userEmail.value,
-            tel: this.$refs.userTel.value
-          },
-          callback: (response) => {
-            this.loadingBtn = false
-            if (!response) {
-              return false
-            }
-            if (response.data.code === '1000') {
-              this.loadingBtn = false
-              this.$Message.success('保存成功')
-              params.param.companyId = response.data.id
-              this.$emit('getBaseInfo', params.param)
-            } else {
-              this.$Message.error('保存失败')
-            }
-          }
+          logoFile: this.$refs.logoFile.$refs.upload.fileList.length ? this.$refs.logoFile.$refs.upload.fileList[0].file : '',
+          name: this.$refs.name.value,
+          contactor: this.$refs.contactor.value,
+          mobile: this.$refs.userMobile.value,
+          email: this.$refs.userEmail.value,
+          tel: this.$refs.userTel.value
         }
         console.log(params.param)
-        this.createCompany(params)
+        this.$store.dispatch('COMPANY_CREATE', params).then(response => {
+          this.loadingBtn = false
+          if (!response) {
+            return false
+          }
+          if (response.data.code === '1000') {
+            this.loadingBtn = false
+            this.$Message.success('保存成功')
+            params.param.companyId = response.data.id
+            this.$emit('getBaseInfo', params.param)
+          } else {
+            this.$Message.error('保存失败')
+          }
+        }).catch(() => {})
       } else {
         this.loadingBtn = false
       }
-    },
-    ...mapActions({
-      createCompany: types.CREATE_COMPANY
-    })
+    }
   },
   beforeMount () {
   },

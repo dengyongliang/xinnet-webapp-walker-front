@@ -14,8 +14,6 @@
 </template>
 
 <script>
-import {mapActions} from 'vuex'
-import * as types from '@/store/types'
 import compInput from './compInput'
 import compSelect from './compSelect'
 import validateFormResult from '@/global/validateForm'
@@ -66,35 +64,27 @@ export default {
 
       if (result) {
         var params = {
-          param: {
-            templateId: this.$refs.templateId.value,
-            domainNames: this.$refs.domain.value.replace(/[\n\r]/g, ',')
-          },
-          callback: (response) => {
-            this.loadingBtn = false
-            if (!response) {
-              return false
-            }
-            if (response.data.code === '1000') {
-              this.$Message.success(`提交过户成功：${response.data.countSuccess}个，失败：${response.data.countFaild}个`)
-              this.$emit('refreshData')
-            } else {
-              if (response.data.code === '100') {
-                this.$Message.error('模板不存在')
-              }
+          templateId: this.$refs.templateId.value,
+          domainNames: this.$refs.domain.value.replace(/[\n\r]/g, ',')
+        }
+        this.$store.dispatch('SUBMIT_CHANGE', params).then(response => {
+          this.loadingBtn = false
+          if (!response) {
+            return false
+          }
+          if (response.data.code === '1000') {
+            this.$Message.success(`提交过户成功：${response.data.countSuccess}个，失败：${response.data.countFaild}个`)
+            this.$emit('refreshData')
+          } else {
+            if (response.data.code === '100') {
+              this.$Message.error('模板不存在')
             }
           }
-        }
-        console.log(params.param)
-        this.submitChange(params)
+        }).catch(() => {})
       } else {
         this.loadingBtn = false
       }
-    },
-    ...mapActions({
-      submitChange: types.SUBMIT_CHANGE,
-      queryTemplates: types.QUERY_TEMPLATES
-    })
+    }
   },
   computed: {
     defaultValueFormat () {
@@ -102,24 +92,18 @@ export default {
     }
   },
   beforeMount () {
-    let params = {
-      param: {
-
-      },
-      callback: (response) => {
-        if (!response) {
-          return false
-        }
-        if (response.data.code === '1000') {
-          this.templateList = this.GLOBALS.CONVERT_SELECT(response.data.data, {
-            label: 'templateName',
-            value: 'id'
-          })
-        } else {
-        }
+    this.$store.dispatch('TEMPLATES').then(response => {
+      if (!response) {
+        return false
       }
-    }
-    this.queryTemplates(params)
+      if (response.data.code === '1000') {
+        this.templateList = this.GLOBALS.CONVERT_SELECT(response.data.data, {
+          label: 'templateName',
+          value: 'id'
+        })
+      } else {
+      }
+    }).catch(() => {})
   },
   watch: {
   }

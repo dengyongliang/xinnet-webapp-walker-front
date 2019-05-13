@@ -51,8 +51,7 @@ div.list
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
-import * as types from '@/store/types'
+import { mapState } from 'vuex'
 import compCompanyDetail from '@/components/compCompanyDetail'
 export default {
   components: {
@@ -96,29 +95,23 @@ export default {
       console.log(this.companyDetailData)
     },
     showCompanyDetail (id, tabIdx) {
-      let params = {
-        param: {
-          companyId: id
-        },
-        callback: (response) => {
-          this.loadingBtn = false
-          if (!response) {
-            return false
-          }
-          if (response.data.code === '1000') {
-            this.companyDetailData = response.data.data
-            if (typeof tabIdx !== 'undefined') {
-              this.companyDetailData.tabIdx = tabIdx
-            } else {
-              this.companyDetailData.tabIdx = 'name1'
-            }
-            this.drawerCompanyDetail = true
-          } else {
-            this.$Message.error('企业信息获取失败')
-          }
+      this.$store.dispatch('COMPANY_INFO', {companyId: id}).then(response => {
+        this.loadingBtn = false
+        if (!response) {
+          return false
         }
-      }
-      this.queryCompanyInfo(params)
+        if (response.data.code === '1000') {
+          this.companyDetailData = response.data.data
+          if (typeof tabIdx !== 'undefined') {
+            this.companyDetailData.tabIdx = tabIdx
+          } else {
+            this.companyDetailData.tabIdx = 'name1'
+          }
+          this.drawerCompanyDetail = true
+        } else {
+          this.$Message.error('企业信息获取失败')
+        }
+      }).catch(() => {})
     },
     delCompany (id) {
       this.$Modal.confirm({
@@ -126,43 +119,33 @@ export default {
         content: '<p>请确认是否删除该企业？</p>',
         loading: true,
         onOk: () => {
-          let params = {
-            param: {
-              companyId: id
-            },
-            callback: (response) => {
-              this.$Modal.remove()
-              if (!response) {
-                return false
-              }
-              if (response.data.code === '1000') {
-                this.$Message.success('企业删除成功')
-                this.$emit('refreshData')
+          this.$store.dispatch('COMPANY_DELETE', {companyId: id}).then(response => {
+            this.$Modal.remove()
+            if (!response) {
+              return false
+            }
+            if (response.data.code === '1000') {
+              this.$Message.success('企业删除成功')
+              this.$emit('refreshData')
+            } else {
+              if (response.data.code === '100') {
+                this.$Message.error('企业不存在！')
+              } else if (response.data.code === '200') {
+                this.$Message.error('主体公司不允许删除！')
+              } else if (response.data.code === '300') {
+                this.$Message.error('企业下有域名，不允许删除！')
+              } else if (response.data.code === '400') {
+                this.$Message.error('企业下有员工，不允许删除！')
               } else {
-                if (response.data.code === '100') {
-                  this.$Message.error('企业不存在！')
-                } else if (response.data.code === '200') {
-                  this.$Message.error('主体公司不允许删除！')
-                } else if (response.data.code === '300') {
-                  this.$Message.error('企业下有域名，不允许删除！')
-                } else if (response.data.code === '400') {
-                  this.$Message.error('企业下有员工，不允许删除！')
-                } else {
-                  this.$Message.error('企业删除失败！')
-                }
+                this.$Message.error('企业删除失败！')
               }
             }
-          }
-          this.deleteCompany(params)
+          }).catch(() => {})
         },
         onCancel: () => {
         }
       })
-    },
-    ...mapActions({
-      deleteCompany: types.DELETE_COMPANY,
-      queryCompanyInfo: types.QUERY_COMPANY_INFO
-    })
+    }
   },
   beforeMount () {
   },

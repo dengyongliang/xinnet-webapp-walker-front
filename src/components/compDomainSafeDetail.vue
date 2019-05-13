@@ -40,8 +40,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
-import * as types from '@/store/types'
+import { mapState } from 'vuex'
 import compWorkOrderSubmit from '@/components/compWorkOrderSubmit'
 export default {
   components: {
@@ -224,108 +223,92 @@ export default {
     },
     buyFun (type) {
       var params = {
-        param: {
-          jsonObj: [{
-            domainName: this.detailData.domainName,
-            orderGoodsType: 4,
-            orderType: type === 'new' ? 1 : 2
-          }]
-        },
-        callback: (response) => {
-          this.loadingBtn = false
-          if (!response) {
-            return false
-          }
-          if (response.data.code === '1000') {
-            response.data.type = '4_' + (type === 'new' ? 1 : 2)
-            response.data.jsonObj.map((v) => {
-              v.price = v.goodsNumAndPrice[0].price + '_' + v.goodsNumAndPrice[0].unit
-              v.num = v.goodsNumAndPrice[0].num
-              v.unit = v.goodsNumAndPrice[0].unit
-            })
-            this.$store.commit(types.SET_PAY_ORDERS, response.data)
-            this.$router.push({path: '/payConfirm'})
+        jsonObj: [{
+          domainName: this.detailData.domainName,
+          orderGoodsType: 4,
+          orderType: type === 'new' ? 1 : 2
+        }]
+      }
+      this.$store.dispatch('ORDER_CONFIRM', params).then(response => {
+        this.loadingBtn = false
+        if (!response) {
+          return false
+        }
+        if (response.data.code === '1000') {
+          response.data.type = '4_' + (type === 'new' ? 1 : 2)
+          response.data.jsonObj.map((v) => {
+            v.price = v.goodsNumAndPrice[0].price + '_' + v.goodsNumAndPrice[0].unit
+            v.num = v.goodsNumAndPrice[0].num
+            v.unit = v.goodsNumAndPrice[0].unit
+          })
+          this.$store.commit('SET_PAY_ORDERS', response.data)
+          this.$router.push({path: '/payConfirm'})
+        } else {
+          if (response.data.code === '100') {
+            this.$Message.error('模板不存在')
+          } else if (response.data.code === '200') {
+            this.$Message.error('分组不存在')
+          } else if (response.data.code === '300') {
+            this.$Message.error('账户错误')
+          } else if (response.data.code === '400') {
+            this.$Message.error('json数据错误')
           } else {
-            if (response.data.code === '100') {
-              this.$Message.error('模板不存在')
-            } else if (response.data.code === '200') {
-              this.$Message.error('分组不存在')
-            } else if (response.data.code === '300') {
-              this.$Message.error('账户错误')
-            } else if (response.data.code === '400') {
-              this.$Message.error('json数据错误')
-            } else {
-            }
           }
         }
-      }
-      console.log(params.param)
-      this.queryOrderConfirm(params)
+      }).catch(() => {})
     },
     renewFun (id, flag) {
       let params = {
-        param: {
-          autoRenewFlag: flag,
-          domainId: id
-        },
-        callback: (response) => {
-          this.loadingBtn = false
-          if (!response) {
-            return false
-          }
-          if (response.data.code === '1000') {
-            this.loadingBtn = false
-            this.$Message.success(`自动续费${flag === 1 ? '开启' : '关闭'}成功`)
-            this.list[0].status = flag
-          } else {
-            if (response.data.code === '100') {
-              this.$Message.error('域名不存在')
-            } else if (response.data.code === '200') {
-              this.$Message.error('商品不存在')
-            } else if (response.data.code === '300') {
-              this.$Message.error('价格错误')
-            } else if (response.data.code === '400') {
-              this.$Message.error('客户账号异常')
-            } else if (response.data.code === '600') {
-              this.$Message.error('信用额度不足')
-            }
-            // this.$Message.error(`自动续费${flag === 1 ? '开启' : '关闭'}失败`)
-          }
-        }
+        autoRenewFlag: flag,
+        domainId: id
       }
-      this.setAutoRenew(params)
+      this.$store.dispatch('SET_AUTO_RENEW', params).then(response => {
+        this.loadingBtn = false
+        if (!response) {
+          return false
+        }
+        if (response.data.code === '1000') {
+          this.loadingBtn = false
+          this.$Message.success(`自动续费${flag === 1 ? '开启' : '关闭'}成功`)
+          this.list[0].status = flag
+        } else {
+          if (response.data.code === '100') {
+            this.$Message.error('域名不存在')
+          } else if (response.data.code === '200') {
+            this.$Message.error('商品不存在')
+          } else if (response.data.code === '300') {
+            this.$Message.error('价格错误')
+          } else if (response.data.code === '400') {
+            this.$Message.error('客户账号异常')
+          } else if (response.data.code === '600') {
+            this.$Message.error('信用额度不足')
+          }
+          // this.$Message.error(`自动续费${flag === 1 ? '开启' : '关闭'}失败`)
+        }
+      }).catch(() => {})
     },
     updateFun (id, flag) {
       let params = {
-        param: {
-          prohibitUpdate: flag,
-          domainId: id
-        },
-        callback: (response) => {
-          this.loadingBtn = false
-          if (!response) {
-            return false
-          }
-          if (response.data.code === '1000') {
-            this.loadingBtn = false
-            this.$Message.success(`禁止更新${flag === 1 ? '开启' : '关闭'}成功`)
-            this.list[1].status = flag
-          } else {
-            // this.$Message.error(`禁止更新${flag === 1 ? '开启' : '关闭'}失败`)
-          }
-        }
+        prohibitUpdate: flag,
+        domainId: id
       }
-      this.setProhibitUpdate(params)
+      this.$store.dispatch('SET_PROHIBIT_UPDATE', params).then(response => {
+        this.loadingBtn = false
+        if (!response) {
+          return false
+        }
+        if (response.data.code === '1000') {
+          this.loadingBtn = false
+          this.$Message.success(`禁止更新${flag === 1 ? '开启' : '关闭'}成功`)
+          this.list[1].status = flag
+        } else {
+          // this.$Message.error(`禁止更新${flag === 1 ? '开启' : '关闭'}失败`)
+        }
+      }).catch(() => {})
     },
     showLockFun () {
       this.onParentmethod()
-    },
-    ...mapActions({
-      submitChange: types.SUBMIT_CHANGE,
-      setAutoRenew: types.SET_AUTO_RENEW,
-      setProhibitUpdate: types.SET_PROHIBIT_UPDATE,
-      queryOrderConfirm: types.QUERY_ORDER_CONFIRM
-    })
+    }
   },
   computed: {
     ...mapState({

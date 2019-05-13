@@ -8,8 +8,7 @@
 </template>
 
 <script>
-import {mapState, mapActions} from 'vuex'
-import * as types from '@/store/types'
+import {mapState} from 'vuex'
 import compSelect from './compSelect'
 export default {
   components: {
@@ -36,18 +35,8 @@ export default {
   },
   methods: {
     changeCustomersEv () {
-      let params = {
-        param: {
-          customerId: this.$refs.customerId.value
-        },
-        vm: this
-      }
-      this.changeCustomers(params)
-    },
-    ...mapActions({
-      queryUserCustomersList: types.QUERY_USER_CUSTOMERS_LIST,
-      changeCustomers: types.CHANGE_CUSTOMERS
-    })
+      this.$store.dispatch('CHANGE_CUSTOMERS', {customerId: this.$refs.customerId.value}).then(() => {}).catch(() => {})
+    }
   },
   computed: {
     ...mapState({
@@ -57,7 +46,7 @@ export default {
     })
   },
   beforeMount () {
-    this.queryUserCustomersList((response) => {
+    this.$store.dispatch('USER_CUSTOMERS').then(response => {
       if (!response) {
         return false
       }
@@ -67,7 +56,7 @@ export default {
           label: 'name'
         })
       }
-    })
+    }).catch(() => {})
   },
   watch: {
   }

@@ -7,30 +7,30 @@
     Row
       Col(span="8")
         strong 域名总数
-        em.num {{reportAssets.domainNumber}}
+        em.num {{report[0].domainNumber}}
 
       Col(span="8")
         strong 管理公司数量
-        em.num {{reportAssets.companyCount}}
+        em.num {{report[0].companyCount}}
 
       Col(span="8")
         strong 管理人员
-        em.num {{reportAssets.userCount}}
-    p 截止2018-12-13 21：30，天翼实业集团有限公司共拥有域名数量{{reportAssets.domainNumber}}个，管理公司{{reportAssets.companyCount}}个，管理人员{{reportAssets.userCount}}人。域名监控时长1112天，域名安全问题产生次数0次。
+        em.num {{report[0].userCount}}
+    p 截止2018-12-13 21：30，天翼实业集团有限公司共拥有域名数量{{report[0].domainNumber}}个，管理公司{{report[0].companyCount}}个，管理人员{{report[0].userCount}}人。域名监控时长1112天，域名安全问题产生次数0次。
   .secBox.secBox2
     h4.h4T.clear
       span.t 域名所属公司
-    comp-chart-report-assets-company(:charData="reportcompany")
+    comp-chart-report-assets-company(:charData="report[1]")
 
   .secBox.secBox3
     h4.h4T.clear
       span.t 域名后缀分布
-    comp-chart-report-assets-suffix(:charData="reportSuffix")
+    comp-chart-report-assets-suffix(:charData="report[2]")
 
   .secBox.secBox4
     h4.h4T.clear
       span.t 域名到期时间
-    comp-chart-report-own-due-time(:charData="reportExpire")
+    comp-chart-report-own-due-time(:charData="report[6]")
 
   .secBox.secBox5
     h4.h4T.clear
@@ -38,16 +38,14 @@
     Row
       Col(span="12")
         strong 一般保护域名安全服务开通情况
-        comp-chart-report-assets-safe-normal(:charData="reportSafeNormal")
+        comp-chart-report-assets-safe-normal(:charData="report[3]")
       Col(span="12")
         strong 重点保护域名安全服务开通情况
-        comp-chart-report-assets-safe-important(:charData="reportSafeImportant")
-    p 重点保护域名<em>{{reportSafeRate.safeNumber}}</em>个，占域名总数的<em>{{reportSafeRate.importantRate}}</em>；重点保护域名注册局锁开通率<em>{{reportSafeRate.backEndLockRate}}</em>，<em>{{reportSafeRate.backEndLockNotOpenNumber}}</em>个重点保护域名未开通注册局锁；<br />自动续费域名<em>{{reportSafeRate.autoRenewOpenNumber}}</em>，自动续费开通率<em>{{reportSafeRate.autoRenewRate}}</em>；禁止更新域名<em>{{reportSafeRate.updateProhibitedOpenNumber}}</em>个，禁止更新开通率<em>{{reportSafeRate.updateProhibitedRate}}</em>。
+        comp-chart-report-assets-safe-important(:charData="report[4]")
+    p 重点保护域名<em>{{report[5].safeNumber}}</em>个，占域名总数的<em>{{report[5].importantRate}}</em>；重点保护域名注册局锁开通率<em>{{report[5].backEndLockRate}}</em>，<em>{{report[5].backEndLockNotOpenNumber}}</em>个重点保护域名未开通注册局锁；<br />自动续费域名<em>{{report[5].autoRenewOpenNumber}}</em>，自动续费开通率<em>{{report[5].autoRenewRate}}</em>；禁止更新域名<em>{{report[5].updateProhibitedOpenNumber}}</em>个，禁止更新开通率<em>{{report[5].updateProhibitedRate}}</em>。
 </template>
 
 <script>
-import {mapActions} from 'vuex'
-import * as types from '@/store/types'
 import compChartReportAssetsCompany from '@/components/compChartReportAssetsCompany'
 import compChartReportAssetsSuffix from '@/components/compChartReportAssetsSuffix'
 import compChartReportOwnDueTime from '@/components/compChartReportOwnDueTime'
@@ -63,92 +61,34 @@ export default {
   },
   data () {
     return {
-      reportAssets: {},
-      reportcompany: {},
-      reportSuffix: {},
-      reportExpire: {},
-      reportSafeNormal: {},
-      reportSafeImportant: {},
-      reportSafeRate: {}
+      report: ['', '', '', '', '', '', '']
     }
   },
   methods: {
-    ...mapActions({
-      queryDomainAssetsViewReport: types.QUERY_DOMAIN_ASSETS_VIEW_REPORT,
-      queryDomainCompanyViewReport: types.QUERY_DOMAIN_COMPANY_VIEW_REPORT,
-      queryDomainSuffixViewReport: types.QUERY_DOMAIN_SUFFIX_VIEW_REPORT,
-      queryDomainSafeNormalReport: types.QUERY_DOMAIN_SAFE_NORMAL_REPORT,
-      queryDomainSafeImportantReport: types.QUERY_DOMAIN_SAFE_IMPORTANT_REPORT,
-      queryDomainSafeRateReport: types.QUERY_DOMAIN_SAFE_RATE_REPORT,
-      queryDomainMonitorExpireReport: types.QUERY_DOMAIN_MONITOR_EXPIRE_REPORT
-    })
   },
   computed: {
   },
   beforeMount () {
-    this.queryDomainAssetsViewReport((response) => {
-      if (!response) {
-        return false
-      }
-      if (response.data.code === '1000') {
-        this.reportAssets = response.data.data
-      } else {
-      }
-    })
-    this.queryDomainCompanyViewReport((response) => {
-      if (!response) {
-        return false
-      }
-      if (response.data.code === '1000') {
-        this.reportcompany = response.data.data
-      } else {
-      }
-    })
-    this.queryDomainSuffixViewReport((response) => {
-      if (!response) {
-        return false
-      }
-      if (response.data.code === '1000') {
-        this.reportSuffix = response.data.data
-      } else {
-      }
-    })
-    this.queryDomainSafeNormalReport((response) => {
-      if (!response) {
-        return false
-      }
-      if (response.data.code === '1000') {
-        this.reportSafeNormal = response.data.data
-      } else {
-      }
-    })
-    this.queryDomainSafeImportantReport((response) => {
-      if (!response) {
-        return false
-      }
-      if (response.data.code === '1000') {
-        this.reportSafeImportant = response.data.data
-      } else {
-      }
-    })
-    this.queryDomainSafeRateReport((response) => {
-      if (!response) {
-        return false
-      }
-      if (response.data.code === '1000') {
-        this.reportSafeRate = response.data.data
-      } else {
-      }
-    })
-    this.queryDomainMonitorExpireReport((response) => {
-      if (!response) {
-        return false
-      }
-      if (response.data.code === '1000') {
-        this.reportExpire = response.data.data
-      } else {
-      }
-    })
+    Promise.all([
+      this.$store.dispatch('DOMAIN_ASSETS_VIEW_REPORT'),
+      this.$store.dispatch('DOMAIN_COMPANY_VIEW_REPORT'),
+      this.$store.dispatch('DOMAIN_SUFFIX_VIEW_REPORT'),
+      this.$store.dispatch('DOMAIN_SAFE_NORMAL_REPORT'),
+      this.$store.dispatch('DOMAIN_SAFE_IMPORTANT_REPORT'),
+      this.$store.dispatch('DOMAIN_SAFE_RATE_REPORT'),
+      this.$store.dispatch('DOMAIN_MONITOR_EXPIRE_REPORT')
+    ]).then(response => {
+      console.log(response)
+      response.map((v, i, arr) => {
+        if (!v) {
+          return false
+        }
+        if (v.data.code === '1000') {
+          this.$set(this.report, i, v.data.data)
+        }
+      })
+      console.log(this.report)
+    }).catch(() => {})
   },
   mounted () {
   },

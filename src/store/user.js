@@ -1,7 +1,4 @@
-import * as types from './types'
-import rest from '../global/http.js'
-import * as links from '../global/linkdo.js'
-
+import * as api from '@/api/user'
 export default {
   state: {
     myUserInfo: {
@@ -46,140 +43,273 @@ export default {
     userMsgNum: 0
   },
   mutations: {
-    [types.SET_CURRENT_USER_DATA] (state, payload) {
+    SET_CURRENT_USER_DATA (state, payload) {
       state.myUserInfo = payload.data
     },
-    [types.UPDATE_USER_TEL] (state, payload) {
+    UPDATE_USER_TEL (state, payload) {
       state.myUserInfo.userTel = payload
     },
-    [types.UPDATE_USER_MOBILE] (state, payload) {
+    UPDATE_USER_MOBILE (state, payload) {
       state.myUserInfo.userMobile = payload
     },
-    [types.SET_USER_ROLES] (state, payload) {
+    SET_USER_ROLES (state, payload) {
       state.userRoles = payload.data
     },
-    [types.SET_USERS] (state, payload) {
+    SET_USERS (state, payload) {
       state.users = payload.data
     },
-    [types.SET_COMPANYS] (state, payload) {
+    SET_COMPANYS (state, payload) {
       state.companys = payload.data
     },
-    [types.SET_USER_AUTH_GROUPS] (state, payload) {
+    SET_USER_AUTH_GROUPS (state, payload) {
       state.userAuthGroups = payload.data
     },
-    [types.SET_USER_AUTH_GROUPS_ORIGINAL] (state, payload) {
+    SET_USER_AUTH_GROUPS_ORIGINAL (state, payload) {
       state.userAuthGroupsOriginal = payload.data
     },
-    [types.SET_USER_MSG_NUM] (state, payload) {
+    SET_USER_MSG_NUM (state, payload) {
       state.userMsgNum = payload.data
     },
-    [types.SET_MENUS] (state, payload) {
+    SET_MENUS (state, payload) {
       state.menus = payload.data.menus
     }
   },
   actions: {
-    [types.GET_CURRENT_USER_DATA] ({ commit, rootState }, callback) {
-      rest.get(links.GET_CURRENT_USER_DATA, '')
-        .then(callback)
-        .catch(() => {})
+    USER_CUSTOMERS ({ commit }) {
+      return new Promise((resolve, reject) => {
+        api.USER_CUSTOMERS().then(response => {
+          resolve(response)
+        }).catch(error => {
+          reject(error)
+        })
+      })
     },
-    [types.UPDATE_USER_INFO] ({ commit, rootState }, params) {
-      rest.post(links.UPDATE_USER_INFO, params.param)
-        .then(params.callback)
-        .catch(() => {})
+    VALID_USER ({ commit }, params) {
+      return new Promise((resolve, reject) => {
+        api.VALID_USER(params.userCode, params.userName).then(response => {
+          resolve(response)
+        }).catch(error => {
+          reject(error)
+        })
+      })
     },
-    [types.UPDATE_USER_PASSWORD] ({ commit, rootState }, params) {
-      rest.post(links.UPDATE_USER_PASSWORD, params.param)
-        .then(params.callback)
-        .catch(() => {})
+    ACTIVATION_USER_INFO ({ commit }, params) {
+      return new Promise((resolve, reject) => {
+        api.ACTIVATION_USER_INFO(params.userCode, params.userSex, params.userTel, params.userMobile, params.verificationCode, params.qq, params.wx).then(response => {
+          resolve(response)
+        }).catch(error => {
+          reject(error)
+        })
+      })
     },
-    [types.QUERY_USER_LIST] ({ commit, rootState }, params) {
-      rest.post(links.QUERY_USER_LIST, params.param)
-        .then(params.callback)
-        .catch(() => {})
+    ACTIVATION_USER_PWD ({ commit }, params) {
+      return new Promise((resolve, reject) => {
+        api.ACTIVATION_USER_PWD(params.userCode, params.password).then(response => {
+          resolve(response)
+        }).catch(error => {
+          reject(error)
+        })
+      })
     },
-    [types.ADD_USER] ({ commit, rootState }, params) {
-      rest.post(links.ADD_USER, params.param)
-        .then(params.callback)
-        .catch(() => {})
+    LOGOUT ({ commit }) {
+      return new Promise((resolve, reject) => {
+        api.LOGOUT().then(response => {
+          commit('SET_LOGOUT')
+          commit('SET_CURRENT_USER_DATA', {})
+          commit('SET_MENUS', {})
+          resolve(response)
+        }).catch(error => {
+          reject(error)
+        })
+      })
     },
-    [types.QUERY_USER_COMPANYS] ({ commit, rootState }, params) {
-      rest.post(links.QUERY_USER_COMPANYS, params.param)
-        .then(params.callback)
-        .catch(() => {})
+    LOGIN ({ commit }, params) {
+      return new Promise((resolve, reject) => {
+        api.LOGIN(params.account, params.password, params.verificationCode).then(response => {
+          resolve(response)
+        }).catch(error => {
+          reject(error)
+        })
+      })
     },
-    [types.DELETE_USER_INFO] ({ commit, rootState }, params) {
-      rest.post(links.DELETE_USER_INFO, params.param)
-        .then(params.callback)
-        .catch(() => {})
+    MY_USER_INFO ({ commit }, params) {
+      return new Promise((resolve, reject) => {
+        api.MY_USER_INFO(params).then(response => {
+          resolve(response)
+        }).catch(error => {
+          reject(error)
+        })
+      })
     },
-    [types.QUERY_USER_INFO] ({ commit, rootState }, params) {
-      rest.post(links.QUERY_USER_INFO, params.param)
-        .then(params.callback)
-        .catch(() => {})
+    CHANGE_CUSTOMERS ({ commit }, params) {
+      return new Promise((resolve, reject) => {
+        api.CHANGE_CUSTOMERS(params.customerId).then(response => {
+          window.location.href = '/home'
+          resolve(response)
+        }).catch(error => {
+          reject(error)
+        })
+      })
     },
-    [types.UPDATE_USER_AUTH] ({ commit, rootState }, params) {
-      rest.post(links.UPDATE_USER_AUTH, params.param)
-        .then(params.callback)
-        .catch(() => {})
+    USER_LIST ({ commit }, params) {
+      params = Object.assign({
+        pageNum: 1,
+        pageSize: 20,
+        domainCompanyId: '',
+        domainGroupId: '',
+        companyId: '',
+        userCode: ''
+      }, params)
+      return new Promise((resolve, reject) => {
+        api.USER_LIST(params.pageNum, params.pageSize, params.domainCompanyId, params.domainGroupId, params.companyId, params.userCode).then(response => {
+          resolve(response)
+        }).catch(error => {
+          reject(error)
+        })
+      })
     },
-    [types.UPDATE_USER] ({ commit, rootState }, params) {
-      rest.post(links.UPDATE_USER, params.param)
-        .then(params.callback_resolved)
-        .catch(() => {})
+    UPDATE_USER_INFO ({ commit }, params) {
+      params = Object.assign({
+        userCode: '',
+        userTel: '',
+        userMobile: '',
+        verificationCode: ''
+      }, params)
+      return new Promise((resolve, reject) => {
+        api.UPDATE_USER_INFO(params.userCode, params.userTel, params.userMobile, params.verificationCode).then(response => {
+          resolve(response)
+        }).catch(error => {
+          reject(error)
+        })
+      })
     },
-    [types.GET_USER_ROLES] ({ commit, rootState }) {
-      rest.get(links.GET_USER_ROLES, '')
-        .then(function (response) {
+    UPDATE_USER_PASSWORD ({ commit }, params) {
+      return new Promise((resolve, reject) => {
+        api.UPDATE_USER_PASSWORD(params.userCode, params.newPassword).then(response => {
+          resolve(response)
+        }).catch(error => {
+          reject(error)
+        })
+      })
+    },
+    USER_ROLES ({ commit }, params) {
+      return new Promise((resolve, reject) => {
+        api.USER_ROLES(params).then(response => {
           if (!response) {
             return false
           }
           if (response.data.code === '1000') {
-            commit(types.SET_USER_ROLES, response.data)
+            commit('SET_USER_ROLES', response.data)
           } else {
           }
+          resolve(response)
+        }).catch(error => {
+          reject(error)
         })
-        .catch(() => {})
+      })
     },
-    [types.GET_USERS] ({ commit, rootState }) {
-      rest.get(links.GET_USERS, '')
-        .then(function (response) {
+    USERS ({ commit }, params) {
+      return new Promise((resolve, reject) => {
+        api.USERS(params).then(response => {
           if (!response) {
             return false
           }
           if (response.data.code === '1000') {
-            commit(types.SET_USERS, response.data)
+            commit('SET_USERS', response.data)
           } else {
           }
+          resolve(response)
+        }).catch(error => {
+          reject(error)
         })
-        .catch(() => {})
+      })
     },
-    [types.GET_COMPANYS] ({ commit, rootState }) {
-      rest.get(links.GET_COMPANYS, '')
-        .then(function (response) {
+    COMPANYS ({ commit }, params) {
+      return new Promise((resolve, reject) => {
+        api.COMPANYS(params).then(response => {
           if (!response) {
             return false
           }
           if (response.data.code === '1000') {
-            commit(types.SET_COMPANYS, response.data)
+            commit('SET_COMPANYS', response.data)
           } else {
           }
+          resolve(response)
+        }).catch(error => {
+          reject(error)
         })
-        .catch(() => {})
+      })
     },
-    [types.GET_USER_AUTH_GROUPS] ({ commit, rootState }) {
-      rest.post(links.GET_USER_AUTH_GROUPS, {userId: ''})
-        .then(function (response) {
+    USER_AUTH_GROUPS ({ commit }, params) {
+      return new Promise((resolve, reject) => {
+        api.USER_AUTH_GROUPS(params).then(response => {
           if (!response) {
             return false
           }
           if (response.data.code === '1000') {
-            commit(types.SET_USER_AUTH_GROUPS, response.data)
-            commit(types.SET_USER_AUTH_GROUPS_ORIGINAL, response.data)
+            commit('SET_USER_AUTH_GROUPS', response.data)
+            commit('SET_USER_AUTH_GROUPS_ORIGINAL', response.data)
           } else {
           }
+          resolve(response)
+        }).catch(error => {
+          reject(error)
         })
-        .catch(() => {})
+      })
+    },
+    USER_COMPANYS ({ commit }) {
+      return new Promise((resolve, reject) => {
+        api.USER_COMPANYS().then(response => {
+          resolve(response)
+        }).catch(error => {
+          reject(error)
+        })
+      })
+    },
+    ADD_USER ({ commit }, params) {
+      return new Promise((resolve, reject) => {
+        api.ADD_USER(params.roleId, params.groups, params.userName, params.userEmail, params.companyId).then(response => {
+          resolve(response)
+        }).catch(error => {
+          reject(error)
+        })
+      })
+    },
+    DELETE_USER_INFO ({ commit }, params) {
+      return new Promise((resolve, reject) => {
+        api.DELETE_USER_INFO(params.userCode).then(response => {
+          resolve(response)
+        }).catch(error => {
+          reject(error)
+        })
+      })
+    },
+    USER_INFO ({ commit }, params) {
+      return new Promise((resolve, reject) => {
+        api.USER_INFO(params.userCode).then(response => {
+          resolve(response)
+        }).catch(error => {
+          reject(error)
+        })
+      })
+    },
+    UPDATE_USER_AUTH ({ commit }, params) {
+      return new Promise((resolve, reject) => {
+        api.UPDATE_USER_AUTH(params.userCode, params.roleId, params.groups).then(response => {
+          resolve(response)
+        }).catch(error => {
+          reject(error)
+        })
+      })
+    },
+    UPDATE_USER ({ commit }, params) {
+      return new Promise((resolve, reject) => {
+        api.UPDATE_USER(params.userMobile, params.userCode, params.userTel, params.userEmail, params.companyId).then(response => {
+          resolve(response)
+        }).catch(error => {
+          reject(error)
+        })
+      })
     }
   }
 }

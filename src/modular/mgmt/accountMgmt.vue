@@ -45,8 +45,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
-import * as types from '@/store/types'
+import { mapState } from 'vuex'
 import compAccountAddStaff from '@/components/compAccountAddStaff'
 import compAccountDetailStaff from '@/components/compAccountDetailStaff'
 
@@ -198,69 +197,28 @@ export default {
     queryParam (obj) {
       this.page.pageNo = obj.pageNum
       let params = {
-        param: {
-          pageNum: obj.pageNum,
-          pageSize: 20,
-          userCode: this.value
-        },
-        callback: (response) => {
-          if (!response) {
-            return false
-          }
-          if (response.data.code === '1000') {
-            this.list = response.data.data.list
-            this.page.pageItems = response.data.data.totalNum
-          } else {
-            if (response.data.code === '900') {
-              this.$Message.error('查询失败')
-            }
-          }
-        }
+        pageNum: obj.pageNum,
+        pageSize: 20,
+        userCode: this.value
       }
       return params
     },
     queryParamCompany (obj) {
       this.page.pageNo = obj.pageNum
       let params = {
-        param: {
-          pageNum: obj.pageNum,
-          pageSize: 20,
-          companyId: obj.companyId
-        },
-        callback: (response) => {
-          if (!response) {
-            return false
-          }
-          if (response.data.code === '1000') {
-            this.list = response.data.data.list
-            this.page.pageItems = response.data.data.totalNum
-          } else {
-            this.$Message.error('查询失败')
-          }
-        }
+        pageNum: obj.pageNum,
+        pageSize: 20,
+        companyId: obj.companyId
       }
       return params
     },
     queryParamDomainGroup (obj) {
       this.page.pageNo = obj.pageNum
       let params = {
-        param: {
-          pageNum: obj.pageNum,
-          pageSize: 20,
-          domainCompanyId: obj.domainCompanyId,
-          domainGroupId: obj.domainGroupId
-        },
-        callback: (response) => {
-          if (!response) {
-            return false
-          }
-          if (response.data.code === '1000') {
-            this.list = response.data.data.list
-            this.page.pageItems = response.data.data.totalNum
-          } else {
-            this.$Message.error('查询失败')
-          }
-        }
+        pageNum: obj.pageNum,
+        pageSize: 20,
+        domainCompanyId: obj.domainCompanyId,
+        domainGroupId: obj.domainGroupId
       }
       return params
     },
@@ -310,27 +268,21 @@ export default {
       return result
     },
     showAccountDetail (userCode) {
-      let params = {
-        param: {
-          userCode: userCode
-        },
-        callback: (response) => {
-          if (!response) {
-            return false
-          }
-          if (response.data.code === '1000') {
-            this.staffData = response.data.data
-            this.drawerDetailStaff = true
+      this.$store.dispatch('USER_INFO', {userCode: userCode}).then(response => {
+        if (!response) {
+          return false
+        }
+        if (response.data.code === '1000') {
+          this.staffData = response.data.data
+          this.drawerDetailStaff = true
+        } else {
+          if (response.data.code === '100') {
+            this.$Message.error('用户不存在')
           } else {
-            if (response.data.code === '100') {
-              this.$Message.error('用户不存在')
-            } else {
-              this.$Message.error('操作失败')
-            }
+            this.$Message.error('操作失败')
           }
         }
-      }
-      this.queryUserInfo(params)
+      }).catch(() => {})
     },
     showDelAccount (userCode) {
       // console.log(userCode)
@@ -339,42 +291,45 @@ export default {
         content: '<p>请确认是否要删除此员工！</p>',
         loading: true,
         onOk: () => {
-          let params = {
-            param: {
-              userCode: userCode
-            },
-            callback: (response) => {
-              this.$Modal.remove()
-              if (!response) {
-                return false
-              }
-              if (response.data.code === '1000') {
-                this.$Message.success('删除成功')
-                // 删除成功，重新加载用户列表数据
-                this.searchUserData()
+          this.$store.dispatch('DELETE_USER_INFO', {userCode: userCode}).then(response => {
+            this.$Modal.remove()
+            if (!response) {
+              return false
+            }
+            if (response.data.code === '1000') {
+              this.$Message.success('删除成功')
+              // 删除成功，重新加载用户列表数据
+              this.searchUserData()
+            } else {
+              if (response.data.code === '200') {
+                this.$Message.error('用户不存在')
+              } else if (response.data.code === '300') {
+                this.$Message.error('用户被锁定')
               } else {
-                if (response.data.code === '200') {
-                  this.$Message.error('用户不存在')
-                } else if (response.data.code === '300') {
-                  this.$Message.error('用户被锁定')
-                } else {
-                  this.$Message.error('操作失败')
-                }
+                this.$Message.error('操作失败')
               }
             }
-          }
-          this.deleteUserInfo(params)
+          }).catch(() => {})
         },
         onCancel: () => {
         }
       })
     },
-    ...mapActions({
-      queryUserList: types.QUERY_USER_LIST,
-      queryUserCompanys: types.QUERY_USER_COMPANYS,
-      deleteUserInfo: types.DELETE_USER_INFO,
-      queryUserInfo: types.QUERY_USER_INFO
-    })
+    queryUserList (paramsCallback) {
+      this.$store.dispatch('USER_LIST', paramsCallback).then(response => {
+        if (!response) {
+          return false
+        }
+        if (response.data.code === '1000') {
+          this.list = response.data.data.list
+          this.page.pageItems = response.data.data.totalNum
+        } else {
+          if (response.data.code === '900') {
+            this.$Message.error('查询失败')
+          }
+        }
+      }).catch(() => {})
+    }
   },
   computed: {
     ...mapState({
@@ -422,39 +377,36 @@ export default {
   },
   beforeMount () {
     this.queryUserList(this.queryParam({pageNum: 1}))
-    let params = {
-      param: {},
-      callback: (response) => {
-        if (!response) {
-          return false
-        }
-        if (response.data.code === '1000') {
-          this.userCompanys.push({
-            title: response.data.data.id,
-            label: response.data.data.name,
-            expand: true,
-            checked: false,
-            userCount: response.data.data.userCount,
-            children: []
-          })
-          if (response.data.data.companys && response.data.data.companys.length) {
-            response.data.data.companys.forEach((item, index, array) => {
-              this.userCompanys[0].children.push({
-                title: item.id,
-                label: item.name,
-                expand: true,
-                checked: false,
-                userCount: item.userCount,
-                children: []
-              })
-            })
-          }
-        } else {
-          this.$Message.error('查询失败')
-        }
+
+    this.$store.dispatch('USER_COMPANYS').then(response => {
+      if (!response) {
+        return false
       }
-    }
-    this.queryUserCompanys(params)
+      if (response.data.code === '1000') {
+        this.userCompanys.push({
+          title: response.data.data.id,
+          label: response.data.data.name,
+          expand: true,
+          checked: false,
+          userCount: response.data.data.userCount,
+          children: []
+        })
+        if (response.data.data.companys && response.data.data.companys.length) {
+          response.data.data.companys.forEach((item, index, array) => {
+            this.userCompanys[0].children.push({
+              title: item.id,
+              label: item.name,
+              expand: true,
+              checked: false,
+              userCount: item.userCount,
+              children: []
+            })
+          })
+        }
+      } else {
+        this.$Message.error('查询失败')
+      }
+    }).catch(() => {})
   },
   watch: {
   }
