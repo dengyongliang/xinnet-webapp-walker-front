@@ -1,7 +1,7 @@
 <template lang="pug">
 Form.compStaffJurisdiction(:label-width="0")
   .t 选择员工角色：
-  FormItem()
+  FormItem(class="roleList")
     comp-radio(name="roleId",:list="userRoles",ref="roleId",:defaultValue="defaultValue.toString()")
   .t 请勾选此员工可管理的域名：
   FormItem()
@@ -10,6 +10,8 @@ Form.compStaffJurisdiction(:label-width="0")
         router-link.text(to="/mgmt/enterprise") 创建分组
       Tree(v-show="userAuthGroups.length", :data="userAuthGroups", show-checkbox, ref="Tree",:render="renderContent")
   Button(type="primary",@click="saveForm",:loading="loadingBtn") 保存
+  Modal(v-model="modal", title="提示")
+    <p style="text-align:center;">请先在 <a style="color: #2d8cf0" @click="toRolesMgmt">角色管理</a> 中创建角色！</p>
 </template>
 
 <script>
@@ -35,7 +37,8 @@ export default {
     return {
       loadingBtn: false,
       super: false,
-      defaultValue: ''
+      defaultValue: '',
+      modal: false
     }
   },
   methods: {
@@ -99,8 +102,12 @@ export default {
           }
         }).catch(() => {})
       } else {
+        this.modal = true
         this.loadingBtn = false
       }
+    },
+    toRolesMgmt () {
+      this.$router.push({path: '/mgmt/roles'})
     }
   },
   beforeMount () {

@@ -310,6 +310,15 @@ export default {
           reject(error)
         })
       })
+    },
+    CHECK_USER_PHONE ({ commit }, params) {
+      return new Promise((resolve, reject) => {
+        api.CHECK_USER_PHONE(params.userMobile).then(response => {
+          resolve(response)
+        }).catch(error => {
+          reject(error)
+        })
+      })
     }
   }
 }

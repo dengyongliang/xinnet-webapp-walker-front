@@ -1,7 +1,7 @@
 <template lang="pug">
 .compAccountAddStaff
   Tabs(v-model="value",:animated="false")
-    TabPane.tabPane1(label="基本资料",name="name1")
+    TabPane.tabPane1(label="基本资料",name="name1", :disabled="!tabDisabled")
       comp-account-staff-info(@getBaseInfo="baseInfo")
     TabPane.tabPane2(label="权限",name="name2",:disabled="tabDisabled")
       comp-account-staff-jurisdiction(:baseInfoData="baseInfoData",@closeDrawer="onClose")

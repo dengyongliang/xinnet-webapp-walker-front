@@ -43,3 +43,5 @@ export const USER_INFO = '/client/user/userInfo' + suffix // QUERY_USER_INFO
 export const UPDATE_USER_AUTH = '/client/user/updateUserAuth' + suffix
 // 修改员工信息
 export const UPDATE_USER = '/client/user/updateUser' + suffix
+// 验证手机号码
+export const CHECK_USER_PHONE = '/account/user/checkUserPhone' + suffix

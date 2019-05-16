@@ -170,3 +170,11 @@ export const UPDATE_USER = (userMobile, userCode, userTel, userEmail, companyId)
     data: {userMobile, userCode, userTel, userEmail, companyId}
   })
 }
+// 验证手机号码
+export const CHECK_USER_PHONE = (userMobile) => {
+  return axios({
+    url: action.CHECK_USER_PHONE,
+    method: 'GET',
+    data: {userMobile}
+  })
+}

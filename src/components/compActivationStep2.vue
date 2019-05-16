@@ -120,17 +120,32 @@ export default {
       let result = validateFormResult([
         this.$refs.userMobile
       ])
+
       if (result) {
-        this.$store.dispatch('ACTIVATION_CODE', {userMobile: this.$refs.userMobile.value}).then(response => {
-          this.loadingBtn = false
+        // 验证手机号
+        this.$store.dispatch('CHECK_USER_PHONE', {'userMobile': this.$refs.userMobile.value}).then(response => {
           if (response) {
             if (response.data.code === '1000') {
-              this.$Message.success('发送成功')
+              this.$store.dispatch('ACTIVATION_CODE', {userMobile: this.$refs.userMobile.value}).then(response => {
+                this.loadingBtn = false
+                if (response) {
+                  if (response.data.code === '1000') {
+                    this.$Message.success('发送成功')
+                  } else {
+                    if (response.data.code === '300') {
+                      this.$Message.error('短信验证码已发送')
+                    } else if (response.data.code === '500') {
+                      this.$Message.error('手机号码错误')
+                    } else {
+                      this.$Message.error('发送失败')
+                    }
+                  }
+                }
+              }).catch(() => {})
             } else {
-              if (response.data.code === '300') {
-                this.$Message.error('短信验证码已发送')
-              } else if (response.data.code === '500') {
-                this.$Message.error('手机号码错误')
+              this.loadingBtn = false
+              if (response.data.code === '100') {
+                this.$refs.userMobile.showValidateResult({text: '号码已存在'})
               } else {
                 this.$Message.error('发送失败')
               }
