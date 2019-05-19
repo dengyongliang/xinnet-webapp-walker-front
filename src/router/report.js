@@ -12,7 +12,8 @@ export default {
         return require(['@/modular/report/center'], resolve)
       },
       meta: {
-        title: '报告中心'
+        title: '报告中心',
+        keepAlive: true
       }
     },
     {
@@ -22,7 +23,8 @@ export default {
         return require(['@/modular/report/own'], resolve)
       },
       meta: {
-        title: '自有域名监控报告'
+        title: '自有域名监控报告',
+        keepAlive: true
       }
     },
     {
@@ -32,7 +34,8 @@ export default {
         return require(['@/modular/report/assets'], resolve)
       },
       meta: {
-        title: '域名资产报告'
+        title: '域名资产报告',
+        keepAlive: true
       }
     },
     {
@@ -43,7 +46,8 @@ export default {
       },
       props: true,
       meta: {
-        title: '域名预算报告'
+        title: '域名预算报告',
+        keepAlive: true
       }
     },
     {
@@ -53,7 +57,8 @@ export default {
         return require(['@/modular/report/spending'], resolve)
       },
       meta: {
-        title: '域名消费报告'
+        title: '域名消费报告',
+        keepAlive: true
       }
     }
   ]

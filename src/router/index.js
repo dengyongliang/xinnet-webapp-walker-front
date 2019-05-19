@@ -2,30 +2,16 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import NProgress from 'nprogress'
 import Event from '@/global/event'
-import domain from './domain'
-import mgmt from './mgmt'
-import order from './order'
-import finance from './finance'
-import notice from './notice'
-import record from './record'
 import report from './report'
-import monitor from './monitor'
+import routers from './routers'
+import makeStore from '@/store'
+import menuUtils2 from '@/global/menuUtils2.js'
 Vue.use(Router)
 export const emitter = new Event()
 
 const RouterMain = new Router({
   mode: 'history',
   routes: [
-    {
-      path: '*',
-      name: '404',
-      component (resolve) {
-        return require(['@/page/404'], resolve)
-      },
-      meta: {
-        title: '404'
-      }
-    },
     {
       path: '/login',
       name: 'login',
@@ -88,57 +74,56 @@ const RouterMain = new Router({
       }
     },
     {
-      path: '/',
-      name: 'main',
+      path: '*',
+      name: '404',
       component (resolve) {
-        return require(['@/page/main'], resolve)
+        return require(['@/page/404'], resolve)
       },
       meta: {
-        // title: GLOBAL.TITLE
-      },
-      children: [
-        {
-          path: '/',
-          name: 'home',
-          component (resolve) {
-            return require(['@/modular/home'], resolve)
-          },
-          meta: {
-            title: '首页'
-          }
-        },
-        {
-          path: '/home',
-          name: 'home',
-          component (resolve) {
-            return require(['@/modular/home'], resolve)
-          },
-          meta: {
-            title: '首页'
-          }
-        },
-        ...domain,
-        ...finance,
-        ...mgmt,
-        ...order,
-        ...notice,
-        ...record,
-        ...monitor
-      ]
+        title: '404',
+        keepAlive: true,
+        powers: '',
+        compName: 'page/404'
+      }
     },
-    report
+    report,
+    ...routers
   ],
   base: '/',
   scrollBehavior (to, from, savedPosition) {
-    return {x: 0, y: 0}
+    if (savedPosition) {
+      return savedPosition
+    } else {
+      if (from.meta.keepAlive) {
+        from.meta.savedPosition = document.body.scrollTop
+      }
+      return {
+        x: 0,
+        y: to.meta.savedPosition || 0
+      }
+    }
   }
 })
 RouterMain.beforeEach((to, from, next) => {
   NProgress.start()
-  window.document.title = to.meta.title
   next()
+  window.document.title = to.meta.title
 })
 RouterMain.afterEach(transition => {
   NProgress.done()
+})
+RouterMain.onReady(() => {
+  // let pageRouters = []
+  // console.log(localStorage.getItem('menus'))
+  // let routers = localStorage.getItem('menus') ? JSON.parse(localStorage.getItem('menus')) : []
+  // menuUtils2(pageRouters, routers)
+  // console.log("pageRouters")
+  // console.log(pageRouters)
+  // pageRouters.forEach((item) => {
+  //   RouterMain.options.routes.push(item)
+  // })
+  // RouterMain.addRoutes(pageRouters)
+  // console.log("RouterMain")
+  // console.log(RouterMain)
 })
 export default RouterMain

@@ -1,9 +1,9 @@
 export default [
-  {
-    path: 'finance',
-    name: 'finance_overview',
-    redirect: 'finance/overview'
-  },
+  // {
+  //   path: 'finance',
+  //   name: 'finance_overview',
+  //   redirect: 'finance/overview'
+  // },
   {
     path: 'finance/overview',
     name: 'finance_overview',
@@ -11,7 +11,10 @@ export default [
       return require(['@/modular/finance/overview'], resolve)
     },
     meta: {
-      title: '财务总览'
+      title: '财务总览',
+      keepAlive: true,
+      powers: 'client_finance_overview',
+      compName: 'modular/finance/overview'
     }
   },
   {
@@ -21,7 +24,10 @@ export default [
       return require(['@/modular/finance/billMgmt'], resolve)
     },
     meta: {
-      title: '账单管理'
+      title: '账单管理',
+      keepAlive: true,
+      powers: 'client_finance_bill',
+      compName: 'modular/finance/billMgmt'
     }
   }
 ]

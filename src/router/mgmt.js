@@ -1,9 +1,9 @@
 export default [
-  {
-    path: 'mgmt',
-    name: 'mgmt_enterprise',
-    redirect: 'mgmt/enterprise'
-  },
+  // {
+  //   path: 'mgmt',
+  //   name: 'mgmt_enterprise',
+  //   redirect: 'mgmt/enterprise'
+  // },
   {
     path: 'mgmt/enterprise',
     name: 'mgmt_enterprise',
@@ -11,7 +11,10 @@ export default [
       return require(['@/modular/mgmt/enterprise'], resolve)
     },
     meta: {
-      title: '企业管理'
+      title: '企业管理',
+      keepAlive: true,
+      powers: 'client_user_companyManage',
+      compName: 'modular/mgmt/enterprise'
     }
   },
   {
@@ -21,7 +24,10 @@ export default [
       return require(['@/modular/mgmt/myAccount'], resolve)
     },
     meta: {
-      title: '我的账号'
+      title: '我的账号',
+      keepAlive: true,
+      powers: 'client_user_myUserInfo',
+      compName: 'modular/mgmt/myAccount'
     }
   },
   {
@@ -31,7 +37,10 @@ export default [
       return require(['@/modular/mgmt/roles'], resolve)
     },
     meta: {
-      title: '角色管理'
+      title: '角色管理',
+      keepAlive: true,
+      powers: 'client_user_roleManage',
+      compName: 'modular/mgmt/roles'
     }
   },
   {
@@ -41,7 +50,10 @@ export default [
       return require(['@/modular/mgmt/accountMgmt'], resolve)
     },
     meta: {
-      title: '账号管理'
+      title: '账号管理',
+      keepAlive: true,
+      powers: 'client_user_userManage',
+      compName: 'modular/mgmt/accountMgmt'
     }
   },
   {
@@ -51,7 +63,10 @@ export default [
       return require(['@/modular/mgmt/workOrder'], resolve)
     },
     meta: {
-      title: '工单管理'
+      title: '工单管理',
+      keepAlive: true,
+      powers: 'client_user_workOrderManage',
+      compName: 'modular/mgmt/workOrder'
     }
   }
 ]

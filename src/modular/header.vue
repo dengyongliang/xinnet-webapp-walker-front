@@ -38,6 +38,8 @@ import { mapState } from 'vuex'
 import compSwitchClient from '@/components/compSwitchClient'
 // import mixinsWebSocket from '@/mixins/mixinsWebSocket'
 import { emitter as restEmitter } from '@/global/axios'
+import menuUtils2 from '@/global/menuUtils2.js'
+import routers from '@/router/routers.js'
 export default {
   components: {
     compSwitchClient
@@ -84,6 +86,30 @@ export default {
         return false
       }
       if (response.data.code === '1000') {
+        // if (!localStorage.getItem('menus')) {
+        //   var pageRouters = []
+        //   menuUtils2(pageRouters, routers)
+        //   pageRouters.push({
+        //     path: '*',
+        //     name: '404',
+        //     component (resolve) {
+        //       return require(['@/page/404'], resolve)
+        //     },
+        //     meta: {
+        //       title: '404',
+        //       keepAlive: true,
+        //       powers: '',
+        //       compName: 'page/404'
+        //     }
+        //   })
+        //   pageRouters.forEach((item)=>{
+        //     this.$router.options.routes.push(item)
+        //   })
+        //   // 存储 路由
+        //   localStorage.setItem('menus', JSON.stringify(pageRouters));
+        //   this.$router.addRoutes(pageRouters)
+        // }
+
         this.$store.commit('SET_LOGINED')
         this.$store.commit('SET_CURRENT_USER_DATA', response.data)
         this.$store.commit('SET_MENUS', response.data)
@@ -102,9 +128,6 @@ export default {
           console.log(error)
         })
       } else {
-        this.$store.commit('SET_LOGOUT')
-        this.$store.commit('SET_CURRENT_USER_DATA', {})
-        this.$store.commit('SET_MENUS', {})
         this.$router.replace({ path: '/login' })
       }
     }).catch(() => {})
