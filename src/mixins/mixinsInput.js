@@ -33,10 +33,14 @@ export default {
       type: Boolean,
       default: true
     },
-    errorInCompInput: {
+    propsShow: {
       type: Boolean,
-      default: true
+      default: true// 父组件是否需子组件显示错误信息
     },
+    // errorInCompInput: {
+    //   type: Boolean,
+    //   default: true
+    // },
     onErrorparent: {
       type: Function
     },
@@ -71,24 +75,16 @@ export default {
     }
   },
   methods: {
-    showErrorParent (errText) {
-      if (typeof this.onErrorparent !== 'undefined') {
-        this.onErrorparent(errText)
-      }
-    },
-    hideErrorParent () {
-      if (typeof this.onFocusparent !== 'undefined') {
-        this.onFocusparent()
-      }
-    },
     showValidateResult (v) {
       this.showError = true
-      this.errorText = v.text
+      this.errorText = v.text ? v.text : ''
     },
     onFocus (e) {
       this.errorText = ''
       this.showError = false
-      this.hideErrorParent()
+      if (typeof this.onFocusparent !== 'undefined') {
+        this.onFocusparent()
+      }
     },
     onBlur (e) {
       let val = this.value
@@ -116,7 +112,9 @@ export default {
         }
       }
       if (this.errorText) {
-        this.showErrorParent(this.errorText)
+        if (typeof this.onErrorparent !== 'undefined') {
+          this.onErrorparent(this.errorText)
+        }
       }
     }
   },

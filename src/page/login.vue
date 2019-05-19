@@ -9,13 +9,13 @@
             span 登录
           Alert(type="error", show-icon,v-show="showError") {{errorText}}
           FormItem
-            comp-input(name='account',ref="account",defaultValue="",placeholder="手机/邮箱/用户名",styles="width:100%",:on-errorparent="onShowError",:on-focusparent="onHideError",:errorInCompInput="false",label="登录名",)
+            comp-input(name='account',ref="account",defaultValue="",placeholder="手机/邮箱/用户名",styles="width:100%",:propsShow="false",:on-focusparent="onHideError",label="登录名",)
               Icon.iconleft(custom="i-icon i-icon-people",slot="left")
           FormItem
-            comp-input(name='password',ref="password",defaultValue="",placeholder="请输入密码",type="password",styles="width:100%",:on-errorparent="onShowError",:on-focusparent="onHideError",:errorInCompInput="false",label="密码",)
+            comp-input(name='password',ref="password",defaultValue="",placeholder="请输入密码",type="password",styles="width:100%",:propsShow="false",:on-focusparent="onHideError",label="密码",)
               Icon.iconleft(custom="i-icon i-icon-lock1",slot="left")
           FormItem.verificationCodeInput
-            comp-input(name='verificationCode',ref="verificationCode",defaultValue="",placeholder="请输验证码",styles="width:100%",:on-errorparent="onShowError",:on-focusparent="onHideError",:errorInCompInput="false",label="验证码",:maxLength="6",)
+            comp-input(name='verificationCode',ref="verificationCode",defaultValue="",placeholder="请输验证码",styles="width:100%",:propsShow="false",:on-focusparent="onHideError",label="验证码",:maxLength="6",)
               Icon.iconleft(custom="i-icon i-icon-tick1",slot="left")
             a(href="javascript:;" @click="getVerificationCode",v-show="!success") {{textVC}}
             span.tips(v-show="success") 重新发送({{downTime}})
@@ -54,7 +54,7 @@ export default {
     },
     getVerificationCode (e) {
       if (this.$refs.account.value === '') {
-        this.$refs.account.showValidateResult({text: ''})
+        this.$refs.account.showValidateResult({})
         this.onShowError('请输入登录名')
         this.loadingBtn = false
         return false
@@ -72,7 +72,8 @@ export default {
           this.success = true
           this.countDown()
         } else if (data.code === '100') {
-          this.$refs.account.showValidateResult({text: '手机号码不存在'})
+          this.$refs.account.showValidateResult({})
+          this.onShowError('手机号码不存在')
         } else if (data.code === '200') {
           this.onShowError('获取短信验证码已超上限')
         } else if (data.code === '300') {
@@ -87,25 +88,25 @@ export default {
       let vc = this.$refs.verificationCode.value
       if (!account) {
         this.loadingBtn = false
-        this.$refs.account.showValidateResult({text: ''})
+        this.$refs.account.showValidateResult({})
         this.onShowError('请输入登录名')
         return false
       }
       if (!pw) {
         this.loadingBtn = false
-        this.$refs.password.showValidateResult({text: ''})
+        this.$refs.password.showValidateResult({})
         this.onShowError('请输入密码')
         return false
       }
       if (!vc) {
         this.loadingBtn = false
-        this.$refs.verificationCode.showValidateResult({text: ''})
+        this.$refs.verificationCode.showValidateResult({})
         this.onShowError('请输入验证码')
         return false
       }
       if (vc && vc.length < 6) {
         this.loadingBtn = false
-        this.$refs.verificationCode.showValidateResult({text: ''})
+        this.$refs.verificationCode.showValidateResult({})
         this.onShowError('请输入6位的数字')
         return false
       }
@@ -132,25 +133,25 @@ export default {
           this.loadingBtn = false
           if (data.code === '100') {
             this.onShowError('用户不存在')
-            this.$refs.account.showValidateResult({text: '用户不存在'})
+            this.$refs.account.showValidateResult({})
           } else if (data.code === '200') {
             this.onShowError('用户已登录')
-            this.$refs.account.showValidateResult({text: '用户已登录'})
+            this.$refs.account.showValidateResult({})
           } else if (data.code === '300') {
             this.onShowError('手机验证码错误')
-            this.$refs.verificationCode.showValidateResult({text: '手机验证码错误'})
+            this.$refs.verificationCode.showValidateResult({})
           } else if (data.code === '400') {
             this.onShowError('密码错误')
-            this.$refs.password.showValidateResult({text: '密码错误'})
+            this.$refs.password.showValidateResult({})
           } else if (data.code === '600') {
             this.onShowError('用户被锁定')
-            this.$refs.account.showValidateResult({text: '用户被锁定'})
+            this.$refs.account.showValidateResult({})
           } else if (data.code === '700') {
             this.onShowError('用户权限异常')
-            this.$refs.account.showValidateResult({text: '用户权限异常'})
+            this.$refs.account.showValidateResult({})
           } else if (data.code === '800') {
             this.onShowError('非法登录')
-            this.$refs.account.showValidateResult({text: '非法登录'})
+            this.$refs.account.showValidateResult({})
           }
         }
       }).catch(() => {})

@@ -50,7 +50,7 @@ div(class="compInput")
     :validate="validate"
   )
   slot(name="right")
-  Alert(type="error",show-icon, style="display:inline-block",v-show="showError && errorInCompInput",ref="msgError") {{errorText}}
+  Alert(type="error",show-icon, style="display:inline-block",v-show="showError && propsShow",ref="msgError") {{errorText}}
 </template>
 
 <script>

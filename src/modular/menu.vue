@@ -108,10 +108,10 @@ export default {
   },
   computed: {
     super: function () {
-      return this.myUserInfo.userRoles && (this.myUserInfo.userRoles[0].roleCode.indexOf('super') >= 0)
+      return (this.myUserInfo && this.myUserInfo.userRoles) ? (this.myUserInfo.userRoles && (this.myUserInfo.userRoles[0].roleCode.indexOf('super') >= 0)) : false
     },
     keeper: function () {
-      return this.myUserInfo.keeperFlag
+      return (this.myUserInfo && this.myUserInfo.keeperFlag) ? this.myUserInfo.keeperFlag : false
     },
     ...mapState({
       myUserInfo (state) {
