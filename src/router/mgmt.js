@@ -8,7 +8,8 @@ export default {
     title: '管理',
     keepAlive: true,
     permission: 'client_user',
-    compUrl: 'page/mainCont'
+    compUrl: 'page/mainCont',
+    icon: 'i-icon i-icon-admin'
   },
   children: [
     {

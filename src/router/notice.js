@@ -8,7 +8,8 @@ export default {
     title: '通知中心',
     keepAlive: true,
     permission: 'client_notice',
-    compUrl: 'page/mainCont'
+    compUrl: 'page/mainCont',
+    icon: 'i-icon i-icon-notice'
   },
   children: [
     {

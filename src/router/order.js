@@ -8,7 +8,8 @@ export default {
     title: '订单',
     keepAlive: true,
     permission: 'client_order',
-    compUrl: 'page/mainCont'
+    compUrl: 'page/mainCont',
+    icon: 'i-icon i-icon-file'
   },
   children: [
     {

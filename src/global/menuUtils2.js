@@ -5,6 +5,7 @@ export default (routers, data) => {
 function generaMenu (routers, data) {
   data.forEach((item) => {
     let menu = Object.assign({}, item)
+    
     menu.component = LazyLoading(menu.meta.compName)
     if (menu.children && menu.children.length > 0) {
       menu.children = []

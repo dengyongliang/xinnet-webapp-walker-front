@@ -8,7 +8,8 @@ export default {
     title: '监控日志',
     keepAlive: true,
     permission: 'client_log',
-    compUrl: 'page/mainCont'
+    compUrl: 'page/mainCont',
+    icon: 'i-icon i-icon-diary'
   },
   children: [
     {

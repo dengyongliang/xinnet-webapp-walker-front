@@ -8,7 +8,8 @@ export default {
     title: '域名监控',
     keepAlive: true,
     permission: 'client_monitor',
-    compUrl: 'page/mainCont'
+    compUrl: 'page/mainCont',
+    icon: 'i-icon i-icon-finance'
   },
   children: [
     {

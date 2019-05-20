@@ -1,6 +1,7 @@
 export default {
   path: 'domain',
   name: 'domain',
+  redirect: 'domain/overview',
   component (resolve) {
     return require(['@/page/mainCont'], resolve)
   },
@@ -8,7 +9,8 @@ export default {
     title: '域名管理',
     keepAlive: true,
     permission: 'client_domain',
-    compUrl: 'page/mainCont'
+    compUrl: 'page/mainCont',
+    icon: 'i-icon i-icon-manage'
   },
   children: [
     {

@@ -8,7 +8,8 @@ export default {
     title: '财务',
     keepAlive: true,
     permission: 'client_finance',
-    compUrl: 'page/mainCont'
+    compUrl: 'page/mainCont',
+    icon: 'i-icon i-icon-bill'
   },
   children: [
     {

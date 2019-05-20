@@ -28,15 +28,16 @@ export default [{
         title: '首页',
         keepAlive: true,
         permission: 'client_index',
-        compUrl: 'modular/home'
+        compUrl: 'modular/home',
+        icon: 'i-icon i-icon-home'
       }
     },
     domain,
+    monitor,
     finance,
-    mgmt,
     order,
-    notice,
+    mgmt,
     record,
-    monitor
+    notice
   ]
 }]

@@ -109,11 +109,12 @@ export default {
         //   localStorage.setItem('menus', JSON.stringify(pageRouters));
         //   this.$router.addRoutes(pageRouters)
         // }
-        // 主菜单 数据
+        // 根据权限 生成菜单
         let pageMenus = []
         menuUtils(pageMenus, response.data.data.menus)
-        console.log('pageMenus')
         console.log(pageMenus)
+        // 相关数据 store 存储
+        this.$store.commit('SET_MENUS', pageMenus)
         this.$store.commit('SET_LOGINED')
         this.$store.commit('SET_CURRENT_USER_DATA', response.data)
         this.$store.commit('SET_PERMISSION', response.data)
