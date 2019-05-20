@@ -1,13 +1,16 @@
-export default (routers, menus, powers) => {
-  generaMenu(routers, menus, powers)
+import menus from '@/router/routers.js'
+export default (routers, permission) => {
+  generaMenu(routers, menus, permission)
 }
-function generaMenu (routers, menus, powers) {
+function generaMenu (routers, menus, permission) {
   menus.forEach((item) => {
     let menu = Object.assign({}, item)
-    if (powers.indexOf(menu.meta.powers) >= 0 && menu.children && menu.children.length > 0) {
+    if (menu.meta.permission && permission.indexOf(menu.meta.permission) >= 0 && menu.children && menu.children.length > 0) {
       menu.children = []
-      generaMenu(menu.children, item.children, powers)
+      generaMenu(menu.children, item.children, permission)
     }
-    routers.push(menu)
+    if (menu.meta.permission && permission.indexOf(menu.meta.permission) >= 0) {
+      routers.push(menu)
+    }
   })
 }

@@ -14,8 +14,8 @@ export default [{
   meta: {
     title: 'main',
     keepAlive: true,
-    powers: 'client_index',
-    compName: 'page/main'
+    permission: '',
+    compUrl: 'page/main'
   },
   children: [
     {
@@ -27,16 +27,16 @@ export default [{
       meta: {
         title: '首页',
         keepAlive: true,
-        powers: 'client_index',
-        compName: 'modular/home'
+        permission: 'client_index',
+        compUrl: 'modular/home'
       }
     },
-    ...domain,
-    ...finance,
-    ...mgmt,
-    ...order,
-    ...notice,
-    ...record,
-    ...monitor
+    domain,
+    finance,
+    mgmt,
+    order,
+    notice,
+    record,
+    monitor
   ]
 }]

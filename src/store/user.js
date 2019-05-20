@@ -35,6 +35,7 @@ export default {
       // }]
     },
     userRoles: [],
+    permission: [],
     menus: [],
     users: [],
     companys: [],
@@ -70,8 +71,11 @@ export default {
     SET_USER_MSG_NUM (state, payload) {
       state.userMsgNum = payload.data
     },
+    SET_PERMISSION (state, payload) {
+      state.permission = payload.data.menus
+    },
     SET_MENUS (state, payload) {
-      state.menus = payload.data.menus
+      state.menus = payload
     }
   },
   actions: {
@@ -116,7 +120,7 @@ export default {
         api.LOGOUT().then(response => {
           commit('SET_LOGOUT')
           commit('SET_CURRENT_USER_DATA', {})
-          commit('SET_MENUS', {})
+          commit('SET_PERMISSION', {})
           resolve(response)
         }).catch(error => {
           reject(error)

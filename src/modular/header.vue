@@ -38,8 +38,8 @@ import { mapState } from 'vuex'
 import compSwitchClient from '@/components/compSwitchClient'
 // import mixinsWebSocket from '@/mixins/mixinsWebSocket'
 import { emitter as restEmitter } from '@/global/axios'
-import menuUtils2 from '@/global/menuUtils2.js'
-import routers from '@/router/routers.js'
+import menuUtils from '@/global/menuUtils.js'
+
 export default {
   components: {
     compSwitchClient
@@ -109,10 +109,14 @@ export default {
         //   localStorage.setItem('menus', JSON.stringify(pageRouters));
         //   this.$router.addRoutes(pageRouters)
         // }
-
+        // 主菜单 数据
+        let pageMenus = []
+        menuUtils(pageMenus, response.data.data.menus)
+        console.log('pageMenus')
+        console.log(pageMenus)
         this.$store.commit('SET_LOGINED')
         this.$store.commit('SET_CURRENT_USER_DATA', response.data)
-        this.$store.commit('SET_MENUS', response.data)
+        this.$store.commit('SET_PERMISSION', response.data)
         let manageCustomerId = response.data.data.manageCustomerId
         Promise.all([
           this.$store.dispatch('USER_ROLES'),

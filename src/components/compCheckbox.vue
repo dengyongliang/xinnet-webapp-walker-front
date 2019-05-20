@@ -65,14 +65,13 @@ export default {
     onChange (v) {
       this.showError = false
       if (this.onParentmethod && typeof this.onParentmethod === 'function') {
-
         this.onParentmethod({from: this.from, value: this.value, index: this.index})
       }
     }
   },
   beforeMount () {
     if (this.defaultValue.length) {
-      this.value = this.defaultValue.map((v)=>{
+      this.value = this.defaultValue.map((v) => {
         return v.label
       })
     }
@@ -84,7 +83,7 @@ export default {
   },
   watch: {
     defaultValue (val) {
-      this.value = val.map((v)=>{
+      this.value = val.map((v) => {
         return v.label
       })
     }

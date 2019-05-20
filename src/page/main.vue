@@ -4,8 +4,8 @@
     .frameBottom()
       .frameMenu
         menu-body
-      .frameBody
-        router-view(v-if="islogin")
+      .frameBody(v-if="islogin")
+        router-view
 </template>
 
 <script>

@@ -53,7 +53,7 @@ export default {
       }
     },
     handleClose (event, name) {
-      const index = this.list.findIndex((item)=>(item.value === name))
+      const index = this.list.findIndex((item) => (item.value === name))
       // 改变原数组，以便同步更新checkbox选中项
       this.list.splice(index, 1)
     }

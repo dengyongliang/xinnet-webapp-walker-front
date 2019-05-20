@@ -2,7 +2,7 @@ import LazyLoading from '@/global/lazyLoading'
 export default (routers, data) => {
   generaMenu(routers, data)
 }
-function generaMenu(routers, data) {
+function generaMenu (routers, data) {
   data.forEach((item) => {
     let menu = Object.assign({}, item)
     menu.component = LazyLoading(menu.meta.compName)

@@ -6,7 +6,7 @@ import * as action from '@/actions/message'
 export const ACTIVATION_CODE = (userMobile) => {
   return axios({
     url: action.ACTIVATION_CODE,
-    method: 'GET',
+    method: 'POST',
     data: {userMobile}
   })
 }
@@ -14,7 +14,7 @@ export const ACTIVATION_CODE = (userMobile) => {
 export const CLIENT_LOGIN = (userCode) => {
   return axios({
     url: action.CLIENT_LOGIN,
-    method: 'GET',
+    method: 'POST',
     data: {userCode}
   })
 }
@@ -30,7 +30,7 @@ export const SEND_OLD_PHONE_CODE = () => {
 export const UPDATE_PHONE_CODE = (userMobile) => {
   return axios({
     url: action.UPDATE_PHONE_CODE,
-    method: 'GET',
+    method: 'POST',
     data: {userMobile}
   })
 }
@@ -38,7 +38,7 @@ export const UPDATE_PHONE_CODE = (userMobile) => {
 export const CHECK_OLD_PHONE_CODE = (verificationCode) => {
   return axios({
     url: action.CHECK_OLD_PHONE_CODE,
-    method: 'GET',
+    method: 'POST',
     data: {verificationCode}
   })
 }
@@ -46,7 +46,7 @@ export const CHECK_OLD_PHONE_CODE = (verificationCode) => {
 export const DOMAIN_MANAGE = (domainId) => {
   return axios({
     url: action.DOMAIN_MANAGE,
-    method: 'GET',
+    method: 'POST',
     data: {domainId}
   })
 }
