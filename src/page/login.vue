@@ -30,6 +30,7 @@
 
 <script>
 import compInput from '@/components/compInput'
+import menuUtils from '@/global/menuUtils.js'
 export default {
   components: {
     compInput
@@ -120,15 +121,45 @@ export default {
           return false
         }
         let data = response.data
+        let keeperFlag = data.keeperFlag
         if (data.code === '1000') {
-          this.$Message.success('登录成功！')
+          this.$Message.loading({
+            content: '登录成功，获取账户信息',
+            duration: 1
+          })
+          // 根据权限 生成菜单
+          let pageMenus = []
+          menuUtils(pageMenus, data.menus)
+          // 添加404
+          pageMenus.push({
+            path: '*',
+            name: '404',
+            component (resolve) {
+              return require(['@/page/404'], resolve)
+            },
+            meta: {
+              title: '404',
+              keepAlive: true,
+              permission: '',
+              compUrl: 'page/404'
+            }
+          })
+          pageMenus.forEach((item) => {
+            this.$router.options.routes.push(item)
+          })
+          // 添加到路由
+          this.$router.addRoutes(pageMenus)
+          // 相关数据 store 存储
+          this.$store.commit('SET_MENUS', pageMenus)
+          // sessionStorage 存储 menus 数据
+          sessionStorage.setItem('menus', JSON.stringify(pageMenus))
           setTimeout(() => {
-            if (data.keeperFlag * 1) {
+            if (keeperFlag * 1) {
               this.$router.replace({path: '/client'})
             } else {
-              this.$router.replace({path: '/home'})
+              this.$router.replace({path: '/'})
             }
-          }, 500)
+          }, 1000)
         } else {
           this.loadingBtn = false
           if (data.code === '100') {

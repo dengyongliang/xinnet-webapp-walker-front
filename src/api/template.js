@@ -6,7 +6,7 @@ import * as action from '@/actions/template'
 export const TEMPLATE_LIST = (pageNum, pageSize, templateName, verifyStatus) => {
   return axios({
     url: action.TEMPLATE_LIST,
-    method: 'GET',
+    method: 'POST',
     data: {pageNum, pageSize, templateName, verifyStatus}
   })
 }
@@ -38,7 +38,7 @@ export const TEMPLATE_VERIFY = (userCode, registrantType, idCode, idFileUrl, idF
 export const DELETE_TEMPLATE = (templateId) => {
   return axios({
     url: action.DELETE_TEMPLATE,
-    method: 'GET',
+    method: 'POST',
     data: {templateId}
   })
 }
@@ -54,7 +54,7 @@ export const UPDATE_TEMPLATE = (userCode, templateName, organizeNameCn, userName
 export const TEMPLATE_INFO = (templateId) => {
   return axios({
     url: action.TEMPLATE_INFO,
-    method: 'GET',
+    method: 'POST',
     data: {templateId}
   })
 }
@@ -62,7 +62,7 @@ export const TEMPLATE_INFO = (templateId) => {
 export const TEMPLATE_VERIFY_INFO = (templateId) => {
   return axios({
     url: action.TEMPLATE_VERIFY_INFO,
-    method: 'GET',
+    method: 'POST',
     data: {templateId}
   })
 }

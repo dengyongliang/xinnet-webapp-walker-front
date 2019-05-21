@@ -3,8 +3,8 @@ import Router from 'vue-router'
 import NProgress from 'nprogress'
 import Event from '@/global/event'
 import report from './report'
-import routers from './routers'
-import makeStore from '@/store'
+// import routers from './routers'
+import store from '@/store'
 import menuUtils2 from '@/global/menuUtils2.js'
 Vue.use(Router)
 export const emitter = new Event()
@@ -73,21 +73,20 @@ const RouterMain = new Router({
         title: '订单结算'
       }
     },
-    {
-      path: '*',
-      name: '404',
-      component (resolve) {
-        return require(['@/page/404'], resolve)
-      },
-      meta: {
-        title: '404',
-        keepAlive: true,
-        powers: '',
-        compName: 'page/404'
-      }
-    },
-    report,
-    ...routers
+    // {
+    //   path: '*',
+    //   name: '404',
+    //   component (resolve) {
+    //     return require(['@/page/404'], resolve)
+    //   },
+    //   meta: {
+    //     title: '404',
+    //     keepAlive: true,
+    //     powers: '',
+    //     compName: 'page/404'
+    //   }
+    // },
+    report
   ],
   base: '/',
   scrollBehavior (to, from, savedPosition) {
@@ -106,24 +105,41 @@ const RouterMain = new Router({
 })
 RouterMain.beforeEach((to, from, next) => {
   NProgress.start()
-  next()
   window.document.title = to.meta.title
+  next()
 })
 RouterMain.afterEach(transition => {
   NProgress.done()
 })
 RouterMain.onReady(() => {
-  // let pageRouters = []
-  // console.log(localStorage.getItem('menus'))
-  // let routers = localStorage.getItem('menus') ? JSON.parse(localStorage.getItem('menus')) : []
-  // menuUtils2(pageRouters, routers)
-  // console.log("pageRouters")
-  // console.log(pageRouters)
-  // pageRouters.forEach((item) => {
-  //   RouterMain.options.routes.push(item)
-  // })
-  // RouterMain.addRoutes(pageRouters)
-  // console.log("RouterMain")
-  // console.log(RouterMain)
+  let routers = sessionStorage.getItem('menus') ? JSON.parse(sessionStorage.getItem('menus')) : []
+  if (routers.length) {
+    let pageRouters = []
+    // 保存到store
+    store.commit('SET_MENUS', routers)
+    // 生成可使用的路由表
+    menuUtils2(pageRouters, routers)
+    pageRouters.forEach((item) => {
+      RouterMain.options.routes.push(item)
+    })
+    // 添加到路由
+    RouterMain.addRoutes(pageRouters)
+  } else {
+    let router404 = {
+      path: '*',
+      name: '404',
+      component (resolve) {
+        return require(['@/page/404'], resolve)
+      },
+      meta: {
+        title: '404',
+        keepAlive: true,
+        permission: '',
+        compUrl: 'page/404'
+      }
+    }
+    RouterMain.options.routes.push(router404)
+    RouterMain.addRoutes([router404])
+  }
 })
 export default RouterMain

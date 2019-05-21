@@ -6,7 +6,7 @@ import * as action from '@/actions/domain'
 export const DOMAIN_LIST = (pageNum, pageSize, domainName, domainSuffixs, otherSuffix, allSuffix, groupIds, serviceState, createDay, expireDay, createTimeBegin, createTimeEnd, expireTimeBegin, expireTimeEnd) => {
   return axios({
     url: action.DOMAIN_LIST,
-    method: 'GET',
+    method: 'POST',
     data: {pageNum, pageSize, domainName, domainSuffixs, otherSuffix, allSuffix, groupIds, serviceState, createDay, expireDay, createTimeBegin, createTimeEnd, expireTimeBegin, expireTimeEnd}
   })
 }
@@ -14,7 +14,7 @@ export const DOMAIN_LIST = (pageNum, pageSize, domainName, domainSuffixs, otherS
 export const DOMAIN_MANAGE = (domainId) => {
   return axios({
     url: action.DOMAIN_MANAGE,
-    method: 'GET',
+    method: 'POST',
     data: {domainId}
   })
 }

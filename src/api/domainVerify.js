@@ -6,7 +6,7 @@ import * as action from '@/actions/domainVerify'
 export const DOMAIN_VERIFY_LIST = (pageNum, pageSize, domainName, groupIds, serviceState, rnvcStatus, dnvcStatus, verifyDay, verifyTimeBegin, verifyTimeEnd) => {
   return axios({
     url: action.DOMAIN_VERIFY_LIST,
-    method: 'GET',
+    method: 'POST',
     data: {pageNum, pageSize, domainName, groupIds, serviceState, rnvcStatus, dnvcStatus, verifyDay, verifyTimeBegin, verifyTimeEnd}
   })
 }
@@ -30,7 +30,7 @@ export const UPLOAD_FILE = () => {
 export const UPDATE_DOMAIN_AUDIT_STATUS = (domainIds) => {
   return axios({
     url: action.UPDATE_DOMAIN_AUDIT_STATUS,
-    method: 'GET',
+    method: 'POST',
     data: {domainIds}
   })
 }

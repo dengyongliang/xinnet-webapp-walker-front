@@ -4,7 +4,7 @@
   .mainBody
     img(src="../../static/img/img_404.png")
     p 没有找到您要访问的页面，请检查您是否输入正确的URL!
-    Button(type="primary", to="/home", :replace="true") 返回首页
+    Button(type="primary", to="/", :replace="true") 返回首页
 </template>
 
 <script>
@@ -27,6 +27,7 @@ export default {
   beforeMount () {
   },
   mounted () {
+
   }
 }
 </script>

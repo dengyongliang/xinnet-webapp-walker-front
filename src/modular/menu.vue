@@ -1,10 +1,10 @@
 <template lang="pug">
-.menuBody
-  .menuBox(v-for="item in this.menus")
+.menuBody(v-if="this.menus[0] && this.menus[0].children")
+  .menuBox(v-for="item in this.menus[0].children")
     h3.menuT.lv1
       Icon.fontL(:custom="item.meta.icon" size="16")
       span(v-if="item.children && item.children.length") {{item.meta.title}}
-      router-link(v-else, :to="'/'+(item.path==='/'?'':item.path)") {{item.meta.title}}
+      router-link(v-else, :to="'/'+(item.path==='/'?'':item.path)" exact) {{item.meta.title}}
     ul.menuList(v-if="item.children && item.children.length")
       li.menuItem.lv2(v-for="child in item.children")
         router-link(:to="'/'+item.path+'/'+child.path") {{child.meta.title}}

@@ -14,7 +14,7 @@ export const USER_CUSTOMERS = () => {
 export const VALID_USER = (userCode, userName) => {
   return axios({
     url: action.VALID_USER,
-    method: 'GET',
+    method: 'POST',
     data: {userCode, userName}
   })
 }
@@ -22,7 +22,7 @@ export const VALID_USER = (userCode, userName) => {
 export const ACTIVATION_USER_INFO = (userCode, userSex, userTel, userMobile, verificationCode, qq, wx) => {
   return axios({
     url: action.ACTIVATION_USER_INFO,
-    method: 'GET',
+    method: 'POST',
     data: {userCode, userSex, userTel, userMobile, verificationCode, qq, wx}
   })
 }
@@ -30,7 +30,7 @@ export const ACTIVATION_USER_INFO = (userCode, userSex, userTel, userMobile, ver
 export const ACTIVATION_USER_PWD = (userCode, password) => {
   return axios({
     url: action.ACTIVATION_USER_PWD,
-    method: 'GET',
+    method: 'POST',
     data: {userCode, password}
   })
 }
@@ -46,7 +46,7 @@ export const LOGOUT = () => {
 export const LOGIN = (account, password, verificationCode) => {
   return axios({
     url: action.LOGIN,
-    method: 'GET',
+    method: 'POST',
     data: {account, password, verificationCode}
   })
 }
@@ -62,7 +62,7 @@ export const MY_USER_INFO = () => {
 export const CHANGE_CUSTOMERS = (customerId) => {
   return axios({
     url: action.CHANGE_CUSTOMERS,
-    method: 'GET',
+    method: 'POST',
     data: {customerId}
   })
 }
@@ -70,7 +70,7 @@ export const CHANGE_CUSTOMERS = (customerId) => {
 export const USER_LIST = (pageNum, pageSize, domainCompanyId, domainGroupId, companyId, userCode) => {
   return axios({
     url: action.USER_LIST,
-    method: 'GET',
+    method: 'POST',
     data: {pageNum, pageSize, domainCompanyId, domainGroupId, companyId, userCode}
   })
 }
@@ -78,7 +78,7 @@ export const USER_LIST = (pageNum, pageSize, domainCompanyId, domainGroupId, com
 export const UPDATE_USER_INFO = (userCode, userTel, userMobile, verificationCode) => {
   return axios({
     url: action.UPDATE_USER_INFO,
-    method: 'GET',
+    method: 'POST',
     data: {userCode, userTel, userMobile, verificationCode}
   })
 }
@@ -118,7 +118,7 @@ export const COMPANYS = () => {
 export const USER_AUTH_GROUPS = () => {
   return axios({
     url: action.USER_AUTH_GROUPS,
-    method: 'GET',
+    method: 'POST',
     data: {}
   })
 }

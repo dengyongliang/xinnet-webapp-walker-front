@@ -37,9 +37,6 @@
 import { mapState } from 'vuex'
 import compSwitchClient from '@/components/compSwitchClient'
 // import mixinsWebSocket from '@/mixins/mixinsWebSocket'
-import { emitter as restEmitter } from '@/global/axios'
-import menuUtils from '@/global/menuUtils.js'
-
 export default {
   components: {
     compSwitchClient
@@ -58,6 +55,9 @@ export default {
       },
       userMsgNum (state) {
         return state.user.userMsgNum
+      },
+      islogin (state) {
+        return state.islogin
       }
     })
   },
@@ -68,7 +68,6 @@ export default {
           return false
         }
         if (response.data.code === '1000') {
-          restEmitter.emit('closeWebSocket')
           this.$Message.success('登出成功')
           this.$router.replace({path: '/login'})
         }
@@ -81,57 +80,13 @@ export default {
     }
   },
   beforeMount () {
+    // 获取当前客户信息
     this.$store.dispatch('MY_USER_INFO').then(response => {
       if (!response) {
         return false
       }
       if (response.data.code === '1000') {
-        // if (!localStorage.getItem('menus')) {
-        //   var pageRouters = []
-        //   menuUtils2(pageRouters, routers)
-        //   pageRouters.push({
-        //     path: '*',
-        //     name: '404',
-        //     component (resolve) {
-        //       return require(['@/page/404'], resolve)
-        //     },
-        //     meta: {
-        //       title: '404',
-        //       keepAlive: true,
-        //       powers: '',
-        //       compName: 'page/404'
-        //     }
-        //   })
-        //   pageRouters.forEach((item)=>{
-        //     this.$router.options.routes.push(item)
-        //   })
-        //   // 存储 路由
-        //   localStorage.setItem('menus', JSON.stringify(pageRouters));
-        //   this.$router.addRoutes(pageRouters)
-        // }
-        // 根据权限 生成菜单
-        let pageMenus = []
-        menuUtils(pageMenus, response.data.data.menus)
-        console.log(pageMenus)
-        // 相关数据 store 存储
-        this.$store.commit('SET_MENUS', pageMenus)
-        this.$store.commit('SET_LOGINED')
-        this.$store.commit('SET_CURRENT_USER_DATA', response.data)
-        this.$store.commit('SET_PERMISSION', response.data)
-        let manageCustomerId = response.data.data.manageCustomerId
-        Promise.all([
-          this.$store.dispatch('USER_ROLES'),
-          this.$store.dispatch('USERS'),
-          this.$store.dispatch('COMPANYS'),
-          this.$store.dispatch('USER_AUTH_GROUPS')
-        ]).then((response) => {
-          // 获取信息成功
-          // 开启websocket
-          // this.initWebSocket(manageCustomerId)
-          restEmitter.emit('openWebSocket', manageCustomerId)
-        }).catch((error) => {
-          console.log(error)
-        })
+
       } else {
         this.$router.replace({ path: '/login' })
       }

@@ -6,7 +6,7 @@ import * as action from '@/actions/role'
 export const ROLE_LIST = (pageNum, pageSize) => {
   return axios({
     url: action.ROLE_LIST,
-    method: 'GET',
+    method: 'POST',
     data: {pageNum, pageSize}
   })
 }
@@ -14,7 +14,7 @@ export const ROLE_LIST = (pageNum, pageSize) => {
 export const MENUS = (roleId) => {
   return axios({
     url: action.MENUS,
-    method: 'GET',
+    method: 'POST',
     data: {roleId}
   })
 }
@@ -22,7 +22,7 @@ export const MENUS = (roleId) => {
 export const ROLE_CREATE = (menuIds, roleName) => {
   return axios({
     url: action.ROLE_CREATE,
-    method: 'GET',
+    method: 'POST',
     data: {menuIds, roleName}
   })
 }
@@ -30,7 +30,7 @@ export const ROLE_CREATE = (menuIds, roleName) => {
 export const ROLE_UPDATE = (menuIds, roleId, roleName) => {
   return axios({
     url: action.ROLE_UPDATE,
-    method: 'GET',
+    method: 'POST',
     data: {menuIds, roleId, roleName}
   })
 }
@@ -38,7 +38,7 @@ export const ROLE_UPDATE = (menuIds, roleId, roleName) => {
 export const ROLE_DELETE = (roleId) => {
   return axios({
     url: action.ROLE_DELETE,
-    method: 'GET',
+    method: 'POST',
     data: {roleId}
   })
 }

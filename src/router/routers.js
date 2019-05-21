@@ -14,7 +14,7 @@ export default [{
   meta: {
     title: 'main',
     keepAlive: true,
-    permission: '',
+    permission: 'root',
     compUrl: 'page/main'
   },
   children: [

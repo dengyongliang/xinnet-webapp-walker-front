@@ -1,4 +1,5 @@
 import * as api from '@/api/user'
+import { emitter as restEmitter } from '@/global/axios'
 export default {
   state: {
     myUserInfo: {
@@ -45,7 +46,7 @@ export default {
   },
   mutations: {
     SET_CURRENT_USER_DATA (state, payload) {
-      state.myUserInfo = payload.data
+      state.myUserInfo = payload
     },
     UPDATE_USER_TEL (state, payload) {
       state.myUserInfo.userTel = payload
@@ -72,7 +73,7 @@ export default {
       state.userMsgNum = payload.data
     },
     SET_PERMISSION (state, payload) {
-      state.permission = payload.data.menus
+      state.permission = payload
     },
     SET_MENUS (state, payload) {
       state.menus = payload
@@ -121,6 +122,10 @@ export default {
           commit('SET_LOGOUT')
           commit('SET_CURRENT_USER_DATA', {})
           commit('SET_PERMISSION', {})
+          // 关闭webSocket
+          restEmitter.emit('closeWebSocket')
+          // 清除localStorage menus 数据
+          localStorage.removeItem('menus')
           resolve(response)
         }).catch(error => {
           reject(error)
@@ -136,9 +141,28 @@ export default {
         })
       })
     },
-    MY_USER_INFO ({ commit }, params) {
+    MY_USER_INFO (context, params) {
+      console.log(context)
       return new Promise((resolve, reject) => {
         api.MY_USER_INFO(params).then(response => {
+          let manageCustomerId = response.data.data.manageCustomerId
+          context.commit('SET_LOGINED')
+          context.commit('SET_CURRENT_USER_DATA', response.data.data)
+          context.commit('SET_PERMISSION', response.data.data.menus)
+          // 开启websocket
+          // this.initWebSocket(manageCustomerId)
+          restEmitter.emit('openWebSocket', manageCustomerId)
+          // 账号其他信息
+          Promise.all([
+            context.dispatch('USER_ROLES'),
+            context.dispatch('USERS'),
+            context.dispatch('COMPANYS'),
+            context.dispatch('USER_AUTH_GROUPS')
+          ]).then((response) => {
+            // 获取信息成功
+          }).catch((error) => {
+            console.log(error)
+          })
           resolve(response)
         }).catch(error => {
           reject(error)
@@ -148,7 +172,7 @@ export default {
     CHANGE_CUSTOMERS ({ commit }, params) {
       return new Promise((resolve, reject) => {
         api.CHANGE_CUSTOMERS(params.customerId).then(response => {
-          window.location.href = '/home'
+          window.location.href = '/'
           resolve(response)
         }).catch(error => {
           reject(error)

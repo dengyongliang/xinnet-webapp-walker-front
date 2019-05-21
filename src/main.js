@@ -3,7 +3,7 @@ import 'es6-shim'
 import Vue from 'vue'
 import App from './App'
 import router from './router'
-import makeStore from './store'
+import store from './store'
 import directives from './directives'
 import moment from 'moment'
 import iView from 'iview'
@@ -36,7 +36,6 @@ Vue.filter('dateformat', (input, formatString = 'YYYY-MM-DD HH:mm:ss') => {
   */
   return moment(input).format(formatString)
 })
-let store = makeStore
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

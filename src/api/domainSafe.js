@@ -6,7 +6,7 @@ import * as action from '@/actions/domainSafe'
 export const DOMAIN_SAFE_LIST = (pageNum, pageSize, domainName, domainSuffixs, otherSuffix, allSuffix, groupIds, importantFlag, renewFlag, updateFlag, backendLockFlag) => {
   return axios({
     url: action.DOMAIN_SAFE_LIST,
-    method: 'GET',
+    method: 'POST',
     data: {pageNum, pageSize, domainName, domainSuffixs, otherSuffix, allSuffix, groupIds, importantFlag, renewFlag, updateFlag, backendLockFlag}
   })
 }

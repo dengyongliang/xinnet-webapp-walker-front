@@ -6,7 +6,7 @@ import * as action from '@/actions/transferin'
 export const TRANSFER_IN_LIST = (pageNum, pageSize, domainName, transferStatus, createTimeBegin, createTimeEnd) => {
   return axios({
     url: action.TRANSFER_IN_LIST,
-    method: 'GET',
+    method: 'POST',
     data: {pageNum, pageSize, domainName, transferStatus, createTimeBegin, createTimeEnd}
   })
 }
