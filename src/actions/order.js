@@ -10,4 +10,4 @@ export const ORDER_SETTLEMENT = '/client/order/orderSettlement' + suffix
 // 订单管理
 export const ORDER_MANAGE = '/client/order/orderManage' + suffix // QUERY_ORDER_LIST
 // 导出订单管理
-export const EXPORT_ORDER = '/client/order/exportOrder' + suffix // EXPORT_ORDER_LIST
+export const EXPORT_ORDER = '/client-api/client/order/exportOrder' + suffix // EXPORT_ORDER_LIST

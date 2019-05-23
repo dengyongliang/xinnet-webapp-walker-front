@@ -6,7 +6,7 @@ export const TEMPLATE_LIST = '/client/template/templateList' + suffix // QUERY_T
 // 创建模板
 export const CREATE_TEMPLATE = '/client/template/createTemplate' + suffix
 // 上传模板资料
-export const UPLOAD_FILE = '/client/template/uploadfile' + suffix
+export const UPLOAD_FILE = '/client-api/client/template/uploadfile' + suffix
 // 提交模板资料
 export const TEMPLATE_VERIFY = '/client/template/templateVerify' + suffix // SUBMIT_TEMPLATE
 // 删除模板

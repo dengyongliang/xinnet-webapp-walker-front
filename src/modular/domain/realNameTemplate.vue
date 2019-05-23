@@ -23,7 +23,7 @@
       comp-domain-create-template-step1(
         v-if="drawerCreateTemplate",
         v-show="step===1",
-        :on-close="closeDrawer",
+        @closeDrawer="closeDrawer",
         @refreshData="searchListData",
         @showStep2 = "showStep2",
         @setTemplateData = "setTemplateData",
@@ -33,7 +33,7 @@
       comp-domain-create-template-step2(
         v-if="drawerCreateTemplate",
         v-show="step===2",
-        :on-close="closeDrawer",
+        @closeDrawer="closeDrawer",
         @refreshData="searchListData",
         :templateData="templateData",
         status="creat"
@@ -43,7 +43,7 @@
     .compDomainCreateTemplate
       comp-domain-create-template-step1(
         v-if="drawerModifyTemplate",
-        :on-close="closeDrawer",
+        @closeDrawer="closeDrawer",
         @refreshData="searchListData",
         :templateData="templateData",
         type="modify"
@@ -53,7 +53,7 @@
     .compDomainCreateTemplate
       comp-domain-create-template-step1(
         v-if="drawerDetailTemplate",
-        :on-close="closeDrawer",
+        @closeDrawer="closeDrawer",
         @refreshData="searchListData",
         :templateData="templateData",
         type="view",
@@ -64,7 +64,7 @@
     .compDomainCreateTemplate
       comp-domain-create-template-step2(
         v-if="drawerModifyMaterial",
-        :on-close="closeDrawer",
+        @closeDrawer="closeDrawer",
         @refreshData="searchListData",
         :templateData="templateData",
         type="modify",
@@ -75,7 +75,7 @@
     .compDomainCreateTemplate
       comp-domain-create-template-step2(
         v-if="drawerCreateMaterial",
-        :on-close="closeDrawer",
+        @closeDrawer="closeDrawer",
         @refreshData="searchListData",
         :templateData="templateData",
         type="create",
@@ -86,7 +86,7 @@
     .compDomainCreateTemplate
       comp-domain-create-template-step2(
         v-if="drawerViewMaterial",
-        :on-close="closeDrawer",
+        @closeDrawer="closeDrawer",
         @refreshData="searchListData",
         :templateData="templateData",
         type="view"
@@ -157,6 +157,9 @@ export default {
                   props: {
                     href: 'javascript:;'
                   },
+                  style: {
+                    color: '#2d8cf0'
+                  },
                   on: {
                     click: () => {
                       this.queryMaterialInfo(this.list[params.index].id, 'createMaterial')
@@ -170,6 +173,9 @@ export default {
                 h('a', {
                   props: {
                     href: 'javascript:;'
+                  },
+                  style: {
+                    color: '#2d8cf0'
                   },
                   on: {
                     click: () => {
@@ -185,6 +191,9 @@ export default {
                   props: {
                     href: 'javascript:;'
                   },
+                  style: {
+                    color: '#2d8cf0'
+                  },
                   on: {
                     click: () => {
                       this.queryMaterialInfo(this.list[params.index].id, 'viewMaterial')
@@ -198,6 +207,9 @@ export default {
                 h('a', {
                   props: {
                     href: 'javascript:;'
+                  },
+                  style: {
+                    color: '#2d8cf0'
                   },
                   on: {
                     click: () => {
@@ -259,7 +271,6 @@ export default {
   },
   methods: {
     searchListData () {
-      this.closeDrawer()
       this.queryTemplateList(1)
     },
     pageChange: function (curPage) {

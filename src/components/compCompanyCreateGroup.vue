@@ -87,6 +87,9 @@ export default {
     }
   },
   methods: {
+    updataUserAuthGroups () {
+      this.$store.dispatch('USER_AUTH_GROUPS').then(() => {}).catch(() =>{})
+    },
     handleMgmt () {
       this.showMgmtBtn = false
       this.showMgmtSelect = true
@@ -125,6 +128,7 @@ export default {
             if (response.data.code === '1000') {
               this.showMgmtBtn = false
               this.$Message.success('分组创建成功')
+              this.updataUserAuthGroups()
               this.$set(this.formDynamic.items, index, {
                 id: response.data.id,
                 name: this.$refs['name' + index][0].$refs.input.value,
@@ -156,6 +160,7 @@ export default {
             if (response.data.code === '1000') {
               this.showMgmtBtn = false
               this.$Message.success('分组修改成功')
+              this.updataUserAuthGroups()
               this.$set(this.formDynamic.items, index, {
                 id: this.$refs['groupId' + index][0].value,
                 name: this.$refs['name' + index][0].$refs.input.value,

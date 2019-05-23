@@ -134,7 +134,7 @@ export const USER_COMPANYS = () => {
 export const ADD_USER = (roleId, groups, userName, userEmail, companyId) => {
   return axios({
     url: action.ADD_USER,
-    method: 'GET',
+    method: 'POST',
     data: {roleId, groups, userName, userEmail, companyId}
   })
 }
@@ -142,7 +142,7 @@ export const ADD_USER = (roleId, groups, userName, userEmail, companyId) => {
 export const DELETE_USER_INFO = (userCode) => {
   return axios({
     url: action.DELETE_USER_INFO,
-    method: 'GET',
+    method: 'POST',
     data: {userCode}
   })
 }
@@ -150,7 +150,7 @@ export const DELETE_USER_INFO = (userCode) => {
 export const USER_INFO = (userCode) => {
   return axios({
     url: action.USER_INFO,
-    method: 'GET',
+    method: 'POST',
     data: {userCode}
   })
 }
@@ -158,7 +158,7 @@ export const USER_INFO = (userCode) => {
 export const UPDATE_USER_AUTH = (userCode, roleId, groups) => {
   return axios({
     url: action.UPDATE_USER_AUTH,
-    method: 'GET',
+    method: 'POST',
     data: {userCode, roleId, groups}
   })
 }
@@ -166,7 +166,7 @@ export const UPDATE_USER_AUTH = (userCode, roleId, groups) => {
 export const UPDATE_USER = (userMobile, userCode, userTel, userEmail, companyId) => {
   return axios({
     url: action.UPDATE_USER,
-    method: 'GET',
+    method: 'POST',
     data: {userMobile, userCode, userTel, userEmail, companyId}
   })
 }
@@ -174,7 +174,7 @@ export const UPDATE_USER = (userMobile, userCode, userTel, userEmail, companyId)
 export const CHECK_USER_PHONE = (userMobile) => {
   return axios({
     url: action.CHECK_USER_PHONE,
-    method: 'GET',
+    method: 'POST',
     data: {userMobile}
   })
 }

@@ -60,9 +60,6 @@ export default {
     compImgUpload
   },
   props: {
-    onClose: {
-      type: Function
-    },
     type: {
       type: String,
       defaulte: ''
@@ -148,6 +145,7 @@ export default {
           if (response.data.code === '1000') {
             this.$Message.success('模板资料提交成功')
             this.$emit('refreshData')
+            this.$emit('closeDrawer')
           } else {
             this.$Message.error('模板资料提交失败')
           }

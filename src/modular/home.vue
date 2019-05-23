@@ -11,7 +11,7 @@
                 img(:src="myCompany.logoFile?myCompany.logoFile:''")
               .info
                 h4 {{myCompany.name}}
-                span {{this.DATAS.SERVICE_STATE[myCompany.status]}}
+                span {{myCompany.status ? '使用中' : '已停用'}}
               ul
                 li 联系人：{{myCompany.contactor}}
                 li 手机：{{myCompany.mobile}}
@@ -25,7 +25,7 @@
               span.logo
                 img(src='../../static/img/img_butler.png')
               .info
-                h4 管家姓名：{{myKeeper.manageCustomerName}}
+                h4 管家姓名：{{myKeeper.userName}}
               Row
                 Col(span="12")
                   ul

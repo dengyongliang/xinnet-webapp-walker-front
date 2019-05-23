@@ -191,10 +191,14 @@ export default {
       if (this.value1 !== '' && isNaN(this.value1)) {
         this.showError1 = true
         this.errorText = `${this.label1}只允许输入数字`
+      } else if (this.value1.length < 2){
+        this.errorText = `${this.label1}最少2位`
       }
       if (this.value2 !== '' && isNaN(this.value2)) {
         this.showError2 = true
         this.errorText += this.errorText.length ? ` - ${this.label2}只允许输入数字` : `${this.label2}只允许输入数字`
+      } else if (this.value2.length < 3) {
+        this.errorText += this.errorText.length ? ` - ${this.label2}最少3位` : `${this.label2}最少3位`
       }
       if (this.value3 !== '' && isNaN(this.value3)) {
         this.showError3 = true

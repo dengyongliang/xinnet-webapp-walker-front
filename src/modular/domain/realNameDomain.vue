@@ -135,10 +135,17 @@ export default {
                 }, '审核拒绝')
               ])
             } else {
-              return h('div', [
-                h('span', {
-                }, this.DATAS.REAL_NAME_VERIFY_STATUS[this.list[params.index].rnvcStatus])
-              ])
+              if (this.list[params.index].rnvcStatus === null) {
+                return h('div', [
+                  h('span', {
+                  }, '未提交资料')
+                ])
+              } else {
+                return h('div', [
+                  h('span', {
+                  }, this.DATAS.REAL_NAME_VERIFY_STATUS[this.list[params.index].rnvcStatus])
+                ])
+              }
             }
           }
         },
@@ -187,7 +194,7 @@ export default {
           key: 'operate',
           className: 'operate',
           render: (h, params) => {
-            if (this.list[params.index].rnvcStatus === 0 || this.list[params.index].rnvcStatus === 3) {
+            if (this.list[params.index].rnvcStatus === null || this.list[params.index].rnvcStatus === 0 || this.list[params.index].rnvcStatus === 3) {
               return h('div', [
                 h('a', {
                   props: {

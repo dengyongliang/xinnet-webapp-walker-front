@@ -58,6 +58,9 @@ export default {
       this.status = 'view'
       this.modify = true
     },
+    updateCompanys () {
+      this.$store.dispatch('COMPANYS').then(() => {}).catch(() => {})
+    },
     nextForm () {
       // console.log('logoFile')
       // console.log(this.$refs.logoFile.$refs.upload.fileList[0])
@@ -86,7 +89,9 @@ export default {
           if (response.data.code === '1000') {
             this.loadingBtn = false
             this.$Message.success('保存成功')
-            this.$emit('getBaseInfo', params.param)
+            // 更新store company数据
+            this.updateCompanys()
+            this.$emit('getBaseInfo', params)
           } else {
             this.$Message.error('保存失败')
           }

@@ -40,6 +40,9 @@ export default {
     }
   },
   methods: {
+    updataRoles () {
+      this.$store.dispatch('USER_ROLES').then(() => {}).catch(() => {})
+    },
     formUpdate () {
       this.loadingBtn = true
       let result = validateFormResult([
@@ -58,6 +61,7 @@ export default {
             }
             if (response.data.code === '1000') {
               this.$Message.success('新建成功！')
+              this.updataRoles()
               this.$emit('refreshData')
             } else {
               if (response.data.code === '100') {
@@ -79,6 +83,7 @@ export default {
             }
             if (response.data.code === '1000') {
               this.$Message.success('修改成功！')
+              this.updataRoles()
               this.$emit('refreshData')
             } else {
               if (response.data.code === '100') {

@@ -193,11 +193,11 @@ export default {
     // 如果没有数据，查看本地存储中是否存在数据，有使用本地存储数据
     // 都没有，显示空列表
     if (this.payOrdersFinish.jsonObj) {
-      localStorage.setItem('data_pay_finish', JSON.stringify(this.payOrdersFinish))
+      sessionStorage.setItem('data_pay_finish', JSON.stringify(this.payOrdersFinish))
       this.payFinishData = this.payOrdersFinish
-      // this.payFinishData = JSON.parse(localStorage.getItem('data_pay_finish'))
-    } else if (localStorage.getItem('data_pay_finish')) {
-      this.payFinishData = JSON.parse(localStorage.getItem('data_pay_finish'))
+      // this.payFinishData = JSON.parse(sessionStorage.getItem('data_pay_finish'))
+    } else if (sessionStorage.getItem('data_pay_finish')) {
+      this.payFinishData = JSON.parse(sessionStorage.getItem('data_pay_finish'))
     } else {
       this.payFinishData.jsonObj = []
     }

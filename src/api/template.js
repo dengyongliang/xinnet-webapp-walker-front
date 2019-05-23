@@ -70,7 +70,7 @@ export const TEMPLATE_VERIFY_INFO = (templateId) => {
 export const TEMPLATES = () => {
   return axios({
     url: action.TEMPLATES,
-    method: 'GET',
+    method: 'POST',
     data: {}
   })
 }

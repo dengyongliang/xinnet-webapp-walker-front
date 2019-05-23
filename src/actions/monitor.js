@@ -16,7 +16,7 @@ export const USER_MONITOR_MANAGE = '/client/monitor/userMonitorManage' + suffix 
 // 域名监控日志导出
 export const EXPORT_MONITOR_LOG = '/client/monitor/exportDomainLog' + suffix // EXPORT_MONITOR_DOMAIN_LOG
 // 员工监控日志导出
-export const EXPORT_USER_LOG = '/client/monitor/exportUserLog' + suffix // EXPORT_MONITOR_USER_LOG
+export const EXPORT_USER_LOG = '/client-api/client/monitor/exportUserLog' + suffix // EXPORT_MONITOR_USER_LOG
 // 自有域名监控-监控通知管理列表
 export const MAIL_MANAGE_TOP = '/client/monitor/mailManageTop' + suffix // QUERY_MAIL_MANAGE_TOP
 // 自有域名监控-域名监控列表

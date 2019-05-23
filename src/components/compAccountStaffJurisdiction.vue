@@ -68,6 +68,9 @@ export default {
       }
       return checkedArray
     },
+    // updateUsers () {
+    //   this.$store.dispatch('USERS').then(() => {}).catch(() => {})
+    // },
     saveForm () {
       this.loadingBtn = true
       let result = validateFormResult([
@@ -85,6 +88,7 @@ export default {
           if (response) {
             if (response.data.code === '1000') {
               this.$Message.success('账号创建成功!')
+              // this.updateUsers()
               this.$emit('closeDrawer')
             } else {
               if (response.data.code === '100') {

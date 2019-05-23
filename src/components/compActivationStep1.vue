@@ -41,7 +41,7 @@ export default {
             if (response.data.code === '1000') {
               this.$Message.success('验证成功')
               this.$store.commit('SET_ACTIVATION_DATA', response.data)
-              this.$store.commit('SET_ACTIVATION_DATA', params.param)
+              this.$store.commit('SET_ACTIVATION_DATA', params)
               this.$emit('submitStep')
             } else {
               if (response.data.code === '200') {

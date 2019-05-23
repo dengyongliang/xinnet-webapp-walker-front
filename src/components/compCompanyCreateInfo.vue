@@ -42,6 +42,7 @@ export default {
       status: 'creat',
       showCover: false,
       modify: false,
+      companyId: 0,
       uploadAction: actions.UPLOAD_LOGO
     }
   },
@@ -49,6 +50,9 @@ export default {
     changeUploadStatus () {
       this.status = 'view'
       this.modify = true
+    },
+    updateCompanys () {
+      this.$store.dispatch('COMPANYS').then(() => {}).catch(() => {})
     },
     nextForm () {
       // console.log('logoFile')
@@ -69,21 +73,45 @@ export default {
           email: this.$refs.userEmail.value,
           tel: this.$refs.userTel.value
         }
-        console.log(params.param)
-        this.$store.dispatch('COMPANY_CREATE', params).then(response => {
-          this.loadingBtn = false
-          if (!response) {
-            return false
-          }
-          if (response.data.code === '1000') {
+        console.log(params)
+        // 修改 companyId !== 0
+        if (this.companyId) {
+          params.companyId = this.companyId
+          this.$store.dispatch('COMPANY_UPDATE', params).then(response => {
             this.loadingBtn = false
-            this.$Message.success('保存成功')
-            params.param.companyId = response.data.id
-            this.$emit('getBaseInfo', params.param)
-          } else {
-            this.$Message.error('保存失败')
-          }
-        }).catch(() => {})
+            if (!response) {
+              return false
+            }
+            if (response.data.code === '1000') {
+              this.loadingBtn = false
+              this.$Message.success('保存成功')
+              // 更新store company数据
+              this.updateCompanys()
+              this.$emit('getBaseInfo', params)
+            } else {
+              this.$Message.error('保存失败')
+            }
+          }).catch(() => {})
+        } else {
+          // 新增 companyId === 0
+          this.$store.dispatch('COMPANY_CREATE', params).then(response => {
+            this.loadingBtn = false
+            if (!response) {
+              return false
+            }
+            if (response.data.code === '1000') {
+              this.loadingBtn = false
+              this.$Message.success('保存成功')
+              // 更新store company数据
+              this.updateCompanys()
+              params.companyId = response.data.id
+              this.companyId = response.data.id
+              this.$emit('getBaseInfo', params)
+            } else {
+              this.$Message.error('保存失败')
+            }
+          }).catch(() => {})
+        }
       } else {
         this.loadingBtn = false
       }

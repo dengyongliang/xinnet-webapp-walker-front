@@ -38,7 +38,7 @@ export const EXPORT_CUSTOMER_FLOW = () => {
 export const PAY_STATISTICS_BALANCE = () => {
   return axios({
     url: action.PAY_STATISTICS_BALANCE,
-    method: 'GET',
+    method: 'POST',
     data: {}
   })
 }
@@ -46,7 +46,7 @@ export const PAY_STATISTICS_BALANCE = () => {
 export const PAY_STATISTICS_UNBILLED = () => {
   return axios({
     url: action.PAY_STATISTICS_UNBILLED,
-    method: 'GET',
+    method: 'POST',
     data: {}
   })
 }

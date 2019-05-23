@@ -37,9 +37,9 @@ div.step1
     FormItem(label="域名持有者名称（英文）：", required)
       comp-input(name='organizeNameUk',label="域名持有者名称",ref="organizeNameUk",styles="width:300px", :defaultValue="(type!=='create'?templateData.organizeNameUk:'')", :disabled="type==='modify' || disabled")
     FormItem(label="域名联系人（英文）：", required)
-      comp-input(name='userNameUk',label="英文名",ref="userNameUk",styles="width:300px", placeholder="英文名", :defaultValue="(type!=='create'?templateData.userNameUk:'')", :disabled="type==='modify' || disabled")
+      comp-input(name='userNameUk',label="英文名",ref="userNameUk",styles="width:300px", placeholder="英文名", :defaultValue="(type!=='create'?templateData.userNameUk:'')", :disabled="disabled")
     FormItem(label="")
-      comp-input(name='userSureNameUk',label="英文姓",ref="userSureNameUk",styles="width:300px", placeholder="英文姓", :defaultValue="(type!=='create'?templateData.userSureNameUk:'')", :disabled="type==='modify' || disabled")
+      comp-input(name='userSureNameUk',label="英文姓",ref="userSureNameUk",styles="width:300px", placeholder="英文姓", :defaultValue="(type!=='create'?templateData.userSureNameUk:'')", :disabled="disabled")
     FormItem(label="通讯地址：", required)
       comp-input(name='streetUk',label="通讯地址",ref="streetUk",styles="width:300px", :defaultValue="(type!=='create'?templateData.publicStreetUk:'')", :disabled="disabled")
     FormItem(label="", v-show="type==='create'")
@@ -61,9 +61,6 @@ export default {
     compThreeInput
   },
   props: {
-    onClose: {
-      type: Function
-    },
     type: {
       type: String,
       defaulte: ''
@@ -137,7 +134,8 @@ export default {
             this.loadingBtn = false
             this.$Message.success('模板创建成功')
             params.param.userCode = response.data.userCode
-            this.$emit('setTemplateData', params.param)
+            this.$emit('refreshData')
+            this.$emit('setTemplateData', params)
             this.$emit('showStep2')
           } else {
             if (response.data.code === '100' || response.data.code === '200') {

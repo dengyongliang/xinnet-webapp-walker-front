@@ -9,7 +9,7 @@
     .secTable
       <Table :columns="columns" :data="list" :loading="loadingTable"></Table>
   <!-- 翻页区 -->
-  Page(:total="page.pageItems",:current="page.pageNo",show-elevator,show-total,prev-text="上一页",next-text="下一页",@on-change="pageChange",:page-size=20)
+  Page(:total="page.pageItems",:current="page.pageNo",show-elevator,show-total,prev-text="上一页",next-text="下一页",@on-change="pageChange",:page-size="20")
 
   <!-- 权限 抽屉 -->
   Drawer(:closable="true", width="640", v-model="drawerRolesSet", @on-close="", :title="drawerT", :mask-closable="maskClosable", @on-visible-change="drawerChange")

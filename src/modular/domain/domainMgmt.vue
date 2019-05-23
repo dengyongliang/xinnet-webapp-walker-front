@@ -6,7 +6,7 @@
     <span @click="toBackDetail" v-show="showDetail || showDns" class="backDetail"> > 域名详情</span>
     <span @click="" v-show="showDns" > > 修改DNS</span>
 
-    form.tR(v-show="!showDetail && !showDns", ref="exportForm",target="_blank" method="post" accept-charset="utf-8" :action="exportLink")
+    form.tR(v-show="!showDetail && !showDns", ref="exportForm", method="post" accept-charset="utf-8" :action="exportLink")
       input(type="hidden", :value='this.value', name="domainName")
       input(type="hidden", :value='this.asideFilterResult.domainSuffixs', name="domainSuffixs")
       input(type="hidden", :value='this.asideFilterResult.otherSuffix', name="otherSuffix")

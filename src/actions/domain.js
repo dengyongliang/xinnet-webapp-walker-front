@@ -16,4 +16,4 @@ export const SET_DOMAIN_DNS = '/client/domain/setDomainDns' + suffix
 // 域名管理-续费
 export const DOMAIN_RENEW = '/client/domain/renew' + suffix // ORDER_PAY_DOMAIN_RENEW
 // 域名管理-导出管理列表
-export const EXPORT_DOMAIN = '/client/domain/exportDomain' + suffix // EXPORT_DOMAIN_LIST
+export const EXPORT_DOMAIN = '/client-api/client/domain/exportDomain' + suffix // EXPORT_DOMAIN_LIST

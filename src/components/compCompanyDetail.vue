@@ -49,6 +49,8 @@ export default {
   computed: {
   },
   beforeMount () {
+    // 获取最新的user数据
+    this.$store.dispatch('USERS').then(() => {}).catch(() => {})
   },
   mounted () {
     this.value = this.detailData.tabIdx

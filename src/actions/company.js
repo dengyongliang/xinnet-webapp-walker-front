@@ -6,7 +6,7 @@ export const COMPANY_CREATE = '/client/company/companyCreate' + suffix // CREATE
 // 企业详情
 export const COMPANY_INFO = '/client/company/companyInfo' + suffix // QUERY_COMPANY_INFO
 // 上传LOGO
-export const UPLOAD_LOGO = '/client/company/uploadlogo' + suffix // UPLOAD_COMPANY_LOGO
+export const UPLOAD_LOGO = '/client-api/client/company/uploadlogo' + suffix // UPLOAD_COMPANY_LOGO
 // 创建分组
 export const GROUP_CREATE = '/client/company/groupCreate' + suffix // CREATE_GROUP
 // 修改分组
