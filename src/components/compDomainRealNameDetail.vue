@@ -1,10 +1,11 @@
 <template lang="pug">
 .realNameDetail
-  .status 实名状态：<em style="color:#f00">审核不通过</em>
-    p 审核失败原因：3.1 未提交注册者身份证明资料或未提交合格的注册者身份证明资料, 个人请提交带有姓名和身份证号的身份证件（建议提交身份证），组织请提交组织机构代码证或者营业执照复印件、扫描件
+  .status 实名状态：
+    em(:style="'color:'+(templateObj.rnvcStatus === 3?'#f00':'')") {{templateObj.rnvcStatus === null ? '未提交资料' : (templateObj.rnvcStatus === 3 ? '审核不通过' : this.DATAS.DOMAIN_NAME_VERIFY_STATUS[templateObj.dnvcStatus])}}
+    p(v-show="templateObj.rnvcStatus === 3") 审核失败原因：3.1 未提交注册者身份证明资料或未提交合格的注册者身份证明资料, 个人请提交带有姓名和身份证号的身份证件（建议提交身份证），组织请提交组织机构代码证或者营业执照复印件、扫描件
   Form(:label-width="200")
     FormItem(label="域名所有者：")
-      span.text {{organizeNameCn}}
+      span.text {{templateObj.organizeNameCn}}
     FormItem(label="是否使用模板资料：")
       comp-radio(name="isTemp",:list="isTempList",ref="isTemp", :onParentmethod="isTempChange")
     FormItem(label="模板：", required, v-show="isTemp===1")
@@ -52,13 +53,13 @@ export default {
         }
       }
     },
-    domainIds: {
-      type: String,
-      default: ''
-    },
-    organizeNameCn: {
-      type: String,
-      default: ''
+    templateObj: {
+      type: Object,
+      default: function () {
+        return {
+          data: {}
+        }
+      }
     }
   },
   data () {
@@ -98,7 +99,7 @@ export default {
       this.onClose()
     },
     changeUploadStatus () {
-      this.status = 'modify'
+      this.status = 'view'
       this.modify = true
     },
     isTempChange (obj) {
@@ -125,7 +126,7 @@ export default {
 
       if (result) {
         let params = {
-          domainIds: this.domainIds
+          domainIds: this.templateObj.id
         }
         if (this.isTemp === 0) {
           Object.assign(params, {
@@ -235,7 +236,7 @@ export default {
   line-height: 150px!important;
 }
 .contRealNameDomain .realNameDetail .modify .ivu-upload{
-  position: absolute;
+  position: relative;
   left: 0px;
   top: 0px;
 }

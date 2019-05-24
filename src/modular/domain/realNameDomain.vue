@@ -25,14 +25,13 @@
         Button(@click="batchUpdate", :disabled="btnUpdateStatusDisabled") 更新状态
 
   <!-- 翻页区 -->
-  Page(:total="page.pageItems",:current="page.pageNo",show-elevator,show-total,prev-text="上一页",next-text="下一页",@on-change="pageChange",:page-size=20, v-show="!showSubmit")
+  Page(:total="page.pageItems",:current="page.pageNo",show-elevator,show-total,prev-text="上一页",next-text="下一页",@on-change="pageChange",:page-size="20", v-show="!showSubmit")
 
   <!-- 提交资料 -->
   comp-domain-real-name-detail(
     v-if="showSubmit",
     :templateList="templateList",
-    :organizeNameCn = "organizeNameCn",
-    :domainIds = "getDomainId",
+    :templateObj = "templateObj",
     @refreshData = "searchListData"
   )
 </template>
@@ -52,6 +51,7 @@ export default {
       refresh: false,
       filterTitle: '实名制管理',
       selectData: [],
+      templateObj: {},
       organizeNameCn: '',
       btnRealNameDisabled: true,
       btnUpdateStatusDisabled: true,
@@ -227,8 +227,10 @@ export default {
       this.showSubmit = false
     },
     showRealNameSubmit (item) {
-      this.selectData = [item]
-      this.organizeNameCn = item.organizeNameCn
+      // this.selectData = [item]
+      // this.organizeNameCn = item.organizeNameCn
+      // this.rnvcStatus = item.rnvcStatus
+      this.templateObj = item
       this.showSubmit = true
     },
     handleSelectAll (status) {

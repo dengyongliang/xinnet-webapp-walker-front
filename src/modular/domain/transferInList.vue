@@ -27,7 +27,7 @@
       <Table :columns="columns" :data="list" :loading="loadingTable"></Table>
 
   <!-- 翻页区 -->
-  Page(:total="page.pageItems",:current="page.pageNo",show-elevator,show-total,prev-text="上一页",next-text="下一页",@on-change="pageChange",:page-size=20)
+  Page(:total="page.pageItems",:current="page.pageNo",show-elevator,show-total,prev-text="上一页",next-text="下一页",@on-change="pageChange",:page-size="20")
 
   <!-- 提交转入 抽屉 -->
   Drawer(:closable="true", width="650", v-model="drawerTransferIn", title="提交转入", :mask-closable="maskClosable", @on-visible-change="drawerChange",)

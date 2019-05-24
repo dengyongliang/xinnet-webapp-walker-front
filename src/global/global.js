@@ -31,6 +31,25 @@ const IS_EMAIL_AVAILABLE = (val) => {
     return true
   }
 }
+// 是否包含中文
+const IS_HAS_CHINESE = (val) => {     
+  let reg = new RegExp('[\\u4E00-\\u9FFF]+', 'g')
+　if (reg.test(val)) {
+    return true
+  } else {
+    return false
+  }
+}
+// 是否包含英文
+const IS_HAS_EN = (val) => {     
+  let reg = new RegExp('[A-Za-z]+', 'g')
+　if (reg.test(val)) {
+    return true
+  } else {
+    return false
+  }
+}
+
 function CONVERT_TREE_CHECKED_TRUE (tree, key) {
   const result = []
   // 遍历 tree
@@ -198,6 +217,8 @@ export default
   IS_DOMAIN_AVAILABLE,
   IS_PHONE_AVAILABLE,
   IS_EMAIL_AVAILABLE,
+  IS_HAS_CHINESE,
+  IS_HAS_EN,
   CONVERT_TREE,
   CONVERT_ROLES,
   CONVERT_TREE_CHECKED_TRUE,

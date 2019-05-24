@@ -151,8 +151,8 @@ export default {
           this.$router.addRoutes(pageMenus)
           // 相关数据 store 存储
           this.$store.commit('SET_MENUS', pageMenus)
-          // sessionStorage 存储 menus 数据
-          sessionStorage.setItem('menus', JSON.stringify(pageMenus))
+          // localStorage 存储 menus 数据
+          localStorage.setItem('menus', JSON.stringify(pageMenus))
           setTimeout(() => {
             if (keeperFlag * 1) {
               this.$router.replace({path: '/client'})

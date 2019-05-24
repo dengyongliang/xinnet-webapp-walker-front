@@ -9,7 +9,8 @@ export default {
     keepAlive: true,
     permission: 'client_log',
     compUrl: 'page/mainCont',
-    icon: 'i-icon i-icon-diary'
+    icon: 'i-icon i-icon-diary',
+    show: true
   },
   children: [
     {
@@ -22,7 +23,8 @@ export default {
         title: '域名监控日志',
         keepAlive: true,
         permission: 'client_log_domain',
-        compUrl: 'modular/record/domain'
+        compUrl: 'modular/record/domain',
+        show: true
       }
     },
     {
@@ -35,7 +37,8 @@ export default {
         title: '员工监控日志',
         keepAlive: true,
         permission: 'client_log_user',
-        compUrl: 'modular/record/staff'
+        compUrl: 'modular/record/staff',
+        show: true
       }
     }
   ]

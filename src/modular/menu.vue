@@ -1,12 +1,12 @@
 <template lang="pug">
 .menuBody(v-if="this.menus[0] && this.menus[0].children")
   .menuBox(v-for="item in this.menus[0].children")
-    h3.menuT.lv1
+    h3.menuT.lv1(v-if="item.meta.show")
       Icon.fontL(:custom="item.meta.icon" size="16")
       span(v-if="item.children && item.children.length") {{item.meta.title}}
       router-link(v-else, :to="'/'+(item.path==='/'?'':item.path)" exact) {{item.meta.title}}
     ul.menuList(v-if="item.children && item.children.length")
-      li.menuItem.lv2(v-for="child in item.children")
+      li.menuItem.lv2(v-if="child.meta.show", v-for="child in item.children")
         router-link(:to="'/'+item.path+'/'+child.path") {{child.meta.title}}
   //- .menuBox(v-if="this.keeper || this.super || menus.indexOf('client_index')>=0")
   //-   h3.menuT.lv1

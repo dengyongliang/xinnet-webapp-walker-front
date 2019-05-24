@@ -9,7 +9,8 @@ export default {
     keepAlive: true,
     permission: 'client_notice',
     compUrl: 'page/mainCont',
-    icon: 'i-icon i-icon-notice'
+    icon: 'i-icon i-icon-notice',
+    show: true
   },
   children: [
     {
@@ -22,7 +23,8 @@ export default {
         title: '监控通知',
         keepAlive: true,
         permission: 'client_notice_monitor',
-        compUrl: 'modular/notice/monitoring'
+        compUrl: 'modular/notice/monitoring',
+        show: true
       }
     }
   ]

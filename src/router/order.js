@@ -9,7 +9,8 @@ export default {
     keepAlive: true,
     permission: 'client_order',
     compUrl: 'page/mainCont',
-    icon: 'i-icon i-icon-file'
+    icon: 'i-icon i-icon-file',
+    show: true
   },
   children: [
     {
@@ -22,7 +23,8 @@ export default {
         title: '订单管理',
         keepAlive: true,
         permission: 'client_order_manage',
-        compUrl: 'modular/order/orderMgmt'
+        compUrl: 'modular/order/orderMgmt',
+        show: true
       }
     }
   ]

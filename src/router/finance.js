@@ -9,7 +9,8 @@ export default {
     keepAlive: true,
     permission: 'client_finance',
     compUrl: 'page/mainCont',
-    icon: 'i-icon i-icon-bill'
+    icon: 'i-icon i-icon-bill',
+    show: true
   },
   children: [
     {
@@ -22,7 +23,8 @@ export default {
         title: '财务总览',
         keepAlive: true,
         permission: 'client_finance_overview',
-        compUrl: 'modular/finance/overview'
+        compUrl: 'modular/finance/overview',
+        show: true
       }
     },
     {
@@ -35,7 +37,8 @@ export default {
         title: '账单管理',
         keepAlive: true,
         permission: 'client_finance_bill',
-        compUrl: 'modular/finance/billMgmt'
+        compUrl: 'modular/finance/billMgmt',
+        show: true
       }
     }
   ]

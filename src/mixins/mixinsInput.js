@@ -109,6 +109,16 @@ export default {
             this.showError = true
             this.errorText = '请输入11位的手机号码！'
           }
+        } else if (validate === 'hasChinese') {
+          if (val !== '' && !this.GLOBALS.IS_HAS_CHINESE(val)) {
+            this.showError = true
+            this.errorText = '必须包含中文！'
+          }
+        } else if (validate === 'hasEn') {
+          if (val !== '' && !this.GLOBALS.IS_HAS_EN(val)) {
+            this.showError = true
+            this.errorText = '必须包含英文！'
+          }
         }
       }
       if (this.errorText) {

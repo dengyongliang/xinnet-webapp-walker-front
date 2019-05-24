@@ -82,6 +82,7 @@ import compDomainMgmtDetail from '@/components/compDomainMgmtDetail'
 import compDomainModifyDns from '@/components/compDomainModifyDns'
 import compAsideFilter from '@/components/compAsideFilter'
 import * as actions from '@/actions/domain.js'
+import moment from 'moment'
 export default {
   components: {
     compUserAuthGroups,
@@ -159,7 +160,13 @@ export default {
         {
           title: '到期日期',
           key: 'expireDate',
-          className: 'col2'
+          className: 'col2',
+          render: (h, params) => {
+            return h('div', [
+              h('span', {
+              }, moment(this.list[params.index].expireDate).format('YYYY-MM-DD'))
+            ])
+          }
         },
         {
           title: '服务状态',

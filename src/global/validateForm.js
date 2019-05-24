@@ -34,6 +34,20 @@ export default function validateFormResult (validateArray) {
             // break
           }
         }
+        if (validate === 'hasChinese') {
+          if (!GLOBAL.IS_HAS_CHINESE(value)) {
+            v.showValidateResult({text: '必须包含中文！'})
+            flag = false
+            // break
+          }
+        }
+        if (validate === 'hasEn') {
+          if (!GLOBAL.IS_HAS_EN(value)) {
+            v.showValidateResult({text: '必须包含英文！'})
+            flag = false
+            // break
+          }
+        }
       }
     } else if (v.type === 'select') {
       let value = v.value
@@ -100,16 +114,28 @@ export default function validateFormResult (validateArray) {
           flag = false
           v.showError1 = true
           v.errorText = `${v.label1}只允许输入数字`
+        } else if (v.value1.length < v.minLength1) {
+          flag = false
+          v.showError1 = true
+          v.errorText = `${v.label1}最少${v.minLength1}位`
         }
         if (isNaN(v.value2)) {
           flag = false
           v.showError2 = true
           v.errorText += v.errorText.length ? ` - ${v.label2}只允许输入数字` : `${v.label2}只允许输入数字`
+        } else if (v.value2.length < v.minLength2) {
+          flag = false
+          v.showError2 = true
+          v.errorText += v.errorText.length ? ` - ${v.label2}最少${v.minLength2}位` : `${v.label2}最少${v.minLength2}位`
         }
         if (isNaN(v.value3)) {
           flag = false
           v.showError3 = true
           v.errorText += v.errorText.length ? ` - ${v.label3}只允许输入数字` : `${v.label3}只允许输入数字`
+        } else if (v.value3.length < v.minLength3) {
+          flag = false
+          v.showError3 = true
+          v.errorText += v.errorText.length ? ` - ${v.label3}最少${v.minLength3}位` : `${v.label3}最少${v.minLength3}位`
         }
       }
     }

@@ -112,7 +112,7 @@ RouterMain.afterEach(transition => {
   NProgress.done()
 })
 RouterMain.onReady(() => {
-  let routers = sessionStorage.getItem('menus') ? JSON.parse(sessionStorage.getItem('menus')) : []
+  let routers = localStorage.getItem('menus') ? JSON.parse(localStorage.getItem('menus')) : []
   if (routers.length) {
     let pageRouters = []
     // 保存到store

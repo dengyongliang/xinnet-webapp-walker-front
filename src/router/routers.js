@@ -29,7 +29,8 @@ export default [{
         keepAlive: true,
         permission: 'client_index',
         compUrl: 'modular/home',
-        icon: 'i-icon i-icon-home'
+        icon: 'i-icon i-icon-home',
+        show: true
       }
     },
     domain,

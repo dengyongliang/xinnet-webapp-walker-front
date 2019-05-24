@@ -10,7 +10,8 @@ export default {
     keepAlive: true,
     permission: 'client_domain',
     compUrl: 'page/mainCont',
-    icon: 'i-icon i-icon-manage'
+    icon: 'i-icon i-icon-manage',
+    show: true
   },
   children: [
     {
@@ -23,7 +24,8 @@ export default {
         title: '域名总览',
         keepAlive: true,
         permission: 'client_domain_overview',
-        compUrl: 'modular/domain/overview'
+        compUrl: 'modular/domain/overview',
+        show: true
       }
     },
     {
@@ -36,7 +38,8 @@ export default {
         title: '域名管理',
         keepAlive: true,
         permission: 'client_domain_manage',
-        compUrl: 'modular/domain/domainMgmt'
+        compUrl: 'modular/domain/domainMgmt',
+        show: true
       }
     },
     {
@@ -49,7 +52,8 @@ export default {
         title: '域名安全服务',
         keepAlive: true,
         permission: 'client_domain_safe',
-        compUrl: 'modular/domain/securityService'
+        compUrl: 'modular/domain/securityService',
+        show: true
       }
     },
     {
@@ -62,7 +66,8 @@ export default {
         title: '域名实名制管理',
         keepAlive: true,
         permission: 'client_domain_realname',
-        compUrl: 'modular/domain/realNameDomain'
+        compUrl: 'modular/domain/realNameDomain',
+        show: true
       }
     },
     {
@@ -75,7 +80,8 @@ export default {
         title: '域名转入管理',
         keepAlive: true,
         permission: 'client_domain_transferin',
-        compUrl: 'modular/domain/transferInList'
+        compUrl: 'modular/domain/transferInList',
+        show: true
       }
     },
     {
@@ -88,7 +94,8 @@ export default {
         title: '域名过户',
         keepAlive: true,
         permission: 'client_domain_change',
-        compUrl: 'modular/domain/domainChange'
+        compUrl: 'modular/domain/domainChange',
+        show: true
       }
     },
     {
@@ -101,7 +108,8 @@ export default {
         title: '实名模板管理',
         keepAlive: true,
         permission: 'client_domain_template',
-        compUrl: 'modular/domain/realNameTemplate'
+        compUrl: 'modular/domain/realNameTemplate',
+        show: true
       }
     }
   ]

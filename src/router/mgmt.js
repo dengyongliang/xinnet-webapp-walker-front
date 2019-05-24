@@ -9,7 +9,8 @@ export default {
     keepAlive: true,
     permission: 'client_user',
     compUrl: 'page/mainCont',
-    icon: 'i-icon i-icon-admin'
+    icon: 'i-icon i-icon-admin',
+    show: true
   },
   children: [
     {
@@ -22,7 +23,8 @@ export default {
         title: '企业管理',
         keepAlive: true,
         permission: 'client_user_companyManage',
-        compUrl: 'modular/mgmt/enterprise'
+        compUrl: 'modular/mgmt/enterprise',
+        show: true
       }
     },
     {
@@ -35,7 +37,8 @@ export default {
         title: '我的账号',
         keepAlive: true,
         permission: 'client_user_myUserInfo',
-        compUrl: 'modular/mgmt/myAccount'
+        compUrl: 'modular/mgmt/myAccount',
+        show: true
       }
     },
     {
@@ -48,7 +51,8 @@ export default {
         title: '角色管理',
         keepAlive: true,
         permission: 'client_user_roleManage',
-        compUrl: 'modular/mgmt/roles'
+        compUrl: 'modular/mgmt/roles',
+        show: true
       }
     },
     {
@@ -61,7 +65,8 @@ export default {
         title: '账号管理',
         keepAlive: true,
         permission: 'client_user_userManage',
-        compUrl: 'modular/mgmt/accountMgmt'
+        compUrl: 'modular/mgmt/accountMgmt',
+        show: true
       }
     },
     {
@@ -74,7 +79,8 @@ export default {
         title: '工单管理',
         keepAlive: true,
         permission: 'client_user_workOrderManage',
-        compUrl: 'modular/mgmt/workOrder'
+        compUrl: 'modular/mgmt/workOrder',
+        show: true
       }
     }
   ]

@@ -9,7 +9,8 @@ export default {
     keepAlive: true,
     permission: 'client_monitor',
     compUrl: 'page/mainCont',
-    icon: 'i-icon i-icon-finance'
+    icon: 'i-icon i-icon-finance',
+    show: true
   },
   children: [
     {
@@ -22,7 +23,8 @@ export default {
         title: '自有域名监控',
         keepAlive: true,
         permission: 'client_monitor_own',
-        compUrl: 'modular/monitor/own'
+        compUrl: 'modular/monitor/own',
+        show: true
       }
     }
     // ,

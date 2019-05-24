@@ -123,13 +123,25 @@ export default {
       type: String,
       default: ''
     },
+    minLength1: {
+      type: Number,
+      default: 2
+    },
     maxLength1: {
+      type: Number,
+      default: 3
+    },
+    minLength2: {
       type: Number,
       default: 3
     },
     maxLength2: {
       type: Number,
       default: 4
+    },
+    minLength3: {
+      type: Number,
+      default: 5
     },
     maxLength3: {
       type: Number,
@@ -191,18 +203,23 @@ export default {
       if (this.value1 !== '' && isNaN(this.value1)) {
         this.showError1 = true
         this.errorText = `${this.label1}只允许输入数字`
-      } else if (this.value1.length < 2){
-        this.errorText = `${this.label1}最少2位`
+      } else if (this.value1.length < this.minLength1){
+        this.showError1 = true
+        this.errorText = `${this.label1}最少${this.minLength1}位`
       }
       if (this.value2 !== '' && isNaN(this.value2)) {
         this.showError2 = true
         this.errorText += this.errorText.length ? ` - ${this.label2}只允许输入数字` : `${this.label2}只允许输入数字`
-      } else if (this.value2.length < 3) {
-        this.errorText += this.errorText.length ? ` - ${this.label2}最少3位` : `${this.label2}最少3位`
+      } else if (this.value2.length < this.minLength2) {
+        this.showError2 = true
+        this.errorText += this.errorText.length ? ` - ${this.label2}最少${this.minLength2}位` : `${this.label2}最少${this.minLength2}位`
       }
       if (this.value3 !== '' && isNaN(this.value3)) {
         this.showError3 = true
         this.errorText += this.errorText.length ? ` - ${this.label3}只允许输入数字` : `${this.label3}只允许输入数字`
+      } else if (this.value3.length < this.minLength3) {
+        this.showError3 = true
+        this.errorText += this.errorText.length ? ` - ${this.label3}最少${this.minLength3}位` : `${this.label3}最少${this.minLength3}位`
       }
     }
   },
