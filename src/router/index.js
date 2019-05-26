@@ -73,6 +73,16 @@ const RouterMain = new Router({
         title: '订单结算'
       }
     },
+    {
+      path: '/noAuth',
+      name: 'noAuth',
+      component (resolve) {
+        return require(['@/page/noAuth'], resolve)
+      },
+      meta: {
+        title: '无权限访问'
+      }
+    },
     // {
     //   path: '*',
     //   name: '404',

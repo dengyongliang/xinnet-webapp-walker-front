@@ -1,7 +1,7 @@
 <template lang="pug">
   #app
     Spin.spinBody(v-if="showBodySpin")
-    router-view(:key="$route.fullPath")
+    router-view
     BackTop(:height="500", :bottom="50", :right="20")
 </template>
 

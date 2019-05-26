@@ -13,7 +13,7 @@ function generaMenu (routers, menus, permission) {
     if (menu.meta.permission === 'root' || permission.indexOf(menu.meta.permission) >= 0) {
       routers.push(menu)
     } else {
-      menu.component = LazyLoading('page/noAuth')
+      menu.redirect = '/noAuth'
       menu.meta.show = false
       routers.push(menu)
     }

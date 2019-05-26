@@ -26,8 +26,8 @@ export default {
 
   },
   beforeMount () {
-    // 进入此组件 设为 登出状态，防止加载 frameBody 加载数据
-    this.$store.commit('SET_LOGOUT')
+    // // 进入此组件 设为 登出状态，防止加载 frameBody 加载数据
+    // this.$store.commit('SET_LOGOUT')
   },
   methods: {
   },
