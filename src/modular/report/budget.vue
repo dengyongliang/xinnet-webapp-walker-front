@@ -155,8 +155,17 @@ export default {
     }
   },
   methods: {
-    pageChange () {
-
+    pageChange: function (curPage) {
+      this.$store.dispatch('DOMAIN_REPURCHASE_REPORT', {reportId: this.reportId, pageNum: curPage, pageSize: 20,}).then(response => {
+        if (!response) {
+          return false
+        }
+        if (response.data.code === '1000') {
+          this.list = response.data.data.list
+          this.page.pageItems = response.data.data.totalNum
+        } else {
+        }
+      }).catch(() => {})
     }
   },
   computed: {
@@ -168,7 +177,7 @@ export default {
     if (this.reportId * 1) {
       Promise.all([
         this.$store.dispatch('DOMAIN_BUDGET_REPORT', {reportId: this.reportId}),
-        this.$store.dispatch('DOMAIN_REPURCHASE_REPORT', {reportId: this.reportId}),
+        this.$store.dispatch('DOMAIN_REPURCHASE_REPORT', {reportId: this.reportId, pageNum: 1, pageSize: 20}),
         this.$store.dispatch('DOMAIN_RENEW_AND_SAFE_REPORT', {reportId: this.reportId}),
         this.$store.dispatch('DOMAIN_REGISTER_REPORT', {reportId: this.reportId})
       ]).then(response => {
@@ -182,6 +191,7 @@ export default {
             }
             if (i === 1) {
               this.list = v.data.data.list
+              this.page.pageItems = v.data.data.totalNum
             }
             if (i === 2) {
               this.renewAndSafe = v.data.data

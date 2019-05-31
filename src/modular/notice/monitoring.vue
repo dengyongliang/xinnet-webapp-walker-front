@@ -29,7 +29,7 @@
         a(href="javascript:;", @click="handleSelectAll(false)") 取消全选
 
   <!-- 翻页区 -->
-  Page(:total="page.pageItems",:current="page.pageNo",show-elevator,show-total,prev-text="上一页",next-text="下一页",@on-change="pageChange",:page-size=20)
+  Page(:total="page.pageItems",:current="page.pageNo",show-elevator,show-total,prev-text="上一页",next-text="下一页",@on-change="pageChange",:page-size="20")
 
   <!-- 通知设置 抽屉 -->
   Drawer(:closable="true", width="640", v-model="drawerNoticeSet", title="通知设置", :mask-closable="maskClosable", @on-visible-change="drawerChange")
@@ -38,6 +38,14 @@
       :on-close="closeDrawer",
       @refreshData="searchListData"
     )
+  <!-- 通知详情 弹窗 -->
+  Modal(
+    width="600",
+    v-model="modelMailRecordDetail",
+    class-name="modelMailRecordDetail",
+    :footer-hide="true"
+  )
+    div(v-html="modelMailContent")
 </template>
 
 <script>
@@ -57,6 +65,8 @@ export default {
       drawerNoticeSet: false,
       setReadDisabled: true,
       selectData: [],
+      modelMailContent: '',
+      modelMailRecordDetail: false,
       typeList: [
         {
           value: '',
@@ -88,7 +98,7 @@ export default {
                 class: this.list[params.index].readFlag === 1 ? 'unRead' : ''
               }, '●'),
               h('span', {
-              }, this.list[params.index].sendTime)
+              }, moment(this.list[params.index].sendTime).format('YYYY-MM-DD HH:mm:ss'))
             ])
           }
         },
@@ -107,11 +117,21 @@ export default {
                   color: '#f00',
                   margin: '0 5px 0 0',
                   display: this.list[params.index].sendType === 2 ? 'inline-block' : 'none'
+                },
+                on: {
+                  click: () => {
+                    this.handleShowDetail(this.list[params.index])
+                  }
                 }
               }, this.list[params.index].title),
               h('a', {
                 style: {
                   color: '#2271f4'
+                },
+                on: {
+                  click: () => {
+                    this.handleShowDetail(this.list[params.index])
+                  }
                 }
               }, this.list[params.index].title)
             ])
@@ -149,6 +169,31 @@ export default {
     tableSelectChange (selected) {
       this.selectData = selected
       this.setReadDisabled = !selected.length
+    },
+    handleShowDetail (item) {
+      this.$store.dispatch('MAIL_RECORD_DETAIL', {id: item.id}).then(response => {
+        if (!response) {
+          return false
+        }
+        if (response.data.code === '1000') {
+          this.modelMailContent = response.data.data.detail
+          // 设为已读
+          this.$store.dispatch('MAIL_RECORD_READ', {id: item.id}).then(response => {
+            if (!response) {
+              return false
+            }
+            if (response.data.code === '1000') {
+              // 查找 所在 索引值
+              let idx = this.list.findIndex((item2) => (item2.id === item.id))
+              // 设为已读
+              this.list[idx].readFlag = 2
+            } else {
+            }
+          }).catch(() => {})
+        } else {
+        }
+      }).catch(() => {})
+      this.modelMailRecordDetail = true
     },
     setRead () {
       this.getDomainId.map((v) => {

@@ -43,7 +43,7 @@ export default {
       let result = this.getSelected()
       if (result) {
         let params = {
-          groupId: result,
+          groupId: result.label,
           domainIds: this.domainIds
         }
         this.$store.dispatch('SET_DOMAIN_GROUP', params).then(response => {
@@ -59,13 +59,16 @@ export default {
               this.$emit('refreshData')
             } else {
               this.close()
-              this.$store.dispatch('DOMAIN_MANAGE', {domainId: this.domainIds}).then(response => {
-                if (response.data.code === '1000') {
-                  this.$emit('refreshData', response.data.data)
-                } else {
+              // 设置 新分组 名字
+              // 域名管理 > 域名详情 > 管理信息
+              this.$emit('refreshData', this.getSelectedAndParent())
+              // this.$store.dispatch('DOMAIN_MANAGE', {domainId: this.domainIds}).then(response => {
+              //   if (response.data.code === '1000') {
+              //     this.$emit('refreshData', response.data.data)
+              //   } else {
 
-                }
-              }).catch(() => {})
+              //   }
+              // }).catch(() => {})
             }
           } else {
             if (response.data.code === '100') {
@@ -82,12 +85,28 @@ export default {
     getSelected () {
       let nodes = this.$refs.Tree.getSelectedNodes()
       if (nodes.length) {
-        return this.$refs.Tree.getSelectedNodes().map((v) => {
-          return v.label
-        }).join(',')
+        return nodes[0]
       } else {
         return ''
       }
+    },
+    // 获取已选分组id的中文名及父节点中文名
+    getSelectedAndParent () {
+      let result = this.getSelected()
+      let parent = ''
+      console.log(this.groupsData)
+      for (let index = 0; index < this.groupsData.length; index++) {
+        if (this.groupsData[index].children && this.groupsData[index].children.length) {
+          for (let groups = 0; groups < this.groupsData[index].children.length; groups++) {
+            console.log(this.groupsData[index].children[groups].id + "===" + result.id)
+            if (this.groupsData[index].children[groups].id === result.id) {
+              parent = this.groupsData[index].title
+              return `${parent}-${result.title}`
+            }
+          }
+        }
+      }
+      return ''
     },
     close () {
       if (this.onParentmethod && typeof this.onParentmethod === 'function') {

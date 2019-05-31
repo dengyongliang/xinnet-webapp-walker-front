@@ -9,7 +9,7 @@ Collapse(v-model="value")
   Panel(name="3") <Icon custom="i-icon iconL i-icon-report1" size="24" />域名预算报告
     ul(slot="content")
       li.clear(v-for="item in budgetList")
-        router-link(tag="a", target="_blank", :to="{path: '/report/budget', query: {reportId: item.id, type: 'budget', start: item.budgetCycleStart, end: item.budgetCycleEnd}}") {{item.budgetCycleStart | dateformat}} ~ {{item.budgetCycleEnd | dateformat}} 域名预算报告
+        router-link(tag="a", target="_blank", :to="{path: '/report/budget', query: {reportId: item.id, type: 'budget', start: item.budgetCycleStart, end: item.budgetCycleEnd}}") {{item.budgetCycleStart | dateformat('YYYY-MM-DD')}} ~ {{item.budgetCycleEnd | dateformat('YYYY-MM-DD')}} 域名预算报告
         span.right {{item.modifyTime ? item.modifyTime : item.createTime | dateformat}} 更新
 
   Panel(name="4") <Icon custom="i-icon iconL i-icon-report3" size="24" />域名消费报告

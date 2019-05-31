@@ -117,6 +117,7 @@ export default {
   display: inline-block;
   background:#135edb;
   vertical-align:top;
+  float: left;
 }
 .frameTop .logo img{
   vertical-align:middle;

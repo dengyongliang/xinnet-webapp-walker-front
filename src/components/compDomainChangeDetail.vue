@@ -2,14 +2,12 @@
 div.changeDetail
   .domainName
     h2 {{detailData.domainName}}
-    strong 过户状态：<em style="color: #f00" v-if="detailData.changeStatus===3">过户失败</em><em style="color: #44a500" v-if="detailData.changeStatus===1">审核中</em><em style="color: #44a500" v-if="detailData.changeStatus===2">过户完成</em><em style="color: #aaa" v-if="detailData.changeStatus===0">待过户</em>
+    strong 过户状态：<em style="color: #f00" v-if="detailData.changeStatus===3">过户失败</em><em style="color: #44a500" v-if="detailData.changeStatus===1">过户进行中</em><em style="color: #44a500" v-if="detailData.changeStatus===2">过户完成</em><em style="color: #aaa" v-if="detailData.changeStatus===0">待过户</em>
     p(v-if="detailData.changeStatus===3") 失败原因 ：{{detailData.changeFaildReason}}
   .domainInfo
     Row()
       Col(span="12")
         strong 变更后域名所有者信息
-        .realname(v-if="detailData.changeStatus===3")
-          p.reason 失败原因 ：{{detailData.changeFaildReason}}
         ul
           li 域名持有者名称（中文）：{{detailData.newOrganizeNameCn}}
           li 域名持有者名称（英文）：{{detailData.newOrganizeNameUk}}
@@ -35,7 +33,7 @@ div.changeDetail
           li 邮政编码：{{detailData.oldPublicZipCode}}
           li 电子邮件：{{detailData.oldUserEmail}}
           li 电话：{{(detailData.oldUserPhoneInter && detailData.oldUserPhoneInter.length > 0 ? (detailData.oldUserPhoneInter + '-') : '') + (detailData.oldUserPhoneArea && detailData.oldUserPhoneArea.length > 0 ? (detailData.oldUserPhoneArea + '-') : '') + detailData.oldUserPhoneNumber}}
-          li 传真：{{(detailData.oldUserFaxInter && detailData.oldUserFaxInter.length > 0 ? (detailData.oldUserFaxInter + '-') : '') + (detailData.oldUserFaxArea && detailData.oldUserFaxArea.length > 0 ? (detailData.oldUserFaxArea + '-') : '') + detailData.oldUserFaxNumber}}
+          li 传真：{{(detailData.oldUserFaxInter && detailData.oldUserFaxInter.length > 0 ? (detailData.oldUserFaxInter + '-') : '') + (detailData.oldUserFaxArea && detailData.oldUserFaxArea.length > 0 ? (detailData.oldUserFaxArea + '-') : '') + (detailData.oldUserFaxNumber?detailData.oldUserFaxNumber:'')}}
 </template>
 
 <script>

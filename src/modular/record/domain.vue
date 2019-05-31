@@ -3,7 +3,7 @@
   <!-- 标题区 -->
   h1.pageTitle.clear 域名监控日志
   .secFilter
-    form.filterWrap(ref="exportForm",target="_blank" method="post" accept-charset="utf-8" :action="exportLink")
+    form.filterWrap(ref="exportForm",method="post" accept-charset="utf-8" :action="exportLink")
       table
         tr.row1
           td.td1
@@ -41,7 +41,10 @@ export default {
   data () {
     return {
       value: '',
-      time: '',
+      time: [
+        new Date(moment(new Date()).format('YYYY-MM-DD')),
+        new Date(moment(new Date()).format('YYYY-MM-DD'))
+      ],
       levelType: '',
       exportLink: actions.EXPORT_MONITOR_LOG,
       typeList: [

@@ -1,17 +1,20 @@
 <template lang="pug">
 .realNameDetail
   .status 实名状态：
-    em(:style="'color:'+(templateObj.rnvcStatus === 3?'#f00':'')") {{templateObj.rnvcStatus === null ? '未提交资料' : (templateObj.rnvcStatus === 3 ? '审核不通过' : this.DATAS.DOMAIN_NAME_VERIFY_STATUS[templateObj.dnvcStatus])}}
-    p(v-show="templateObj.rnvcStatus === 3") 审核失败原因：3.1 未提交注册者身份证明资料或未提交合格的注册者身份证明资料, 个人请提交带有姓名和身份证号的身份证件（建议提交身份证），组织请提交组织机构代码证或者营业执照复印件、扫描件
+    em(:style="'color:'+(rnvcStatus === 3?'#f00':'')") {{rnvcStatus === null ? '未提交资料' : (rnvcStatus === 3 ? '审核不通过' : this.DATAS.DOMAIN_NAME_VERIFY_STATUS[dnvcStatus])}}
+    p(v-show="rnvcStatus === 3") 审核失败原因：3.1 未提交注册者身份证明资料或未提交合格的注册者身份证明资料, 个人请提交带有姓名和身份证号的身份证件（建议提交身份证），组织请提交组织机构代码证或者营业执照复印件、扫描件
   Form(:label-width="200")
     FormItem(label="域名所有者：")
-      span.text {{templateObj.organizeNameCn}}
+      span.text {{organizeNameCn}}
     FormItem(label="是否使用模板资料：")
       comp-radio(name="isTemp",:list="isTempList",ref="isTemp", :onParentmethod="isTempChange")
     FormItem(label="模板：", required, v-show="isTemp===1")
       comp-select(name="templateId",:list="templateList",ref="templateId",styles="width:240px")
     FormItem(label="域名所有者类型：", required, v-show="isTemp===0")
       comp-select(name="registrantType",:list="registrantTypeList",ref="registrantType",styles="width:240px", :defaultValue="registrantType", :onParentmethod="registrantChange")
+      Tooltip(placement="top-start")
+          span(slot="content", style="color:#fff") 1、个人用户需要提交与个人所有者完全<br />　　一致的证件号及证件正反面；<br />　　企业用户需提交与单位名称完全<br />　　一致的证件号及证件扫描件；<br />2、请按实际情况准确选择用户类型。
+          Icon(custom="i-icon i-icon-tips", size="16")
     FormItem(label="证件类型：", required, v-show="isTemp===0")
       compSelect(styles="width:300px;",:list="idTypeListI", ref="idTypeI",v-show="registrantType==='I'")
       compSelect(styles="width:300px;",:list="idTypeListE", ref="idTypeE",v-show="registrantType==='E'")
@@ -24,7 +27,7 @@
           span 示例
           img(src="../../static/img/idCard.png")
     FormItem(label="", v-show="isTemp!==null")
-      Button(type="primary",@click="formSubmit",:loading="loadingBtn") 下一步
+      Button(type="primary",@click="formSubmit",:loading="loadingBtn") 提交
 </template>
 
 <script>
@@ -53,13 +56,16 @@ export default {
         }
       }
     },
-    templateObj: {
-      type: Object,
-      default: function () {
-        return {
-          data: {}
-        }
-      }
+    domainIds: {
+      type: String,
+      default: ''
+    },
+    organizeNameCn: {
+      type: String,
+      default: ''
+    },
+    rnvcStatus: {
+      default: ''
     }
   },
   data () {
@@ -126,7 +132,7 @@ export default {
 
       if (result) {
         let params = {
-          domainIds: this.templateObj.id
+          domainIds: this.domainIds
         }
         if (this.isTemp === 0) {
           Object.assign(params, {
@@ -261,5 +267,8 @@ export default {
 .contRealNameDomain .realNameDetail .compImgUpload .example span{
   display:block;
   color:#999;
+}
+.contRealNameDomain .realNameDetail .ivu-tooltip .ivu-icon{
+  color: #4aafff;;
 }
 </style>

@@ -3,7 +3,7 @@ div
   .totalInfo
     Tooltip(content="应结款项=信用消费-退款抵扣", placement="bottom-start")
       <Icon custom="i-icon i-icon-tips" size="16" />
-    span.text 应结款项：<em> {{billedData.totalMoney}} </em>元
+    span.text 应结款项：<em> {{billedData.creditMoney}} </em>元
   table
     tr
       td.col1

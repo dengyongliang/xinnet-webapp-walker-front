@@ -83,11 +83,11 @@ export const DOMAIN_BUDGET_REPORT = (reportId) => {
   })
 }
 // 域名预算报告-域名回购
-export const DOMAIN_REPURCHASE_REPORT = (reportId) => {
+export const DOMAIN_REPURCHASE_REPORT = (reportId, pageNum, pageSize) => {
   return axios({
     url: action.DOMAIN_REPURCHASE_REPORT,
     method: 'POST',
-    data: {reportId}
+    data: {reportId, pageNum, pageSize}
   })
 }
 // 域名预算报告-域名续费及域名安全保护

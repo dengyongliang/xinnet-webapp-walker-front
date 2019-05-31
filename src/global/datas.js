@@ -117,8 +117,11 @@ const RECORD_USER_EVENT_TYPE = {
   6: '域名注册',
   7: '域名续费',
   8: '域名转入',
-  9: '域名信息修改',
-  10: '域名安全设置'
+  9: '实名制模板修改',
+  10: '域名安全设置',
+  11: '登录',
+  12: '登出',
+  13: '实名制模板修改'
 }
 const MONITOR_LOG = {
   0: '无日志',
@@ -132,6 +135,7 @@ const DOMAIN_SUFFIX = {
   '.com.cn': '.com.cn',
   '.xyz': '.xyz',
   '.cc': '.cc',
+  '.club': '.club',
   'otherSuffix': '其他后缀'
 }
 const UNIT = {

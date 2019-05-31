@@ -77,7 +77,13 @@ export default {
         {
           title: '过户时间',
           key: 'changeTime',
-          className: 'col3'
+          className: 'col3',
+          render: (h, params) => {
+            return h('div', [
+              h('span', {
+              }, (this.list[params.index].changeTime?moment(this.list[params.index].changeTime).format('YYYY-MM-DD HH:mm'):''))
+            ])
+          }
         },
         {
           title: '过户状态',
@@ -86,7 +92,7 @@ export default {
           render: (h, params) => {
             return h('div', [
               h('span', {
-              }, this.DATAS.DOMAIN_CHANGE_TYPE[this.list[params.index].changeStatus])
+              }, (this.list[params.index].changeStatus === 1 ? '过户进行中' : this.DATAS.DOMAIN_CHANGE_TYPE[this.list[params.index].changeStatus]))
             ])
           }
         },

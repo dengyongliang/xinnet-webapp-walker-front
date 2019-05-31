@@ -75,11 +75,11 @@ export const MAIL_MANAGE_TOP = () => {
   })
 }
 // 自有域名监控-域名监控列表
-export const DOMAIN_MONITOR = (pageNum, pageSize) => {
+export const DOMAIN_MONITOR = (pageNum, pageSize, domainName, groupIds, serviceState, monitorLog) => {
   return axios({
     url: action.DOMAIN_MONITOR,
     method: 'POST',
-    data: {pageNum, pageSize}
+    data: {pageNum, pageSize, domainName, groupIds, serviceState, monitorLog}
   })
 }
 // 自有域名监控-域名监控详情(域名信息)
@@ -99,10 +99,18 @@ export const DOMAIN_MONITOR_LOG = (pageNum, pageSize, domainName, createTimeBegi
   })
 }
 // 自有域名监控-域名监控详情(域名监控日志导出)
-export const EXPORT_DOMAIN_LOG = () => {
+// export const EXPORT_DOMAIN_LOG = () => {
+//   return axios({
+//     url: action.EXPORT_DOMAIN_LOG,
+//     method: 'POST',
+//     data: {}
+//   })
+// }
+// 监控通知通知详情
+export const MAIL_RECORD_DETAIL = (id) => {
   return axios({
-    url: action.EXPORT_DOMAIN_LOG,
+    url: action.MAIL_RECORD_DETAIL,
     method: 'POST',
-    data: {}
+    data: {id}
   })
 }

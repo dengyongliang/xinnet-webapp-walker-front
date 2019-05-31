@@ -10,7 +10,8 @@ div.compDomainMgmtDetailOwner
       Form(:label-width="200")
         FormItem(label="域名持有者名称（中文）：", required)
           span.text {{detailData.regUserInfo?detailData.regUserInfo.organizeNameCn:''}}
-            router-link(to="/domain/change", v-show="detailData.updateFlag===0") 修改
+            <a href="javascript:;" v-show="detailData.depositFlag===1" @click="showOrder">修改</a>
+            <a href="javascript:;" v-show="detailData.depositFlag===0" @click="updateOrganizeNameCn">修改</a>
         FormItem(label="域名联系人（中文）：", required)
           comp-input(name='userNameCn',label="域名联系人",ref="userNameCn",styles="width:300px", :maxLength="100", :defaultValue="detailData.regUserInfo?detailData.regUserInfo.userNameCn:''",)
         FormItem(label="所属区域：", required)
@@ -36,8 +37,8 @@ div.compDomainMgmtDetailOwner
       Form(:label-width="200")
         FormItem(label="域名持有者名称（英文）：", required)
           span.text {{detailData.regUserInfo?detailData.regUserInfo.organizeNameUk:''}}
-            router-link(to="/domain/change", v-show="detailData.updateFlag===0") 修改
-
+            <a href="javascript:;" v-show="detailData.depositFlag===1" @click="showOrder">修改</a>
+            <a href="javascript:;" v-show="detailData.depositFlag===0" @click="updateOrganizeNameCn">修改</a>
         FormItem(label="域名联系人（英文）：", required)
           comp-input(name='userNameUk',label="英文名",ref="userNameUk",styles="width:300px", placeholder="英文名", :defaultValue="detailData.regUserInfo?detailData.regUserInfo.userNameUk:''",)
         FormItem(label="")
@@ -46,7 +47,8 @@ div.compDomainMgmtDetailOwner
           comp-input(name='streetUk',label="通讯地址",ref="streetUk",styles="width:300px", :defaultValue="detailData.regUserInfo?detailData.regUserInfo.publicStreetUk:''",)
 
   .btn
-    Button(type="primary",@click="formSubmit",:loading="loadingBtn", v-show="detailData.updateFlag===0") 保存
+    Button(type="primary",@click="formSubmit",:loading="loadingBtn") 保存
+    //- Button(type="primary",@click="formSubmit",:loading="loadingBtn", v-show="detailData.updateFlag===0") 保存
 </template>
 
 <script>
@@ -83,7 +85,21 @@ export default {
     }
   },
   methods: {
+    showOrder () {
+      this.$emit('showWorkOrder')
+    },
+    updateOrganizeNameCn () {
+      if (this.detailData.updateFlag!==0) {
+        this.$Message.error('域名安全服务禁止更新开通不允许修改域名所有者信息，请关闭后再提交修改！')
+        return false
+      }
+      this.$router.push('/domain/change')
+    },
     formSubmit () {
+      if (this.detailData.updateFlag!==0) {
+        this.$Message.error('域名安全服务禁止更新开通不允许修改域名所有者信息，请关闭后再提交修改！')
+        return false
+      }
       this.loadingBtn = true
       let result = validateFormResult([
         this.$refs.userNameCn,

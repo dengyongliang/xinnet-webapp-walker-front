@@ -62,7 +62,7 @@
         Row
           Col(span="12")
             h4.h4T 未出账单
-            strong 应结款项：<em>{{payStatisticsUnBilled.payMoney}}</em>元
+            strong 应结款项：<em>{{payStatisticsUnBilled.creditMoney}}</em>元
             ul
               li.clear
                 span.l 结算周期：

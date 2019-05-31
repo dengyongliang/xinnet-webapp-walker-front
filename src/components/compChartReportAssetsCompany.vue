@@ -1,13 +1,13 @@
 <template lang="pug">
   .compChartReportAssetsCompany
-    div(id="myChart",style="width:688px;height:328px;")
+    div(id="chartReportAssetsCompany",style="width:688px;height:328px;")
     p {{charData.companyName}}管理域名数量最多共计<em>{{charData.mainDomainNumber}}</em>个，占域名总数的<em>{{charData.mainDomainRate}}</em>，其余公司管理其余<em>{{charData.otherDomainNumber}}</em>个域名。
 
 </template>
 
 <script>
 export default {
-  name: 'compChartDomainDueTime',
+  name: 'compChartReportAssetsCompany',
   props: {
     charData: {
       type: Object,
@@ -24,7 +24,7 @@ export default {
   },
   methods: {
     drawChart (datas) {
-      let myChart = this.$echarts.init(document.getElementById('myChart'))
+      let myChart = this.$echarts.init(document.getElementById('chartReportAssetsCompany'))
       // 绘制图表
       myChart.setOption({
         title: {
@@ -89,8 +89,11 @@ export default {
   computed: {
   },
   watch: {
-    charData: function (val, oldVal) {
-      this.drawChart(val.domainInfo)
+    charData: {
+      handler (val, oldVal) {
+        this.drawChart(val.domainInfo)
+      },
+      deep: true
     }
   }
 }
@@ -100,7 +103,7 @@ export default {
   text-align: center;
   padding: 30px 0;
 }
-.compChartReportAssetsCompany #myChart{
+.compChartReportAssetsCompany #chartReportAssetsCompany{
   border: 1px solid #d9d9d9;
   margin: 0 auto;
 }

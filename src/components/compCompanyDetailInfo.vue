@@ -93,7 +93,11 @@ export default {
             this.updateCompanys()
             this.$emit('getBaseInfo', params)
           } else {
-            this.$Message.error('保存失败')
+            if (response.data.code === '100') {
+              this.$Message.error('已存在同名企业')
+            } else {
+              this.$Message.error('保存失败')
+            }
           }
         }).catch(() => {})
       } else {

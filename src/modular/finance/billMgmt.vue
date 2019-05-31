@@ -9,9 +9,9 @@
         Col.bill(span="12")
           .colWrap
             Tabs(value="name1")
-              TabPane.tabPane1(label="本期账单" name="name1")
+              TabPane.tabPane1(label="未出账单" name="name1")
                 comp-not-out-bill(:billedData='payStatisticsUnBilledData')
-              TabPane.tabPane2(label="往期账单" name="name2")
+              TabPane.tabPane2(label="已出账单" name="name2")
                 comp-past-bill()
         Col.quota(span="12")
           .colWrap

@@ -86,7 +86,7 @@ export default {
     },
     DOMAIN_MONITOR ({ commit }, params) {
       return new Promise((resolve, reject) => {
-        api.DOMAIN_MONITOR(params.pageNum, params.pageSize).then(response => {
+        api.DOMAIN_MONITOR(params.pageNum, params.pageSize, params.domainName, params.groupIds, params.serviceState, params.monitorLog).then(response => {
           resolve(response)
         }).catch(error => {
           reject(error)
@@ -105,6 +105,15 @@ export default {
     DOMAIN_MONITOR_LOG ({ commit }, params) {
       return new Promise((resolve, reject) => {
         api.DOMAIN_MONITOR_LOG(params.pageNum, params.pageSize, params.domainName, params.createTimeBegin, params.createTimeEnd, params.type).then(response => {
+          resolve(response)
+        }).catch(error => {
+          reject(error)
+        })
+      })
+    },
+    MAIL_RECORD_DETAIL ({ commit }, params) {
+      return new Promise((resolve, reject) => {
+        api.MAIL_RECORD_DETAIL(params.id).then(response => {
           resolve(response)
         }).catch(error => {
           reject(error)

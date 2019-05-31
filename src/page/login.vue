@@ -181,7 +181,7 @@ export default {
             this.onShowError('用户权限异常')
             this.$refs.account.showValidateResult({})
           } else if (data.code === '800') {
-            this.onShowError('非法登录')
+            this.onShowError('账号已停用，请联系你的管家！')
             this.$refs.account.showValidateResult({})
           }
         }

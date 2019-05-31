@@ -127,6 +127,8 @@ export default {
             this.$Message.error('域名被锁定')
           } else if (response.data.code === '400') {
             this.$Message.error('验证码错误')
+          } else if (response.data.code === '600') {
+            this.$Message.error('域名未通过实名制审核无法进行此操作')
           } else {
 
           }

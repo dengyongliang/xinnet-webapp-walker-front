@@ -41,7 +41,10 @@ export default {
   data () {
     return {
       value: '',
-      time: '',
+      time: [
+        new Date(moment(new Date()).format('YYYY-MM-DD')),
+        new Date(moment(new Date()).format('YYYY-MM-DD'))
+      ],
       levelType: '',
       exportLink: actions.EXPORT_USER_LOG,
       typeList: [
@@ -63,7 +66,12 @@ export default {
           title: '时间',
           width: 150,
           key: 'createTime',
-          className: 'col1'
+          className: 'col1',
+          render: (h, params) => {
+            return h('div', [
+              h('span', {}, moment(this.list[params.index].createTime).format('YYYY-MM-DD HH:mm:ss'))
+            ])
+          }
         },
         {
           title: '员工',

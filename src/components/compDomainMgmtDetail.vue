@@ -8,7 +8,7 @@ div.compDomainMgmtDetail
 
     span.item <Icon custom="i-icon i-icon-lock" size="16" />注册局锁：<em :style="detailData.backendLockFlag===1?'color:#46a405':'color:#aaa'">{{this.DATAS.BACKENDLOCKFLAG[detailData.backendLockFlag]}}</em>
 
-    span.item <Icon custom="i-icon i-icon-test_" size="16" />实名认证：<em :style="detailData.verifyStatus===2?'color:#46a405':'color:#aaa'">{{this.DATAS.REAL_NAME_VERIFY_STATUS[detailData.verifyStatus]}}</em>
+    span.item <Icon custom="i-icon i-icon-test_" size="16" />实名认证：<em :style="detailData.verifyStatus===2?'color:#46a405':'color:#aaa'">{{detailData.verifyStatus?this.DATAS.REAL_NAME_VERIFY_STATUS[detailData.verifyStatus]:'未提交资料'}}</em>
 
     span.item <Icon custom="i-icon i-icon-state" size="16" />服务状态：<em>{{this.DATAS.SERVICE_STATE[detailData.serviceStatus]}}</em>
 
@@ -30,9 +30,9 @@ div.compDomainMgmtDetail
       div(v-show="tabs===1")
         comp-domain-mgmt-detail-info(:detailData="detailData", @showWorkOrder="showWorkOrder",  @modifyDns="modifyDns", :onTabschange="tabsChange", @showAuthorize="showModal")
       div(v-show="tabs===2 && detailData.depositFlag!==1")
-        comp-domain-mgmt-detail-owner(:detailData="detailData")
+        comp-domain-mgmt-detail-owner(:detailData="detailData", @showWorkOrder="showWorkOrder")
       div(v-show="tabs===3 && detailData.depositFlag!==1")
-        comp-domain-mgmt-detail-contacts(:detailData="detailData")
+        comp-domain-mgmt-detail-contacts(:detailData="detailData", @showWorkOrder="showWorkOrder")
       div(v-show="tabs===4")
         comp-domain-mgmt-detail-step4(:detailData="detailData", @setDetailFun="setDetailFun2")
   <!-- 提交工单 抽屉 -->

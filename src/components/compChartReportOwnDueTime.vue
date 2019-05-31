@@ -1,6 +1,6 @@
 <template lang="pug">
   .compChartReportOwnDueTime
-    div(id="myChart",style="width:688px;height:328px;")
+    div(id="chartReportOwnDueTime",style="width:688px;height:328px;")
     p 服务期域名为<em>{{charData.expireReportInfo?charData.expireReportInfo[getIdxItem(0)].domainCount:0}}</em>个，急需续费的域名<em>{{charData.expireReportInfo?charData.expireReportInfo[getIdxItem(1)].domainCount:0}}</em>个，赎回期域名<em>{{charData.expireReportInfo?charData.expireReportInfo[getIdxItem(2)].domainCount:0}}</em>个。
 
 </template>
@@ -27,7 +27,7 @@ export default {
       return this.charData.expireReportInfo.findIndex((item) => (item.serviceStatus === v))
     },
     drawChart (datas) {
-      let myChart = this.$echarts.init(document.getElementById('myChart'))
+      let myChart = this.$echarts.init(document.getElementById('chartReportOwnDueTime'))
       // 绘制图表
       myChart.setOption({
         title: {
@@ -93,8 +93,11 @@ export default {
   computed: {
   },
   watch: {
-    charData: function (val, oldVal) {
-      this.drawChart(val.expireReportInfo)
+    charData: {
+      handler (val, oldVal) {
+        this.drawChart(val.expireReportInfo)
+      },
+      deep: true
     }
   }
 }
@@ -104,7 +107,7 @@ export default {
   text-align: center;
   padding: 30px 0;
 }
-.compChartReportOwnDueTime #myChart{
+.compChartReportOwnDueTime #chartReportOwnDueTime{
   border: 1px solid #d9d9d9;
   margin: 0 auto;
 }

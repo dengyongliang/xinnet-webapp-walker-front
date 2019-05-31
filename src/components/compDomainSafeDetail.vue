@@ -282,6 +282,10 @@ export default {
             this.$Message.error('客户账号异常')
           } else if (response.data.code === '600') {
             this.$Message.error('信用额度不足')
+          } else if (response.data.code === '700') {
+            this.$Message.error('域名期时间20天之内无法设置自动续费')
+          } else if (response.data.code === '800') {
+            this.$Message.error('委托管理域名无法进行此操作')
           }
           // this.$Message.error(`自动续费${flag === 1 ? '开启' : '关闭'}失败`)
         }
@@ -302,6 +306,9 @@ export default {
           this.$Message.success(`禁止更新${flag === 1 ? '开启' : '关闭'}成功`)
           this.list[1].status = flag
         } else {
+          if (response.data.code === '800') {
+            this.$Message.error('委托管理域名无法进行此操作')
+          }
           // this.$Message.error(`禁止更新${flag === 1 ? '开启' : '关闭'}失败`)
         }
       }).catch(() => {})

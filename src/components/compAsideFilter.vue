@@ -106,14 +106,19 @@ export default {
           value: '保护级别',
           groups: [
             {
-              'label': 'normal',
+              'label': '0',
               'checked': false,
               'value': '普通域名'
             },
             {
-              'label': 'important',
+              'label': '1',
               'checked': false,
               'value': '重点域名'
+            },
+            {
+              'label': '2',
+              'checked': false,
+              'value': '不支持'
             }
           ]
         },
@@ -123,14 +128,19 @@ export default {
           checked: false,
           groups: [
             {
+              'label': '0',
+              'checked': false,
+              'value': '已关闭'
+            },
+            {
               'label': '1',
               'checked': false,
               'value': '已开启'
             },
             {
-              'label': '0',
+              'label': '2',
               'checked': false,
-              'value': '已关闭'
+              'value': '不支持'
             }
           ]
         },
@@ -140,22 +150,17 @@ export default {
           checked: false,
           groups: [
             {
-              'label': '1',
-              'checked': false,
-              'value': '已开启'
-            },
-            {
               'label': '0',
               'checked': false,
               'value': '已关闭'
             },
             {
-              'label': '2',
+              'label': '1',
               'checked': false,
-              'value': '未开启'
+              'value': '已开启'
             },
             {
-              'label': '3',
+              'label': '2',
               'checked': false,
               'value': '不支持'
             }
@@ -167,14 +172,19 @@ export default {
           checked: false,
           groups: [
             {
+              'label': '0',
+              'checked': false,
+              'value': '已关闭'
+            },
+            {
               'label': '1',
               'checked': false,
               'value': '已开启'
             },
             {
-              'label': '0',
+              'label': '2',
               'checked': false,
-              'value': '已关闭'
+              'value': '不支持'
             }
           ]
         }
@@ -245,9 +255,72 @@ export default {
         }
         return array
       })(this),
-      dataTimeReg: [],
-      dataTimeExpire: [],
-      dataTimeSubmit: [],
+      dataTimeReg: [
+        {
+          label: '',
+          checked: false,
+          value: '全部'
+        },
+        {
+          label: 30,
+          checked: false,
+          value: '近30天'
+        },
+        {
+          label: 60,
+          checked: false,
+          value: '近60天'
+        },
+        {
+          label: 'custom',
+          checked: false,
+          value: '自定义'
+        }
+      ],
+      dataTimeExpire: [
+        {
+          label: '',
+          checked: false,
+          value: '全部'
+        },
+        {
+          label: 30,
+          checked: false,
+          value: '近30天'
+        },
+        {
+          label: 60,
+          checked: false,
+          value: '近60天'
+        },
+        {
+          label: 'custom',
+          checked: false,
+          value: '自定义'
+        }
+      ],
+      dataTimeSubmit: [
+        {
+          label: '',
+          checked: false,
+          value: '全部'
+        },
+        {
+          label: 30,
+          checked: false,
+          value: '近30天'
+        },
+        {
+          label: 60,
+          checked: false,
+          value: '近60天'
+        },
+        {
+          label: 'custom',
+          checked: false,
+          value: '自定义'
+        }
+      ],
       colllapseValue: '',
       len: 0
     }
@@ -364,9 +437,9 @@ export default {
     }
   },
   beforeMount () {
-    this.dataTimeReg = this.timeData
-    this.dataTimeExpire = this.timeData
-    this.dataTimeSubmit = this.timeData
+    // this.dataTimeReg = [...this.timeData]
+    // this.dataTimeExpire = [...this.timeData]
+    // this.dataTimeSubmit = [...this.timeData]
   },
   computed: {
     ...mapState({

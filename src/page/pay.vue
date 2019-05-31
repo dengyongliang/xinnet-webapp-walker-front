@@ -2,25 +2,29 @@
 .pagePay
   header-body
   .mainBody
-    h1(v-show="!pay") 订单结算
+    h1(v-show="!pay && payFinishData.jsonObj.length") 订单结算
       p.clear 已确认订单信息，请尽快完成支付 <a href="javascript:;" @click="toBackModify">修改</a>
-    h1(v-show="pay") 支付结果
+    h1(v-show="pay && payFinishData.jsonObj.length") 支付结果
+    h1(v-show="!payFinishData.jsonObj.length") 支付完成，请不要重复提交
     <!-- 列表主体 -->
-    .secTable
+    .secTable(v-show="payFinishData.jsonObj.length")
       <Table :columns="columns" :data="payFinishData.jsonObj" :loading="loadingTable"></Table>
       .price 应付金额：<em>{{total}}</em>元
       .quota 剩余信用额度：<em>{{payFinishData.creditBalance}}</em>元
-    .btn(v-show="!pay")
+    .btn(v-show="!pay && payFinishData.jsonObj.length")
       Button(type="primary", @click="toPay", :loading="loadingBtn",) 立即支付
-    .total(v-show="pay") 实付金额：<em>{{realPrice}}</em>元
+    .total(v-show="pay && payFinishData.jsonObj.length") 实付金额：<em>{{realPrice}}</em>元
+    comp-list-none(v-show="!payFinishData.jsonObj.length")
 </template>
 
 <script>
 import {mapState} from 'vuex'
 import headerBody from '../modular/header'
+import compListNone from '../components/compListNone'
 export default {
   components: {
-    headerBody
+    headerBody,
+    compListNone
   },
   data () {
     return {
@@ -172,6 +176,9 @@ export default {
           }
         }).catch(() => {})
       })
+      // 清除localStorage
+      localStorage.removeItem('data_pay_finish')
+      localStorage.removeItem('data_pay_confirm')
     }
   },
   computed: {
@@ -193,11 +200,11 @@ export default {
     // 如果没有数据，查看本地存储中是否存在数据，有使用本地存储数据
     // 都没有，显示空列表
     if (this.payOrdersFinish.jsonObj) {
-      sessionStorage.setItem('data_pay_finish', JSON.stringify(this.payOrdersFinish))
+      localStorage.setItem('data_pay_finish', JSON.stringify(this.payOrdersFinish))
       this.payFinishData = this.payOrdersFinish
-      // this.payFinishData = JSON.parse(sessionStorage.getItem('data_pay_finish'))
-    } else if (sessionStorage.getItem('data_pay_finish')) {
-      this.payFinishData = JSON.parse(sessionStorage.getItem('data_pay_finish'))
+      // this.payFinishData = JSON.parse(localStorage.getItem('data_pay_finish'))
+    } else if (localStorage.getItem('data_pay_finish')) {
+      this.payFinishData = JSON.parse(localStorage.getItem('data_pay_finish'))
     } else {
       this.payFinishData.jsonObj = []
     }

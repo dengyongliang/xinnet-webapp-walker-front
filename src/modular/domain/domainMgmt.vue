@@ -266,8 +266,12 @@ export default {
       this.renewDisabled = !selected.length
     },
     renewFun () {
-      var params = {
+      let flag = true
+      let params = {
         jsonObj: this.selectData.map((v) => {
+          if (v.depositFlag === 1) {
+            flag = false
+          }
           return {
             domainName: v.domainName,
             orderGoodsType: 2,
@@ -276,34 +280,38 @@ export default {
         })
       }
       console.log(params)
-
-      this.$store.dispatch('ORDER_CONFIRM', params).then(response => {
-        this.loadingBtn = false
-        if (!response) {
-          return false
-        }
-        if (response.data.code === '1000') {
-          response.data.type = '2_2'
-          response.data.jsonObj.map((v) => {
-            v.price = v.goodsNumAndPrice[0].price + '_' + v.goodsNumAndPrice[0].unit
-            v.num = v.goodsNumAndPrice[0].num
-            v.unit = v.goodsNumAndPrice[0].unit
-          })
-          this.$store.commit('SET_PAY_ORDERS', response.data)
-          this.$router.push({path: '/payConfirm'})
-        } else {
-          if (response.data.code === '100') {
-            this.$Message.error('模板不存在')
-          } else if (response.data.code === '200') {
-            this.$Message.error('分组不存在')
-          } else if (response.data.code === '300') {
-            this.$Message.error('账户错误')
-          } else if (response.data.code === '400') {
-            this.$Message.error('json数据错误')
-          } else {
+      // flag===true 执行续费，否则提示 错误信息
+      if (flag) {
+        this.$store.dispatch('ORDER_CONFIRM', params).then(response => {
+          this.loadingBtn = false
+          if (!response) {
+            return false
           }
-        }
-      }).catch(() => {})
+          if (response.data.code === '1000') {
+            response.data.type = '2_2'
+            response.data.jsonObj.map((v) => {
+              v.price = v.goodsNumAndPrice[0].price + '_' + v.goodsNumAndPrice[0].unit
+              v.num = v.goodsNumAndPrice[0].num
+              v.unit = v.goodsNumAndPrice[0].unit
+            })
+            this.$store.commit('SET_PAY_ORDERS', response.data)
+            this.$router.push({path: '/payConfirm'})
+          } else {
+            if (response.data.code === '100') {
+              this.$Message.error('模板不存在')
+            } else if (response.data.code === '200') {
+              this.$Message.error('分组不存在')
+            } else if (response.data.code === '300') {
+              this.$Message.error('账户错误')
+            } else if (response.data.code === '400') {
+              this.$Message.error('json数据错误')
+            } else {
+            }
+          }
+        }).catch(() => {})
+      } else {
+        this.$Message.error('选择域名包含托管域名，如需续费请您联系管家！')
+      }
     },
     domainChangeFun () {
       let flag = true
@@ -354,7 +362,7 @@ export default {
       // 返回 参数 处理
       this.asideFilterResult.allSuffix = result.dataDomainSuffix.checkAll ? 1 : ''
       this.asideFilterResult.otherSuffix = (!result.dataDomainSuffix.checkAll && result.dataDomainSuffix.value.indexOf('otherSuffix') >= 0) ? 1 : ''
-      this.asideFilterResult.domainSuffixs = (!result.dataDomainSuffix.checkAll && result.dataDomainSuffix.value.indexOf('otherSuffix') < 0) ? result.dataDomainSuffix.value.join(',') : ''
+      this.asideFilterResult.domainSuffixs = result.dataDomainSuffix.checkAll ? '' : (result.dataDomainSuffix.value.indexOf('otherSuffix') < 0 ? result.dataDomainSuffix.value.join(',') : result.dataDomainSuffix.value.filter(v => v !== 'otherSuffix').join(','))
       this.asideFilterResult.groupIds = result.dataMgmtCompany.reduce((pre, cur) => {
         return pre.concat(cur)
       }, []).join(',')

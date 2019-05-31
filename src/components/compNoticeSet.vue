@@ -115,13 +115,13 @@ export default {
               arr.push({
                 type: i,
                 way: vm.$refs.way4.value * 1,
-                range: vm.$refs.way4.value * 1
+                range: vm.$refs.range4.value * 1
               })
             } else if (i === 7) {
               arr.push({
                 type: i,
                 way: vm.$refs.way6.value * 1,
-                range: vm.$refs.way6.value * 1
+                range: vm.$refs.range6.value * 1
               })
             } else {
               arr.push({

@@ -9,7 +9,11 @@ div.compDomainMgmtDetailContacts
     Col.col2(span="18")
       Form(:label-width="200")
         FormItem(label="管理机构（中文）：", required)
-          comp-input(name='organizeNameCn',label="管理机构",ref="organizeNameCn",:maxLength="100",styles="width:300px", :defaultValue="detailData.admUserInfo?detailData.admUserInfo.organizeNameCn:''", )
+          span.text {{detailData.admUserInfo?detailData.admUserInfo.organizeNameCn:''}}
+            <a href="javascript:;" v-show="detailData.depositFlag===1" @click="showOrder">修改</a>
+            <a href="javascript:;" v-show="detailData.depositFlag===0" @click="updateOrganizeNameCn">修改</a>
+            //- router-link(to="/domain/change", v-show="detailData.updateFlag===0") 修改
+          //- comp-input(name='organizeNameCn',label="管理机构",ref="organizeNameCn",:maxLength="100",styles="width:300px", :defaultValue="detailData.admUserInfo?detailData.admUserInfo.organizeNameCn:''", )
         FormItem(label="管理联系人（中文）：", required)
           comp-input(name='userNameCn',label="管理联系人",ref="userNameCn",styles="width:300px", :maxLength="100", :defaultValue="detailData.admUserInfo?detailData.admUserInfo.userNameCn:''", )
         FormItem(label="所属区域：", required)
@@ -34,7 +38,11 @@ div.compDomainMgmtDetailContacts
     Col.col2(span="18")
       Form(:label-width="200")
         FormItem(label="管理机构（英文）：", required)
-          comp-input(name='organizeNameUk',label="管理机构",ref="organizeNameUk",styles="width:300px", :defaultValue="detailData.admUserInfo?detailData.admUserInfo.organizeNameUk:''", )
+          span.text {{detailData.admUserInfo?detailData.admUserInfo.organizeNameUk:''}}
+            <a href="javascript:;" v-show="detailData.depositFlag===1" @click="showOrder">修改</a>
+            <a href="javascript:;" v-show="detailData.depositFlag===0" @click="updateOrganizeNameCn">修改</a>
+            //- router-link(to="/domain/change", v-show="detailData.updateFlag===0") 修改
+          //- comp-input(name='organizeNameUk',label="管理机构",ref="organizeNameUk",styles="width:300px", :defaultValue="detailData.admUserInfo?detailData.admUserInfo.organizeNameUk:''", )
         FormItem(label="域名联系人（英文）：", required)
           comp-input(name='userNameUk',label="英文名",ref="userNameUk",styles="width:300px", placeholder="英文名", :defaultValue="detailData.admUserInfo?detailData.admUserInfo.userNameUk:''",)
         FormItem(label="")
@@ -87,10 +95,24 @@ export default {
     }
   },
   methods: {
+    showOrder () {
+      this.$emit('showWorkOrder')
+    },
+    updateOrganizeNameCn () {
+      if (this.detailData.updateFlag!==0) {
+        this.$Message.error('域名安全服务禁止更新开通不允许修改域名所有者信息，请关闭后再提交修改！')
+        return false
+      }
+      this.$router.push('/domain/change')
+    },
     formSubmit () {
+      if (this.detailData.updateFlag!==0) {
+        this.$Message.error('域名安全服务禁止更新开通不允许修改域名所有者信息，请关闭后再提交修改！')
+        return false
+      }
       this.loadingBtn = true
       let result = validateFormResult([
-        this.$refs.organizeNameCn,
+        // this.$refs.organizeNameCn,
         this.$refs.userNameCn,
         this.$refs.area,
         this.$refs.streetCn,
@@ -98,7 +120,7 @@ export default {
         this.$refs.userEmail,
         this.$refs.userTel,
         this.$refs.userFax,
-        this.$refs.organizeNameUk,
+        // this.$refs.organizeNameUk,
         this.$refs.userNameUk,
         this.$refs.userSureNameUk,
         this.$refs.streetUk
@@ -106,7 +128,7 @@ export default {
       if (result) {
         let params = {
           domainId: this.$refs.domainId.value,
-          organizeNameCn: this.$refs.organizeNameCn.value,
+          // organizeNameCn: this.$refs.organizeNameCn.value,
           userNameCn: this.$refs.userNameCn.value,
           countryCode: 'cn',
           cityCode: this.$refs.area.value[1],
@@ -119,7 +141,7 @@ export default {
           faxInter: this.$refs.userFax.value1,
           faxArea: this.$refs.userFax.value2,
           faxNumber: this.$refs.userFax.value3,
-          organizeNameUk: this.$refs.organizeNameUk.value,
+          // organizeNameUk: this.$refs.organizeNameUk.value,
           userSureNameUk: this.$refs.userSureNameUk.value,
           userNameUk: this.$refs.userNameUk.value,
           streetUk: this.$refs.streetUk.value
@@ -175,6 +197,11 @@ export default {
 }
 .compDomainMgmtDetailContacts .ivu-divider{
   margin: 40px 0;
+}
+.compDomainMgmtDetailContacts .ivu-form-item .text a{
+  display:inline-block;
+  margin-left: 40px;
+  color:#2071f6;
 }
 .compDomainMgmtDetailContacts .col1{
   height: 110px;

@@ -98,7 +98,7 @@ export default {
     },
     DOMAIN_REPURCHASE_REPORT ({ commit }, params) {
       return new Promise((resolve, reject) => {
-        api.DOMAIN_REPURCHASE_REPORT(params.reportId).then(response => {
+        api.DOMAIN_REPURCHASE_REPORT(params.reportId, params.pageNum, params.pageSize).then(response => {
           resolve(response)
         }).catch(error => {
           reject(error)

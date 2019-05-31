@@ -46,6 +46,8 @@ export default {
             } else {
               if (response.data.code === '200') {
                 this.$Message.error('用户不存在')
+              } if (response.data.code === '300') {
+                this.$Message.error('用户已经激活')
               } else {
                 this.$Message.error('验证失败')
               }

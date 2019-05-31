@@ -58,7 +58,9 @@ export default {
             this.close()
             this.$emit('refreshData')
           } else {
-            // this.$Message.error('设置保护等级失败')
+            if (response.data.code === '800') {
+              this.$Message.error('委托管理域名无法进行此操作')
+            }
           }
         }).catch(() => {})
       } else {

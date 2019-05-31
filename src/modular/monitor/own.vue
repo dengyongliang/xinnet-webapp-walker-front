@@ -5,7 +5,7 @@
     <span @click="showDetail=false" class="backlist">自有域名监控</span>
     <span v-show="showDetail"> > 域名监控详情</span>
     .tR
-      router-link(to="/report/own")
+      router-link(to="/report/own?type=own")
         Button(type="primary",) 自有域名监控报告
 
   .secMain(v-show="!showDetail")
@@ -19,7 +19,7 @@
       .tR
         span.text 搜索
         <Input v-model="value" placeholder="请输入域名" />
-        Button(type="primary", @click="",:loading="loadingBtn") 查询
+        Button(type="primary", @click="searchListData",:loading="loadingBtn") 查询
     .filter()
       comp-aside-filter(:show="[3,4,5]", @asideFilterSubmit="asideFilterSubmit", @asideFilterReset="asideFilterReset", :total="page.pageItems", :filterTitle="filterTitle")
     <!-- 列表主体 -->
@@ -27,16 +27,16 @@
       <Table :columns="columns" :data="list" :loading="loadingTable"></Table>
 
   <!-- 翻页区 -->
-  Page(:total="page.pageItems",:current="page.pageNo",show-elevator,show-total,prev-text="上一页",next-text="下一页",@on-change="pageChange",:page-size=20, v-show="!showDetail")
+  Page(:total="page.pageItems",:current="page.pageNo",show-elevator,show-total,prev-text="上一页",next-text="下一页",@on-change="pageChange",:page-size="20", v-show="!showDetail")
 
-  .pageDetail(v-show="showDetail")
+  .pageDetail(v-if="showDetail")
     comp-monitor-own-detail(:domainName="domainName")
 </template>
 
 <script>
 import compMonitorOwnDetail from '@/components/compMonitorOwnDetail'
 import compAsideFilter from '@/components/compAsideFilter'
-
+import moment from 'moment'
 export default {
   components: {
     compMonitorOwnDetail,
@@ -137,7 +137,12 @@ export default {
           title: '到期时间',
           width: 150,
           key: 'expireDate',
-          className: 'col2'
+          className: 'col2',
+          render: (h, params) => {
+            return h('div', [
+              h('p', {}, moment(this.list[params.index].expireDate).format('YYYY-MM-DD'))
+            ])
+          }
         },
         {
           title: '监控日志',
@@ -192,6 +197,11 @@ export default {
         pageNo: 1,
         pagePages: 1,
         pageItems: 1
+      },
+      asideFilterResult: {
+        groupIds: '',
+        serviceState: '',
+        monitorLog: ''
       }
     }
   },
@@ -209,31 +219,21 @@ export default {
     asideFilterSubmit (result) {
       console.log(result)
       // 返回 参数 处理
-      this.asideFilterResult.allSuffix = result.dataDomainSuffix.checkAll ? 1 : ''
-      this.asideFilterResult.otherSuffix = (!result.dataDomainSuffix.checkAll && result.dataDomainSuffix.value.indexOf('otherSuffix') >= 0) ? 1 : ''
-      this.asideFilterResult.domainSuffixs = (!result.dataDomainSuffix.checkAll && result.dataDomainSuffix.value.indexOf('otherSuffix') < 0) ? result.dataDomainSuffix.value.join(',') : ''
       this.asideFilterResult.groupIds = result.dataMgmtCompany.reduce((pre, cur) => {
         return pre.concat(cur)
       }, []).join(',')
-      this.asideFilterResult.importantFlag = result.dataSafe[0].join(',')
-      this.asideFilterResult.renewFlag = result.dataSafe[1].join(',')
-      this.asideFilterResult.backendLockFlag = result.dataSafe[2].join(',')
-      this.asideFilterResult.updateFlag = result.dataSafe[3].join(',')
+      this.asideFilterResult.serviceState = result.dataServiceState.join(',')
+      this.asideFilterResult.monitorLog = result.dataMonitorLog.join(',')
       console.log(this.asideFilterResult)
       // 加载数据
-      this.queryList(this.queryListParam({pageNum: 1}))
+      this.queryList(1)
     },
     asideFilterReset () {
-      this.asideFilterResult.domainSuffixs = ''
-      this.asideFilterResult.otherSuffix = ''
-      this.asideFilterResult.allSuffix = ''
       this.asideFilterResult.groupIds = ''
-      this.asideFilterResult.importantFlag = ''
-      this.asideFilterResult.renewFlag = ''
-      this.asideFilterResult.updateFlag = ''
-      this.asideFilterResult.backendLockFlag = ''
+      this.asideFilterResult.monitorLog = ''
+      this.asideFilterResult.serviceState = ''
 
-      this.queryList(this.queryListParam({pageNum: 1}))
+      this.queryList(1)
     },
     queryListParam (obj) {
       this.page.pageNo = obj.pageNum
@@ -242,7 +242,11 @@ export default {
 
       let params = {
         pageNum: obj.pageNum,
-        pageSize: 20
+        pageSize: 20,
+        domainName: this.value,
+        groupIds: this.asideFilterResult.groupIds,
+        serviceState: this.asideFilterResult.serviceState,
+        monitorLog: this.asideFilterResult.monitorLog
       }
       return params
     },

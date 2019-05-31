@@ -76,7 +76,7 @@ export default {
                     this.payConfirmData.jsonObj[params.index].num = event.label
                     this.payConfirmData.jsonObj[params.index].price = event.value
                     this.payConfirmData.jsonObj[params.index].unit = event.value.split('_')[1]
-                    sessionStorage.setItem('data_pay_confirm', JSON.stringify(this.payConfirmData))
+                    localStorage.setItem('data_pay_confirm', JSON.stringify(this.payConfirmData))
                   }
                 },
                 style: {
@@ -138,7 +138,7 @@ export default {
                 on: {
                   click: () => {
                     this.payConfirmData.jsonObj.splice(params.index, 1)
-                    sessionStorage.setItem('data_pay_confirm', JSON.stringify(this.payConfirmData))
+                    localStorage.setItem('data_pay_confirm', JSON.stringify(this.payConfirmData))
                   }
                 }
               }, '')
@@ -180,9 +180,9 @@ export default {
     // 都没有，显示空列表
     if (this.payOrders.jsonObj.length) {
       this.payConfirmData = this.payOrders
-      sessionStorage.setItem('data_pay_confirm', JSON.stringify(this.payOrders))
-    } else if (sessionStorage.getItem('data_pay_confirm')) {
-      this.payConfirmData = JSON.parse(sessionStorage.getItem('data_pay_confirm'))
+      localStorage.setItem('data_pay_confirm', JSON.stringify(this.payOrders))
+    } else if (localStorage.getItem('data_pay_confirm')) {
+      this.payConfirmData = JSON.parse(localStorage.getItem('data_pay_confirm'))
     } else {
     }
   },

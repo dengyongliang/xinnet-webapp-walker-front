@@ -2,23 +2,48 @@
 .compNoticeMonitorList
   ul(v-if="list.length")
     li.clear(v-for="item in list")
-      span.l {{item.sendTime}}
+      span.l {{item.sendTime | dateformat('YYYY-MM-DD HH:mm:ss')}}
       span.r
-        a {{item.title}}
+        a(@click="handleShowDetail(item)") {{item.title}}
   div.none(v-else) 暂无数据
+  <!-- 通知详情 弹窗 -->
+  Modal(
+    width="600",
+    v-model="modelMailRecordDetail",
+    class-name="modelMailRecordDetail",
+    :footer-hide="true"
+  )
+    div(v-html="modelMailContent")
 </template>
 
 <script>
+import moment from 'moment'
 export default {
   name: 'compNoticeMonitorList',
   props: {
   },
   data () {
     return {
-      list: []
+      list: [],
+      modelMailRecordDetail: false,
+      modelMailContent: ''
     }
   },
   methods: {
+    handleShowDetail (item) {
+      this.$store.dispatch('MAIL_RECORD_DETAIL', {id: item.id}).then(response => {
+        if (!response) {
+          return false
+        }
+        if (response.data.code === '1000') {
+          this.modelMailContent = response.data.data.detail
+          // 设为已读
+          this.$store.dispatch('MAIL_RECORD_READ', {id: item.id}).then(() => {}).catch(() => {})
+        } else {
+        }
+      }).catch(() => {})
+      this.modelMailRecordDetail = true
+    },
     queryListParam () {
       let params = {
         pageNum: 1,

@@ -41,4 +41,35 @@ export default [{
     record,
     notice
   ]
-}]
+},
+{
+  path: '/domainQuery',
+  name: 'domainQuery',
+  component (resolve) {
+    return require(['@/page/domainQuery'], resolve)
+  },
+  meta: {
+    title: '域名注册',
+    keepAlive: true,
+    permission: 'client_index',
+    compUrl: 'page/domainQuery',
+    icon: 'i-icon i-icon-home',
+    show: true
+  }
+},
+{
+  path: '/domainQueryResult',
+  name: 'domainQueryResult',
+  component (resolve) {
+    return require(['@/page/domainQueryResult'], resolve)
+  },
+  meta: {
+    title: '域名注册',
+    keepAlive: true,
+    permission: 'client_index',
+    compUrl: 'page/domainQueryResult',
+    icon: 'i-icon i-icon-home',
+    show: true
+  }
+}
+]

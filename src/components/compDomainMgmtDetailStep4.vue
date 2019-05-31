@@ -6,7 +6,7 @@
         td.td2 {{detailData.groupName}}
           Poptip(placement="bottom", width="350", v-model="visible")
             <a href="javascript:;" v-show="detailData.updateFlag===0">修改</a>
-            comp-user-auth-groups(slot="content", :on-parentmethod="hidePop", :domainIds="(detailData.id+'')", @refreshData = "setDetailFun2", :groupsData="userAuthGroups",type="step4")
+            comp-user-auth-groups(slot="content", :on-parentmethod="hidePop", :domainIds="(detailData.id+'')", @refreshData = "setGroupName", :groupsData="userAuthGroups",type="step4")
       tr
         td.td1 管理单位联系人
         td.td2
@@ -50,8 +50,8 @@ export default {
     hidePop () {
       this.visible = false
     },
-    setDetailFun2 (obj) {
-      this.$emit('setDetailFun', obj)
+    setGroupName (newGroupName) {
+      this.$set(this.detailData, 'groupName', newGroupName)
     }
   },
   beforeMount () {

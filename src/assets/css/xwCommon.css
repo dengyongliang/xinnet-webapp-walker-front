@@ -106,3 +106,10 @@
   border-top:1px solid #fff;
   border-bottom:1px solid #fff;
 }
+
+.modelMailRecordDetail .main{
+    margin: 0px!important;
+}
+.modelMailRecordDetail .ivu-modal-body{
+    padding: 0px!important;
+}

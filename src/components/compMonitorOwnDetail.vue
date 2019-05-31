@@ -3,7 +3,8 @@
   .domainName
     h2 {{detailData.domain?detailData.domain.domainName:''}}
       Icon(type="md-star", style="color:#f00")
-      .time 更新时间：{{detailData.domain?detailData.domain.modifyDate:''}}
+      .time(v-if="detailData.domain && detailData.domain.modifyDate") 更新时间：{{detailData.domain.modifyDate | dateformat('YYYY-MM-DD')}}
+      .time(v-else) 更新时间：
 
   .secBox.secBox1
     h3.h3T.clear
@@ -12,7 +13,7 @@
       table
         tr
           td.td1 注册商信息
-          td.td2 注册商：{{detailData.domain?detailData.domain.modifyDate:''}}
+          td.td2 注册商：{{detailData.domain?(detailData.domain.depositFlag?'非新网':'新网') : ''}}
           td.td3
           td.td4
         tr
@@ -22,12 +23,15 @@
           td.td4
         tr
           td.td1 时间信息
-          td.td2 注册时间：{{detailData.domain?detailData.domain.applyDate:''}}
-          td.td3 到期时间：{{detailData.domain?detailData.domain.expireDate:''}}
-          td.td4 更新日期：{{detailData.domain?detailData.domain.modifyDate:''}}
+          td.td2(v-if="detailData.domain && detailData.domain.applyDate") 注册时间：{{detailData.domain.applyDate | dateformat('YYYY-MM-DD')}}
+          td.td2(v-else) 注册时间：
+          td.td3(v-if="detailData.domain && detailData.domain.expireDate") 到期时间：{{detailData.domain.expireDate | dateformat('YYYY-MM-DD')}}
+          td.td3(v-else) 到期时间：
+          td.td4(v-if="detailData.domain && detailData.domain.modifyDate") 更新日期：{{detailData.domain.modifyDate | dateformat('YYYY-MM-DD')}}
+          td.td4(v-else) 更新日期：
         tr
           td.td1 域名状态
-          td.td2 {{detailData.domain?detailData.domain.domainStatus:''}}
+          td.td2 {{detailData.domain? this.DATAS.SERVICE_STATE[detailData.domain.serviceStatus]:''}}　
             Tooltip(placement="top-start")
               span(slot="content", style="color:#fff") 解析监控列表仅记录3个月内解析修改情况，<br />详细域名解析监控日志，<br />请查看下方全部域名监控日志。
               Icon(custom="i-icon i-icon-tips", size="16")
@@ -46,7 +50,7 @@
     h3.h3T.clear
       span.t 监控日志
     .secFilter
-      form.filterWrap(ref="exportForm",target="_blank" method="post" accept-charset="utf-8" :action="exportLink")
+      form.filterWrap(ref="exportForm", method="post" accept-charset="utf-8" :action="exportLink")
         table
           tr.row1
             td.td1
@@ -64,10 +68,10 @@
 
             td.tdBtn
               a(href="javascript:;", @click="exportOrder") 导出日志
-    .secTable.secTable2
-      <Table :columns="columns" :data="list" :loading="loadingTable"></Table>
+    .secTable
+      <Table :columns="logColumns" :data="logList" :loading="loadingTable"></Table>
     <!-- 翻页区 -->
-    Page(:total="page.pageItems",:current="page.pageNo",:page-size=20,show-elevator,show-total,prev-text="上一页",next-text="下一页",@on-change="pageChange")
+    Page(:total="page.pageItems",:current="page.pageNo",:page-size="20",show-elevator,show-total,prev-text="上一页",next-text="下一页",@on-change="pageChange")
 </template>
 
 <script>
@@ -90,8 +94,8 @@ export default {
       loadingTable: false,
       loadingBtn: false,
       detailData: {},
-      exportLink: actions.EXPORT_DOMAIN_LOG,
-      columns: [
+      exportLink: actions.EXPORT_DOMAIN_MONITOR_LOG,
+      logColumns: [
         {
           title: '日志记录时间',
           width: 200,
@@ -111,7 +115,7 @@ export default {
           className: 'col3',
           render: (h, params) => {
             return h('div', [
-              h('span', {}, this.DATAS.RECORD_DOMAIN_EVENT_TYPE[this.list[params.index].type])
+              h('span', {}, this.DATAS.RECORD_DOMAIN_EVENT_TYPE[this.logList[params.index].type])
             ])
           }
         },
@@ -129,15 +133,15 @@ export default {
                 style: {
                   color: '#f00',
                   margin: '0 5px 0 0',
-                  display: this.list[params.index].levelType === 2 ? 'inline-block' : 'none'
+                  display: this.logList[params.index].levelType === 2 ? 'inline-block' : 'none'
                 }
               }, ''),
-              h('span', {}, this.list[params.index].content)
+              h('span', {}, this.logList[params.index].content)
             ])
           }
         }
       ],
-      list: [],
+      logList: [],
       typeList: (function (vm) {
         let array = []
         for (var i in vm.DATAS.RECORD_DOMAIN_EVENT_TYPE) {
@@ -206,7 +210,12 @@ export default {
           return false
         }
         if (response.data.code === '1000') {
-          this.list = response.data.data.list
+          this.logList = response.data.data.list
+          alert(this.logList.length)
+          this.$set(this.page, 'pageItems', response.data.data.totalNum)
+          //this.page.pageItems = response.data.data.totalNum
+          // this.$set(this.list, 'items', [])
+          // this.$set(this.list, 'items', response.data.data.list)
         } else {
         }
       }).catch(() => {})
@@ -224,13 +233,13 @@ export default {
   computed: {
   },
   watch: {
-    domainName: function (val, oldVal) {
-      if (val !== '') {
-        this.time = ['', '']
-        this.queryDomainMonitorDetail()
-        this.queryDomainMonitorLog(1)
-      }
-    }
+    // domainName: function (val, oldVal) {
+    //   if (val !== '') {
+    //     this.time = ['', '']
+    //     this.queryDomainMonitorDetail()
+    //     this.queryDomainMonitorLog(1)
+    //   }
+    // }
   }
 }
 </script>

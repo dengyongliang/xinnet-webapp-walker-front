@@ -175,7 +175,7 @@ export default {
               this.$set(this.formDynamic.items, index, {
                 id: this.$refs['groupId' + index][0].value,
                 name: this.$refs['name' + index][0].$refs.input.value,
-                domainCount: 0,
+                domainCount: this.formDynamic.items[index].domainCount,
                 manageId: this.$refs['select' + index][0].value,
                 manageName: this.$refs['select' + index][0].param.label,
                 manageCode: this.$refs['select' + index][0].param.code,

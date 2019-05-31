@@ -216,7 +216,7 @@ export default {
       // 返回 参数 处理
       this.asideFilterResult.allSuffix = result.dataDomainSuffix.checkAll ? 1 : ''
       this.asideFilterResult.otherSuffix = (!result.dataDomainSuffix.checkAll && result.dataDomainSuffix.value.indexOf('otherSuffix') >= 0) ? 1 : ''
-      this.asideFilterResult.domainSuffixs = (!result.dataDomainSuffix.checkAll && result.dataDomainSuffix.value.indexOf('otherSuffix') < 0) ? result.dataDomainSuffix.value.join(',') : ''
+      this.asideFilterResult.domainSuffixs = result.dataDomainSuffix.checkAll ? '' : (result.dataDomainSuffix.value.indexOf('otherSuffix') < 0 ? result.dataDomainSuffix.value.join(',') : result.dataDomainSuffix.value.filter(v => v !== 'otherSuffix').join(','))
       this.asideFilterResult.groupIds = result.dataMgmtCompany.reduce((pre, cur) => {
         return pre.concat(cur)
       }, []).join(',')

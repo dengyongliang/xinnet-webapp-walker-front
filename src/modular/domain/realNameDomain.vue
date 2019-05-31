@@ -31,7 +31,9 @@
   comp-domain-real-name-detail(
     v-if="showSubmit",
     :templateList="templateList",
-    :templateObj = "templateObj",
+    :rnvcStatus = "rnvcStatus",
+    :organizeNameCn = "organizeNameCn",
+    :domainIds = "getDomainId",
     @refreshData = "searchListData"
   )
 </template>
@@ -53,6 +55,7 @@ export default {
       selectData: [],
       templateObj: {},
       organizeNameCn: '',
+      rnvcStatus: 0,
       btnRealNameDisabled: true,
       btnUpdateStatusDisabled: true,
       loadingTable: true,
@@ -227,10 +230,9 @@ export default {
       this.showSubmit = false
     },
     showRealNameSubmit (item) {
-      // this.selectData = [item]
-      // this.organizeNameCn = item.organizeNameCn
-      // this.rnvcStatus = item.rnvcStatus
-      this.templateObj = item
+      this.selectData = [item]
+      this.organizeNameCn = item.organizeNameCn
+      this.rnvcStatus = item.rnvcStatus
       this.showSubmit = true
     },
     handleSelectAll (status) {
@@ -243,17 +245,30 @@ export default {
     },
     batchRealName () {
       let flag = true
+      let ing = true
       this.selectData.reduce((cur, next) => {
+        // 若选择域名所有人名称不同时，点击“批量实名”提示：“请您选择域名所有人相同的域名批量实名！”；
         if (cur.organizeNameCn !== next.organizeNameCn) {
           flag = false
         }
         return next
       })
+      // 若选择域名资料审核中、审核通过时，点击“批量实名”弹出提示：“实名制状态处于资料审核中或审核通过，不允许批量实名！”
+      this.selectData.map((v, i, arr) => {
+        console.log(v.rnvcStatus)
+        if (v.rnvcStatus === 1 || v.rnvcStatus === 2) {
+          ing = false
+        }
+      })
       if (!flag) {
-        this.$Message.error('不同域名所有者，请重选')
+        this.$Message.error('请您选择域名所有人相同的域名批量实名！')
       } else {
-        this.organizeNameCn = this.selectData[0].organizeNameCn
-        this.showSubmit = true
+        if (!ing) {
+          this.$Message.error('实名制状态处于资料审核中或审核通过，不允许批量实名！')
+        } else {
+          this.organizeNameCn = this.selectData[0].organizeNameCn
+          this.showSubmit = true
+        }
       }
     },
     batchUpdate () {
