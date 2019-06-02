@@ -10,7 +10,7 @@ export default {
     permission: 'client_user',
     compUrl: 'page/mainCont',
     icon: 'i-icon i-icon-admin',
-    show: true
+    show: false
   },
   children: [
     {
@@ -24,7 +24,8 @@ export default {
         keepAlive: true,
         permission: 'client_user_companyManage',
         compUrl: 'modular/mgmt/enterprise',
-        show: true
+        show: false,
+        isLogin: true
       }
     },
     {
@@ -38,7 +39,8 @@ export default {
         keepAlive: true,
         permission: 'client_user_myUserInfo',
         compUrl: 'modular/mgmt/myAccount',
-        show: true
+        show: false,
+        isLogin: true
       }
     },
     {
@@ -52,7 +54,8 @@ export default {
         keepAlive: true,
         permission: 'client_user_roleManage',
         compUrl: 'modular/mgmt/roles',
-        show: true
+        show: false,
+        isLogin: true
       }
     },
     {
@@ -66,7 +69,8 @@ export default {
         keepAlive: true,
         permission: 'client_user_userManage',
         compUrl: 'modular/mgmt/accountMgmt',
-        show: true
+        show: false,
+        isLogin: true
       }
     },
     {
@@ -80,7 +84,8 @@ export default {
         keepAlive: true,
         permission: 'client_user_workOrderManage',
         compUrl: 'modular/mgmt/workOrder',
-        show: true
+        show: false,
+        isLogin: true
       }
     }
   ]

@@ -10,7 +10,7 @@ export default {
     permission: 'client_notice',
     compUrl: 'page/mainCont',
     icon: 'i-icon i-icon-notice',
-    show: true
+    show: false
   },
   children: [
     {
@@ -24,7 +24,8 @@ export default {
         keepAlive: true,
         permission: 'client_notice_monitor',
         compUrl: 'modular/notice/monitoring',
-        show: true
+        show: false,
+        isLogin: true
       }
     }
   ]

@@ -17,6 +17,7 @@
     "client_finance_bill",
     "client_order",
     "client_order_manage",
+    "client_user",
     "client_user_myUserInfo",
     "client_user_userManage",
     "client_user_companyManage",

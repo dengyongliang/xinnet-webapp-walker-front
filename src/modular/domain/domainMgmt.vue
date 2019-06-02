@@ -266,6 +266,7 @@ export default {
       this.renewDisabled = !selected.length
     },
     renewFun () {
+      var newWin =  window.open('')
       let flag = true
       let params = {
         jsonObj: this.selectData.map((v) => {
@@ -294,9 +295,13 @@ export default {
               v.num = v.goodsNumAndPrice[0].num
               v.unit = v.goodsNumAndPrice[0].unit
             })
-            this.$store.commit('SET_PAY_ORDERS', response.data)
-            this.$router.push({path: '/payConfirm'})
+            // this.$store.commit('SET_PAY_ORDERS', response.data)
+            localStorage.setItem('data_pay_confirm', JSON.stringify(response.data))
+            //this.$router.push({path: '/payConfirm'})
+            newWin.location.href='/payConfirm'
+            // window.open('/payConfirm','_blank')
           } else {
+            newWin.close()
             if (response.data.code === '100') {
               this.$Message.error('模板不存在')
             } else if (response.data.code === '200') {

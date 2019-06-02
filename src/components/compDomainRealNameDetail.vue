@@ -1,7 +1,8 @@
 <template lang="pug">
 .realNameDetail
-  .status 实名状态：
-    em(:style="'color:'+(rnvcStatus === 3?'#f00':'')") {{rnvcStatus === null ? '未提交资料' : (rnvcStatus === 3 ? '审核不通过' : this.DATAS.DOMAIN_NAME_VERIFY_STATUS[dnvcStatus])}}
+  //- 点击“批量实名”时显示的实名状态需要去除不显示
+  .status(v-if="domainIds.indexOf(',') < 0") 实名状态：
+    em(:style="'color:'+(rnvcStatus === 3?'#f00':'')") {{rnvcStatus === null ? '未提交资料' : (rnvcStatus === 3 ? '审核不通过' : this.DATAS.DOMAIN_NAME_VERIFY_STATUS[rnvcStatus])}}
     p(v-show="rnvcStatus === 3") 审核失败原因：3.1 未提交注册者身份证明资料或未提交合格的注册者身份证明资料, 个人请提交带有姓名和身份证号的身份证件（建议提交身份证），组织请提交组织机构代码证或者营业执照复印件、扫描件
   Form(:label-width="200")
     FormItem(label="域名所有者：")
@@ -22,12 +23,23 @@
       comp-input(name='idCode',label="域名所有者证件号码",ref="idCode",styles="width:300px",:maxLength="100")
     FormItem(label="域名所有人证件扫描件：", required, v-show="isTemp===0")
       comp-img-upload(ref="upfile",name="upfile",errorText="请上传证件扫描件！",tips="支持jpg、jpge格式，图片需大于50k，小于1M",:uploadAction="uploadAction", :on-beforecallback="changeUploadStatus", creatText="点击上传", :status="status", :modify="modify")
-        p(slot="unit") 请确保上传的<span style="color:#f00">证件图片与证件类型及证件号码完全一致</span>；若不一致将会导致域名实名不通过
-        p.example(slot="last")
-          span 示例
+      p 请确保上传的<span style="color:#f00">证件图片与证件类型及证件号码完全一致</span>；若不一致将会导致域名实名不通过
+      div.example
+        span 示例
+        span.img(v-show="this.registrantType === 'I'", @click="modelExample=true")
           img(src="../../static/img/idCard.png")
+        span.img(v-show="this.registrantType === 'E'", @click="modelExample=true")
+          img(src="../../static/img/busscard.png")
     FormItem(label="", v-show="isTemp!==null")
       Button(type="primary",@click="formSubmit",:loading="loadingBtn") 提交
+  <!-- 示例 弹窗 -->
+  Modal(
+    width="700",
+    title="证件图例",
+    v-model="modelExample",
+    :footer-hide="true"
+  )
+    comp-example-card(:registrantType="registrantType")
 </template>
 
 <script>
@@ -35,6 +47,7 @@ import compRadio from '@/components/compRadio'
 import compSelect from '@/components/compSelect'
 import compInput from '@/components/compInput'
 import compImgUpload from '@/components/compImgUpload'
+import compExampleCard from '@/components/compExampleCard'
 import * as actions from '@/actions/domainVerify.js'
 import validateFormResult from '@/global/validateForm'
 export default {
@@ -42,7 +55,8 @@ export default {
     compRadio,
     compSelect,
     compInput,
-    compImgUpload
+    compImgUpload,
+    compExampleCard
   },
   props: {
     onClose: {
@@ -74,6 +88,7 @@ export default {
       status: 'creat',
       modify: false,
       isTemp: null,
+      modelExample: false,
       registrantType: 'I',
       idTypeListI: [],
       idTypeListE: [],
@@ -259,14 +274,32 @@ export default {
 .contRealNameDomain .realNameDetail .modify .ivu-upload .ivu-upload-select:hover div span{
   color:#fff;
 }
-.contRealNameDomain .realNameDetail .compImgUpload .example{
+.contRealNameDomain .realNameDetail .example{
   position: absolute;
   left: 230px;
   top: 0px;
 }
-.contRealNameDomain .realNameDetail .compImgUpload .example span{
+.contRealNameDomain .realNameDetail .example span{
   display:block;
   color:#999;
+}
+.contRealNameDomain .realNameDetail .example span.img{
+  position: relative;
+  display: inline-block;
+  line-height: 0px;
+  cursor: pointer;
+}
+.contRealNameDomain .realNameDetail .example span.img:hover:after{
+  content: '查看示例';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  line-height: 66px;
+  background: rgba(0,0,0,0.5);
+  color: #fff;
+  text-align: center;
+  left: 0px;
+  top: 0px;
 }
 .contRealNameDomain .realNameDetail .ivu-tooltip .ivu-icon{
   color: #4aafff;;

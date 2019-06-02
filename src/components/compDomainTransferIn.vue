@@ -50,6 +50,7 @@ export default {
       this.onClose()
     },
     submitForm () {
+      var newWin =  window.open('')
       this.loadingBtn = true
       let result = validateFormResult([
         this.$refs.domain,
@@ -94,9 +95,12 @@ export default {
               v.num = v.goodsNumAndPrice[0].num
               v.unit = v.goodsNumAndPrice[0].unit
             })
-            this.$store.commit('SET_PAY_ORDERS', response.data)
-            this.$router.push({path: '/payConfirm'})
+            // this.$store.commit('SET_PAY_ORDERS', response.data)
+            // this.$router.push({path: '/payConfirm'})
+            localStorage.setItem('data_pay_confirm', JSON.stringify(response.data))
+            newWin.location.href='/payConfirm'
           } else {
+            newWin.close()
             if (response.data.code === '100') {
               this.$Message.error('模板不存在')
             } else if (response.data.code === '200') {

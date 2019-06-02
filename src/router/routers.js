@@ -30,7 +30,8 @@ export default [{
         permission: 'client_index',
         compUrl: 'modular/home',
         icon: 'i-icon i-icon-home',
-        show: true
+        show: false,
+        isLogin: true
       }
     },
     domain,

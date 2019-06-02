@@ -63,13 +63,13 @@
                   Option(v-for="item in typeList",:value="item.value",:key="item.value") {{ item.label }}
               Button(type="primary", @click="searchListData",:loading="loadingBtn") 查询
               input(type="hidden", name="domainName", :value="domainName")
-              input(type="hidden", name="createTimeBegin", :value="time[0] !== '' ? moment(time[0]).format('YYYY-MM-DD') + ' 00:00:00' : ''")
-              input(type="hidden", name="createTimeEnd", :value="time[1] !== '' ? moment(time[1]).format('YYYY-MM-DD') + ' 23:59:59' : ''")
+              input(type="hidden", name="createTimeBegin", :value="createTimeBegin")
+              input(type="hidden", name="createTimeEnd", :value="createTimeEnd")
 
             td.tdBtn
               a(href="javascript:;", @click="exportOrder") 导出日志
     .secTable
-      <Table :columns="logColumns" :data="logList" :loading="loadingTable"></Table>
+      <Table :columns="columns" :data="list" :loading="loadingTable"></Table>
     <!-- 翻页区 -->
     Page(:total="page.pageItems",:current="page.pageNo",:page-size="20",show-elevator,show-total,prev-text="上一页",next-text="下一页",@on-change="pageChange")
 </template>
@@ -91,11 +91,13 @@ export default {
     return {
       type: '',
       time: ['', ''],
+      createTimeBegin: '',
+      createTimeEnd: '',
       loadingTable: false,
       loadingBtn: false,
       detailData: {},
       exportLink: actions.EXPORT_DOMAIN_MONITOR_LOG,
-      logColumns: [
+      columns: [
         {
           title: '日志记录时间',
           width: 200,
@@ -115,7 +117,7 @@ export default {
           className: 'col3',
           render: (h, params) => {
             return h('div', [
-              h('span', {}, this.DATAS.RECORD_DOMAIN_EVENT_TYPE[this.logList[params.index].type])
+              h('span', {}, this.DATAS.RECORD_DOMAIN_EVENT_TYPE[this.list[params.index].type])
             ])
           }
         },
@@ -133,15 +135,15 @@ export default {
                 style: {
                   color: '#f00',
                   margin: '0 5px 0 0',
-                  display: this.logList[params.index].levelType === 2 ? 'inline-block' : 'none'
+                  display: this.list[params.index].levelType === 2 ? 'inline-block' : 'none'
                 }
               }, ''),
-              h('span', {}, this.logList[params.index].content)
+              h('span', {}, this.list[params.index].content)
             ])
           }
         }
       ],
-      logList: [],
+      list: [],
       typeList: (function (vm) {
         let array = []
         for (var i in vm.DATAS.RECORD_DOMAIN_EVENT_TYPE) {
@@ -210,12 +212,8 @@ export default {
           return false
         }
         if (response.data.code === '1000') {
-          this.logList = response.data.data.list
-          alert(this.logList.length)
-          this.$set(this.page, 'pageItems', response.data.data.totalNum)
-          //this.page.pageItems = response.data.data.totalNum
-          // this.$set(this.list, 'items', [])
-          // this.$set(this.list, 'items', response.data.data.list)
+          this.list = response.data.data.list
+          this.page.pageItems = response.data.data.totalNum
         } else {
         }
       }).catch(() => {})
@@ -233,13 +231,20 @@ export default {
   computed: {
   },
   watch: {
-    // domainName: function (val, oldVal) {
-    //   if (val !== '') {
-    //     this.time = ['', '']
-    //     this.queryDomainMonitorDetail()
-    //     this.queryDomainMonitorLog(1)
-    //   }
-    // }
+    domainName: function (val, oldVal) {
+      if (val !== '') {
+        this.time = ['', '']
+        this.queryDomainMonitorDetail()
+        this.queryDomainMonitorLog(1)
+      }
+    },
+    time: {
+      handler (val, oldVal) {
+        this.createTimeBegin = (val[0]!=='' ? val[0] + ' 00:00:00' : '')
+        this.createTimeEnd = (val[1]!=='' ? val[1] + '23:59:59' : '')
+      },
+      deep: true
+    }
   }
 }
 </script>

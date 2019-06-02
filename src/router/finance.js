@@ -10,7 +10,7 @@ export default {
     permission: 'client_finance',
     compUrl: 'page/mainCont',
     icon: 'i-icon i-icon-bill',
-    show: true
+    show: false
   },
   children: [
     {
@@ -24,7 +24,8 @@ export default {
         keepAlive: true,
         permission: 'client_finance_overview',
         compUrl: 'modular/finance/overview',
-        show: true
+        show: false,
+        isLogin: true
       }
     },
     {
@@ -38,7 +39,8 @@ export default {
         keepAlive: true,
         permission: 'client_finance_bill',
         compUrl: 'modular/finance/billMgmt',
-        show: true
+        show: false,
+        isLogin: true
       }
     }
   ]

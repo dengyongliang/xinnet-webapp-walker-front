@@ -10,7 +10,7 @@ export default {
     permission: 'client_monitor',
     compUrl: 'page/mainCont',
     icon: 'i-icon i-icon-finance',
-    show: true
+    show: false
   },
   children: [
     {
@@ -24,7 +24,8 @@ export default {
         keepAlive: true,
         permission: 'client_monitor_own',
         compUrl: 'modular/monitor/own',
-        show: true
+        show: false,
+        isLogin: true
       }
     }
     // ,

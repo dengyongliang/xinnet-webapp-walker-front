@@ -13,7 +13,8 @@ export default {
       },
       meta: {
         title: '报告中心',
-        keepAlive: true
+        keepAlive: true,
+        isLogin: true
       }
     },
     {
@@ -24,7 +25,8 @@ export default {
       },
       meta: {
         title: '自有域名监控报告',
-        keepAlive: true
+        keepAlive: true,
+        isLogin: true
       }
     },
     {
@@ -35,7 +37,8 @@ export default {
       },
       meta: {
         title: '域名资产报告',
-        keepAlive: true
+        keepAlive: true,
+        isLogin: true
       }
     },
     {
@@ -47,7 +50,8 @@ export default {
       props: true,
       meta: {
         title: '域名预算报告',
-        keepAlive: true
+        keepAlive: true,
+        isLogin: true
       }
     },
     {
@@ -58,7 +62,8 @@ export default {
       },
       meta: {
         title: '域名消费报告',
-        keepAlive: true
+        keepAlive: true,
+        isLogin: true
       }
     }
   ]

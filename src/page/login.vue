@@ -131,24 +131,24 @@ export default {
           let pageMenus = []
           menuUtils(pageMenus, data.menus)
           // 添加404
-          pageMenus.push({
-            path: '*',
-            name: '404',
-            component (resolve) {
-              return require(['@/page/404'], resolve)
-            },
-            meta: {
-              title: '404',
-              keepAlive: true,
-              permission: '',
-              compUrl: 'page/404'
-            }
-          })
-          pageMenus.forEach((item) => {
-            this.$router.options.routes.push(item)
-          })
+          // pageMenus.push({
+          //   path: '*',
+          //   name: '404',
+          //   component (resolve) {
+          //     return require(['@/page/404'], resolve)
+          //   },
+          //   meta: {
+          //     title: '404',
+          //     keepAlive: true,
+          //     permission: '',
+          //     compUrl: 'page/404'
+          //   }
+          // })
+          // pageMenus.forEach((item) => {
+          //   this.$router.options.routes.push(item)
+          // })
           // 添加到路由
-          this.$router.addRoutes(pageMenus)
+          // this.$router.addRoutes(pageMenus)
           // 相关数据 store 存储
           this.$store.commit('SET_MENUS', pageMenus)
           // localStorage 存储 menus 数据

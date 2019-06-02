@@ -10,7 +10,7 @@ export default {
     permission: 'client_log',
     compUrl: 'page/mainCont',
     icon: 'i-icon i-icon-diary',
-    show: true
+    show: false
   },
   children: [
     {
@@ -24,7 +24,8 @@ export default {
         keepAlive: true,
         permission: 'client_log_domain',
         compUrl: 'modular/record/domain',
-        show: true
+        show: false,
+        isLogin: true
       }
     },
     {
@@ -38,7 +39,8 @@ export default {
         keepAlive: true,
         permission: 'client_log_user',
         compUrl: 'modular/record/staff',
-        show: true
+        show: false,
+        isLogin: true
       }
     }
   ]

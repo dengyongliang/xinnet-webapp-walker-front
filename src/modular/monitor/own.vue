@@ -144,6 +144,9 @@ export default {
             ])
           }
         },
+        // 监控日志显示错误,监控日志显示如下,:
+        // A.若监控域名距离当前日期15天内有变化时显示详细的日志对应事件类型，最多显示3条，重要程度为“重要”的显示“重要”标签；
+        // B.若监控域名距离当前日期15天内没有任何变化日志时直接显示：“近期无变化”。
         {
           title: '监控日志',
           width: 200,
@@ -159,10 +162,10 @@ export default {
                 style: {
                   color: '#f00',
                   margin: '0 5px 0 0',
-                  display: this.list[params.index].levelType === 2 ? 'inline-block' : 'none'
+                  display: (this.list[params.index].levelType === 2 && this.list[params.index].type && moment(this.list[params.index].expireDate).diff(this.list[params.index].createTime, 'days')<=15) ? 'inline-block' : 'none'
                 }
               }, ''),
-              h('span', {}, this.DATAS.RECORD_DOMAIN_EVENT_TYPE[this.list[params.index].type])
+              h('span', {}, (this.list[params.index].type && moment(this.list[params.index].expireDate).diff(this.list[params.index].createTime, 'days')<=15) ? this.DATAS.RECORD_DOMAIN_EVENT_TYPE[this.list[params.index].type] : '近期无变化')
             ])
           }
         },

@@ -10,7 +10,7 @@ export default {
     permission: 'client_order',
     compUrl: 'page/mainCont',
     icon: 'i-icon i-icon-file',
-    show: true
+    show: false
   },
   children: [
     {
@@ -24,7 +24,8 @@ export default {
         keepAlive: true,
         permission: 'client_order_manage',
         compUrl: 'modular/order/orderMgmt',
-        show: true
+        show: false,
+        isLogin: true
       }
     }
   ]

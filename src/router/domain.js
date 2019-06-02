@@ -11,7 +11,7 @@ export default {
     permission: 'client_domain',
     compUrl: 'page/mainCont',
     icon: 'i-icon i-icon-manage',
-    show: true
+    show: false
   },
   children: [
     {
@@ -25,7 +25,8 @@ export default {
         keepAlive: true,
         permission: 'client_domain_overview',
         compUrl: 'modular/domain/overview',
-        show: true
+        show: false,
+        isLogin: true
       }
     },
     {
@@ -39,7 +40,8 @@ export default {
         keepAlive: true,
         permission: 'client_domain_manage',
         compUrl: 'modular/domain/domainMgmt',
-        show: true
+        show: false,
+        isLogin: true
       }
     },
     {
@@ -53,7 +55,8 @@ export default {
         keepAlive: true,
         permission: 'client_domain_safe',
         compUrl: 'modular/domain/securityService',
-        show: true
+        show: false,
+        isLogin: true
       }
     },
     {
@@ -67,7 +70,8 @@ export default {
         keepAlive: true,
         permission: 'client_domain_realname',
         compUrl: 'modular/domain/realNameDomain',
-        show: true
+        show: false,
+        isLogin: true
       }
     },
     {
@@ -81,7 +85,8 @@ export default {
         keepAlive: true,
         permission: 'client_domain_transferin',
         compUrl: 'modular/domain/transferInList',
-        show: true
+        show: false,
+        isLogin: true
       }
     },
     {
@@ -95,7 +100,8 @@ export default {
         keepAlive: true,
         permission: 'client_domain_change',
         compUrl: 'modular/domain/domainChange',
-        show: true
+        show: false,
+        isLogin: true
       }
     },
     {
@@ -109,7 +115,8 @@ export default {
         keepAlive: true,
         permission: 'client_domain_template',
         compUrl: 'modular/domain/realNameTemplate',
-        show: true
+        show: false,
+        isLogin: true
       }
     }
   ]

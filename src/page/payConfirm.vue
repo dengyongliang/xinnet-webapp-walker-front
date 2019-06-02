@@ -175,13 +175,9 @@ export default {
     ])
   },
   beforeMount () {
-    // 查看vuex中是否有数据，有使用vuex数据
-    // 如果没有数据，查看本地存储中是否存在数据，有使用本地存储数据
-    // 都没有，显示空列表
-    if (this.payOrders.jsonObj.length) {
-      this.payConfirmData = this.payOrders
-      localStorage.setItem('data_pay_confirm', JSON.stringify(this.payOrders))
-    } else if (localStorage.getItem('data_pay_confirm')) {
+    // 查看本地存储中是否存在数据，有使用本地存储数据
+    // 没有，显示空列表
+    if (localStorage.getItem('data_pay_confirm')) {
       this.payConfirmData = JSON.parse(localStorage.getItem('data_pay_confirm'))
     } else {
     }

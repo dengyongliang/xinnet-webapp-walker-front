@@ -36,13 +36,23 @@
     FormItem(label="域名所有人证件扫描件：", required, v-if="type!=='view'")
 
       comp-img-upload(:status="status",ref="upfile",name="upfile",errorText="请上传证件扫描件！",tips="支持jpg、jpge格式，图片需大于50k，小于1M",:uploadAction="uploadAction", :on-beforecallback="changeUploadStatus", :showCover="showCover", :modify="modify", creatText="点击上传", )
-        p(slot="unit") 请确保上传的<span style="color:#f00">证件图片与证件类型及证件号码完全一致</span>；若不一致将会导致域名实名不通过
-        p.example(slot="last")
-          span 示例
+      p 请确保上传的<span style="color:#f00">证件图片与证件类型及证件号码完全一致</span>；若不一致将会导致域名实名不通过
+      div.example
+        span 示例
+        span.img(v-show="this.registrantType === 'I'", @click="modelExample=true")
           img(src="../../static/img/idCard.png")
-
+        span.img(v-show="this.registrantType === 'E'", @click="modelExample=true")
+          img(src="../../static/img/busscard.png")
     FormItem(label="", v-if="type!=='view'")
       Button(type="primary",@click="formSubmit",:loading="loadingBtn") 提交审核
+  <!-- 示例 弹窗 -->
+  Modal(
+    width="700",
+    title="证件图例",
+    v-model="modelExample",
+    :footer-hide="true"
+  )
+    comp-example-card(:registrantType="registrantType")
 </template>
 
 <script>
@@ -50,6 +60,7 @@ import compInput from './compInput'
 import compSelect from './compSelect'
 import compRadio from './compRadio'
 import compImgUpload from './compImgUpload'
+import compExampleCard from './compExampleCard'
 import validateFormResult from '@/global/validateForm'
 import * as actions from '../actions/template.js'
 export default {
@@ -57,7 +68,8 @@ export default {
     compInput,
     compSelect,
     compRadio,
-    compImgUpload
+    compImgUpload,
+    compExampleCard
   },
   props: {
     type: {
@@ -90,6 +102,7 @@ export default {
       value: '',
       loadingBtn: false,
       uploadAction: actions.UPLOAD_FILE,
+      modelExample: false,
       registrantType: 'I',
       registrantTypeList: [
         {
@@ -290,13 +303,31 @@ export default {
 .compDomainCreateTemplate .modify .ivu-upload .ivu-upload-select:hover div span{
   color:#fff;
 }
-.compDomainCreateTemplate .compImgUpload .example{
+.compDomainCreateTemplate .example{
   position: absolute;
   left: 230px;
   top: 0px;
 }
-.compDomainCreateTemplate .compImgUpload .example span{
+.compDomainCreateTemplate .example span{
   display:block;
   color:#999;
+}
+.compDomainCreateTemplate .example span.img{
+  position: relative;
+  display: inline-block;
+  line-height: 0px;
+  cursor: pointer;
+}
+.compDomainCreateTemplate .example span.img:hover:after{
+  content: '查看示例';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  line-height: 66px;
+  background: rgba(0,0,0,0.5);
+  color: #fff;
+  text-align: center;
+  left: 0px;
+  top: 0px;
 }
 </style>
