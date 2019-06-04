@@ -347,6 +347,15 @@ export default {
           reject(error)
         })
       })
+    },
+    CHECK_USER_AUTH ({ commit }, params) {
+      return new Promise((resolve, reject) => {
+        api.CHECK_USER_AUTH(params.authPath).then(response => {
+          resolve(response)
+        }).catch(error => {
+          reject(error)
+        })
+      })
     }
   }
 }

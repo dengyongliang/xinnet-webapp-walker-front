@@ -66,7 +66,13 @@ export default {
         {
           title: '数量',
           key: 'num',
-          className: 'col4'
+          className: 'col4',
+          render: (h, params) => {
+            return h('div', [
+              h('span', {
+              }, this.payFinishData.jsonObj[params.index].num ? this.payFinishData.jsonObj[params.index].num : '-')
+            ])
+          }
         },
         {
           title: '价格（元）',
@@ -78,7 +84,7 @@ export default {
                 style: {
                   color: '#f00'
                 }
-              }, this.payFinishData.jsonObj[params.index].price.split('_')[0] + '元')
+              }, this.payFinishData.jsonObj[params.index].num ? (this.payFinishData.jsonObj[params.index].price.split('_')[0] + '元') : '-')
             ])
           }
         },
@@ -89,7 +95,7 @@ export default {
           render: (h, params) => {
             return h('div', [
               h('span', {
-              }, '信用消费')
+              }, this.payFinishData.jsonObj[params.index].num ? '信用消费' : '-')
             ])
           }
         },
@@ -103,7 +109,7 @@ export default {
                 style: {
                   display: this.payFinishData.jsonObj[params.index].payStatus === null ? 'inline-block' : 'none'
                 }
-              }, '待支付'),
+              }, this.payFinishData.jsonObj[params.index].num ? '待支付' : '-'),
               h('span', {
                 style: {
                   display: this.payFinishData.jsonObj[params.index].payStatus === 'success' ? 'inline-block' : 'none'
@@ -190,20 +196,12 @@ export default {
       } else {
         return 0
       }
-    },
-    ...mapState([
-      'payOrdersFinish'
-    ])
+    }
   },
   beforeMount () {
-    // 查看vuex中是否有数据，有使用vuex数据
-    // 如果没有数据，查看本地存储中是否存在数据，有使用本地存储数据
-    // 都没有，显示空列表
-    if (this.payOrdersFinish.jsonObj) {
-      localStorage.setItem('data_pay_finish', JSON.stringify(this.payOrdersFinish))
-      this.payFinishData = this.payOrdersFinish
-      // this.payFinishData = JSON.parse(localStorage.getItem('data_pay_finish'))
-    } else if (localStorage.getItem('data_pay_finish')) {
+    // 查看本地存储中是否存在数据，有使用本地存储数据
+    // 显示空列表
+    if (localStorage.getItem('data_pay_finish')) {
       this.payFinishData = JSON.parse(localStorage.getItem('data_pay_finish'))
     } else {
       this.payFinishData.jsonObj = []

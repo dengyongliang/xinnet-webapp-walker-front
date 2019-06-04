@@ -127,13 +127,16 @@ RouterMain.beforeEach((to, from, next) => {
   // 判断是否登录 isLogin
   // 判断是否有权限进入
   let isLogin = to.meta.isLogin
-  let permission = to.meta.permission
+  let permission = to.meta.permission ? to.meta.permission : ''
   console.log(permission)
   if (isLogin) {
-    if (true) {// 已登录
+    store.dispatch('CHECK_USER_AUTH', {authPath: permission}).then(response => {
+
+    }).catch(() => {})
+    if (true) { // 已登录
       console.log('已登录')
-      if (permission && permission.length) {// 需要权限验证
-        if (true) {// 有权限
+      if (permission && permission.length) { // 需要权限验证
+        if (true) { // 有权限
           console.log('有权限')
           next()
         } else {

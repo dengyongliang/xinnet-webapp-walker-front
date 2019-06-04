@@ -41,6 +41,15 @@ export default {
           reject(error)
         })
       })
+    },
+    CHECK_UPLOAD_DOMAIN_VERIFY ({ commit }, params) {
+      return new Promise((resolve, reject) => {
+        api.CHECK_UPLOAD_DOMAIN_VERIFY(params.domainIds).then(response => {
+          resolve(response)
+        }).catch(error => {
+          reject(error)
+        })
+      })
     }
   }
 }

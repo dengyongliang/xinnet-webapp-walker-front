@@ -61,7 +61,7 @@ export default {
                 class: this.listTop[params.index].readFlag === 1 ? 'unRead' : ''
               }, '●'),
               h('span', {
-              }, this.listTop[params.index].sendTime)
+              }, moment(this.listTop[params.index].sendTime).format('YYYY-MM-DD'))
             ])
           }
         },
@@ -84,6 +84,8 @@ export default {
               }, ''),
               h('a', {
                 style: {
+                  display: 'inline-block',
+                  margin: '0 100px 0 0'
                 }
               }, this.listTop[params.index].title)
             ])
@@ -94,7 +96,6 @@ export default {
       columns: [
         {
           title: '域名',
-          width: 150,
           key: 'domainName',
           className: 'col1',
           render: (h, params) => {
@@ -123,8 +124,8 @@ export default {
         },
         {
           title: '域名所有人',
-          width: 150,
           key: 'organizeNameCn',
+          width: 150,
           className: 'col2',
           render: (h, params) => {
             return h('div', [
@@ -135,9 +136,9 @@ export default {
         },
         {
           title: '到期时间',
-          width: 150,
+          width: 90,
           key: 'expireDate',
-          className: 'col2',
+          className: 'col3',
           render: (h, params) => {
             return h('div', [
               h('p', {}, moment(this.list[params.index].expireDate).format('YYYY-MM-DD'))
@@ -149,9 +150,9 @@ export default {
         // B.若监控域名距离当前日期15天内没有任何变化日志时直接显示：“近期无变化”。
         {
           title: '监控日志',
-          width: 200,
+          width: 180,
           key: 'type',
-          className: 'col3',
+          className: 'col4',
           render: (h, params) => {
             return h('div', [
               h('Icon', {
@@ -162,16 +163,17 @@ export default {
                 style: {
                   color: '#f00',
                   margin: '0 5px 0 0',
-                  display: (this.list[params.index].levelType === 2 && this.list[params.index].type && moment(this.list[params.index].expireDate).diff(this.list[params.index].createTime, 'days')<=15) ? 'inline-block' : 'none'
+                  display: (this.list[params.index].levelType === 2 && this.list[params.index].type && moment(new Date()).diff(this.list[params.index].createTime, 'days')<=15) ? 'inline-block' : 'none'
                 }
               }, ''),
-              h('span', {}, (this.list[params.index].type && moment(this.list[params.index].expireDate).diff(this.list[params.index].createTime, 'days')<=15) ? this.DATAS.RECORD_DOMAIN_EVENT_TYPE[this.list[params.index].type] : '近期无变化')
+              h('span', {}, (this.list[params.index].type && moment(new Date()).diff(this.list[params.index].createTime, 'days')<=15) ? this.DATAS.RECORD_DOMAIN_EVENT_TYPE[this.list[params.index].type] : '近期无变化')
             ])
           }
         },
         {
           title: '操作',
           key: 'operate',
+          width: 60,
           className: 'operate',
           render: (h, params) => {
             return h('div', [
@@ -189,11 +191,7 @@ export default {
           }
         }
       ],
-      list: [
-        {
-
-        }
-      ],
+      list: [],
       loadingTable: true,
       loadingBtn: false,
       page: {
@@ -304,7 +302,7 @@ export default {
   margin-bottom: 20px;
 }
 .contMonitorOwn .secTable2{
-  overflow:hidden;
+  margin-left: 240px;
   background:none;
 }
 .contMonitorOwn .h2T{

@@ -9,3 +9,5 @@ export const UPLOAD_DOMAIN_VERIFY = '/client/domainVerify/uploadDomainVerify' + 
 export const UPLOAD_FILE = '/client-api/client/domainVerify/uploadfile' + suffix // UPLOAD_FILE_DOMAIN_VERIFY
 // 更新域名审核状态
 export const UPDATE_DOMAIN_AUDIT_STATUS = '/client/domainVerify/updateDomainAuditStatus' + suffix
+// 检查域名审核状态
+export const CHECK_UPLOAD_DOMAIN_VERIFY = '/client/domainVerify/checkUploadDomainVerify' + suffix

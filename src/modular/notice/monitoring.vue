@@ -59,7 +59,7 @@ export default {
   data () {
     return {
       value: '',
-      time: '',
+      time: ['', ''],
       type: '',
       refresh: false,
       drawerNoticeSet: false,
@@ -126,7 +126,9 @@ export default {
               }, this.list[params.index].title),
               h('a', {
                 style: {
-                  color: '#2271f4'
+                  color: '#2271f4',
+                  display: 'inline-block',
+                  margin: '0 100px 0 0'
                 },
                 on: {
                   click: () => {
@@ -223,6 +225,7 @@ export default {
         createTimeEnd: this.time[1] !== '' ? moment(this.time[1]).format('YYYY-MM-DD') + ' 23:59:59' : '',
         type: this.type
       }
+      console.log(params)
       return params
     },
     queryList (num) {

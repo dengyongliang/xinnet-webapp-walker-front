@@ -47,8 +47,10 @@ export default {
   },
   beforeMount () {
     // is super?
-    if (this.staffData.defaultRoleId.indexOf('super') >= 0) {
+    if (this.staffData && this.staffData.defaultRoleId.indexOf('super') >= 0) {
       this.super = true
+    } else {
+      this.super = false
     }
     // 将超级管理员置为可选，其余不可选
     this.rolesList = (function (vm) {
@@ -81,15 +83,14 @@ export default {
         disabled_lv1: true,
         disabled_lv2: vm.super
       })
-
       let len = arr.length
       let arr2 = []
-      console.log(arr)
       for (var i = 0; i < len; i++) {
         if (arr[i].children.length) {
           arr2.push(arr[i])
         }
       }
+
       if (arr2.length) {
         // 超级管理员全选
         if (vm.super) {

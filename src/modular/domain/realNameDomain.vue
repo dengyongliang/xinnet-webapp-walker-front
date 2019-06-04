@@ -266,8 +266,20 @@ export default {
         if (!ing) {
           this.$Message.error('实名制状态处于资料审核中或审核通过，不允许批量实名！')
         } else {
-          this.organizeNameCn = this.selectData[0].organizeNameCn
-          this.showSubmit = true
+          this.$store.dispatch('CHECK_UPLOAD_DOMAIN_VERIFY', {domainIds: this.getDomainId}).then(response => {
+            if (!response) {
+              return false
+            }
+            if (response.data.code === '1000') {
+              this.organizeNameCn = this.selectData[0].organizeNameCn
+              this.showSubmit = true
+            } else {
+              if (response.data.code === '900') {
+                this.$Message.error('域名包含正在进行过户或转移信息更新中请等待完成后再提交实名制审核资料！')
+              }
+            }
+          }).catch(() => {})
+
         }
       }
     },

@@ -304,7 +304,7 @@ export default {
               if (response.data.code === '200') {
                 this.$Message.error('用户不存在')
               } else if (response.data.code === '300') {
-                this.$Message.error('用户被锁定')
+                this.$Message.error('该客户下已有负责分组，请先将分组移至其它客户再删除当前客户！')
               } else {
                 this.$Message.error('操作失败')
               }
@@ -426,6 +426,9 @@ export default {
 .contAccountMgmt .filter p.none a{
   display:inline-block;
   color:#2d8cf0;
+}
+.contAccountMgmt .filter .ivu-tree{
+  position: relative;
 }
 .contAccountMgmt .secTable{
   overflow:hidden;

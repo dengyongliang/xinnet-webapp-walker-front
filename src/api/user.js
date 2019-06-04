@@ -178,3 +178,11 @@ export const CHECK_USER_PHONE = (userMobile) => {
     data: {userMobile}
   })
 }
+// 验证当前用户登录状态及权限
+export const CHECK_USER_AUTH = (authPath) => {
+  return axios({
+    url: action.CHECK_USER_AUTH,
+    method: 'POST',
+    data: {authPath}
+  })
+}

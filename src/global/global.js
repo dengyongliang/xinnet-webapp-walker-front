@@ -32,18 +32,18 @@ const IS_EMAIL_AVAILABLE = (val) => {
   }
 }
 // 是否包含中文
-const IS_HAS_CHINESE = (val) => {     
+const IS_HAS_CHINESE = (val) => {
   let reg = new RegExp('[\\u4E00-\\u9FFF]+', 'g')
-　if (reg.test(val)) {
+  if (reg.test(val)) {
     return true
   } else {
     return false
   }
 }
 // 是否包含英文
-const IS_HAS_EN = (val) => {     
+const IS_HAS_EN = (val) => {
   let reg = new RegExp('[A-Za-z]+', 'g')
-　if (reg.test(val)) {
+  if (reg.test(val)) {
     return true
   } else {
     return false
@@ -92,23 +92,28 @@ function CONVERT_TREE (tree, map) {
     const title = item[ map.title ]
     const label = item[ map.label ]
     // const checked = item[ map.checked ] ? true : false
-    const checked = item[ map.checked ]
+    let checked = item[ map.checked ]
     // const disabled = item.groups ? (map.disabled_lv1 === true ? true : false) : (map.disabled_lv2 === true ? true : false)
     const disabled = item.groups ? map.disabled_lv1 : map.disabled_lv2
     let children = item[ map.children ]
+
     // 如果有子节点，递归
     if (children) {
+      // iview 父节点没有checked字段，所以默认设为false
+      // 设为true, 会影响子节点的选中状态
+      checked = false
       children = CONVERT_TREE(children, map)
     }
     result.push({
-      title,
-      label,
+      title: title,
+      label: label,
       expand: true,
-      checked,
-      disabled,
-      children
+      checked: checked,
+      disabled: disabled,
+      children: children
     })
   })
+  console.log(result)
   return result
 }
 /**

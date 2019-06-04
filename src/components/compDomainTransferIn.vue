@@ -59,11 +59,13 @@ export default {
       ])
       let domains = this.$refs.domain.value.replace(/[\n\r]/g, ',').split(',')
       if (domains.length > 500) {
+        newWin.close()
         this.$refs.domain.showValidateResult({text: '最多允许一次提交500个域名！'})
         result = false
       } else {
         for (var i = 0; i < domains.length; i++) {
           if (!this.GLOBALS.IS_DOMAIN_AVAILABLE(domains[i].split(' ')[0])) {
+            newWin.close()
             result = false
             this.$refs.domain.showValidateResult({text: '域名格式错误！'})
             break

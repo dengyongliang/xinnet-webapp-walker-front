@@ -151,6 +151,9 @@
 .ivu-table td.operate a{
   margin:0 3px;
 }
+.ivu-table .ivu-table-cell{
+  padding: 0;
+}
 .ivu-modal-content{
   border-radius:0px;
 }

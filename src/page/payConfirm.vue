@@ -6,11 +6,11 @@
     <!-- 列表主体 -->
     .secTable
       <Table :columns="columns" :data="payConfirmData.jsonObj" :loading="loadingTable"></Table>
-      .total(v-show="payConfirmData.jsonObj.length") 合计：<em>{{total}}</em>元
-      .readme(v-show="payConfirmData.jsonObj.length")
+      .total(v-show="payConfirmData.jsonObj.length && !(payConfirmData.jsonObj.length === 1 && !payConfirmData.jsonObj[0].num)") 合计：<em>{{total}}</em>元
+      .readme(v-show="payConfirmData.jsonObj.length && !(payConfirmData.jsonObj.length === 1 && !payConfirmData.jsonObj[0].num)")
         Checkbox(v-model="readme", @on-change="readmeChange") 我已阅读并同意
         a(href="#") 《域名注册协议》
-    .btn(v-show="payConfirmData.jsonObj.length")
+    .btn(v-show="payConfirmData.jsonObj.length && !(payConfirmData.jsonObj.length === 1 && !payConfirmData.jsonObj[0].num)")
       Button(type="primary", @click="nextForm", :loading="loadingBtn", :disabled="disabled") 下一步
 </template>
 
@@ -157,7 +157,8 @@ export default {
         v.payStatus = null
         v.errorText = ''
       })
-      this.$store.commit('SET_PAY_ORDERS_FINISH', this.payConfirmData)
+      // this.$store.commit('SET_PAY_ORDERS_FINISH', this.payConfirmData)
+      localStorage.setItem('data_pay_finish', JSON.stringify(this.payConfirmData))
       this.$router.push({path: '/pay'})
     }
   },
@@ -169,10 +170,7 @@ export default {
         }, 0)
       }
       return 0
-    },
-    ...mapState([
-      'payOrders'
-    ])
+    }
   },
   beforeMount () {
     // 查看本地存储中是否存在数据，有使用本地存储数据
@@ -185,7 +183,7 @@ export default {
   mounted () {
   },
   watch: {
-    payOrders: {
+    payConfirmData: {
       handler (newV, oldV) {
       },
       deep: true

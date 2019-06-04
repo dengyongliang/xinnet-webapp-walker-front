@@ -41,10 +41,7 @@ export default {
   data () {
     return {
       value: '',
-      time: [
-        new Date(moment(new Date()).format('YYYY-MM-DD')),
-        new Date(moment(new Date()).format('YYYY-MM-DD'))
-      ],
+      time: ['', ''],
       levelType: '',
       exportLink: actions.EXPORT_MONITOR_LOG,
       typeList: [

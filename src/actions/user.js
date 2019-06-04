@@ -45,3 +45,5 @@ export const UPDATE_USER_AUTH = '/client/user/updateUserAuth' + suffix
 export const UPDATE_USER = '/client/user/updateUser' + suffix
 // 验证手机号码
 export const CHECK_USER_PHONE = '/account/user/checkUserPhone' + suffix
+// 验证当前用户登录状态及权限
+export const CHECK_USER_AUTH = '/account/user/checkUserAuth' + suffix

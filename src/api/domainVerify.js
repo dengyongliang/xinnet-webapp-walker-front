@@ -34,3 +34,11 @@ export const UPDATE_DOMAIN_AUDIT_STATUS = (domainIds) => {
     data: {domainIds}
   })
 }
+// 检查域名审核状态
+export const CHECK_UPLOAD_DOMAIN_VERIFY = (domainIds) => {
+  return axios({
+    url: action.CHECK_UPLOAD_DOMAIN_VERIFY,
+    method: 'POST',
+    data: {domainIds}
+  })
+}

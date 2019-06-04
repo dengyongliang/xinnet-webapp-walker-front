@@ -120,12 +120,11 @@ export default {
       columns: [
         {
           type: 'selection',
-          width: 60,
+          width: 50,
           align: 'center'
         },
         {
           title: '域名',
-          width: 200,
           key: 'domainName',
           className: 'col1',
           render: (h, params) => {
@@ -144,10 +143,15 @@ export default {
                   margin: '0 5px 0 0',
                   color: '#f00',
                   cursor: 'pointer',
+                  'line-height': '14px',
+                  'vertical-align': 'top',
                   display: (this.list[params.index].importantFlag === 1 ? 'inline-block' : 'none')
                 }
               }),
               h('span', {
+                style: {
+                  margin: (this.list[params.index].importantFlag === 1 ? '0' : '0 0 0 23px')
+                }
               }, this.list[params.index].domainName),
               h('span', {
                 style: {
@@ -161,6 +165,7 @@ export default {
           title: '到期日期',
           key: 'expireDate',
           className: 'col2',
+          width: 100,
           render: (h, params) => {
             return h('div', [
               h('span', {
@@ -172,6 +177,7 @@ export default {
           title: '服务状态',
           key: 'serviceStatus',
           className: 'col3',
+          width: 100,
           render: (h, params) => {
             return h('div', [
               h('span', {
@@ -181,6 +187,7 @@ export default {
         },
         {
           title: '域名所有者',
+          width: 100,
           key: 'organizeNameCn',
           className: 'col4'
         },
@@ -188,6 +195,7 @@ export default {
           title: '操作',
           key: 'operate',
           className: 'operate',
+          width: 110,
           render: (h, params) => {
             return h('div', [
               h('a', {
@@ -267,11 +275,15 @@ export default {
     },
     renewFun () {
       var newWin =  window.open('')
-      let flag = true
+      let depositFlag = true
+      let serviceStatus = true
       let params = {
         jsonObj: this.selectData.map((v) => {
           if (v.depositFlag === 1) {
-            flag = false
+            depositFlag = false
+          }
+          if (v.serviceStatus === 2) {
+            serviceStatus = false
           }
           return {
             domainName: v.domainName,
@@ -281,8 +293,7 @@ export default {
         })
       }
       console.log(params)
-      // flag===true 执行续费，否则提示 错误信息
-      if (flag) {
+      if (depositFlag && serviceStatus) {
         this.$store.dispatch('ORDER_CONFIRM', params).then(response => {
           this.loadingBtn = false
           if (!response) {
@@ -315,7 +326,14 @@ export default {
           }
         }).catch(() => {})
       } else {
-        this.$Message.error('选择域名包含托管域名，如需续费请您联系管家！')
+        newWin.close()
+        if (!depositFlag) {
+          this.$Message.error('选择域名包含托管域名，如需续费请您联系管家！')
+        }
+        // 域名管理，域名进入偿还期不允许点击续费，点击"续费"弹出提示："域名已进入偿还期不允许续费，请尽快联系管理赎回域名！"
+        if (!serviceStatus) {
+          this.$Message.error('域名已进入偿还期不允许续费，请尽快联系管理赎回域名！')
+        }
       }
     },
     domainChangeFun () {
