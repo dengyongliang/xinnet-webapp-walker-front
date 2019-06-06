@@ -124,9 +124,8 @@ const RECORD_USER_EVENT_TYPE = {
   13: '实名制模板修改'
 }
 const MONITOR_LOG = {
-  0: '无日志',
   1: '重要监控记录',
-  2: '有监控记录'
+  2: '普通监控记录'
 }
 const DOMAIN_SUFFIX = {
   '.com': '.com',

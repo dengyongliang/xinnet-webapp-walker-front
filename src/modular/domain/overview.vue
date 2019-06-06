@@ -38,7 +38,7 @@
         span.t 数量变化总览
         div.tR
           span.text 时间周期
-          DatePicker(type="daterange",placeholder="",v-model="time",format="yyyy-MM-dd",@on-change="time=$event",placement="bottom-end")
+          comp-select(:list="daysList", ref="days", defaultValue="7")
           Button(type="primary", @click="getOverviewDomainCount",:loading="loadingBtn") 查询
       Row
         Col(span="8")
@@ -131,19 +131,34 @@ import compChartOverviewCompany from '@/components/compChartOverviewCompany'
 import compChartOverviewSuffix from '@/components/compChartOverviewSuffix'
 import compChartOverviewExpire from '@/components/compChartOverviewExpire'
 import compNoticeMonitorList from '@/components/compNoticeMonitorList'
+import compSelect from '@/components/compSelect'
 export default {
   components: {
     compChartOverviewCompany,
     compChartOverviewSuffix,
     compChartOverviewExpire,
-    compNoticeMonitorList
+    compNoticeMonitorList,
+    compSelect
   },
   data () {
     return {
       value: '',
-      time: '',
       refresh: false,
       loadingBtn: false,
+      daysList: [
+        {
+          label: '7天',
+          value: '7'
+        },
+        {
+          label: '30天',
+          value: '30'
+        },
+        {
+          label: '90天',
+          value: '90'
+        }
+      ],
       tabs: 1,
       overviewDomain: {},
       overviewDomainCount: {},
@@ -158,7 +173,7 @@ export default {
   methods: {
     getOverviewDomainCount () {
       this.loadingBtn = true
-      this.$store.dispatch('DOMAIN_COUNT_STATISTICS', {days: 7}).then(response => {
+      this.$store.dispatch('DOMAIN_COUNT_STATISTICS', {days: this.$refs.days.value}).then(response => {
         this.loadingBtn = false
         if (!response) {
           return false
@@ -182,6 +197,8 @@ export default {
     })
   },
   beforeMount () {
+  },
+  mounted () {
     this.$store.dispatch('DOMAIN_STATISTICS').then(response => {
       this.overviewDomain = response.data.data
     }).catch(() => {})
@@ -211,8 +228,6 @@ export default {
     this.$store.dispatch('DOMAIN_CHANGE_STATISTICS').then(response => {
       this.overviewDomainChange = response.data.data
     }).catch(() => {})
-  },
-  mounted () {
   }
 }
 </script>
@@ -337,7 +352,7 @@ export default {
   padding-bottom: 55px;
   margin-bottom: 20px;
 }
-.contDomainOverview .secBox3 .ivu-date-picker{
+.contDomainOverview .secBox3 .compSelect{
   margin: 0 15px;
 }
 .contDomainOverview .secBox3 .ivu-row{

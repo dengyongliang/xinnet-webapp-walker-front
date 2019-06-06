@@ -8,7 +8,7 @@ export const PAY_STATISTICS_TREND = '/client/finance/payStatisticsTrend' + suffi
 // 财务-账单流水
 export const GET_CUSTOMER_FLOW_LIST = '/client/finance/getCustomerFlowList' + suffix // QUERY_FINANCE_CUSTOMER_FLOW_LIST
 // 财务-账单流水导出
-export const EXPORT_CUSTOMER_FLOW = '/client/finance/exportCustomerFlow' + suffix // EXPORT_FINANCE_CUSTOMER_FLOW_LIST
+export const EXPORT_CUSTOMER_FLOW = '/client-api/client/finance/exportCustomerFlow' + suffix // EXPORT_FINANCE_CUSTOMER_FLOW_LIST
 // 财务-信用额度统计
 export const PAY_STATISTICS_BALANCE = '/client/finance/payStatisticsBalance' + suffix // QUERY_PAY_STATISTICS_BALANCE
 // 财务-未出账单

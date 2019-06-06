@@ -131,26 +131,35 @@ RouterMain.beforeEach((to, from, next) => {
   console.log(permission)
   if (isLogin) {
     store.dispatch('CHECK_USER_AUTH', {authPath: permission}).then(response => {
-
-    }).catch(() => {})
-    if (true) { // 已登录
-      console.log('已登录')
-      if (permission && permission.length) { // 需要权限验证
-        if (true) { // 有权限
-          console.log('有权限')
-          next()
+      if (!response) {
+        return false
+      }
+      if (response.data.code === '1000') {
+        let _login = response.data.isLogin
+        let _isAuth = response.data.isAuth
+        if (_login) { // 已登录
+          console.log('已登录')
+          if (permission && permission.length) { // 需要权限验证
+            if (_isAuth) { // 有权限
+              console.log('有权限')
+              next()
+            } else {
+              console.log('无权限')
+              next('/noAuth')
+            }
+          } else {
+            console.log('无需权限')
+            next()
+          }
         } else {
-          console.log('无权限')
-          next('/noAuth')
+          console.log('未登录')
+          next('/login')
         }
       } else {
-        console.log('无需权限')
-        next()
+        router.replace({ path: '/login' })
       }
-    } else {
-      console.log('未登录')
-      next('/login')
-    }
+    }).catch(() => {})
+
   } else {
     console.log('无需登录')
     next()

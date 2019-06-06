@@ -224,7 +224,7 @@ export default {
         return pre.concat(cur)
       }, []).join(',')
       this.asideFilterResult.serviceState = result.dataServiceState.join(',')
-      this.asideFilterResult.monitorLog = result.dataMonitorLog.join(',')
+      this.asideFilterResult.monitorLog = result.dataMonitorLog.length === 2 ? '' : result.dataMonitorLog.join(',')
       console.log(this.asideFilterResult)
       // 加载数据
       this.queryList(1)
@@ -281,6 +281,15 @@ export default {
       }
     }).catch(() => {})
     this.queryList(1)
+  },
+  mounted () {
+    // 域名管理=》详情中"监控信息"点击链接到"对应详情中域名对应的"自有域名监控报告"详情页面
+    // 如果this.$route.params.domainName有内容，进行详情页打开操作，没有直接显示列表
+    let domainName = this.$route.params.domainName
+    if (domainName) {
+      this.domainName = domainName
+      this.showDetail = true
+    }
   }
 }
 </script>

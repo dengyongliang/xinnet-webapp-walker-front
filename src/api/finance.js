@@ -19,11 +19,11 @@ export const PAY_STATISTICS_TREND = (startTime, endTime) => {
   })
 }
 // 财务-账单流水
-export const GET_CUSTOMER_FLOW_LIST = (pageNum, pageSize, createTimeBegin, createTimeEnd, flowCode, payType) => {
+export const GET_CUSTOMER_FLOW_LIST = (pageNum, pageSize, createTimeBegin, createTimeEnd, flowCode, payType, sortType, sortValue) => {
   return axios({
     url: action.GET_CUSTOMER_FLOW_LIST,
     method: 'POST',
-    data: {pageNum, pageSize, createTimeBegin, createTimeEnd, flowCode, payType}
+    data: {pageNum, pageSize, createTimeBegin, createTimeEnd, flowCode, payType, sortType, sortValue}
   })
 }
 // 财务-账单流水导出

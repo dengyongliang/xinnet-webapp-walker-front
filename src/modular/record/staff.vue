@@ -15,11 +15,11 @@
             .inputWrap
               DatePicker(type="daterange",placeholder="全部",v-model="time",format="yyyy-MM-dd",@on-change="time=$event",style="width:100%")
           td.td3
-            span.n 通知类型：
+            span.n 事件类型：
             .inputWrap
-              Select(v-model="levelType")
-                Option(v-for="item in typeList",:value="item.value",:key="item.value") {{ item.label }}
-          td.tdBtn(colspan="3")
+              Select(v-model="evType")
+                Option(v-for="item in typeList2",:value="item.value",:key="item.value") {{ item.label }}
+          td.td4.tdBtn
             Button(type="primary", @click="searchListData",:loading="loadingBtn") 查询
             a(href="javascript:;",class="exportOrder",@click="exportOrder") 导出日志
   .secMain
@@ -43,6 +43,7 @@ export default {
       value: '',
       time: ['', ''],
       levelType: '',
+      evType: '',
       exportLink: actions.EXPORT_USER_LOG,
       typeList: [
         {
@@ -58,6 +59,19 @@ export default {
           label: '重要'
         }
       ],
+      typeList2: (function (vm) {
+        let array = [{
+          value: '',
+          label: '全部'
+        }]
+        for (var i in vm.DATAS.RECORD_USER_EVENT_TYPE) {
+          array.push({
+            value: i,
+            label: vm.DATAS.RECORD_USER_EVENT_TYPE[i]
+          })
+        }
+        return array
+      })(this),
       columns: [
         {
           title: '时间',
@@ -131,7 +145,8 @@ export default {
         userName: this.value,
         createTimeBegin: this.time[0] !== '' ? moment(this.time[0]).format('YYYY-MM-DD') + ' 00:00:00' : '',
         createTimeEnd: this.time[1] !== '' ? moment(this.time[1]).format('YYYY-MM-DD') + ' 23:59:59' : '',
-        levelType: this.levelType
+        // levelType: this.levelType,
+        type: this.evType
       }
       return params
     },
@@ -161,11 +176,9 @@ export default {
 <style>
 .contRecordDomain .td1,
 .contRecordDomain .td2,
-.contRecordDomain .td3{
-  width: 28%
-}
-.contRecordDomain .tdBtn{
-  width: 16%;
+.contRecordDomain .td3,
+.contRecordDomain .td4{
+  width: 25%
 }
 .contRecordDomain .filterWrap td .n{
   width: 90px;

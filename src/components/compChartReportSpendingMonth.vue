@@ -1,6 +1,6 @@
 <template lang="pug">
 .compChartReportSpendingMonth
-  #myChart2
+  #chartReportSpendingMonth
 </template>
 
 <script>
@@ -22,7 +22,7 @@ export default {
   },
   methods: {
     drawChart (datas) {
-      let myChart = this.$echarts.init(document.getElementById('myChart2'))
+      let myChart = this.$echarts.init(document.getElementById('chartReportSpendingMonth'))
       // 绘制图表
       myChart.setOption({
         tooltip: {
@@ -88,10 +88,10 @@ export default {
 }
 </script>
 <style scoped>
-.compChartReportSpendingMonth{
+/* .compChartReportSpendingMonth{
   text-align: center;
-}
-.compChartReportSpendingMonth #myChart2{
+} */
+.compChartReportSpendingMonth #chartReportSpendingMonth{
   height: 430px;
   width: 800px;
   margin: 0 auto;

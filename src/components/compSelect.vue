@@ -132,13 +132,20 @@ export default {
   mounted () {
     if (this.defaultValue !== '') {
       this.value = this.defaultValue
+      this.param = this.list.filter((v) => {
+        return this.defaultValue === v.value.toString()
+      })[0]
+      console.log(this.param)
     }
-    if (this.defaultLabel !== '') {
-      this.param.label = this.defaultLabel
-    }
-    if (this.defaultCode !== '') {
-      this.param.code = this.defaultCode
-    }
+    // if (this.defaultValue !== '') {
+    //   this.value = this.defaultValue
+    // }
+    // if (this.defaultLabel !== '') {
+    //   this.param.label = this.defaultLabel
+    // }
+    // if (this.defaultCode !== '') {
+    //   this.param.code = this.defaultCode
+    // }
   },
   computed: {
   },

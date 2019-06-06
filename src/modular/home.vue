@@ -78,7 +78,7 @@
                   em {{payStatisticsUnBilled.checkBill}}
           Col(span="12",)
             h4.h4T {{payStatisticsHistoryBill.thisCycle?'已出账单':'暂无已出账单'}}
-            strong(v-show="payStatisticsHistoryBill.thisCycle") 账单金额：<em>{{payStatisticsHistoryBill.payMoney}}</em>元
+            strong(v-show="payStatisticsHistoryBill.thisCycle") 账单金额：<em>{{payStatisticsHistoryBill.creditMoney}}</em>元
             ul(v-show="payStatisticsHistoryBill.thisCycle")
               li.clear
                 span.l 结算周期：

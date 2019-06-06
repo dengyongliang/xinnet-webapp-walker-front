@@ -31,8 +31,8 @@
   .secBox.secBox2
     h4.h4T.clear
       span.t 域名注册
-    p 据不完全统计下一预算周期即将开放注册的新顶级域 {{register.newNumber}}个，其中推荐注册的有<b v-for="(item, index) in register.recommendNewList">{{item + (index === (register.recommendNewList.length - 1) ? '' : ', ')}}</b>；根据项目规划，需新注通用顶级域名{{register.normalNumber}}个。预计新注域名预算如下：
-
+    //- p 据不完全统计下一预算周期即将开放注册的新顶级域 {{register.newNumber}}个，其中推荐注册的有<b v-for="(item, index) in register.recommendNewList">{{item + (index === (register.recommendNewList.length - 1) ? '' : ', ')}}</b>；根据项目规划，需新注通用顶级域名{{register.normalNumber}}个。预计新注域名预算如下：
+    p 根据项目规划，推荐注册的新顶级域名有<b v-for="(item, index) in register.recommendNewList">{{item + (index === (register.recommendNewList.length - 1) ? '' : ', ')}}</b>，预计注册量 {{register.newNumber}}个；需新注通用顶级域名{{register.normalNumber}}个。预计新注域名预算如下：
     Row
       Col(span="12")
         strong 新顶级域名注册

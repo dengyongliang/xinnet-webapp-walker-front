@@ -24,8 +24,18 @@ export default {
       })
     },
     GET_CUSTOMER_FLOW_LIST ({ commit }, params) {
+      params = Object.assign({
+        pageNum: '',
+        pageSize: '',
+        createTimeBegin: '',
+        createTimeEnd: '',
+        flowCode: '',
+        payType: '',
+        sortType: '',
+        sortValue: ''
+      }, params)
       return new Promise((resolve, reject) => {
-        api.GET_CUSTOMER_FLOW_LIST(params.pageNum, params.pageSize, params.createTimeBegin, params.createTimeEnd, params.flowCode, params.payType).then(response => {
+        api.GET_CUSTOMER_FLOW_LIST(params.pageNum, params.pageSize, params.createTimeBegin, params.createTimeEnd, params.flowCode, params.payType, params.sortType, params.sortValue).then(response => {
           resolve(response)
         }).catch(error => {
           reject(error)

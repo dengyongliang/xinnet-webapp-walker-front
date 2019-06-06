@@ -1,6 +1,6 @@
 <template lang="pug">
 .compChartReportSpendingCate
-  #myChartSuffix
+  #chartReportSpendingCate
 </template>
 
 <script>
@@ -22,7 +22,7 @@ export default {
   },
   methods: {
     drawChart (datas) {
-      let myChart = this.$echarts.init(document.getElementById('myChartSuffix'))
+      let myChart = this.$echarts.init(document.getElementById('chartReportSpendingCate'))
       // 绘制图表
       myChart.setOption({
         title: {
@@ -100,7 +100,7 @@ export default {
 .compChartReportSpendingCate{
   text-align: center;
 }
-.compChartReportSpendingCate #myChartSuffix{
+.compChartReportSpendingCate #chartReportSpendingCate{
   height: 200px;
   width: 500px;
   margin: 0 auto;

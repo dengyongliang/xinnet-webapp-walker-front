@@ -22,7 +22,7 @@ export const CLIENT_LOGIN = (userCode) => {
 export const SEND_OLD_PHONE_CODE = () => {
   return axios({
     url: action.SEND_OLD_PHONE_CODE,
-    method: 'GET',
+    method: 'POST',
     data: {}
   })
 }

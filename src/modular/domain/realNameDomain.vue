@@ -42,6 +42,7 @@
 import { mapState } from 'vuex'
 import compDomainRealNameDetail from '@/components/compDomainRealNameDetail'
 import compAsideFilter from '@/components/compAsideFilter'
+import moment from 'moment'
 export default {
   components: {
     compDomainRealNameDetail,
@@ -103,7 +104,13 @@ export default {
         {
           title: '提交日期',
           key: 'verifyTime',
-          className: 'col4'
+          className: 'col4',
+          render: (h, params) => {
+            return h('div', [
+              h('span', {
+              }, (this.list[params.index].verifyTime ? moment(this.list[params.index].verifyTime).format('YYYY-MM-DD HH:mm') : ''))
+            ])
+          }
         },
         {
           title: '实名状态',
@@ -284,16 +291,14 @@ export default {
       }
     },
     batchUpdate () {
-      let flag = true
-      this.selectData.reduce((cur, next) => {
-        if (cur.rnvcStatus === 1 || cur.rnvcStatus === 2 || next.rnvcStatus === 1 || next.rnvcStatus === 2) {
-          flag = false
-        }
-        return next
-      }, {rnvcStatus: 0})
-      if (!flag) {
-        this.$Message.error('审核状态不符，请重选')
-      } else {
+      // 若选择域名资料审核中、审核通过时，点击“更新”弹出提示：“实名制状态处于资料审核中或审核通过，不允许更新！”
+      // let flag = []
+      // flag = this.selectData.filter((v, i, arr) => {
+      //   return (v.rnvcStatus === 1 || v.rnvcStatus === 2)
+      // })
+      // if (flag.length) {
+      //   this.$Message.error('实名制状态处于资料审核中或审核通过，不允许更新状态！')
+      // } else {
         this.loadingBtn = true
         this.$store.dispatch('UPDATE_DOMAIN_AUDIT_STATUS', {domainIds: this.getDomainId}).then(response => {
           this.loadingBtn = false
@@ -307,7 +312,7 @@ export default {
             this.$Message.error('更新失败')
           }
         }).catch(() => {})
-      }
+      // }
     },
     asideFilterSubmit (result) {
       console.log(result)

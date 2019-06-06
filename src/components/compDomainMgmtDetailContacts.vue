@@ -45,7 +45,7 @@ div.compDomainMgmtDetailContacts
           //- comp-input(name='organizeNameUk',label="管理机构",ref="organizeNameUk",styles="width:300px", :defaultValue="detailData.admUserInfo?detailData.admUserInfo.organizeNameUk:''", )
         FormItem(label="域名联系人（英文）：", required)
           comp-input(name='userNameUk',label="英文名",ref="userNameUk",styles="width:300px", placeholder="英文名", :defaultValue="detailData.admUserInfo?detailData.admUserInfo.userNameUk:''",)
-        FormItem(label="")
+        FormItem(label="",)
           comp-input(name='userSureNameUk',label="英文姓",ref="userSureNameUk",styles="width:300px", placeholder="英文姓", :defaultValue="detailData.admUserInfo?detailData.admUserInfo.userSureNameUk:''",)
         FormItem(label="通讯地址（英文）：", required)
           comp-input(name='streetUk',label="通讯地址",ref="streetUk",styles="width:300px", :defaultValue="detailData.admUserInfo?detailData.admUserInfo.publicStreetUk:''", )

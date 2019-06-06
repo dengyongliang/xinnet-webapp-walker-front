@@ -15,8 +15,8 @@ Collapse(v-model="value")
   Panel(name="4") <Icon custom="i-icon iconL i-icon-report3" size="24" />域名消费报告
     ul(slot="content")
       li.clear(v-for="item in consumptionList")
-        router-link(tag="a", target="_blank", :to="{path: '/report/spending', query: {customerId: item.id, type: 'spending', start: item.thisCycle.split('~')[0], end: item.thisCycle.split('~')[1]}}") {{item.thisCycle}} 域名消费报告
-        span.right {{item.payBillDate | dateformat}} 更新
+        router-link(tag="a", target="_blank", :to="{path: '/report/spending', query: {type: 'spending', start: item.thisCycle.split('~')[0], end: item.thisCycle.split('~')[1]}}") {{item.thisCycle}} 域名消费报告
+        span.right(v-if="item.payBillDate") {{item.payBillDate | dateformat}} 更新
 </template>
 
 <script>

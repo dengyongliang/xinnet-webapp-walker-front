@@ -1,7 +1,7 @@
 <template lang="pug">
-div(:class="historyData.thisCycle !== '' ? ('status_'+historyData.status) : ''")
-  div.none(v-show="historyData.thisCycle === ''") 暂无往期账单
-  div(v-show="historyData.thisCycle !== ''")
+div(:class="historyCycleList.length ? ('status_'+historyData.status) : ''")
+  div.none(v-show="!historyCycleList.length") 暂无已出账单
+  div(v-show="historyCycleList.length")
     .filter
       span.text 记账周期
       comp-select(name="",:list="historyCycleList",ref="historyCycle",styles="width:200px")
@@ -16,7 +16,7 @@ div(:class="historyData.thisCycle !== '' ? ('status_'+historyData.status) : ''")
           span.n 信用消费：
           span.v {{historyData.creditMoney}} 元
         td.col2
-          span.n 记账周期：
+          span.n 结算周期：
           span.v {{historyData.thisCycle}}
       tr
         td.col1
@@ -27,14 +27,14 @@ div(:class="historyData.thisCycle !== '' ? ('status_'+historyData.status) : ''")
           span.v {{historyData.outBill}}
       tr
         td.col1
-          span.n 存入：
+          span.n 预付款存入：
           span.v {{historyData.depositMoney}} 元
         td.col2
-          span.n 最晚结款日：
+          span.n 最晚结算日期：
           span.v {{historyData.checkBill}}
       tr
         td.col1
-          span.n 退款抵扣：
+          span.n 信用消费退款：
           span.v {{historyData.returnsMoney}} 元
         td.col2
 </template>
@@ -53,8 +53,7 @@ export default {
     return {
       loadingBtn: false,
       historyData: {},
-      historyCycleList: [
-      ]
+      historyCycleList: []
     }
   },
   methods: {

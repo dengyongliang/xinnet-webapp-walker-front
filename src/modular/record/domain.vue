@@ -63,7 +63,12 @@ export default {
           title: '时间',
           width: 150,
           key: 'createTime',
-          className: 'col1'
+          className: 'col1',
+          render: (h, params) => {
+            return h('div', [
+              h('span', {}, moment(this.list[params.index].createTime).format('YYYY-MM-DD HH:mm'))
+            ])
+          }
         },
         {
           title: '域名',

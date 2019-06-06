@@ -10,7 +10,7 @@ div
         span.n 信用消费：
         span.v {{billedData.creditMoney}} 元
       td.col2
-        span.n 记账周期：
+        span.n 结算周期：
         span.v {{billedData.thisCycle}}
     tr
       td.col1
@@ -21,14 +21,14 @@ div
         span.v {{billedData.outBill}}
     tr
       td.col1
-        span.n 存入：
+        span.n 预付款存入：
         span.v {{billedData.depositMoney}} 元
       td.col2
-        span.n 最晚结款日：
+        span.n 最晚结算日期：
         span.v {{billedData.checkBill}}
     tr
       td.col1
-        span.n 退款抵扣：
+        span.n 信用消费退款：
         span.v {{billedData.returnsMoney}} 元
       td.col2
 </template>

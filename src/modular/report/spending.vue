@@ -144,7 +144,6 @@ export default {
   },
   beforeMount () {
     // customerId
-    this.customerId = this.$route.query.customerId
     this.start = this.$route.query.start
     this.end = this.$route.query.end
 
@@ -162,16 +161,13 @@ export default {
       }
       if (response.data.code === '1000') {
         this.domainConsumptionReport.totalMoney = response.data.data.totalMoney
-        this.domainConsumptionReport.businessList = (function (vm) {
-          let arr = []
-          for (var i in vm.DATAS.BUSINESS_LIST) {
-            arr.push({
-              type: vm.DATAS.BUSINESS_LIST[i],
-              money: response.data.data.businessList[0][i]
-            })
+        this.domainConsumptionReport.businessList = response.data.data.businessList.map((v, i, arr) => {
+          return {
+            type: this.DATAS.BUSINESS_LIST[Object.keys(v)],
+            money: Object.values(v)[0]
           }
-          return arr
-        })(this)
+        })
+        console.log(this.domainConsumptionReport.businessList)
       } else {
       }
     }).catch(() => {})
@@ -270,17 +266,15 @@ export default {
         return false
       }
       if (response.data.code === '1000') {
-        this.list = (function (vm) {
-          let arr = []
-          for (var i in vm.DATAS.BUSINESS_LIST) {
-            arr.push({
-              type: vm.DATAS.BUSINESS_LIST[i],
-              num: response.data.data.businessList[0][i + 'PayNumber'] + '个',
-              total: response.data.data.businessList[0][i] + '元'
-            })
+        this.list = response.data.data.businessList.map((v, i, arr) => {
+          let key = Object.keys(v)[0]
+          console.log(key)
+          return {
+            type: this.DATAS.BUSINESS_LIST[key],
+            num: response.data.data.businessList[i][key][key + 'PayNumber'] + (key === 'repurchase' ? '个' : '年'),
+            total: response.data.data.businessList[i][key][key] + '元'
           }
-          return arr
-        })(this)
+        })
       } else {
       }
     }).catch(() => {})

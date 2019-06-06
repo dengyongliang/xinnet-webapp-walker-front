@@ -125,6 +125,7 @@ export default {
         },
         {
           title: '域名',
+          width: 250,
           key: 'domainName',
           className: 'col1',
           render: (h, params) => {
@@ -165,7 +166,6 @@ export default {
           title: '到期日期',
           key: 'expireDate',
           className: 'col2',
-          width: 100,
           render: (h, params) => {
             return h('div', [
               h('span', {
@@ -177,7 +177,6 @@ export default {
           title: '服务状态',
           key: 'serviceStatus',
           className: 'col3',
-          width: 100,
           render: (h, params) => {
             return h('div', [
               h('span', {
@@ -187,7 +186,7 @@ export default {
         },
         {
           title: '域名所有者',
-          width: 100,
+          width: 200,
           key: 'organizeNameCn',
           className: 'col4'
         },
@@ -195,7 +194,6 @@ export default {
           title: '操作',
           key: 'operate',
           className: 'operate',
-          width: 110,
           render: (h, params) => {
             return h('div', [
               h('a', {
@@ -208,15 +206,15 @@ export default {
                   }
                 }
               }, '详情'),
-              h('a', {
-                props: {
-                  href: 'javascript:;'
-                },
-                on: {
-                  click: () => {
-                  }
-                }
-              }, this.list[params.index].depositFlag ? '' : '解析')
+              // h('a', {
+              //   props: {
+              //     href: 'javascript:;'
+              //   },
+              //   on: {
+              //     click: () => {
+              //     }
+              //   }
+              // }, this.list[params.index].depositFlag ? '' : '解析')
             ])
           }
         }

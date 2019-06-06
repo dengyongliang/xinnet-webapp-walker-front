@@ -158,22 +158,23 @@ export default {
     height: 42px;
     line-height: 42px;
     position: relative;
-    cursor: pointer;
 }
 .menuBody .menuT.lv1.on{
-    border-left: solid 3px #e50112;
+    border-left: solid 3px #2271f4;
     background: #f7f7f7;
 }
-.menuBody .menuT:hover span,
 .menuBody .menuT:hover a,
 .menuBody .menuT:hover .font{
-    color: #e50012;
+    color: #2271f4;
 }
 .menuBody .menuT span,
 .menuBody .menuT a{
     font-size: 14px;
     font-weight: normal;
     color: #333333;
+}
+.menuBody .menuT a{
+  cursor: pointer;
 }
 .menuBody .menuT .fontL{
     color: #666;

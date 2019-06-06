@@ -147,6 +147,10 @@
 }
 .ivu-table th{
   background:#fff;
+  padding: 0 10px;
+}
+.ivu-table td{
+  padding: 0 10px;
 }
 .ivu-table td.operate a{
   margin:0 3px;

@@ -1,11 +1,11 @@
 <template lang="pug">
-.compChartOverviewSuffix
-  #myChart3
+.compChartReportSpendingCompany
+  #chartReportSpendingCompany
 </template>
 
 <script>
 export default {
-  name: 'compChartOverviewSuffix',
+  name: 'compChartReportSpendingCompany',
   props: {
     charData: {
       type: Object,
@@ -22,7 +22,7 @@ export default {
   },
   methods: {
     drawChart (datas) {
-      let myChart = this.$echarts.init(document.getElementById('myChart3'))
+      let myChart = this.$echarts.init(document.getElementById('chartReportSpendingCompany'))
       // 绘制图表
       myChart.setOption({
         title: {
@@ -97,10 +97,10 @@ export default {
 }
 </script>
 <style scoped>
-.compChartOverviewSuffix{
+.compChartReportSpendingCompany{
   text-align: center;
 }
-.compChartOverviewSuffix #myChart3{
+.compChartReportSpendingCompany #chartReportSpendingCompany{
   height: 200px;
   width: 500px;
   margin: 0 auto;

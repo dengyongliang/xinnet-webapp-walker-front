@@ -13,9 +13,9 @@ div.compDomainMgmtDetail
     span.item <Icon custom="i-icon i-icon-state" size="16" />服务状态：<em>{{this.DATAS.SERVICE_STATE[detailData.serviceStatus]}}</em>
 
     Button(type="primary", @click="modifyDns", v-show="detailData.depositFlag===0 && detailData.updateFlag===0") 修改DNS
-    Button(type="primary", @click="", v-show="detailData.depositFlag===0") 解析设置
+    //- Button(type="primary", @click="", v-show="detailData.depositFlag===0") 解析设置
     Button(type="primary", @click="drawerWorkOrderSubmit=true", v-show="detailData.depositFlag===1") 管理域名
-    Button(type="primary", @click="",) 监控信息
+    Button(type="primary", @click="toMonitorOwn",) 监控信息
 
   .domainDetail
     .hd
@@ -120,6 +120,9 @@ export default {
       } else {
         this.$emit('showDnsFun')
       }
+    },
+    toMonitorOwn () {
+      this.$router.push({name:'monitor_own',params:{domainName:this.detailData.domainName}})
     }
   },
   beforeMount () {

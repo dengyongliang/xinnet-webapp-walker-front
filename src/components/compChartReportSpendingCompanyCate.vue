@@ -1,11 +1,11 @@
 <template lang="pug">
-.compChartOverviewSuffix
-  #myChart4
+.compChartReportSpendingCompanyCate
+  #chartReportSpendingCompanyCate
 </template>
 
 <script>
 export default {
-  name: 'compChartOverviewSuffix',
+  name: 'compChartReportSpendingCompanyCate',
   props: {
     charData: {
       type: Object,
@@ -22,7 +22,7 @@ export default {
   },
   methods: {
     drawChart (datas) {
-      let myChart = this.$echarts.init(document.getElementById('myChart4'))
+      let myChart = this.$echarts.init(document.getElementById('chartReportSpendingCompanyCate'))
       // 绘制图表
       myChart.setOption({
         tooltip: {
@@ -88,10 +88,10 @@ export default {
 }
 </script>
 <style scoped>
-.compChartOverviewSuffix{
+/* .compChartReportSpendingCompanyCate{
   text-align: center;
-}
-.compChartOverviewSuffix #myChart4{
+} */
+.compChartReportSpendingCompanyCate #chartReportSpendingCompanyCate{
   height: 430px;
   width: 800px;
   margin: 0 auto;

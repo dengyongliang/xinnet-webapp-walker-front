@@ -22,7 +22,7 @@
 
     div.sec.billFlow
       .t 账单流水
-      form.filter(ref="exportForm",target="_blank" method="post" accept-charset="utf-8" :action="exportLink")
+      form.filter(ref="exportForm",method="post" accept-charset="utf-8" :action="exportLink")
         span.text 搜索
         Input(style="width:200px",placeholder="交易单号",name="",ref="",v-model.trim="value")
         DatePicker(type="daterange",placeholder="",v-model="time",format="yyyy-MM-dd",@on-change="time=$event",placement="bottom-end")
@@ -159,6 +159,7 @@ export default {
       let sort = {}
       sort.sortType = v.key === 'flowTime' ? 'time' : 'money'
       sort.sortValue = v.order
+      console.log(sort)
       this.queryFinanceCustomerFlowList({pageNum: 1, sort: sort})
     },
     exportBill () {
@@ -178,9 +179,9 @@ export default {
         payType: this.$refs.payType.value
       }
       if (obj.sort) {
-        Object.assign(params.param, obj.sort)
+        Object.assign(params, obj.sort)
       }
-      console.log(params.param)
+      console.log(params)
       return params
     },
     queryFinanceCustomerFlowList (obj) {
