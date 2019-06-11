@@ -100,7 +100,6 @@ export default {
 </script>
 <style scoped>
 .compChartReportAssetsCompany{
-  text-align: center;
   padding: 30px 0;
 }
 .compChartReportAssetsCompany #chartReportAssetsCompany{
@@ -110,6 +109,7 @@ export default {
 .compChartReportAssetsCompany p{
   font-size: 12px;
   padding: 30px 0 0 0;
+  text-align: center;
 }
 .compChartReportAssetsCompany p em{
   color: #2372f5;

@@ -3,11 +3,11 @@ import axios from '@/global/axios.js'
 import * as action from '@/actions/monitor'
 
 // 监控通知管理列表
-export const MAIL_MANAGE = (pageNum, pageSize, createTimeBegin, createTimeEnd, type) => {
+export const MAIL_MANAGE = (pageNum, pageSize, createTimeBegin, createTimeEnd, levelType) => {
   return axios({
     url: action.MAIL_MANAGE,
     method: 'POST',
-    data: {pageNum, pageSize, createTimeBegin, createTimeEnd, type}
+    data: {pageNum, pageSize, createTimeBegin, createTimeEnd, levelType}
   })
 }
 // 监控通知通知标记已读
@@ -43,11 +43,11 @@ export const DOMAIN_MONITOR_MANAGE = (pageNum, pageSize, domainName, createTimeB
   })
 }
 // 员工监控日志管理列表
-export const USER_MONITOR_MANAGE = (pageNum, pageSize, userName, createTimeBegin, createTimeEnd, levelType) => {
+export const USER_MONITOR_MANAGE = (pageNum, pageSize, userName, createTimeBegin, createTimeEnd, type) => {
   return axios({
     url: action.USER_MONITOR_MANAGE,
     method: 'POST',
-    data: {pageNum, pageSize, userName, createTimeBegin, createTimeEnd, levelType}
+    data: {pageNum, pageSize, userName, createTimeBegin, createTimeEnd, type}
   })
 }
 // 域名监控日志导出

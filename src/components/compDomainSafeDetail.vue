@@ -42,6 +42,7 @@
 <script>
 import { mapState } from 'vuex'
 import compWorkOrderSubmit from '@/components/compWorkOrderSubmit'
+import moment from 'moment'
 export default {
   components: {
     compWorkOrderSubmit
@@ -88,7 +89,13 @@ export default {
         {
           title: '服务到期时间',
           key: 'time',
-          className: 'col2'
+          className: 'col2',
+          render: (h, params) => {
+            return h('div', [
+              h('span', {
+              }, (this.list[params.index].time ? moment(this.list[params.index].time).format('YYYY-MM-DD HH:mm:ss') : '-'))
+            ])
+          }
         },
         {
           title: '服务状态',
@@ -176,7 +183,7 @@ export default {
                 ])
               }
             }
-            if (this.list[params.index].name === 'backendLockFlag') {
+            if (this.list[params.index].name === 'backendLockFlag' && this.list[params.index].status !== 2) {
               return h('div', [
                 h('a', {
                   props: {
@@ -197,13 +204,13 @@ export default {
         {
           id: 0,
           name: 'renewFlag',
-          time: '-',
+          time: '',
           status: 1
         },
         {
           id: 0,
           name: 'updateFlag',
-          time: '-',
+          time: '',
           status: 1
         },
         {

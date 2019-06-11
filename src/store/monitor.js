@@ -68,7 +68,7 @@ export default {
     },
     USER_MONITOR_MANAGE ({ commit }, params) {
       return new Promise((resolve, reject) => {
-        api.USER_MONITOR_MANAGE(params.pageNum, params.pageSize, params.userName, params.createTimeBegin, params.createTimeEnd, params.levelType).then(response => {
+        api.USER_MONITOR_MANAGE(params.pageNum, params.pageSize, params.userName, params.createTimeBegin, params.createTimeEnd, params.type).then(response => {
           resolve(response)
         }).catch(error => {
           reject(error)

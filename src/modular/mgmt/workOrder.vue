@@ -10,7 +10,7 @@
       <Table :columns="columns" :data="list" :loading="loadingTable"></Table>
 
   <!-- 翻页区 -->
-  Page(:total="page.pageItems",:current="page.pageNo",show-elevator,show-total,prev-text="上一页",next-text="下一页",@on-change="pageChange",:page-size=20)
+  Page(:total="page.pageItems",:current="page.pageNo",show-elevator,show-total,prev-text="上一页",next-text="下一页",@on-change="pageChange",:page-size="20")
 
   <!-- 提交工单 抽屉 -->
   Drawer(:closable="true", width="640", v-model="drawerWorkOrderSubmit", title="提交工单", :mask-closable="maskClosable", @on-visible-change="drawerChange")
@@ -177,9 +177,9 @@ export default {
           this.list = response.data.data.list
           this.page.pageItems = response.data.data.totalNum
         } else {
-          if (response.data.code === '900') {
-            this.$Message.error('查询失败')
-          }
+          //- if (response.data.code === '900') {
+          //-   this.$Message.error('查询失败')
+          //- }
         }
       }).catch(() => {})
     }

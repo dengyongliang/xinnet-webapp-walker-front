@@ -83,11 +83,11 @@ export const UPDATE_USER_INFO = (userCode, userTel, userMobile, verificationCode
   })
 }
 // 修改密码
-export const UPDATE_USER_PASSWORD = (userCode, newPassword) => {
+export const UPDATE_USER_PASSWORD = (userCode, newPassword, verificationCode) => {
   return axios({
     url: action.UPDATE_USER_PASSWORD,
-    method: 'GET',
-    data: {userCode, newPassword}
+    method: 'POST',
+    data: {userCode, newPassword, verificationCode}
   })
 }
 // 客户可用角色列表
@@ -184,5 +184,13 @@ export const CHECK_USER_AUTH = (authPath) => {
     url: action.CHECK_USER_AUTH,
     method: 'POST',
     data: {authPath}
+  })
+}
+// 找回密码-重置密码
+export const RESET_USER_PWD = (userMobile, verificationCode, password) => {
+  return axios({
+    url: action.RESET_USER_PWD,
+    method: 'POST',
+    data: {userMobile, verificationCode, password}
   })
 }

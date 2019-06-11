@@ -15,7 +15,7 @@
     span.line |
     router-link.email(to="/notice/monitoring")
       Icon(type="ios-mail-outline")
-      em.num
+      em.num(v-show="parseInt(userMsgNum) > 0")
         i {{userMsgNum}}
     span.line |
     router-link(to="/report") 报告中心

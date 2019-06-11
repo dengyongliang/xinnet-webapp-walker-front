@@ -74,6 +74,7 @@ export default {
 @import 'assets/css/xwNormalize.css';
 @import 'assets/css/xwCommon.css';
 @import 'assets/css/iviewRest.css';
+@import 'assets/css/animate.css';
 #app{
   height:100%;
 }

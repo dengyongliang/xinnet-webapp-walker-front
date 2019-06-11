@@ -237,10 +237,21 @@ export default {
       this.showSubmit = false
     },
     showRealNameSubmit (item) {
-      this.selectData = [item]
-      this.organizeNameCn = item.organizeNameCn
-      this.rnvcStatus = item.rnvcStatus
-      this.showSubmit = true
+      this.$store.dispatch('CHECK_UPLOAD_DOMAIN_VERIFY', {domainIds: this.getDomainId}).then(response => {
+        if (!response) {
+          return false
+        }
+        if (response.data.code === '1000') {
+          this.selectData = [item]
+          this.organizeNameCn = item.organizeNameCn
+          this.rnvcStatus = item.rnvcStatus
+          this.showSubmit = true
+        } else {
+          if (response.data.code === '700') {
+            this.$Message.error('域名包含正在进行过户或转移信息更新中请等待完成后再提交实名制审核资料！')
+          }
+        }
+      }).catch(() => {})
     },
     handleSelectAll (status) {
       this.$refs.selection.selectAll(status)
@@ -281,7 +292,7 @@ export default {
               this.organizeNameCn = this.selectData[0].organizeNameCn
               this.showSubmit = true
             } else {
-              if (response.data.code === '900') {
+              if (response.data.code === '700') {
                 this.$Message.error('域名包含正在进行过户或转移信息更新中请等待完成后再提交实名制审核资料！')
               }
             }

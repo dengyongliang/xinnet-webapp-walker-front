@@ -50,3 +50,35 @@ export const DOMAIN_MANAGE = (domainId) => {
     data: {domainId}
   })
 }
+// 发送修改密码验证码
+export const SEND_UPDATE_PASSWORD = () => {
+  return axios({
+    url: action.SEND_UPDATE_PASSWORD,
+    method: 'POST',
+    data: {}
+  })
+}
+// 验证修改密码验证码
+export const CHECK_UPDATE_PASSWORD = (verificationCode) => {
+  return axios({
+    url: action.CHECK_UPDATE_PASSWORD,
+    method: 'POST',
+    data: {verificationCode}
+  })
+}
+// 找回密码-发送验证码
+export const SEND_FORGET_PASSWORD = (phoneNum) => {
+  return axios({
+    url: action.SEND_FORGET_PASSWORD,
+    method: 'POST',
+    data: {phoneNum}
+  })
+}
+// 找回密码-校验手机验证码
+export const CHECK_FORGET_PASSWORD = (userMobile, verificationCode) => {
+  return axios({
+    url: action.CHECK_FORGET_PASSWORD,
+    method: 'POST',
+    data: {userMobile, verificationCode}
+  })
+}

@@ -1,12 +1,12 @@
 <template lang="pug">
-  .compChartDomainDueTime
-    div(id="myChart2",style="width:688px;height:328px;")
+  .compChartReportAssetsSuffix
+    div(id="chartReportAssetsSuffix",style="width:688px;height:328px;")
     p 主流域名后缀.com、.cn、.com.cn，占域名总数的{{charData.mainSuffixRate}}，共计{{charData.mainSuffixNumber}}个，其余域名后缀类型，共计{{charData.otherSuffixNumber}}个域名。
 </template>
 
 <script>
 export default {
-  name: 'compChartDomainDueTime',
+  name: 'compChartReportAssetsSuffix',
   props: {
     charData: {
       type: Object,
@@ -23,7 +23,7 @@ export default {
   },
   methods: {
     drawChart (datas) {
-      let myChart = this.$echarts.init(document.getElementById('myChart2'))
+      let myChart = this.$echarts.init(document.getElementById('chartReportAssetsSuffix'))
       // 绘制图表
       myChart.setOption({
         title: {
@@ -95,19 +95,19 @@ export default {
 }
 </script>
 <style scoped>
-.compChartDomainDueTime{
-  text-align: center;
+.compChartReportAssetsSuffix{
   padding: 30px 0;
 }
-.compChartDomainDueTime #myChart2{
+.compChartReportAssetsSuffix #chartReportAssetsSuffix{
   border: 1px solid #d9d9d9;
   margin: 0 auto;
 }
-.compChartDomainDueTime p{
+.compChartReportAssetsSuffix p{
   font-size: 12px;
   padding: 30px 0 0 0;
+  text-align: center;
 }
-.compChartDomainDueTime p em{
+.compChartReportAssetsSuffix p em{
   color: #2372f5;
   font-weight: 600;
 }

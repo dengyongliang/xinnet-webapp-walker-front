@@ -16,7 +16,7 @@
       Col(span="8")
         strong 管理人员
         em.num {{report[0].userCount}}
-    p 截止2018-12-13 21：30，天翼实业集团有限公司共拥有域名数量{{report[0].domainNumber}}个，管理公司{{report[0].companyCount}}个，管理人员{{report[0].userCount}}人。域名监控时长1112天，域名安全问题产生次数0次。
+    p 截止{{new Date() | dateformat}}，{{myUserInfo.manageCustomerName}}共拥有域名数量{{report[0].domainNumber}}个，管理公司{{report[0].companyCount}}个，管理人员{{report[0].userCount}}人。域名监控时长{{monitoringDurTime}}天，域名安全问题产生次数0次
   .secBox.secBox2
     h4.h4T.clear
       span.t 域名所属公司
@@ -46,11 +46,13 @@
 </template>
 
 <script>
+import {mapState} from 'vuex'
 import compChartReportAssetsCompany from '@/components/compChartReportAssetsCompany'
 import compChartReportAssetsSuffix from '@/components/compChartReportAssetsSuffix'
 import compChartReportOwnDueTime from '@/components/compChartReportOwnDueTime'
 import compChartReportAssetsSafeNormal from '@/components/compChartReportAssetsSafeNormal'
 import compChartReportAssetsSafeImportant from '@/components/compChartReportAssetsSafeImportant'
+import moment from 'moment'
 export default {
   components: {
     compChartReportAssetsCompany,
@@ -61,12 +63,21 @@ export default {
   },
   data () {
     return {
+      companyName: '',
       report: ['', '', '', '', '', '', '']
     }
   },
   methods: {
   },
   computed: {
+    ...mapState({
+      myUserInfo (state) {
+        return state.user.myUserInfo
+      },
+      monitoringDurTime (state) {
+        return moment(new Date()).diff(state.user.myUserInfo.createTime, 'days') 
+      }
+    })
   },
   beforeMount () {
     Promise.all([

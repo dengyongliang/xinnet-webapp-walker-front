@@ -63,16 +63,16 @@
         ul
           li.clear
             span.l .com
-            span.r {{renewAndSafe.renewMap ? renewAndSafe.renewMap.renewComNumber : 0}}元
+            span.r {{renewAndSafe.renewMap ? renewAndSafe.renewMap.renewComNumber : 0}}个
           li.clear
             span.l .cn
-            span.r {{renewAndSafe.renewMap ? renewAndSafe.renewMap.renewCnNumber : 0}}元
+            span.r {{renewAndSafe.renewMap ? renewAndSafe.renewMap.renewCnNumber : 0}}个
           li.clear
             span.l .com.cn
-            span.r {{renewAndSafe.renewMap ? renewAndSafe.renewMap.renewComCnNumber : 0}}元
+            span.r {{renewAndSafe.renewMap ? renewAndSafe.renewMap.renewComCnNumber : 0}}个
           li.clear
             span.l 其他后缀
-            span.r {{renewAndSafe.renewMap ? renewAndSafe.renewMap.renewOtherNumber : 0}}元
+            span.r {{renewAndSafe.renewMap ? renewAndSafe.renewMap.renewOtherNumber : 0}}个
       Col(span="12")
         comp-chart-report-budget-renew(
           :charData="renewAndSafe.renewMap"

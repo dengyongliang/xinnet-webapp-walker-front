@@ -104,7 +104,6 @@ export default {
 </script>
 <style scoped>
 .compChartReportOwnDueTime{
-  text-align: center;
   padding: 30px 0;
 }
 .compChartReportOwnDueTime #chartReportOwnDueTime{
@@ -114,6 +113,7 @@ export default {
 .compChartReportOwnDueTime p{
   font-size: 12px;
   padding: 30px 0 0 0;
+  text-align: center;
 }
 .compChartReportOwnDueTime p em{
   color: #2372f5;

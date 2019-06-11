@@ -27,10 +27,10 @@ export default [{
       meta: {
         title: '首页',
         keepAlive: true,
-        permission: 'client_index',
+        permission: '',
         compUrl: 'modular/home',
         icon: 'i-icon i-icon-home',
-        show: false,
+        show: true,
         isLogin: true
       }
     },

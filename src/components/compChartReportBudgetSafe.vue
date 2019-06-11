@@ -1,12 +1,12 @@
 <template lang="pug">
-.compChartOverviewSuffix
-  #myChart3
-  p 需要续费的注册局锁域名{{charData.safeNumber}}个，占全部域名的{{charData.safeRate}}。
+.compChartReportBudgetSafe
+  #chartReportBudgetSafe
+  p 需要续费的注册局锁域名{{charData.safeNumber}}个，占已开通注册局锁的{{charData.safeRate}}。
 </template>
 
 <script>
 export default {
-  name: 'compChartOverviewSuffix',
+  name: 'compChartReportBudgetSafe',
   props: {
     charData: {
       type: Object,
@@ -23,7 +23,7 @@ export default {
   },
   methods: {
     drawChart (datas) {
-      let myChart = this.$echarts.init(document.getElementById('myChart3'))
+      let myChart = this.$echarts.init(document.getElementById('chartReportBudgetSafe'))
       // 绘制图表
       myChart.setOption({
         title: {
@@ -42,7 +42,7 @@ export default {
           top: 'center',
           itemWidth: 10,
           itemHeight: 10,
-          data: ['已开通', '未开通']
+          data: ['需要续费', '不需要续费']
         },
         series: [
           {
@@ -51,8 +51,8 @@ export default {
             radius: '85%',
             center: ['40%', '50%'],
             data: [
-              {value: datas.safeNumber, name: '已开通'},
-              {value: datas.serviceNumber, name: '未开通'}
+              {value: datas.safeNumber, name: '需要续费'},
+              {value: datas.serviceNumber, name: '不需要续费'}
             ],
             label: {
               normal: {
@@ -94,15 +94,12 @@ export default {
 }
 </script>
 <style scoped>
-.compChartOverviewSuffix{
-  text-align: center;
-}
-.compChartOverviewSuffix #myChart3{
+.compChartReportBudgetSafe #chartReportBudgetSafe{
   height: 200px;
   width: 500px;
   margin: 0 auto;
 }
-.compChartOverviewSuffix p{
+.compChartReportBudgetSafe p{
   font-size: 12px;
   text-align: center;
 }

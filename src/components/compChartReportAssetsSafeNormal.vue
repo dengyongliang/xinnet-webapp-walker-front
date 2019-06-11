@@ -1,12 +1,12 @@
 <template lang="pug">
-  .compChartDomainDueTime
-    div(id="myChart4",style="width:450px;height:328px;")
+  .compChartReportAssetsSafeNormal
+    div(id="chartReportAssetsSafeNormal",style="width:450px;height:328px;")
 
 </template>
 
 <script>
 export default {
-  name: 'compChartDomainDueTime',
+  name: 'compChartReportAssetsSafeNormal',
   props: {
     charData: {
       type: Object,
@@ -23,7 +23,7 @@ export default {
   },
   methods: {
     drawChart (datas) {
-      let myChart = this.$echarts.init(document.getElementById('myChart4'))
+      let myChart = this.$echarts.init(document.getElementById('chartReportAssetsSafeNormal'))
       let labelOption = {
         normal: {
           show: true,
@@ -105,11 +105,11 @@ export default {
 }
 </script>
 <style scoped>
-.compChartDomainDueTime{
-  text-align: center;
+.compChartReportAssetsSafeNormal{
   padding: 30px 0;
+  text-align: left;
 }
-.compChartDomainDueTime #myChart4{
+.compChartReportAssetsSafeNormal #chartReportAssetsSafeNormal{
   border: 1px solid #d9d9d9;
   margin: 0 auto;
 }

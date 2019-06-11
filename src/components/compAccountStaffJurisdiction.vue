@@ -4,6 +4,7 @@ Form.compStaffJurisdiction(:label-width="0")
   FormItem(class="roleList")
     comp-radio(name="roleId",:list="userRoles",ref="roleId",:defaultValue="defaultValue.toString()")
   .t 请勾选此员工可管理的域名：
+    Alert(type="warning") 此权限设置只可修改非域名分组负责人以外的域名管理权限，若为域名分组负责人请通过修改分组负责人进行修改域名管理权限。
   FormItem()
     .scrollList
       p.none(v-show="!userAuthGroups.length") 暂无分组
@@ -178,7 +179,7 @@ export default {
 <style scoped>
 .compStaffJurisdiction .t{
   display:block;
-  font-weight:200;
+  font-weight:normal;
   color:#000;
   padding:0 0 20px 0;
 }

@@ -385,9 +385,9 @@ export default {
           this.list = response.data.data.list
           this.page.pageItems = response.data.data.totalNum
         } else {
-          if (response.data.code === '900') {
-            this.$Message.error('查询失败')
-          }
+          // if (response.data.code === '900') {
+          //   this.$Message.error('查询失败')
+          // }
         }
       }).catch(() => {})
     }

@@ -213,7 +213,7 @@ export default {
     },
     UPDATE_USER_PASSWORD ({ commit }, params) {
       return new Promise((resolve, reject) => {
-        api.UPDATE_USER_PASSWORD(params.userCode, params.newPassword).then(response => {
+        api.UPDATE_USER_PASSWORD(params.userCode, params.newPassword, params.verificationCode).then(response => {
           resolve(response)
         }).catch(error => {
           reject(error)
@@ -351,6 +351,15 @@ export default {
     CHECK_USER_AUTH ({ commit }, params) {
       return new Promise((resolve, reject) => {
         api.CHECK_USER_AUTH(params.authPath).then(response => {
+          resolve(response)
+        }).catch(error => {
+          reject(error)
+        })
+      })
+    },
+    RESET_USER_PWD ({ commit }, params) {
+      return new Promise((resolve, reject) => {
+        api.RESET_USER_PWD(params.userMobile, params.verificationCode, params.password).then(response => {
           resolve(response)
         }).catch(error => {
           reject(error)

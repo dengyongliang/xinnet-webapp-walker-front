@@ -7,9 +7,9 @@ div(:class="historyCycleList.length ? ('status_'+historyData.status) : ''")
       comp-select(name="",:list="historyCycleList",ref="historyCycle",styles="width:200px")
       Button(type="primary", @click="queryHistoryCycle",:loading="loadingBtn") 查询
     .totalInfo
-      Tooltip(content="账单金额=信用消费-退款抵扣", placement="bottom-start")
+      Tooltip(content="应结款项为当前账期应结算信用消费金额", placement="bottom-start")
         <Icon custom="i-icon i-icon-tips" size="16" />
-      span.text 账单金额：<em> {{historyData.totalMoney}} </em>元
+      span.text 账单金额：<em> {{historyData.creditMoney}} </em>元
     table
       tr
         td.col1
@@ -83,9 +83,7 @@ export default {
           }
           this.historyData = response.data.data
         } else {
-          if (response.data.code === '900') {
-            this.$Message.error('查询失败')
-          }
+          // this.$Message.error('查询失败')
         }
       }).catch(() => {})
     }

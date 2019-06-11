@@ -24,7 +24,6 @@
     "description": "管家"
    }],
    "menus": [
-     "client_index",
      "client_domain",
      "client_domain_overview",
      "client_domain_manage",

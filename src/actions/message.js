@@ -13,3 +13,11 @@ export const UPDATE_PHONE_CODE = '/server/message/send/updatePhoneCode' + suffix
 export const CHECK_OLD_PHONE_CODE = '/server/message/check/oldPhoneCode' + suffix // CHECK_OLD_PHONE_CODE
 // 发送验证码到域名分组管理人手机
 export const DOMAIN_MANAGE = '/server/message/send/domainManage' + suffix // GET_DOMAIN_MGMT_V_CODE
+// 发送修改密码验证码
+export const SEND_UPDATE_PASSWORD = '/server/message/send/updatePassword' + suffix
+// 验证修改密码验证码
+export const CHECK_UPDATE_PASSWORD = '/server/message/check/updatePassword' + suffix
+// 找回密码-发送验证码
+export const SEND_FORGET_PASSWORD = '/server/message/send/forgetPassword' + suffix
+// 找回密码-校验手机验证码
+export const CHECK_FORGET_PASSWORD = '/server/message/check/forgetPassword' + suffix

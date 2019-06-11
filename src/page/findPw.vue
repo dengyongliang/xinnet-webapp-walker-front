@@ -8,16 +8,16 @@
           div(v-show="step!==3")
             strong.t
               span 找回密码
-            Alert(type="error", show-icon, v-show="showError") {{errorText}}
+            Alert(type="error", show-icon, :class="(showError?'animated fadeIn':'fadeOut')") {{errorText}}
             .setp1(v-show="step===1")
               FormItem.mobileInput
-                comp-input(name='userName',ref="userName",defaultValue="",placeholder="输入账号绑定手机号",styles="width:100%",:on-errorparent="onShowError",:on-focusparent="onHideError",:errorInCompInput="false")
+                comp-input(name='phoneNum',ref="phoneNum",defaultValue="",placeholder="输入账号绑定手机号",styles="width:100%",:propsShow="false",:on-focusparent="onHideError",:on-errorparent="onShowError",validate="mobile")
                   Icon.iconleft(custom="i-icon i-icon-mobile",slot="left")
                 a(href="javascript:;" @click="getVerificationCode", v-if="!success") 获取短信验证码
                 span.tips
                   i(v-if="success") 发送成功
               FormItem.verificationCodeInput
-                comp-input(name='userName',ref="userName",defaultValue="",placeholder="输入验证码",:maxLength="6",styles="width:100%",:on-errorparent="onShowError",:on-focusparent="onHideError",:errorInCompInput="false")
+                comp-input(name='verificationCode',ref="verificationCode",defaultValue="",placeholder="输入验证码",:maxLength="6",styles="width:100%",:propsShow="false",:on-focusparent="onHideError",)
                   Icon.iconleft(custom="i-icon i-icon-tick1",slot="left")
               FormItem
                 Button(type="primary", @click="nextForm", :loading="loadingBtn") 下一步
@@ -53,6 +53,7 @@
 <script>
 import compInput from '@/components/compInput'
 import compRePassword from '@/components/compRePassword'
+import validateFormResult from '@/global/validateForm'
 export default {
   components: {
     compInput,
@@ -74,11 +75,66 @@ export default {
   },
   methods: {
     nextForm () {
-      this.step = 2
+      this.loadingBtn = true
+      let result = validateFormResult([
+        this.$refs.phoneNum
+      ])
+      if (result) {
+        if (this.$refs.verificationCode.value.length < 6) {
+          this.onShowError('验证码错误')
+          this.loadingBtn = false
+        } else {
+          let params = {
+            userMobile: this.$refs.phoneNum.value,
+            verificationCode: this.$refs.verificationCode.value
+          }
+          this.$store.dispatch('CHECK_FORGET_PASSWORD', params).then(response => {
+            this.loadingBtn = false
+            if (!response) {
+              return false
+            }
+            let data = response.data
+            if (data.code === '1000') {
+              this.step = 2
+            } else {
+              this.$Message.error('手机号验证失败')
+            }
+          }).catch(() => {})
+        }
+      } else {
+        this.onShowError('输入手机号格式有误')
+        this.loadingBtn = false
+      }
     },
     submit () {
-      this.step = 3
       this.loadingBtn = true
+      let result = validateFormResult([
+        this.$refs.compRePassword
+      ])
+      if (result) {
+        var params = {
+          userMobile: this.$refs.phoneNum.value,
+          password: this.$refs.compRePassword.$refs.password.value,
+          verificationCode: this.$refs.verificationCode.value
+        }
+        this.$store.dispatch('RESET_USER_PWD', params).then(response => {
+          this.loadingBtn = false
+          if (response) {
+            if (response.data.code === '1000') {
+              this.step = 3
+              this.$Message.success('密码重置成功')
+            } else {
+              if (response.data.code === '100') {
+                this.$Message.error('账号不存在')
+              } else {
+                this.$Message.error('密码重置失败')
+              }
+            }
+          }
+        }).catch(() => {})
+      } else {
+        this.loadingBtn = false
+      }
     },
     onShowError (errText) {
       this.showError = true
@@ -88,11 +144,33 @@ export default {
       this.showError = false
     },
     getVerificationCode (e) {
-      if (this.$refs.account.value === '') {
-        this.$refs.account.showValidateResult({text: ''})
-        this.onShowError('请输入登录名')
+      this.loadingBtn = true
+      if (this.$refs.phoneNum.value === '') {
+        this.$refs.phoneNum.showValidateResult({text: ''})
+        this.onShowError('请输入手机号码')
         this.loadingBtn = false
         return false
+      }
+      let result = validateFormResult([
+        this.$refs.phoneNum
+      ])
+      if (result) {
+        this.$store.dispatch('SEND_FORGET_PASSWORD', {phoneNum: this.$refs.phoneNum.value}).then(response => {
+          this.loadingBtn = false
+          if (!response) {
+            return false
+          }
+          let data = response.data
+          if (data.code === '1000') {
+            this.$Message.success('发送成功')
+          } else if (data.code === '100') {
+            this.$refs.phoneNum.showValidateResult({})
+            this.onShowError('手机号码不存在')
+          }
+        }).catch(() => {})
+      } else {
+        this.onShowError('输入手机号格式有误')
+        this.loadingBtn = false
       }
     }
   },
@@ -176,6 +254,7 @@ export default {
   padding-bottom:16px;
   padding-left:55px;
   margin-bottom:20px;
+  opacity: 0;
 }
 .pageFindPw .ivu-alert-error .ivu-alert-icon{
   left:20px;

@@ -32,9 +32,9 @@
         tr
           td.td1 域名状态
           td.td2 {{detailData.domain? this.DATAS.SERVICE_STATE[detailData.domain.serviceStatus]:''}}　
-            Tooltip(placement="top-start")
-              span(slot="content", style="color:#fff") 解析监控列表仅记录3个月内解析修改情况，<br />详细域名解析监控日志，<br />请查看下方全部域名监控日志。
-              Icon(custom="i-icon i-icon-tips", size="16")
+            //- Tooltip(placement="top-start")
+            //-   span(slot="content", style="color:#fff") 解析监控列表仅记录3个月内解析修改情况，<br />详细域名解析监控日志，<br />请查看下方全部域名监控日志。
+            //-   Icon(custom="i-icon i-icon-tips", size="16")
           td.td3
           td.td4
         tr

@@ -59,6 +59,42 @@ export default {
           reject(error)
         })
       })
+    },
+    SEND_UPDATE_PASSWORD ({ commit }) {
+      return new Promise((resolve, reject) => {
+        api.SEND_UPDATE_PASSWORD().then(response => {
+          resolve(response)
+        }).catch(error => {
+          reject(error)
+        })
+      })
+    },
+    CHECK_UPDATE_PASSWORD ({ commit }, params) {
+      return new Promise((resolve, reject) => {
+        api.CHECK_UPDATE_PASSWORD(params.verificationCode).then(response => {
+          resolve(response)
+        }).catch(error => {
+          reject(error)
+        })
+      })
+    },
+    SEND_FORGET_PASSWORD ({ commit }, params) {
+      return new Promise((resolve, reject) => {
+        api.SEND_FORGET_PASSWORD(params.phoneNum).then(response => {
+          resolve(response)
+        }).catch(error => {
+          reject(error)
+        })
+      })
+    },
+    CHECK_FORGET_PASSWORD ({ commit }, params) {
+      return new Promise((resolve, reject) => {
+        api.CHECK_FORGET_PASSWORD(params.userMobile, params.verificationCode).then(response => {
+          resolve(response)
+        }).catch(error => {
+          reject(error)
+        })
+      })
     }
   }
 }

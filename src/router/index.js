@@ -130,6 +130,7 @@ RouterMain.beforeEach((to, from, next) => {
   let permission = to.meta.permission ? to.meta.permission : ''
   console.log(permission)
   if (isLogin) {
+    // alert('测试勿提bug:' + isLogin)
     store.dispatch('CHECK_USER_AUTH', {authPath: permission}).then(response => {
       if (!response) {
         return false
@@ -139,7 +140,7 @@ RouterMain.beforeEach((to, from, next) => {
         let _isAuth = response.data.isAuth
         if (_login) { // 已登录
           console.log('已登录')
-          if (permission && permission.length) { // 需要权限验证
+          if (permission.length) { // 需要权限验证
             if (_isAuth) { // 有权限
               console.log('有权限')
               next()
@@ -151,15 +152,36 @@ RouterMain.beforeEach((to, from, next) => {
             console.log('无需权限')
             next()
           }
+          // 是否存在主导航数据
+          let menus = localStorage.getItem('menus') ? JSON.parse(localStorage.getItem('menus')) : []
+          if (menus.length) {
+            store.commit('SET_MENUS', menus)
+          } else {
+            // 获取权限信息
+            store.dispatch('MY_USER_INFO').then(response => {
+              if (!response) {
+                return false
+              }
+              if (response.data.code === '1000') {
+                let pageMenus = []
+                menuUtils(pageMenus, response.data.data.menus)
+                // 相关数据 store 存储
+                store.commit('SET_MENUS', pageMenus)
+                // localStorage 存储 menus 数据
+                localStorage.setItem('menus', JSON.stringify(pageMenus))
+              } else {
+                router.replace({ path: '/login' })
+              }
+            }).catch(() => {})
+          }
         } else {
           console.log('未登录')
           next('/login')
         }
       } else {
-        router.replace({ path: '/login' })
+        RouterMain.replace({ path: '/login' })
       }
     }).catch(() => {})
-
   } else {
     console.log('无需登录')
     next()
@@ -170,50 +192,7 @@ RouterMain.afterEach(transition => {
   NProgress.done()
 })
 RouterMain.onReady(() => {
-  let menus = localStorage.getItem('menus') ? JSON.parse(localStorage.getItem('menus')) : []
-  if (menus.length) {
-    // let pageRouters = []
-    // 保存到store
-    store.commit('SET_MENUS', menus)
-    // 生成可使用的路由表
-    // menuUtils2(pageRouters, routers)
-    // pageRouters.forEach((item) => {
-    //   RouterMain.options.routes.push(item)
-    // })
-    // // 添加到路由
-    // RouterMain.addRoutes(pageRouters)
-  } else {
-    // 获取权限信息
-    store.dispatch('MY_USER_INFO').then(response => {
-      if (!response) {
-        return false
-      }
-      if (response.data.code === '1000') {
-        let pageMenus = []
-        menuUtils(pageMenus, response.data.data.menus)
-        // 相关数据 store 存储
-        store.commit('SET_MENUS', pageMenus)
-        // localStorage 存储 menus 数据
-        localStorage.setItem('menus', JSON.stringify(pageMenus))
-      } else {
-        router.replace({ path: '/login' })
-      }
-    }).catch(() => {})
-    // let router404 = {
-    //   path: '*',
-    //   name: '404',
-    //   component (resolve) {
-    //     return require(['@/page/404'], resolve)
-    //   },
-    //   meta: {
-    //     title: '404',
-    //     keepAlive: true,
-    //     permission: '',
-    //     compUrl: 'page/404'
-    //   }
-    // }
-    // RouterMain.options.routes.push(router404)
-    // RouterMain.addRoutes([router404])
-  }
+  // let isLogin = RouterMain.currentRoute.meta.isLogin
+  // let permission = RouterMain.currentRoute.meta ? RouterMain.currentRoute.meta : ''
 })
 export default RouterMain

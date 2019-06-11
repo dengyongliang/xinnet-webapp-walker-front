@@ -47,3 +47,5 @@ export const UPDATE_USER = '/client/user/updateUser' + suffix
 export const CHECK_USER_PHONE = '/account/user/checkUserPhone' + suffix
 // 验证当前用户登录状态及权限
 export const CHECK_USER_AUTH = '/account/user/checkUserAuth' + suffix
+// 找回密码-重置密码
+export const RESET_USER_PWD = '/account/user/resetUserPwd' + suffix

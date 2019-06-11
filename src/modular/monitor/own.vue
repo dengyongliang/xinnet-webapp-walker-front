@@ -31,6 +31,14 @@
 
   .pageDetail(v-if="showDetail")
     comp-monitor-own-detail(:domainName="domainName")
+  <!-- 通知详情 弹窗 -->
+  Modal(
+    width="600",
+    v-model="modelMailRecordDetail",
+    class-name="modelMailRecordDetail",
+    :footer-hide="true"
+  )
+    div(v-html="modelMailContent")
 </template>
 
 <script>
@@ -48,6 +56,8 @@ export default {
       filterTitle: '域名',
       userCompanys: [],
       showDetail: false,
+      modelMailRecordDetail: false,
+      modelMailContent: '',
       domainName: '',
       columnsTop: [
         {
@@ -86,6 +96,11 @@ export default {
                 style: {
                   display: 'inline-block',
                   margin: '0 100px 0 0'
+                },
+                on: {
+                  click: () => {
+                    this.handleShowDetail(this.listTop[params.index])
+                  }
                 }
               }, this.listTop[params.index].title)
             ])
@@ -264,6 +279,31 @@ export default {
         } else {
         }
       }).catch(() => {})
+    },
+    handleShowDetail (item) {
+      this.$store.dispatch('MAIL_RECORD_DETAIL', {id: item.id}).then(response => {
+        if (!response) {
+          return false
+        }
+        if (response.data.code === '1000') {
+          this.modelMailContent = response.data.data.detail
+          // 设为已读
+          this.$store.dispatch('MAIL_RECORD_READ', {id: item.id}).then(response => {
+            if (!response) {
+              return false
+            }
+            if (response.data.code === '1000') {
+              // 查找 所在 索引值
+              let idx = this.listTop.findIndex((item2) => (item2.id === item.id))
+              // 设为已读
+              this.listTop[idx].readFlag = 2
+            } else {
+            }
+          }).catch(() => {})
+        } else {
+        }
+      }).catch(() => {})
+      this.modelMailRecordDetail = true
     }
   },
   computed: {

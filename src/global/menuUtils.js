@@ -6,6 +6,7 @@ export default (routers, permission) => {
 function generaMenu (routers, menus, permission) {
   menus.forEach((item) => {
     let menu = Object.assign({}, item)
+    console.log(menu.meta.permission)
     if (menu.meta.permission === 'root' || (menu.children && menu.children.length > 0)) {
       if (permission.indexOf(menu.meta.permission) >= 0) {
         // menu.redirect = '/noAuth'

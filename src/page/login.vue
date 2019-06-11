@@ -7,7 +7,7 @@
         div.wrap
           strong.t
             span 登录
-          Alert(type="error", show-icon,v-show="showError") {{errorText}}
+          Alert(type="error", show-icon, :class="(showError?'animated fadeIn':'fadeOut')") {{errorText}}
           FormItem
             comp-input(name='account',ref="account",defaultValue="",placeholder="手机/邮箱/用户名",styles="width:100%",:propsShow="false",:on-focusparent="onHideError",label="登录名",)
               Icon.iconleft(custom="i-icon i-icon-people",slot="left")
@@ -37,7 +37,7 @@ export default {
   },
   data () {
     return {
-      errorText: '',
+      errorText: 'errorText',
       loadingBtn: false,
       showError: false,
       success: false,
@@ -291,6 +291,7 @@ export default {
   padding-bottom:16px;
   padding-left:55px;
   margin-bottom:20px;
+  opacity: 0;
 }
 .pageLogin .ivu-alert-error .ivu-alert-icon{
   left:20px;

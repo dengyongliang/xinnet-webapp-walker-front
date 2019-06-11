@@ -64,10 +64,17 @@ export default {
         result = false
       } else {
         for (var i = 0; i < domains.length; i++) {
-          if (!this.GLOBALS.IS_DOMAIN_AVAILABLE(domains[i].split(' ')[0])) {
+          if (domains[i].indexOf(' ') > 0) {
+            if (!this.GLOBALS.IS_DOMAIN_AVAILABLE(domains[i].split(' ')[0])) {
+              newWin.close()
+              result = false
+              this.$refs.domain.showValidateResult({text: '域名格式错误！'})
+              break
+            }
+          } else {
             newWin.close()
             result = false
-            this.$refs.domain.showValidateResult({text: '域名格式错误！'})
+            this.$refs.domain.showValidateResult({text: '输入项存在格式错误！'})
             break
           }
         }

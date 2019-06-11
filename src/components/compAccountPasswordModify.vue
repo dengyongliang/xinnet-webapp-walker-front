@@ -53,7 +53,7 @@ export default {
     },
     getVerificationCode () {
       this.loadingBtn = true
-      this.$store.dispatch('SEND_OLD_PHONE_CODE').then(response => {
+      this.$store.dispatch('SEND_UPDATE_PASSWORD').then(response => {
         this.loadingBtn = false
         if (response) {
           if (response.data.code === '1000') {
@@ -76,7 +76,7 @@ export default {
         this.$refs.verificationCode
       ])
       if (result) {
-        this.$store.dispatch('CHECK_OLD_PHONE_CODE', {verificationCode: this.$refs.verificationCode.value}).then(response => {
+        this.$store.dispatch('CHECK_UPDATE_PASSWORD', {verificationCode: this.$refs.verificationCode.value}).then(response => {
           this.loadingBtn = false
           if (response && response.data.code === '1000') {
             this.$Message.success('验证成功')
@@ -97,7 +97,8 @@ export default {
       if (result) {
         var params = {
           userCode: this.$refs.userCode.value,
-          newPassword: this.$refs.compRePassword.$refs.password.value
+          newPassword: this.$refs.compRePassword.$refs.password.value,
+          verificationCode: this.$refs.verificationCode.value
         }
         this.$store.dispatch('UPDATE_USER_PASSWORD', params).then(response => {
           this.loadingBtn = false
@@ -143,5 +144,8 @@ export default {
   height: 32px;
   line-height: 32px;
   padding: 4px 7px;
+}
+.compAccountPasswordModify .iconright{
+  position: static!important;
 }
 </style>

@@ -188,9 +188,9 @@ export default {
           })
           this.payStatisticsTotalData = charData
         } else {
-          if (response.data.code === '900') {
-            this.$Message.error('查询失败')
-          }
+          // if (response.data.code === '900') {
+          //   this.$Message.error('查询失败')
+          // }
         }
       }).catch(() => {})
     },
@@ -237,9 +237,9 @@ export default {
           })
           // console.log(vm.payStatisticsTrendData.series)
         } else {
-          if (response.data.code === '900') {
-            this.$Message.error('查询失败')
-          }
+          // if (response.data.code === '900') {
+          //   this.$Message.error('查询失败')
+          // }
         }
       }).catch(() => {})
     }
