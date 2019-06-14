@@ -23,7 +23,11 @@ export default {
     initWebSocket (id) {
       // 初始化weosocket
       this.manageCustomerId = id
-      const wsUrl = 'ws://183.84.10.123/client-api/websocket/notice/' + id
+      // 获取协议类型
+      const protocol = document.location.protocol === 'https:' ? 'wss:' : 'ws:'
+      const hostname = document.location.hostname
+      // const wsUrl = 'ws://183.84.10.123/client-api/websocket/notice/' + id
+      const wsUrl = protocol + '//' + hostname + '/client-api/websocket/notice/' + id
       this.websock = new WebSocket(wsUrl)
       this.websock.onmessage = this.websocketonmessage
       this.websock.onopen = this.websocketonopen

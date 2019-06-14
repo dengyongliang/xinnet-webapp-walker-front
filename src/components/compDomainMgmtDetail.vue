@@ -7,8 +7,8 @@ div.compDomainMgmtDetail
     span.item <Icon custom="i-icon i-icon-renew1" size="16" />自动续费：<em :style="detailData.renewFlag===1?'color:#46a405':'color:#aaa'">{{this.DATAS.RENEWFLAG[detailData.renewFlag]}}</em>
 
     span.item <Icon custom="i-icon i-icon-lock" size="16" />注册局锁：<em :style="detailData.backendLockFlag===1?'color:#46a405':'color:#aaa'">{{this.DATAS.BACKENDLOCKFLAG[detailData.backendLockFlag]}}</em>
-
-    span.item <Icon custom="i-icon i-icon-test_" size="16" />实名认证：<em :style="detailData.verifyStatus===2?'color:#46a405':'color:#aaa'">{{detailData.verifyStatus?this.DATAS.REAL_NAME_VERIFY_STATUS[detailData.verifyStatus]:'未提交资料'}}</em>
+    //- verifyStatus = 4 不需要实名（隐藏页面实名状态部分）
+    span.item(v-if="detailData.verifyStatus!==4") <Icon custom="i-icon i-icon-test_" size="16" />实名认证：<em :style="detailData.verifyStatus===2?'color:#46a405':'color:#aaa'">{{detailData.verifyStatus?this.DATAS.REAL_NAME_VERIFY_STATUS[detailData.verifyStatus]:'未提交资料'}}</em>
 
     span.item <Icon custom="i-icon i-icon-state" size="16" />服务状态：<em>{{this.DATAS.SERVICE_STATE[detailData.serviceStatus]}}</em>
 
@@ -122,7 +122,7 @@ export default {
       }
     },
     toMonitorOwn () {
-      this.$router.push({name:'monitor_own',params:{domainName:this.detailData.domainName}})
+      this.$router.push({name: 'monitor_own', params: {domainName: this.detailData.domainName}})
     }
   },
   beforeMount () {

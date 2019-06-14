@@ -203,7 +203,7 @@ export default {
       if (this.value1 !== '' && isNaN(this.value1)) {
         this.showError1 = true
         this.errorText = `${this.label1}只允许输入数字`
-      } else if (this.value1.length < this.minLength1){
+      } else if (this.value1.length < this.minLength1) {
         this.showError1 = true
         this.errorText = `${this.label1}最少${this.minLength1}位`
       }

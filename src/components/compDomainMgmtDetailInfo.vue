@@ -59,21 +59,21 @@ export default {
       this.$emit('showWorkOrder')
     },
     updateEmail () {
-      if (this.detailData.updateFlag!==0) {
+      if (this.detailData.updateFlag !== 0) {
         this.$Message.error('域名安全服务禁止更新开通不允许修改域名所有者信息，请关闭后再提交修改！')
         return false
       }
       this.onTabschange(2)
     },
     updateOrganizeNameCn () {
-      if (this.detailData.updateFlag!==0) {
+      if (this.detailData.updateFlag !== 0) {
         this.$Message.error('域名安全服务禁止更新开通不允许修改域名所有者信息，请关闭后再提交修改！')
         return false
       }
       this.$router.push('/domain/change')
     },
     showDns () {
-      if (this.detailData.updateFlag!==0) {
+      if (this.detailData.updateFlag !== 0) {
         this.$Message.error('域名安全服务禁止更新开通不允许修改域名所有者信息，请关闭后再提交修改！')
         return false
       }
@@ -84,7 +84,7 @@ export default {
       }
     },
     renewFun () {
-      var newWin =  window.open('')
+      var newWin = window.open('')
       var params = {
         jsonObj: [{
           domainName: this.detailData.domainName,
@@ -113,7 +113,7 @@ export default {
           // this.$store.commit('SET_PAY_ORDERS', response.data)
           // this.$router.push({path: '/payConfirm'})
           localStorage.setItem('data_pay_confirm', JSON.stringify(response.data))
-          newWin.location.href='/payConfirm'
+          newWin.location.href = '/payConfirm'
         } else {
           newWin.close()
           if (response.data.code === '100') {

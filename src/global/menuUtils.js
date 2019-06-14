@@ -1,5 +1,5 @@
 import menus from '@/router/routers.js'
-import LazyLoading from '@/global/lazyLoading'
+// import LazyLoading from '@/global/lazyLoading'
 export default (routers, permission) => {
   generaMenu(routers, menus, permission)
 }

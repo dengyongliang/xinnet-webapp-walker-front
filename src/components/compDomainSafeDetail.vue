@@ -229,7 +229,7 @@ export default {
     drawerChange () {
     },
     buyFun (type) {
-      var newWin =  window.open('')
+      var newWin = window.open('')
       var params = {
         jsonObj: [{
           domainName: this.detailData.domainName,
@@ -252,7 +252,7 @@ export default {
           // this.$store.commit('SET_PAY_ORDERS', response.data)
           // this.$router.push({path: '/payConfirm'})
           localStorage.setItem('data_pay_confirm', JSON.stringify(response.data))
-          newWin.location.href='/payConfirm'
+          newWin.location.href = '/payConfirm'
         } else {
           newWin.close()
           if (response.data.code === '100') {

@@ -156,7 +156,7 @@ export default {
   },
   methods: {
     pageChange: function (curPage) {
-      this.$store.dispatch('DOMAIN_REPURCHASE_REPORT', {reportId: this.reportId, pageNum: curPage, pageSize: 20,}).then(response => {
+      this.$store.dispatch('DOMAIN_REPURCHASE_REPORT', {reportId: this.reportId, pageNum: curPage, pageSize: 20}).then(response => {
         if (!response) {
           return false
         }

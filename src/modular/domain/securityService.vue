@@ -12,7 +12,7 @@
       Button(type="primary", @click="searchListData",:loading="loadingBtn") 查询
   .secMain(v-show="!showDetail")
     .filter
-      comp-aside-filter(:show="[4,8,9]", @asideFilterSubmit="asideFilterSubmit", @asideFilterReset="asideFilterReset", :total="page.pageItems", :filterTitle="filterTitle")
+      comp-aside-filter(ref="asideFilter", :show="[4,8,9]", @asideFilterSubmit="asideFilterSubmit", @asideFilterReset="asideFilterReset", :total="page.pageItems", :filterTitle="filterTitle")
 
     <!-- 列表主体 -->
     .secTable.table1(v-show="!showDetail")
@@ -181,7 +181,7 @@ export default {
   },
   methods: {
     searchListData () {
-      this.queryList(1)
+      this.$refs.asideFilter.filterSubmit()
     },
     pageChange: function (curPage) {
       this.queryList(curPage)

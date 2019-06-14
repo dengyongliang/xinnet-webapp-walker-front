@@ -21,7 +21,7 @@
         <Input v-model="value" placeholder="请输入域名" />
         Button(type="primary", @click="searchListData",:loading="loadingBtn") 查询
     .filter()
-      comp-aside-filter(:show="[3,4,5]", @asideFilterSubmit="asideFilterSubmit", @asideFilterReset="asideFilterReset", :total="page.pageItems", :filterTitle="filterTitle")
+      comp-aside-filter(ref="asideFilter", :show="[3,4,5]", @asideFilterSubmit="asideFilterSubmit", @asideFilterReset="asideFilterReset", :total="page.pageItems", :filterTitle="filterTitle")
     <!-- 列表主体 -->
     .secTable.secTable2
       <Table :columns="columns" :data="list" :loading="loadingTable"></Table>
@@ -178,10 +178,10 @@ export default {
                 style: {
                   color: '#f00',
                   margin: '0 5px 0 0',
-                  display: (this.list[params.index].levelType === 2 && this.list[params.index].type && moment(new Date()).diff(this.list[params.index].createTime, 'days')<=15) ? 'inline-block' : 'none'
+                  display: (this.list[params.index].levelType === 2 && this.list[params.index].type && moment(new Date()).diff(this.list[params.index].createTime, 'days') <= 15) ? 'inline-block' : 'none'
                 }
               }, ''),
-              h('span', {}, (this.list[params.index].type && moment(new Date()).diff(this.list[params.index].createTime, 'days')<=15) ? this.DATAS.RECORD_DOMAIN_EVENT_TYPE[this.list[params.index].type] : '近期无变化')
+              h('span', {}, (this.list[params.index].type && moment(new Date()).diff(this.list[params.index].createTime, 'days') <= 15) ? this.DATAS.RECORD_DOMAIN_EVENT_TYPE[this.list[params.index].type] : '近期无变化')
             ])
           }
         },
@@ -223,7 +223,7 @@ export default {
   },
   methods: {
     searchListData () {
-      this.queryList(1)
+      this.$refs.asideFilter.filterSubmit()
     },
     pageChange: function (curPage) {
       this.queryList(curPage)

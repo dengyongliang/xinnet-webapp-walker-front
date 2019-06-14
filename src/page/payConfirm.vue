@@ -15,7 +15,6 @@
 </template>
 
 <script>
-import {mapState} from 'vuex'
 import headerBody from '../modular/header'
 export default {
   components: {

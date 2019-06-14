@@ -14,7 +14,7 @@
       template(slot="desc") 1、请准确上传与域名所有人证件号码一致的扫描件或照片，证件需要在有效期内。<br />2、请准确选择域名所有人证件类型，避免由于证件类型不符影响网站备案审核。<br />3、可使用已保存模板信息快速填充，但仍需进行实名审核。
 
     .filter(v-show="!showSubmit")
-      comp-aside-filter(:show="[3,4,11,12,13]", @asideFilterSubmit="asideFilterSubmit", @asideFilterReset="asideFilterReset", :total="page.pageItems", :filterTitle="filterTitle")
+      comp-aside-filter(ref="asideFilter",:show="[3,4,11,12,13]", @asideFilterSubmit="asideFilterSubmit", @asideFilterReset="asideFilterReset", :total="page.pageItems", :filterTitle="filterTitle")
     <!-- 列表主体 -->
     .secTable(v-show="!showSubmit")
       <Table :columns="columns" :data="list" :loading="loadingTable" ref="selection" @on-select="tableSelectChange" @on-select-cancel="tableSelectChange" @on-select-all="tableSelectChange" @on-select-all-cancel="tableSelectChange"></Table>
@@ -228,7 +228,8 @@ export default {
       this.showSubmit = false
       this.btnRealNameDisabled = true
       this.btnUpdateStatusDisabled = true
-      this.queryList(1)
+      this.$refs.asideFilter.filterSubmit()
+      // this.queryList(1)
     },
     pageChange: function (curPage) {
       this.queryList(curPage)
@@ -237,7 +238,7 @@ export default {
       this.showSubmit = false
     },
     showRealNameSubmit (item) {
-      this.$store.dispatch('CHECK_UPLOAD_DOMAIN_VERIFY', {domainIds: this.getDomainId}).then(response => {
+      this.$store.dispatch('CHECK_UPLOAD_DOMAIN_VERIFY', {domainIds: item.id}).then(response => {
         if (!response) {
           return false
         }
@@ -297,7 +298,6 @@ export default {
               }
             }
           }).catch(() => {})
-
         }
       }
     },
@@ -310,19 +310,19 @@ export default {
       // if (flag.length) {
       //   this.$Message.error('实名制状态处于资料审核中或审核通过，不允许更新状态！')
       // } else {
-        this.loadingBtn = true
-        this.$store.dispatch('UPDATE_DOMAIN_AUDIT_STATUS', {domainIds: this.getDomainId}).then(response => {
-          this.loadingBtn = false
-          if (!response) {
-            return false
-          }
-          if (response.data.code === '1000') {
-            this.$Message.success('更新成功')
-            this.searchListData()
-          } else {
-            this.$Message.error('更新失败')
-          }
-        }).catch(() => {})
+      this.loadingBtn = true
+      this.$store.dispatch('UPDATE_DOMAIN_AUDIT_STATUS', {domainIds: this.getDomainId}).then(response => {
+        this.loadingBtn = false
+        if (!response) {
+          return false
+        }
+        if (response.data.code === '1000') {
+          this.$Message.success('更新成功')
+          this.searchListData()
+        } else {
+          this.$Message.error('更新失败')
+        }
+      }).catch(() => {})
       // }
     },
     asideFilterSubmit (result) {
@@ -337,8 +337,8 @@ export default {
       this.asideFilterResult.rnvcStatus = result.dataRealName.join(',')
       this.asideFilterResult.dnvcStatus = result.dataNamingState.join(',')
       this.asideFilterResult.verifyDay = result.dataTimeSubmit.value === 'custom' ? '' : result.dataTimeSubmit.value
-      this.asideFilterResult.verifyTimeBegin = result.dataTimeSubmit.value === 'custom' ? result.dataTimeSubmit.time[0] : ''
-      this.asideFilterResult.verifyTimeEnd = result.dataTimeSubmit.value === 'custom' ? result.dataTimeSubmit.time[1] : ''
+      this.asideFilterResult.verifyTimeBegin = result.dataTimeSubmit.value === 'custom' ? (result.dataTimeSubmit.time[0] + ' 00:00:00') : ''
+      this.asideFilterResult.verifyTimeEnd = result.dataTimeSubmit.value === 'custom' ? (result.dataTimeSubmit.time[1] + ' 23:59:59') : ''
       // 加载数据
       this.queryList(1)
     },

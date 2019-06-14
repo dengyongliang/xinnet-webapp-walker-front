@@ -170,7 +170,7 @@ RouterMain.beforeEach((to, from, next) => {
                 // localStorage 存储 menus 数据
                 localStorage.setItem('menus', JSON.stringify(pageMenus))
               } else {
-                router.replace({ path: '/login' })
+                RouterMain.replace({ path: '/login' })
               }
             }).catch(() => {})
           }

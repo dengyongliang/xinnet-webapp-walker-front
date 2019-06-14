@@ -98,7 +98,7 @@ export default {
       for (let index = 0; index < this.groupsData.length; index++) {
         if (this.groupsData[index].children && this.groupsData[index].children.length) {
           for (let groups = 0; groups < this.groupsData[index].children.length; groups++) {
-            console.log(this.groupsData[index].children[groups].id + "===" + result.id)
+            // console.log(this.groupsData[index].children[groups].id + "===" + result.id)
             if (this.groupsData[index].children[groups].id === result.id) {
               parent = this.groupsData[index].title
               return `${parent}-${result.title}`

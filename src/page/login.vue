@@ -23,17 +23,17 @@
           FormItem
             Button(type="primary", @click="submit", :loading="loadingBtn") 立即登录
             router-link(to="/findPw",class="forgetPw") 忘记密码
-      .footer
-        span Copyright © 1993-2019<br />北京新网数码信息技术有限公司 版权所有
-
+      footer-body
 </template>
 
 <script>
 import compInput from '@/components/compInput'
+import footerBody from '@/modular/footer'
 import menuUtils from '@/global/menuUtils.js'
 export default {
   components: {
-    compInput
+    compInput,
+    footerBody
   },
   data () {
     return {

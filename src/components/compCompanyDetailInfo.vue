@@ -91,6 +91,7 @@ export default {
             this.$Message.success('保存成功')
             // 更新store company数据
             this.updateCompanys()
+            params.logoFile = this.$refs.logoFile.$refs.upload.fileList[0].url
             this.$emit('getBaseInfo', params)
           } else {
             if (response.data.code === '100') {

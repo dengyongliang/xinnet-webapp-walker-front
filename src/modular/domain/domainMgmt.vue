@@ -27,7 +27,7 @@
 
   .secMain(v-show="!showDetail && !showDns")
     .filter
-      comp-aside-filter(:show="[3,4,6,7,8]", @asideFilterSubmit="asideFilterSubmit", @asideFilterReset="asideFilterReset", :total="page.pageItems", :filterTitle="filterTitle")
+      comp-aside-filter(ref="asideFilter",:show="[3,4,6,7,8]", @asideFilterSubmit="asideFilterSubmit", @asideFilterReset="asideFilterReset", :total="page.pageItems", :filterTitle="filterTitle")
 
     <!-- 列表主体 -->
     .secTable(v-show="!showDetail && !showDns")
@@ -205,7 +205,7 @@ export default {
                     this.showDetailFun(this.list[params.index])
                   }
                 }
-              }, '详情'),
+              }, '详情')
               // h('a', {
               //   props: {
               //     href: 'javascript:;'
@@ -237,7 +237,7 @@ export default {
   methods: {
     searchListData () {
       this.moveGroupDisabled = true
-      this.queryList(1)
+      this.$refs.asideFilter.filterSubmit()
     },
     pageChange: function (curPage) {
       this.queryList(curPage)
@@ -272,7 +272,7 @@ export default {
       this.renewDisabled = !selected.length
     },
     renewFun () {
-      var newWin =  window.open('')
+      var newWin = window.open('')
       let depositFlag = true
       let serviceStatus = true
       let params = {
@@ -306,8 +306,8 @@ export default {
             })
             // this.$store.commit('SET_PAY_ORDERS', response.data)
             localStorage.setItem('data_pay_confirm', JSON.stringify(response.data))
-            //this.$router.push({path: '/payConfirm'})
-            newWin.location.href='/payConfirm'
+            // this.$router.push({path: '/payConfirm'})
+            newWin.location.href = '/payConfirm'
             // window.open('/payConfirm','_blank')
           } else {
             newWin.close()
@@ -395,8 +395,8 @@ export default {
       this.asideFilterResult.createTimeEnd = result.dataTimeReg.value === 'custom' ? result.dataTimeReg.time[1] : ''
 
       this.asideFilterResult.expireDay = result.dataTimeExpire.value === 'custom' ? '' : result.dataTimeExpire.value
-      this.asideFilterResult.expireTimeBegin = result.dataTimeExpire.value === 'custom' ? result.dataTimeExpire.time[0] : ''
-      this.asideFilterResult.expireTimeEnd = result.dataTimeExpire.value === 'custom' ? result.dataTimeExpire.time[1] : ''
+      this.asideFilterResult.expireTimeBegin = result.dataTimeExpire.value === 'custom' ? (result.dataTimeExpire.time[0] + ' 00:00:00') : ''
+      this.asideFilterResult.expireTimeEnd = result.dataTimeExpire.value === 'custom' ? (result.dataTimeExpire.time[1] + ' 23:59:59') : ''
 
       console.log(this.asideFilterResult)
       // 加载数据

@@ -45,19 +45,20 @@
             p.p2 已重置密码！
             p.p3 请重新登录
             Button(type="primary", :replace="true", to="/login") 去登录
-      .footer
-        span Copyright © 1993-2019<br />北京新网数码信息技术有限公司 版权所有
+      footer-body
 
 </template>
 
 <script>
 import compInput from '@/components/compInput'
 import compRePassword from '@/components/compRePassword'
+import footerBody from '@/modular/footer'
 import validateFormResult from '@/global/validateForm'
 export default {
   components: {
     compInput,
-    compRePassword
+    compRePassword,
+    footerBody
   },
   data () {
     return {

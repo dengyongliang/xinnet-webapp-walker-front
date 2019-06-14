@@ -14,7 +14,7 @@
     FormItem(label="域名所有者类型：", required, v-show="isTemp===0")
       comp-select(name="registrantType",:list="registrantTypeList",ref="registrantType",styles="width:240px", :defaultValue="registrantType", :onParentmethod="registrantChange")
       Tooltip(placement="top-start")
-          span(slot="content", style="color:#fff") 1、个人用户需要提交与个人所有者完全<br />　　一致的证件号及证件正反面；<br />　　企业用户需提交与单位名称完全<br />　　一致的证件号及证件扫描件；<br />2、请按实际情况准确选择用户类型。
+          span(slot="content", style="color:#fff") 1、个人用户需要提交与个人所有者完全<br />&nbsp;&nbsp;&nbsp;&nbsp;一致的证件号及证件正反面；<br />&nbsp;&nbsp;&nbsp;&nbsp;企业用户需提交与单位名称完全<br />&nbsp;&nbsp;&nbsp;&nbsp;一致的证件号及证件扫描件；<br />2、请按实际情况准确选择用户类型。
           Icon(custom="i-icon i-icon-tips", size="16")
     FormItem(label="证件类型：", required, v-show="isTemp===0")
       compSelect(styles="width:300px;",:list="idTypeListI", ref="idTypeI",v-show="registrantType==='I'")

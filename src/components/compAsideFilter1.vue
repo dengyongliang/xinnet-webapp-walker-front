@@ -47,7 +47,7 @@ export default {
   },
   methods: {
     checkboxChange (data) {
-      this.resetCheckAllState(data)
+      // this.resetCheckAllState(data)
       this.filterData.map((v, i) => {
         if (data.indexOf(v.label) >= 0) {
           this.$set(v, 'checked', true)
@@ -67,7 +67,7 @@ export default {
         }
       }
       this.value = arr
-      this.resetCheckAllState(this.value)
+      // this.resetCheckAllState(this.value)
     },
     handleCheckAll () {
       if (this.indeterminate) {

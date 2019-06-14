@@ -81,7 +81,7 @@ export default {
           render: (h, params) => {
             return h('div', [
               h('span', {
-              }, (this.list[params.index].changeTime?moment(this.list[params.index].changeTime).format('YYYY-MM-DD HH:mm'):''))
+              }, (this.list[params.index].changeTime ? moment(this.list[params.index].changeTime).format('YYYY-MM-DD HH:mm') : ''))
             ])
           }
         },

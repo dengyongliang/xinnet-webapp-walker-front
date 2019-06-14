@@ -88,7 +88,7 @@ export default {
   },
   methods: {
     updataUserAuthGroups () {
-      this.$store.dispatch('USER_AUTH_GROUPS').then(() => {}).catch(() =>{})
+      this.$store.dispatch('USER_AUTH_GROUPS').then(() => {}).catch(() => {})
     },
     handleMgmt () {
       this.showMgmtBtn = false

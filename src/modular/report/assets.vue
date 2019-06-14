@@ -75,7 +75,7 @@ export default {
         return state.user.myUserInfo
       },
       monitoringDurTime (state) {
-        return moment(new Date()).diff(state.user.myUserInfo.createTime, 'days') 
+        return moment(new Date()).diff(state.user.myUserInfo.createTime, 'days')
       }
     })
   },

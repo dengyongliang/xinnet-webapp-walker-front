@@ -3,11 +3,11 @@ import axios from '@/global/axios.js'
 import * as action from '@/actions/monitor'
 
 // 监控通知管理列表
-export const MAIL_MANAGE = (pageNum, pageSize, createTimeBegin, createTimeEnd, levelType) => {
+export const MAIL_MANAGE = (pageNum, pageSize, createTimeBegin, createTimeEnd, type) => {
   return axios({
     url: action.MAIL_MANAGE,
     method: 'POST',
-    data: {pageNum, pageSize, createTimeBegin, createTimeEnd, levelType}
+    data: {pageNum, pageSize, createTimeBegin, createTimeEnd, type}
   })
 }
 // 监控通知通知标记已读

@@ -31,7 +31,7 @@
           td.td4(v-else) 更新日期：
         tr
           td.td1 域名状态
-          td.td2 {{detailData.domain? this.DATAS.SERVICE_STATE[detailData.domain.serviceStatus]:''}}　
+          td.td2 {{detailData.domain ? this.DATAS.SERVICE_STATE[detailData.domain.serviceStatus] : ''}}
             //- Tooltip(placement="top-start")
             //-   span(slot="content", style="color:#fff") 解析监控列表仅记录3个月内解析修改情况，<br />详细域名解析监控日志，<br />请查看下方全部域名监控日志。
             //-   Icon(custom="i-icon i-icon-tips", size="16")
@@ -240,8 +240,8 @@ export default {
     },
     time: {
       handler (val, oldVal) {
-        this.createTimeBegin = (val[0]!=='' ? val[0] + ' 00:00:00' : '')
-        this.createTimeEnd = (val[1]!=='' ? val[1] + '23:59:59' : '')
+        this.createTimeBegin = (val[0] !== '' ? val[0] + ' 00:00:00' : '')
+        this.createTimeEnd = (val[1] !== '' ? val[1] + '23:59:59' : '')
       },
       deep: true
     }

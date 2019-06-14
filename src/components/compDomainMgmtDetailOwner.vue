@@ -89,14 +89,14 @@ export default {
       this.$emit('showWorkOrder')
     },
     updateOrganizeNameCn () {
-      if (this.detailData.updateFlag!==0) {
+      if (this.detailData.updateFlag !== 0) {
         this.$Message.error('域名安全服务禁止更新开通不允许修改域名所有者信息，请关闭后再提交修改！')
         return false
       }
       this.$router.push('/domain/change')
     },
     formSubmit () {
-      if (this.detailData.updateFlag!==0) {
+      if (this.detailData.updateFlag !== 0) {
         this.$Message.error('域名安全服务禁止更新开通不允许修改域名所有者信息，请关闭后再提交修改！')
         return false
       }

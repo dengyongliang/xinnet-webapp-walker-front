@@ -18,7 +18,6 @@
 </template>
 
 <script>
-import {mapState} from 'vuex'
 import headerBody from '../modular/header'
 import compListNone from '../components/compListNone'
 export default {

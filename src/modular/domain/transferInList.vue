@@ -62,14 +62,20 @@ export default {
           render: (h, params) => {
             return h('div', [
               h('span', {
-              }, moment(this.list[params.index].createTime).format('YYYY-MM-DD HH:mm:ss'))
+              }, this.list[params.index].createTime ? moment(this.list[params.index].createTime).format('YYYY-MM-DD HH:mm:ss') : '')
             ])
           }
         },
         {
           title: '转入完成时间',
           key: 'transferInTime',
-          className: 'col2'
+          className: 'col2',
+          render: (h, params) => {
+            return h('div', [
+              h('span', {
+              }, this.list[params.index].transferInTime ? moment(this.list[params.index].transferInTime).format('YYYY-MM-DD HH:mm:ss') : '')
+            ])
+          }
         },
         {
           title: '域名',
