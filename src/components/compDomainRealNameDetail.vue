@@ -104,12 +104,12 @@ export default {
       ],
       isTempList: [
         {
-          value: '使用模板资料',
-          label: '1'
+          value: '1',
+          label: '使用模板资料'
         },
         {
-          value: '上传资料',
-          label: '0'
+          value: '0',
+          label: '上传资料'
         }
       ],
       uploadAction: actions.UPLOAD_FILE

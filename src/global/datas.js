@@ -123,6 +123,15 @@ const RECORD_USER_EVENT_TYPE = {
   12: '登出',
   13: '实名制模板修改'
 }
+const RECORD_FOCUS_DOMAIN_EVENT_TYPE = {
+  11: '域名注册情况监控',
+  12: '域名WHOIS信息变更',
+  13: '域名到期时间变更',
+  14: '域名状态变化',
+  15: '域名指向网站变化',
+  16: '域名出售监控',
+  17: '域名抢注监控'
+}
 const MONITOR_LOG = {
   1: '重要监控记录',
   2: '普通监控记录'
@@ -226,5 +235,6 @@ export default
   QUESTION_MODIFY_TYPE,
   SECURITY_TYPE,
   ORDER_PAY_TYPE,
-  ORDER_MODE
+  ORDER_MODE,
+  RECORD_FOCUS_DOMAIN_EVENT_TYPE
 }

@@ -1,10 +1,12 @@
 <template lang="pug">
-.compMonitorOwnDetail
+.compMonitorFocusDetail
   .domainName
-    h2 xxxxx.com
+    h2 {{detailData.domainName}}
       Icon(type="md-star", style="color:#f00")
-      .time 更新时间：2019-22-22 66:22
-
+      span.brand 品牌：{{detailData.brandName}}
+      .time(v-if="detailData.syncTime") 更新时间：{{detailData.syncTime | dateformat('YYYY-MM-DD')}}
+      .time(v-else) 更新时间：
+    span.item(v-for="item in detailData.excepInfo") <Icon type="md-information-circle" size="24" style="color:#f00" />{{item}}
   .secBox.secBox1
     h3.h3T.clear
       span.t 域名whois信息
@@ -12,33 +14,32 @@
       table
         tr
           td.td1 注册商信息
-          td.td2 注册商：新网
+          td.td2 注册商：{{detailData.registrarName}}
           td.td3
           td.td4
         tr
           td.td1 域名所有人信息
-          td.td2 域名所有人：北京网讯科技有限公司
-          td.td3 注册邮箱：app@xinnet.com
+          td.td2 域名所有人：{{detailData.whoisUserName}}
+          td.td3 注册邮箱：{{detailData.whoisUserEmail}}
           td.td4
         tr
           td.td1 时间信息
-          td.td2 注册时间：2002-08-23
-          td.td3 到期时间：2022-08-23
-          td.td4 更新日期：2018-09-12
+          td.td2(v-if="detailData.whoisApplyTime") 注册时间：{{detailData.whoisApplyTime | dateformat('YYYY-MM-DD')}}
+          td.td2(v-else) 注册时间：
+          td.td3(v-if="detailData.whoisExpireTime") 到期时间：{{detailData.whoisExpireTime | dateformat('YYYY-MM-DD')}}
+          td.td3(v-else) 到期时间：
+          td.td4(v-if="detailData.whoisUpdateTime") 更新日期：{{detailData.whoisUpdateTime | dateformat('YYYY-MM-DD')}}
+          td.td4(v-else) 更新日期：
         tr
           td.td1 域名状态
-          td.td2 域名状态：OK（正常状态）
-            Tooltip(placement="top-start")
-              span(slot="content", style="color:#fff") 解析监控列表仅记录3个月内解析修改情况，<br />详细域名解析监控日志，<br />请查看下方全部域名监控日志。
-              Icon(custom="i-icon i-icon-tips", size="16")
+          td.td2
+            p(v-for="item in detailData.whoisDomainStatusInfo") {{item}}
           td.td3
           td.td4
         tr
           td.td1 DNS服务器
           td.td2(colspan="3")
-            span.dns NS19.XINCACHE.COM
-            span.dns NS19.XINCACHE.COM
-            span.dns NS19.XINCACHE.COM
+            span.dns(v-for="item in detailData.whoisDomainDnsInfo") {{item}}
 
   .secBox.secBox2
     h3.h3T.clear
@@ -47,27 +48,29 @@
       table
         tr
           td.td1 解析情况
-          td.td2 IP地址：123.456.767.12
-          td.td3 IP的物理位置：美国
+          td.td2 IP地址：{{detailData.dnsIpContent}}
+          td.td3 IP的物理位置：{{detailData.dnsIpAddress}}
           td.td4
+          td.td5
         tr
           td.td1 备案情况
-          td.td2 备案号：京ICP证040930号-1
-          td.td3 主办单位性质：企业
-          td.td4 主办单位名称：河北天翼实业集团有限公司
-          td.td5 审核时间：2018-01-12
+          td.td2 备案号：{{detailData.beianNum}}
+          td.td3 主办单位性质：{{detailData.beianCompanyType}}
+          td.td4 主办单位名称：{{detailData.beianCompany}}
+          td.td5 审核时间：{{detailData.beianAuditTime}}
         tr
           td.td1 网站信息
           td.td2(colspan="4")
-            p 网站标题：中国票务网【票网】-订票，上票网！订票电话:400-810-8080
-            p 关键词：票,票务,电影票,票网,票务网,票务在线,中国票务,订票,演出票,演唱会,演唱会,音乐会
-            p 网站描述：中国票务网【票网】,提供演出票,机票,火车票,电影票,话剧票,体育票,国家大剧院门票,酒店预订等。
+            p 网站类型：{{detailData.siteInfo}}
+            p 网站标题：{{detailData.siteTitle}}
+            p 关键词：{{detailData.siteKey}}
+            p 网站描述：{{detailData.siteDesc}}
 
   .secBox.secBox3
     h3.h3T.clear
       span.t 监控日志
     .secFilter
-      form.filterWrap
+      form.filterWrap(ref="exportForm", method="post" accept-charset="utf-8" :action="exportLink")
         table
           tr.row1
             td.td1
@@ -76,11 +79,14 @@
                 DatePicker(type="daterange",placeholder="全部",v-model="time",format="yyyy-MM-dd",@on-change="time=$event",style="width:100%")
               span.n 事件类型：
               .inputWrap
-                Select(v-model="type")
+                Select(v-model="recordType")
                   Option(v-for="item in typeList",:value="item.value",:key="item.value") {{ item.label }}
-              Button(type="primary", @click="",:loading="loadingBtn") 查询
+              Button(type="primary", @click="searchListData",:loading="loadingBtn") 查询
+              input(type="hidden", name="domainId", :value="id")
+              input(type="hidden", name="createDateBegin", :value="createDateBegin")
+              input(type="hidden", name="createDateEnd", :value="createDateEnd")
             td.tdBtn
-              a 导出日志
+              a(href="javascript:;", @click="exportOrder") 导出日志
     .secTable.secTable2
       <Table :columns="columns" :data="list" :loading="loadingTable"></Table>
     <!-- 翻页区 -->
@@ -88,83 +94,79 @@
 </template>
 
 <script>
+import * as actions from '@/actions/followdomain.js'
+import moment from 'moment'
 export default {
-  name: 'compMonitorOwnDetail',
+  name: 'compMonitorFocusDetail',
   components: {
   },
   props: {
-    detailData: {
-      type: Object,
-      default: function () {
-        return {
-          data: []
-        }
-      }
+    id: {
+      type: Number,
+      default: 0
     }
   },
   data () {
     return {
-      type: '',
+      recordType: '',
       time: [],
+      createDateBegin: '',
+      createDateEnd: '',
       loadingTable: false,
       loadingBtn: false,
+      detailData: {},
+      exportLink: actions.FOLLOW_RECORD_EXPORT,
       columns: [
         {
-          title: '时间',
+          title: '日志记录时间',
           width: 200,
-          key: 'sendTime',
-          className: 'col1',
+          key: 'createTime',
+          className: 'col1'
+        },
+        {
+          title: '域名',
+          width: 200,
+          key: 'domainName',
+          className: 'col2'
+        },
+        {
+          title: '事件类型',
+          width: 180,
+          key: 'recordType',
+          className: 'col3',
           render: (h, params) => {
             return h('div', [
-              h('i', {
-                class: this.list[params.index].readFlag === 1 ? 'unRead' : ''
-              }, '●'),
-              h('span', {
-              }, this.list[params.index].sendTime)
+              h('span', {}, this.DATAS.RECORD_FOCUS_DOMAIN_EVENT_TYPE[this.list[params.index].recordType])
             ])
           }
         },
         {
-          title: '通知内容',
-          key: 'title',
-          className: 'col2',
+          title: '日志详情',
+          key: 'recordContent',
+          className: 'content',
           render: (h, params) => {
             return h('div', [
-              h('Icon', {
-                props: {
-                  type: 'md-alert',
-                  size: '17'
-                },
-                style: {
-                  color: '#f00',
-                  margin: '0 5px 0 0',
-                  display: this.list[params.index].sendType === 2 ? 'inline-block' : 'none'
-                }
-              }, this.list[params.index].title),
-              h('a', {
-                style: {
-                  color: '#2271f4'
-                }
-              }, this.list[params.index].title)
+              h('span', {}, this.list[params.index].recordContent)
             ])
           }
         }
       ],
       list: [],
-      typeList: [
-        {
-          value: '',
-          label: '全部'
-        },
-        {
-          value: 1,
-          label: '普通'
-        },
-        {
-          value: 2,
-          label: '重要'
+      typeList: (function (vm) {
+        let array = [
+          {
+            label: '全部',
+            value: ''
+          }
+        ]
+        for (var i in vm.DATAS.RECORD_FOCUS_DOMAIN_EVENT_TYPE) {
+          array.push({
+            label: vm.DATAS.RECORD_FOCUS_DOMAIN_EVENT_TYPE[i],
+            value: i
+          })
         }
-      ],
+        return array
+      })(this),
       page: {
         pageNo: 1,
         pagePages: 1,
@@ -173,52 +175,144 @@ export default {
     }
   },
   methods: {
+    searchListData () {
+      this.queryDomainMonitorLog(1)
+    },
     pageChange: function (curPage) {
+    },
+    exportOrder () {
+      this.$refs.exportForm.submit()
+    },
+    getParamDetail () {
+      let params = {
+        id: this.id
+      }
+      return params
+    },
+    getParamLog (obj) {
+      this.page.pageNo = obj.pageNum
+      this.loadingBtn = true
+      this.loadingTable = true
+
+      let params = {
+        pageNum: obj.pageNum,
+        pageSize: 20,
+        domainId: this.id,
+        createDateBegin: this.time[0] !== '' ? moment(this.time[0]).format('YYYY-MM-DD') + ' 00:00:00' : '',
+        createDateEnd: this.time[1] !== '' ? moment(this.time[1]).format('YYYY-MM-DD') + ' 23:59:59' : '',
+        recordType: this.recordType
+      }
+      return params
+    },
+    queryDomainMonitorDetail () {
+      this.$store.dispatch('FOLLOW_DOMAIN_INFO', this.getParamDetail()).then(response => {
+        this.loadingBtn = false
+        this.loadingTable = false
+        if (!response) {
+          return false
+        }
+        if (response.data.code === '1000') {
+          this.detailData = response.data.data
+          console.log(this.detailData)
+        } else {
+        }
+      }).catch(() => {})
+    },
+    queryDomainMonitorLog (num) {
+      this.$store.dispatch('FOLLOW_RECORD_LIST', this.getParamLog({pageNum: num})).then(response => {
+        this.loadingBtn = false
+        this.loadingTable = false
+        if (!response) {
+          return false
+        }
+        if (response.data.code === '1000') {
+          this.list = response.data.data.list
+          this.page.pageItems = response.data.data.totalNum
+        } else {
+        }
+      }).catch(() => {})
     }
   },
   beforeMount () {
   },
   mounted () {
+    if (this.id !== 0) {
+      this.queryDomainMonitorDetail()
+      this.queryDomainMonitorLog(1)
+    }
   },
   computed: {
+  },
+  watch: {
+    id: function (val, oldVal) {
+      if (val !== 0) {
+        this.time = ['', '']
+        this.queryDomainMonitorDetail()
+        this.queryDomainMonitorLog(1)
+      }
+    },
+    time: {
+      handler (val, oldVal) {
+        this.createTimeBegin = (val[0] !== '' ? val[0] + ' 00:00:00' : '')
+        this.createTimeEnd = (val[1] !== '' ? val[1] + '23:59:59' : '')
+      },
+      deep: true
+    }
   }
 }
 </script>
 <style>
-.compMonitorOwnDetail{
+.compMonitorFocusDetail{
   padding: 0 20px;
 }
-.compMonitorOwnDetail .domainName{
+.compMonitorFocusDetail .domainName{
   background:#fff;
   padding: 20px;
   border-radius: 20px;
   margin-bottom:20px;
 }
-.compMonitorOwnDetail .domainName h2{
+.compMonitorFocusDetail .domainName h2{
   font-size: 40px;
 }
-.compMonitorOwnDetail .domainName strong{
+.compMonitorFocusDetail .domainName strong{
   display:block;
   padding: 15px 0;
 }
-.compMonitorOwnDetail .domainName .ivu-icon{
+.compMonitorFocusDetail .domainName .ivu-icon{
   font-size: 24px;
 }
-.compMonitorOwnDetail .domainName .time{
+.compMonitorFocusDetail .domainName .time{
   font-size: 12px;
   color: #676767;
   float: right;
   font-weight: normal;
   padding: 18px 0 0 0;
 }
-.compMonitorOwnDetail .secBox{
+.compMonitorFocusDetail .domainName .brand{
+  font-size: 12px;
+  color: #676767;
+  font-weight: normal;
+  padding:  0 0 0 20px;
+}
+.compMonitorFocusDetail .domainName .item{
+  display:inline-block;
+  margin-right:30px;
+  font-size:12px;
+  padding: 10px 0;
+}
+.compMonitorFocusDetail .domainName .item .ivu-icon{
+  font-size: 24px;
+  color:#aaa;
+  margin-right:5px;
+}
+.compMonitorFocusDetail .secBox{
   background: #fff;
   padding: 13px 0;
 }
-.compMonitorOwnDetail .secBox .h3T{
+.compMonitorFocusDetail .secBox .h3T{
   font-weight: normal;
 }
-.compMonitorOwnDetail .secBox .h3T .t{
+.compMonitorFocusDetail .secBox .h3T .t{
   font-size: 14px;
   line-height: 16px;
   display:inline-block;
@@ -226,79 +320,94 @@ export default {
   border-left: 3px solid #2471f5;
   margin: 8px 0;
 }
-.compMonitorOwnDetail .secBox .h3T .tR{
+.compMonitorFocusDetail .secBox .h3T .tR{
   float: right;
   font-size: 12px;
   padding-right: 20px;
 }
-.compMonitorOwnDetail .secBox .h3T .tR a.text{
+.compMonitorFocusDetail .secBox .h3T .tR a.text{
   display:inline-block;
   line-height: 16px;
   margin: 8px 0;
   color: #2271f4;
 }
-.compMonitorOwnDetail .secBox1{
+.compMonitorFocusDetail .secBox1{
   margin-bottom: 20px;
 }
-.compMonitorOwnDetail .secBox1 .c{
+.compMonitorFocusDetail .secBox1 .c{
   padding: 20px;
 }
-.compMonitorOwnDetail .secBox1 td{
+.compMonitorFocusDetail .secBox1 td{
   border-bottom: 1px dashed #ededed;
   padding: 14px 0;
   color: #666;
   font-size: 12px;
 }
-.compMonitorOwnDetail .secBox1 td .dns{
+.compMonitorFocusDetail .secBox1 td .dns{
   display: inline-block;
   margin-right: 20px;
 }
-.compMonitorOwnDetail .secBox1 .ivu-icon{
+.compMonitorFocusDetail .secBox1 .ivu-icon{
   color: #3aaafe;
 }
-.compMonitorOwnDetail .secBox2{
+.compMonitorFocusDetail .secBox2{
   margin-bottom: 20px;
 }
-.compMonitorOwnDetail .secBox2 .c{
+.compMonitorFocusDetail .secBox2 .c{
   padding: 20px;
 }
-.compMonitorOwnDetail .secBox2 td{
+.compMonitorFocusDetail .secBox2 td{
   border-bottom: 1px dashed #ededed;
   padding: 14px 0;
   color: #666;
   font-size: 12px;
 }
-.compMonitorOwnDetail .secBox2 p{
+.compMonitorFocusDetail .secBox2 td.td1{
+  width: 10%;
+}
+.compMonitorFocusDetail .secBox2 td.td2{
+  width: 25%;
+}
+.compMonitorFocusDetail .secBox2 td.td3{
+  width: 25%;
+}
+.compMonitorFocusDetail .secBox2 td.td4{
+  width: 20%;
+}
+.compMonitorFocusDetail .secBox2 td.td5{
+  width: 20%;
+}
+.compMonitorFocusDetail .secBox2 p{
   line-height: 18px;
   color: #666;
 }
-.compMonitorOwnDetail .secBox3 .h3T{
+.compMonitorFocusDetail .secBox3 .h3T{
   margin-bottom: 10px;
 }
-.compMonitorOwnDetail .secBox3 .secFilter{
+.compMonitorFocusDetail .secBox3 .secFilter{
   background: #ecf3fb;
 }
-.compMonitorOwnDetail .secBox3 .filterWrap{
+.compMonitorFocusDetail .secBox3 .filterWrap{
   padding: 20px;
 }
-.compMonitorOwnDetail .secBox3 .filterWrap td{
+.compMonitorFocusDetail .secBox3 .filterWrap td{
   padding: 0px;
 }
-.compMonitorOwnDetail .secBox3 .filterWrap .td1{
+.compMonitorFocusDetail .secBox3 .filterWrap .td1{
   width: 75%!important;
 }
-.compMonitorOwnDetail .secBox3 .filterWrap .td1 .n{
+.compMonitorFocusDetail .secBox3 .filterWrap .td1 .n{
   width: 90px;
   display:inline-block;
   float: none;
 }
-.compMonitorOwnDetail .secBox3 .filterWrap .td1 .inputWrap{
+.compMonitorFocusDetail .secBox3 .filterWrap .td1 .inputWrap{
   width: 200px;
   margin: 0px;
   display: inline-block;
   text-align: left;
 }
-.compMonitorOwnDetail .secBox3 .filterWrap .td1 .ivu-btn{
+.compMonitorFocusDetail .secBox3 .filterWrap .td1 .ivu-btn{
   margin-left: 10px;
 }
 </style>

@@ -26,12 +26,12 @@ export default {
       loadingBtn: false,
       importantList: [
         {
-          value: '一般保护',
-          label: '0'
+          value: '0',
+          label: '一般保护'
         },
         {
-          value: '重点保护',
-          label: '1'
+          value: '1',
+          label: '重点保护'
         }
       ]
     }

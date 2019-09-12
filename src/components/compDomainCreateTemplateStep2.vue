@@ -106,12 +106,12 @@ export default {
       registrantType: 'I',
       registrantTypeList: [
         {
-          label: 'I',
-          value: '个人'
+          label: '个人',
+          value: 'I'
         },
         {
-          label: 'E',
-          value: '企业'
+          label: '企业',
+          value: 'E'
         }
       ],
       idTypeListI: [],

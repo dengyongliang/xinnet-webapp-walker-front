@@ -5,6 +5,7 @@
       v-model="value",
       :filterable="filterable",
       :style="styles",
+      :multiple="multiple",
       :name="name",
       @on-change="selectChange",
       :placeholder="placeholder",
@@ -101,6 +102,10 @@ export default {
       default: false
     },
     disabled: {
+      type: Boolean,
+      default: false
+    },
+    multiple: {
       type: Boolean,
       default: false
     }

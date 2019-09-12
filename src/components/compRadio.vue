@@ -1,7 +1,7 @@
 <template lang="pug">
   div.compRadio(style="display:inline-block")
     RadioGroup(v-model="value",@on-change="onChange",ref="radio",:name="name")
-      Radio(v-for="item in list", :label="item.label.toString()", :key="item.label", :disabled="typeof(item.disabled)!=='undefined'?item.disabled:isDisabled") {{item.value}}
+      Radio(v-for="item in list", :label="item.value.toString()", :key="item.value", :disabled="typeof(item.disabled)!=='undefined'?item.disabled:isDisabled",@click.native="getMoreParams(item)") {{item.label}}
     Alert(type="error",show-icon, style="display:inline-block",v-show="showError") {{errorText}}
 </template>
 
@@ -50,7 +50,8 @@ export default {
       value: '',
       time: '',
       showError: false,
-      errorText: `请选择${this.label}！`
+      errorText: `请选择${this.label}！`,
+      param: {}
     }
   },
   methods: {
@@ -63,6 +64,9 @@ export default {
       if (this.onParentmethod && typeof this.onParentmethod === 'function') {
         this.onParentmethod({value: v})
       }
+    },
+    getMoreParams (param) {
+      this.param = param
     }
   },
   beforeMount () {

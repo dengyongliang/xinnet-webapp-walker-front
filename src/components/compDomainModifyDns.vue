@@ -57,12 +57,12 @@ export default {
       loadingBtn: false,
       dnsList: [
         {
-          label: '1',
-          value: '使用新网DNS提供解析服务（注：新网每组DNS服务器都具有同等效能）'
+          label: '使用新网DNS提供解析服务（注：新网每组DNS服务器都具有同等效能）',
+          value: '1'
         },
         {
-          label: '0',
-          value: '使用非新网DNS（注：最少配置两个DNS服务器名称以保证域名能够正常解气，DNS服务器名称不分先后，请输入有效的DNS服务器名称）'
+          label: '使用非新网DNS（注：最少配置两个DNS服务器名称以保证域名能够正常解气，DNS服务器名称不分先后，请输入有效的DNS服务器名称）',
+          value: '0'
         }
       ]
     }

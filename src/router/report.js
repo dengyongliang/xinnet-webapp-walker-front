@@ -65,6 +65,18 @@ export default {
         keepAlive: true,
         isLogin: true
       }
+    },
+    {
+      path: 'focus',
+      name: 'report_focus',
+      component (resolve) {
+        return require(['@/modular/report/focus'], resolve)
+      },
+      meta: {
+        title: '关注域名监控报告',
+        keepAlive: true,
+        isLogin: true
+      }
     }
   ]
 }

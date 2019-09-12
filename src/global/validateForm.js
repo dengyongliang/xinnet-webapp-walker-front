@@ -78,6 +78,13 @@ export default function validateFormResult (validateArray) {
         flag = false
         // break
       }
+    } else if (v.type === 'checkbox') {
+      let value = v.value
+      if (!value.length) {
+        v.showValidateResult()
+        flag = false
+        // break
+      }
     } else if (v.type === 'rePassword') {
       let password = v.$refs.password.value
       let rePassword = v.$refs.rePassword.value

@@ -11,8 +11,8 @@ export const emitter = new Event()
 if (process.env.NODE_ENV === 'development') {
   // axios.defaults.baseURL = '/api'
   axios.defaults.baseURL = 'http://localhost:5500/static/data'
-} else if (process.env.NODE_ENV === 'debug') {
-  axios.defaults.baseURL = ''
+} else if (process.env.NODE_ENV === 'testing') {
+  axios.defaults.baseURL = 'http://183.84.10.176:8081/client-api'
 } else if (process.env.NODE_ENV === 'production') {
   axios.defaults.baseURL = '/client-api'
 }

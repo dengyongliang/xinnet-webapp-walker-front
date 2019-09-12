@@ -7,6 +7,7 @@
       strong(v-show="type==='center'") 报告中心
       strong(v-show="type==='assets'") 域名资产报告
       strong(v-show="type==='own'") 自有域名监控报告
+      strong(v-show="type==='focus'") 关注域名监控报告
       strong(v-show="type==='budget'") {{start | dateformat('YYYY-MM-DD')}} ~ {{end | dateformat('YYYY-MM-DD')}} 域名预算报告
       strong(v-show="type==='spending'") {{start | dateformat('YYYY-MM-DD')}} ~ {{end | dateformat('YYYY-MM-DD')}} 域名消费报告
     router-view

@@ -77,12 +77,12 @@ export default {
       notifyDetail: [],
       rangeList: [
         {
-          value: '仅通知域名所在分组负责人',
-          label: '1'
+          value: '1',
+          label: '仅通知域名所在分组负责人'
         },
         {
-          value: '通知域名所在分组全部管理人员',
-          label: '2'
+          value: '2',
+          label: '通知域名所在分组全部管理人员'
         }
       ],
       wayList: [

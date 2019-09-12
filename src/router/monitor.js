@@ -27,19 +27,21 @@ export default {
         show: false,
         isLogin: true
       }
+    },
+    {
+      path: 'focus',
+      name: 'monitor_focus',
+      component (resolve) {
+        return require(['@/modular/monitor/focus'], resolve)
+      },
+      meta: {
+        title: '关注域名监控',
+        keepAlive: true,
+        permission: 'client_monitor_focus',
+        compUrl: 'modular/monitor/focus',
+        show: false,
+        isLogin: true
+      }
     }
-    // ,
-    // {
-    //   path: 'focus',
-    //   name: 'monitor_focus',
-    //   component (resolve) {
-    //     return require(['@/modular/monitor/focus'], resolve)
-    //   },
-    //   meta: {
-    //     title: '关注域名监控',
-    //     keepAlive: true,
-    //     powers: 'client_log_domain'
-    //   }
-    // }
   ]
 }

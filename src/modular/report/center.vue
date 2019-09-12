@@ -2,17 +2,18 @@
 Collapse(v-model="value")
   Panel(name="1",)
     router-link(tag="a", target="_blank", :to="{path: '/report/own', query: {type: 'own'}}") <Icon custom="i-icon iconL i-icon-report" size="24" />自有域名监控报告
-
   Panel(name="2")
+    router-link(tag="a", target="_blank", :to="{path: '/report/focus', query: {type: 'focus'}}") <Icon type="ios-pin-outline iconL" size="30" />关注域名监控报告
+  Panel(name="3")
     router-link(tag="a", target="_blank", :to="{path: '/report/assets', query: {type: 'assets'}}") <Icon custom="i-icon iconL i-icon-report2" size="24" />域名资产报告
 
-  Panel(name="3") <Icon custom="i-icon iconL i-icon-report1" size="24" />域名预算报告
+  Panel(name="4") <Icon custom="i-icon iconL i-icon-report1" size="24" />域名预算报告
     ul(slot="content")
       li.clear(v-for="item in budgetList")
         router-link(tag="a", target="_blank", :to="{path: '/report/budget', query: {reportId: item.id, type: 'budget', start: item.budgetCycleStart, end: item.budgetCycleEnd}}") {{item.budgetCycleStart | dateformat('YYYY-MM-DD')}} ~ {{item.budgetCycleEnd | dateformat('YYYY-MM-DD')}} 域名预算报告
         span.right {{item.modifyTime ? item.modifyTime : item.createTime | dateformat}} 更新
 
-  Panel(name="4") <Icon custom="i-icon iconL i-icon-report3" size="24" />域名消费报告
+  Panel(name="5") <Icon custom="i-icon iconL i-icon-report3" size="24" />域名消费报告
     ul(slot="content")
       li.clear(v-for="item in consumptionList")
         router-link(tag="a", target="_blank", :to="{path: '/report/spending', query: {type: 'spending', start: item.thisCycle.split('~')[0], end: item.thisCycle.split('~')[1]}}") {{item.thisCycle}} 域名消费报告

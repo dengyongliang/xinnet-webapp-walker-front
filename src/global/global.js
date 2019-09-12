@@ -49,6 +49,14 @@ const IS_HAS_EN = (val) => {
     return false
   }
 }
+const IS_ALL_ENGLISH = (val) => {
+  var re = new RegExp('^[a-zA-Z]+$')
+  if (re.test(val)) {
+    return true
+  } else {
+    return false
+  }
+}
 
 function CONVERT_TREE_CHECKED_TRUE (tree, key) {
   const result = []
@@ -224,6 +232,7 @@ export default
   IS_EMAIL_AVAILABLE,
   IS_HAS_CHINESE,
   IS_HAS_EN,
+  IS_ALL_ENGLISH,
   CONVERT_TREE,
   CONVERT_ROLES,
   CONVERT_TREE_CHECKED_TRUE,

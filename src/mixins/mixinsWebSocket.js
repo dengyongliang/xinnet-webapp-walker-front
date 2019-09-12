@@ -21,8 +21,10 @@ export default {
   },
   methods: {
     initWebSocket (id) {
-      // 初始化weosocket
-      this.manageCustomerId = id
+      // 初始化websocket
+      if (!this.manageCustomerId) {
+        this.manageCustomerId = id
+      }
       // 获取协议类型
       const protocol = document.location.protocol === 'https:' ? 'wss:' : 'ws:'
       const hostname = document.location.hostname
@@ -46,7 +48,7 @@ export default {
     },
     websocketonerror () {
       // 连接建立失败重连
-      this.initWebSocket()
+      this.initWebSocket(this.manageCustomerId)
     },
     websocketonmessage (data) {
       // 数据接收

@@ -139,9 +139,9 @@ export default {
           }
         })
         return this.GLOBALS.CONVERT_RADIO(state.user.userRoles, {
-          label: 'id',
+          label: 'roleName',
           code: 'roleCode',
-          value: 'roleName',
+          value: 'id',
           disabled: 'disabled'
         })
       },
