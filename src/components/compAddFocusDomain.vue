@@ -383,6 +383,7 @@ export default {
             title: '提示',
             content: `<p>添加成功：${response.data.countSuccess}个</p><p>添加失败：${response.data.countFaild}个</p>`
           })
+          this.$emit('getBrandList')
           this.$emit('queryList')
         } else {
           if (response.data.code === '100') {

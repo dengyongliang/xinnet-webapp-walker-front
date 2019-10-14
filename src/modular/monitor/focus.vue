@@ -18,7 +18,7 @@
       //- span.time 更新时间：2019-1-1
       .tR
         comp-brand-set(@queryList="queryList(1)", @getBrandList="getBrandList", :list="brandList")
-        comp-add-focus-domain(@queryList="queryList(1)", :brandList="brandList")
+        comp-add-focus-domain(@queryList="queryList(1)", @getBrandList="getBrandList", :brandList="brandList")
     .secFilter()
       form.filterWrap(ref="exportForm", method="post" accept-charset="utf-8" :action="exportLink")
         table
