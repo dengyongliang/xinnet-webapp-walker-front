@@ -8,7 +8,7 @@ export default {
   actions: {
     FOLLOW_DOMAIN_LIST ({ commit }, params) {
       return new Promise((resolve, reject) => {
-        api.FOLLOW_DOMAIN_LIST(params.domainName, params.siteTypes, params.ipTypes, params.isReg, params.brandIds, params.domainSuffixs, params.createTimeBegin, params.createTimeEnd, params.applyTimeBegin, params.applyTimeEnd, params.expireTimeBegin, params.expireTimeEnd, params.pageNum, params.pageSize).then(response => {
+        api.FOLLOW_DOMAIN_LIST(params.domainName, params.siteTypes, params.excepType, params.isReg, params.brandIds, params.domainSuffixs, params.createTimeBegin, params.createTimeEnd, params.applyTimeBegin, params.applyTimeEnd, params.expireTimeBegin, params.expireTimeEnd, params.pageNum, params.pageSize).then(response => {
           resolve(response)
         }).catch(error => {
           reject(error)
