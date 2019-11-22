@@ -30,11 +30,11 @@
             td.td2
               span.n 网站类型：
               .inputWrap
-                comp-select(:list="siteTypesList", :multiple="true",ref="siteTypes", styles="width:100%",placeholder="全部")
+                comp-select(:list="siteTypesList", ref="siteTypes", styles="width:100%",placeholder="全部")
             td.td3
               span.n 异常情况：
               .inputWrap
-                comp-select(:list="ipTypesList", :multiple="true", ref="ipTypes", styles="width:100%", placeholder="全部")
+                comp-select(:list="excepTypeList",  ref="excepType", styles="width:100%", placeholder="全部")
             td.td4
               span.n 注册情况：
               .inputWrap
@@ -43,7 +43,7 @@
             td.td1
               span.n 品牌：
               .inputWrap
-                comp-select(:list="brandList", :multiple="true", ref="brandIds", styles="width:100%", placeholder="全部")
+                comp-select(:list="brandList",  ref="brandIds", styles="width:100%", placeholder="全部")
             td.td2
               span.n 添加时间：
               .inputWrap
@@ -132,6 +132,7 @@ export default {
       showDetail: false,
       removeDisabled: true,
       exportLink: actions.FOLLOW_DOMAIN_EXPORT,
+      selectData: [],
       siteTypesList: [
         // {
         //     label: "全部",
@@ -142,11 +143,11 @@ export default {
           value: '0'
         },
         {
-          label: '疑似非法网站',
+          label: '正规网站',
           value: '1'
         },
         {
-          label: '正规网站',
+          label: '疑似非法网站',
           value: '2'
         },
         {
@@ -154,7 +155,7 @@ export default {
           value: '3'
         }
       ],
-      ipTypesList: [
+      excepTypeList: [
         // {
         //     label: '全部',
         //     value: '-1'
@@ -164,7 +165,7 @@ export default {
           value: '0'
         },
         {
-          label: '指向国外IP',
+          label: '指向非大陆IP',
           value: '1'
         },
         {
@@ -287,7 +288,12 @@ export default {
         {
           title: '域名',
           key: 'domainName',
-          className: 'col1'
+          className: 'col1',
+          render: (h, params) => {
+            return h('div', [
+              h('span', {}, this.list[params.index].domainName + '(' + (this.list[params.index].isReg === 0 ? '未注册' : (this.list[params.index].isReg === 1 ? '已注册' : '不支持')) + ')')
+            ])
+          }
         },
         {
           title: '品牌',
@@ -332,7 +338,7 @@ export default {
                     this.showDetailFun(this.list[params.index].id)
                   }
                 }
-              }, '查看详情')
+              }, this.list[params.index].isReg === 1 ? '查看详情' : '')
             ])
           }
         }
@@ -368,10 +374,10 @@ export default {
         pageNum: obj.pageNum,
         pageSize: 20,
         domainName: this.value,
-        siteTypes: this.$refs.siteTypes.value.length ? this.$refs.siteTypes.value.join(',') : '',
-        ipTypes: this.$refs.ipTypes.value.length ? this.$refs.ipTypes.value.join(',') : '',
+        siteTypes: this.$refs.siteTypes.value,
+        excepType: this.$refs.excepType.value,
         isReg: this.$refs.isReg.value,
-        brandIds: this.$refs.brandIds.value.length ? this.$refs.brandIds.value.join(',') : '',
+        brandIds: this.$refs.brandIds.value,
         domainSuffixs: this.$refs.domainSuffixs.value.length ? this.$refs.domainSuffixs.value.join(',') : '',
         createTimeBegin: this.timesCreate[0] !== '' ? moment(this.timesCreate[0]).format('YYYY-MM-DD') + ' 00:00:00' : '',
         createTimeEnd: this.timesCreate[1] !== '' ? moment(this.timesCreate[1]).format('YYYY-MM-DD') + ' 23:59:59' : '',

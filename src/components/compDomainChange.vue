@@ -2,7 +2,7 @@
 .compDomainTransferIn
   Alert.alert1(type="warning", show-icon) 温馨提示：
     Icon(custom="i-icon i-icon-notice_", size="16", slot="icon")
-    template(slot="desc") 请将域名与转移密码用空格隔开，每行一个域名，最多可同时过户100个域名。
+    template(slot="desc") 每行一个域名，最多可同时过户100个域名。
   Form()
     FormItem(label="")
       comp-input(name='domain',label="域名",ref="domain", type="textarea", styles="width:100%;", placeholder="域名", :defaultValue="defaultValueFormat")

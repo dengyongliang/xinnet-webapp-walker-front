@@ -29,3 +29,5 @@ export const DELETE_BRAND = '/client/followdomain/deleteBrand' + suffix
 export const CREATE_DOMAIN = '/client/followdomain/createDomain' + suffix
 // 监控域名管理-移除域名
 export const DELETE_DOMAIN = '/client/followdomain/deleteDomain' + suffix
+// 监控域名管理-查询品牌
+export const QUERY_BRAND = '/client/followdomain/queryBrand' + suffix

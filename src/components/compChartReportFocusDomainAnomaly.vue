@@ -1,7 +1,7 @@
 <template lang="pug">
   .compChartReportFocusDomainAnomaly
     div(id="chartReportFocusDomainAnomaly",style="width:500px;height:320px;")
-    p 已注册关注域名中，26个域名存在异常情况，需要重点关注。详细异常情况可通过 <router-link to="/notice/monitoring">关注域名监控</router-link> 查看全部监控通知查看。
+    p 已注册关注域名中，{{charData.total}}个域名存在异常情况，需要重点关注。详细异常情况可通过 <router-link to="/notice/monitoring">关注域名监控</router-link> 查看全部监控通知查看。
 </template>
 
 <script>
@@ -55,7 +55,7 @@ export default {
         xAxis: {
           type: 'category',
           axisTick: {alignWithLabel: true},
-          data: Object.keys(datas),
+          data: Object.keys(datas.list),
           axisLabel: {
             interval: 0,
             rotate: 20
@@ -69,7 +69,7 @@ export default {
             name: '',
             type: 'bar',
             barWidth: '30%',
-            data: Object.values(datas)
+            data: Object.values(datas.list)
           }
         ]
       })
@@ -93,7 +93,6 @@ export default {
 <style scoped>
 .compChartReportFocusDomainAnomaly{
   padding: 30px 0;
-  text-align: center;
 }
 .compChartReportFocusDomainAnomaly p{
   font-size: 12px;
@@ -101,6 +100,10 @@ export default {
   margin-top: 20px;
   padding: 0 100px;
   line-height: 18px;
+  text-align: center;
+}
+.compChartReportFocusDomainAnomaly p a{
+  color: #2271f4;
 }
 .compChartReportFocusDomainAnomaly #chartReportFocusDomainAnomaly{
   border: 1px solid #d9d9d9;

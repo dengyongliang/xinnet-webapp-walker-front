@@ -17,9 +17,9 @@
         FormItem(label="品牌名称：")
           comp-input(name='brandName',label="品牌名称",ref="brandName", :defaultValue="brandName")
         FormItem(label="监控通知员工：")
-          comp-select(:list="usersList", :multiple="true", ref="notifyUsers",)
+          comp-select(:list="usersList", :multiple="true", ref="notifyUsers", :defaultValue="notifyUsers")
         FormItem(label="通知类型：")
-          comp-radio(:list="notifyWayList", :multiple="true", ref="notifyWay",)
+          comp-radio(:list="notifyWayList", ref="notifyWay", :defaultValue="notifyWay")
       div(slot="footer")
         Button(type="default", @click="modal2 = false") 取消
         Button(type="primary", @click="submitForm", :loading="loadingBtn") 确定
@@ -51,6 +51,8 @@ export default {
       modal1: false,
       modal2: false,
       brandName: '',
+      notifyWay: '',
+      notifyUsers: '',
       id: '',
       columns: [
         {
@@ -100,18 +102,18 @@ export default {
           label: '不通知',
           value: '1'
         },
-        {
-          label: '短信通知',
-          value: '2'
-        },
+        // {
+        //   label: '短信通知',
+        //   value: '2'
+        // },
         {
           label: '邮件通知',
           value: '3'
-        },
-        {
-          label: '邮件和短信通知',
-          value: '4'
         }
+        // {
+        //   label: '邮件和短信通知',
+        //   value: '4'
+        // }
       ],
       loadingTable: false,
       loadingBtn: false
@@ -192,13 +194,32 @@ export default {
       // this.$Message.info('Clicked cancel');
     },
     toBrandSet (id, brandName) {
-      this.brandName = brandName
-      this.modal2 = true
+      this.id = id
+      if (id) {
+        this.$store.dispatch('QUERY_BRAND', {brandId: id}).then(response => {
+          if (!response) {
+            return false
+          }
+          if (response.data.code === '1000') {
+            this.brandName = brandName
+            this.notifyWay = response.data.data.notifyWay + ''
+            this.notifyUsers = response.data.data.notifyUsers
+            this.modal2 = true
+          } else {
+            this.$Message.error('设置失败')
+          }
+        }).catch(() => {})
+      } else {
+        this.brandName = brandName
+        this.notifyWay = ''
+        this.notifyUsers = ''
+        this.modal2 = true
+      }
     },
     toBrandDel (id) {
       this.$Modal.confirm({
         title: '确认',
-        content: '<p>请确认是否删除此品牌</p>',
+        content: '<p>删除品牌同时删除品牌下所有关注域名，请确认是否删除？</p>',
         loading: true,
         onOk: () => {
           this.$store.dispatch('DELETE_BRAND', {id: id}).then(response => {

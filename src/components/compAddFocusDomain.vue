@@ -248,8 +248,8 @@ export default {
         ])
         if (this.$refs.domainNames.value.length) {
           domains = this.$refs.domainNames.value.replace(/[\n\r]/g, ',').split(',')
-          if (domains.length > 500) {
-            this.$refs.domainNames.showValidateResult({text: '最多允许一次提交500个域名！'})
+          if (domains.length > 2000) {
+            this.$refs.domainNames.showValidateResult({text: '最多允许一次提交2000个域名！'})
             result = false
           } else {
             for (var i = 0; i < domains.length; i++) {

@@ -1,7 +1,7 @@
 <template lang="pug">
 .contReportFocus
   h3.h3T 关注域名基本信息
-    .tR 共监控域名221个，数据截止时间2018-05-31 23：59
+    .tR 共监控域名{{reportFocusDomainReg.total}}个，数据截止时间2018-05-31 23：59
       comp-select(:list="brandList", ref="", :onParentmethod="selectBrandChange" placeholder="全部关注域名监控报告",)
   Row
     Col(span="12")
@@ -94,9 +94,7 @@ export default {
           className: 'col2',
           render: (h, params) => {
             return h('div',
-              this.list[params.index].info.map((v) => {
-                return h('span', {}, v)
-              })
+              this.list[params.index].info.join('；')
             )
           }
         },
@@ -176,13 +174,20 @@ export default {
         if (response.data.code === '1000') {
           let arr = []
           let obj = {}
+          obj.list = {}
+          obj.total = 0
+          obj.noRegNum = 0
           response.data.data.map((v) => {
             console.log(v.domainSuffix)
             if (arr.indexOf(v.domainSuffix) < 0) {
-              obj[v.domainSuffix] = []
+              obj.list[v.domainSuffix] = []
               arr.push(v.domainSuffix)
             }
-            obj[v.domainSuffix][v.isReg] = v.domainCount
+            obj.list[v.domainSuffix][v.isReg] = v.domainCount * 1
+            obj.total += (v.domainCount * 1)
+            if (!v.isReg) {
+              obj.noRegNum += (v.domainCount * 1)
+            }
           })
           this.reportFocusDomainReg = obj
         } else {
@@ -197,8 +202,11 @@ export default {
         }
         if (response.data.code === '1000') {
           var obj = {}
+          obj.list = {}
+          obj.total = 0
           response.data.data.map((v) => {
-            obj[v.exceptType] = v.domainCount
+            obj.list[v.exceptType] = v.domainCount
+            obj.total += (v.domainCount * 1)
           })
           this.reportFocusDomainAnomaly = obj
         } else {
@@ -230,8 +238,11 @@ export default {
         }
         if (response.data.code === '1000') {
           var obj = {}
+          obj.list = {}
+          obj.total = 0
           response.data.data.map((v) => {
-            obj[v.ipType] = v.domainCount
+            obj.list[v.ipType] = v.domainCount
+            obj.total += (v.domainCount * 1)
           })
           this.reportFocusDomainIp = obj
         } else {
@@ -246,8 +257,11 @@ export default {
         }
         if (response.data.code === '1000') {
           var obj = {}
+          obj.list = {}
+          obj.total = 0
           response.data.data.map((v) => {
-            obj[v.siteType] = v.domainCount
+            obj.list[v.siteType] = v.domainCount
+            obj.total += (v.domainCount * 1)
           })
           this.reportFocusDomainBrand = obj
         } else {

@@ -104,6 +104,15 @@ export default {
           reject(error)
         })
       })
+    },
+    QUERY_BRAND ({ commit }, params) {
+      return new Promise((resolve, reject) => {
+        api.QUERY_BRAND(params.brandId).then(response => {
+          resolve(response)
+        }).catch(error => {
+          reject(error)
+        })
+      })
     }
   }
 }

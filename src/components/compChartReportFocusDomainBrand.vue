@@ -1,7 +1,7 @@
 <template lang="pug">
 .compChartReportFocusDomainBrand
   #chartReportFocusDomainBrand
-  p 在已注册的域名中，7.2%的域名指向疑似非法网站；16.6%的域名指向出售页面；<br />60.5%的域名未指向网站。指向不良网站的品牌相关域名已给品牌形象造成巨大影响。
+  p(v-if="charData.list && charData.list['疑似非法网站']") 在已注册的域名中，{{((charData.list['疑似非法网站'] / charData.total) * 100).toFixed(2)}}%的域名指向疑似非法网站；{{((charData.list['出售网站'] / charData.total) * 100).toFixed(2)}}%的域名指向出售页面；<br />{{((charData.list['未建站'] / charData.total) * 100).toFixed(2)}}%的域名未指向网站。指向不良网站的品牌相关域名已给品牌形象造成巨大影响。
 </template>
 
 <script>
@@ -84,13 +84,13 @@ export default {
 
   },
   mounted () {
-    this.drawChart(this.charData)
+    this.drawChart(this.charData.list)
   },
   computed: {
   },
   watch: {
     charData: function (val, oldVal) {
-      this.drawChart(val)
+      this.drawChart(val.list)
     }
   }
 }

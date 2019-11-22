@@ -121,7 +121,12 @@ export default {
           title: '日志记录时间',
           width: 200,
           key: 'createTime',
-          className: 'col1'
+          className: 'col1',
+          render: (h, params) => {
+            return h('div', [
+              h('span', {}, moment(this.list[params.index].createTime).format('YYYY-MM-DD'))
+            ])
+          }
         },
         {
           title: '域名',

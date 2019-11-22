@@ -304,7 +304,13 @@ export default {
               if (response.data.code === '200') {
                 this.$Message.error('用户不存在')
               } else if (response.data.code === '300') {
-                this.$Message.error('该客户下已有负责分组，请先将分组移至其它客户再删除当前客户！')
+                setTimeout(() => {
+                  this.$Modal.warning({
+                    title: '无法删除',
+                    content: '该账号为域名分组负责人，请将域名分组负责人设为其他账号后再删除该账号'
+                  })
+                }, 300)
+                // this.$Message.error('该客户下已有负责分组，请先将分组移至其它客户再删除当前客户！')
               } else {
                 this.$Message.error('操作失败')
               }

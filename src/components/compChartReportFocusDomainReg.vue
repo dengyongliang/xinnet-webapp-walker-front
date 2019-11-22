@@ -1,6 +1,7 @@
 <template lang="pug">
 .compChartReportFocusDomainReg
   #chartReportFocusDomainReg(style="width:500px;height:320px;")
+  p 目前有{{charData.noRegNum}}个即{{Math.round(charData.noRegNum / charData.total * 100)}}%的品牌相关域名尚未注册，建议立即注册保护。<br />抢先注册域名是成本最低又最有效的域名保护方案。
 </template>
 
 <script>
@@ -36,7 +37,7 @@ export default {
           top: '90%',
           itemWidth: 10,
           itemHeight: 10,
-          data: Object.keys(datas)
+          data: Object.keys(datas.list)
         },
         grid: {
           top: '10%',
@@ -52,7 +53,7 @@ export default {
         yAxis: {
           type: 'value'
         },
-        series: Object.keys(datas).map((v) => {
+        series: Object.keys(datas.list).map((v) => {
           return {
             name: v,
             type: 'bar',
@@ -64,7 +65,7 @@ export default {
               }
             },
             barWidth: '30%',
-            data: datas[v]
+            data: datas.list[v]
           }
         })
       })
@@ -90,12 +91,19 @@ export default {
 </script>
 <style scoped>
 .compChartReportFocusDomainReg{
-  padding: 30px 0 86px 0;
+  padding: 30px 0;
   text-align: left;
 }
 
 .compChartReportFocusDomainReg #chartReportFocusDomainReg{
   border: 1px solid #d9d9d9;
   margin: 0 auto;
+}
+.compChartReportFocusDomainReg p{
+  line-height: 18px;
+  font-size: 12px;
+  color: #666;
+  margin-top: 20px;
+  text-align: center;
 }
 </style>

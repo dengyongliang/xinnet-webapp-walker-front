@@ -136,11 +136,15 @@ export default {
   },
   mounted () {
     if (this.defaultValue !== '') {
-      this.value = this.defaultValue
-      this.param = this.list.filter((v) => {
-        return this.defaultValue === v.value.toString()
-      })[0]
-      console.log(this.param)
+      if (this.multiple) {
+        this.value = this.defaultValue.split(',')
+      } else {
+        this.value = this.defaultValue
+        this.param = this.list.filter((v) => {
+          return this.defaultValue === v.value.toString()
+        })[0]
+        console.log(this.param)
+      }
     }
     // if (this.defaultValue !== '') {
     //   this.value = this.defaultValue
