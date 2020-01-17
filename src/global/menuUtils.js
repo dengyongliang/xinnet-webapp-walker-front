@@ -15,11 +15,11 @@ function generaMenu (routers, menus, permission) {
       menu.children = []
       generaMenu(menu.children, item.children, permission)
     }
+
     if (menu.meta.permission === 'root' || permission.indexOf(menu.meta.permission) >= 0) {
       menu.meta.show = true
       routers.push(menu)
     } else {
-      console.log(menu.meta.permission)
       // menu.redirect = '/noAuth'
       // menu.meta.show = false
       routers.push(menu)

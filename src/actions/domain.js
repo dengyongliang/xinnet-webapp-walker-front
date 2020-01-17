@@ -17,3 +17,13 @@ export const SET_DOMAIN_DNS = '/client/domain/setDomainDns' + suffix
 export const DOMAIN_RENEW = '/client/domain/renew' + suffix // ORDER_PAY_DOMAIN_RENEW
 // 域名管理-导出管理列表
 export const EXPORT_DOMAIN = '/client-api/client/domain/exportDomain' + suffix // EXPORT_DOMAIN_LIST
+// 域名管理-删除托管域名
+export const DELETE_DEPOSIT_DOMAIN = '/client/domain/deleteDepositDomain' + suffix
+// 域名管理-设置域名品牌
+export const SET_DOMAIN_BRAND = '/client/domain/setDomainBrand' + suffix
+// 域名管理-刷新托管域名
+export const SYNC_DEPOSIT_DOMAIN = '/client/domain/syncDepositDomain' + suffix
+// 域名管理-修改托管域名
+export const UPDATE_DEPOSIT_DOMAIN = '/client/domain/updateDepositDomain' + suffix
+// 域名管理-批量修改托管域名
+export const BATCH_UPDATE_DEPOSIT_DOMAIN = '/client-api/client/domain/batchUpdateDepositDomain' + suffix

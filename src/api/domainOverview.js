@@ -14,7 +14,7 @@ export const DOMAIN_STATISTICS = () => {
 export const DOMAIN_COUNT_STATISTICS = (days) => {
   return axios({
     url: action.DOMAIN_COUNT_STATISTICS,
-    method: 'POST',
+    method: 'get',
     data: {days}
   })
 }

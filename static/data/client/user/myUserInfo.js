@@ -34,6 +34,7 @@
      "client_domain_template",
      "client_monitor",
      "client_monitor_own",
+     "client_monitor_focus",
      "client_finance",
      "client_finance_overview",
      "client_finance_bill",

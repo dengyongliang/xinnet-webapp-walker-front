@@ -41,7 +41,7 @@
           comp-select(:list="daysList", ref="days", defaultValue="7")
           Button(type="primary", @click="getOverviewDomainCount",:loading="loadingBtn") 查询
       Row
-        Col(span="8")
+        Col(span="6")
           strong 域名总览
           em.num {{overviewDomainCount.all}}
           ul
@@ -51,7 +51,17 @@
                 em(v-show="overviewDomainCount.ad === 0") {{overviewDomainCount.ad}}个
                 em(v-show="overviewDomainCount.ad > 0") <Icon type="ios-arrow-round-up" class="add" /> {{overviewDomainCount.ad}}个
                 em(v-show="overviewDomainCount.ad < 0") <Icon type="ios-arrow-round-down" class="del" /> {{overviewDomainCount.ad}}个
-        Col(span="8")
+        Col(span="6")
+          strong 自主管理域名数
+          em.num {{overviewDomainCount.owner}}
+          ul
+            li.clear
+              span.l 净增减数
+              span.r
+                em(v-show="overviewDomainCount.ownerAd === 0") {{overviewDomainCount.ownerAd}}个
+                em(v-show="overviewDomainCount.ownerAd > 0") <Icon type="ios-arrow-round-up" class="add" /> {{overviewDomainCount.ownerAd}}个
+                em(v-show="overviewDomainCount.ownerAd < 0") <Icon type="ios-arrow-round-down" class="del" /> {{overviewDomainCount.ownerAd}}个
+        Col(span="6")
           strong 新增域名数
           em.num {{overviewDomainCount.add}}
           ul
@@ -63,7 +73,11 @@
               span.l 转入新网
               span.r
                 em {{overviewDomainCount.add_trans}}个
-        Col(span="8")
+            li.clear
+              span.l 托管域名
+              span.r
+                em {{overviewDomainCount.add_deposit}}个
+        Col(span="6")
           strong 减少域名数
           em.num {{overviewDomainCount.del}}
           ul
@@ -75,6 +89,10 @@
               span.l 其他原因
               span.r
                 em {{overviewDomainCount.del_other}}个
+            li.clear
+              span.l 托管域名
+              span.r
+                em {{overviewDomainCount.del_deposit}}个
     .row3.clear
       .item
         .secBox.secBox4
@@ -99,6 +117,9 @@
         .secBox.secBox6
           h3.h3T.clear
             span.t 实名认证率 <b>{{overviewDomainVerify.domainVerifyRate}}</b>%
+              Tooltip(placement="top-start")
+                span(slot="content", style="color:#fff") 自主管理域名实名认证率
+                Icon(custom="i-icon i-icon-tips", size="16", style="color: #4aafff;margin-left: 5px;")
             div.tR
               router-link.text(to="/domain/realnameDomain") 详情
           ul
@@ -109,6 +130,9 @@
         .secBox.secBox7
           h3.h3T.clear
             span.t 需要续费的域名 <b>{{overviewDomainRenew.domainRenewCount}}</b>个
+              Tooltip(placement="top-start")
+                span(slot="content", style="color:#fff") 自主管理域名和托管域名中需要续费的域名。<br />（托管域名到期时间以域名所在注册商<br />提供的到期时间为准）
+                Icon(custom="i-icon i-icon-tips", size="16", style="color: #4aafff;margin-left: 5px;")
             div.tR
               router-link.text(to="/domain/mgmt") 详情
       .item
@@ -372,9 +396,11 @@ export default {
 .contDomainOverview .secBox3 .ivu-col .ivu-icon.del{
   color: #4db321
 }
-.contDomainOverview .secBox3 .ivu-col:nth-child(2){
-  border-left: 1px solid #ededed;
+.contDomainOverview .secBox3 .ivu-col{
   border-right: 1px solid #ededed;
+}
+.contDomainOverview .secBox3 .ivu-col:nth-last-child(1){
+  border-right: none;
 }
 .contDomainOverview .secBox3 .ivu-col strong{
   font-weight: normal;

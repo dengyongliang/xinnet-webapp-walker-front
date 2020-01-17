@@ -4,6 +4,7 @@
  "menus": [
     "client_index",
     "client_domain",
+    "client_domain_overview",
     "client_domain_manage",
     "client_domain_safe",
     "client_domain_transferin",
@@ -12,6 +13,7 @@
     "client_domain_template",
     "client_monitor",
     "client_monitor_own",
+    "client_monitor_focus",
     "client_finance",
     "client_finance_overview",
     "client_finance_bill",

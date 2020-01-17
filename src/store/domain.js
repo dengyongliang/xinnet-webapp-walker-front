@@ -7,8 +7,11 @@ export default {
   },
   actions: {
     DOMAIN_LIST ({ commit }, params) {
+      params = Object.assign({
+        orderExpireDate: 'desc'
+      }, params)
       return new Promise((resolve, reject) => {
-        api.DOMAIN_LIST(params.pageNum, params.pageSize, params.domainName, params.domainSuffixs, params.otherSuffix, params.allSuffix, params.groupIds, params.serviceState, params.createDay, params.expireDay, params.createTimeBegin, params.createTimeEnd, params.expireTimeBegin, params.expireTimeEnd).then(response => {
+        api.DOMAIN_LIST(params.pageNum, params.pageSize, params.domainName, params.domainSuffixs, params.otherSuffix, params.allSuffix, params.groupIds, params.serviceState, params.createDay, params.expireDay, params.createTimeBegin, params.createTimeEnd, params.expireTimeBegin, params.expireTimeEnd, params.orderExpireDate).then(response => {
           resolve(response)
         }).catch(error => {
           reject(error)
@@ -63,6 +66,42 @@ export default {
     DOMAIN_RENEW ({ commit }, params) {
       return new Promise((resolve, reject) => {
         api.DOMAIN_RENEW(params).then(response => {
+          resolve(response)
+        }).catch(error => {
+          reject(error)
+        })
+      })
+    },
+    DELETE_DEPOSIT_DOMAIN ({ commit }, params) {
+      return new Promise((resolve, reject) => {
+        api.DELETE_DEPOSIT_DOMAIN(params.domainIds).then(response => {
+          resolve(response)
+        }).catch(error => {
+          reject(error)
+        })
+      })
+    },
+    SET_DOMAIN_BRAND ({ commit }, params) {
+      return new Promise((resolve, reject) => {
+        api.SET_DOMAIN_BRAND(params.domainIds, params.brandId).then(response => {
+          resolve(response)
+        }).catch(error => {
+          reject(error)
+        })
+      })
+    },
+    SYNC_DEPOSIT_DOMAIN ({ commit }, params) {
+      return new Promise((resolve, reject) => {
+        api.SYNC_DEPOSIT_DOMAIN(params.domainId).then(response => {
+          resolve(response)
+        }).catch(error => {
+          reject(error)
+        })
+      })
+    },
+    UPDATE_DEPOSIT_DOMAIN ({ commit }, params) {
+      return new Promise((resolve, reject) => {
+        api.UPDATE_DEPOSIT_DOMAIN(params.domainId, params.registrarName, params.applyDate, params.expireDate, params.regUserName, params.regUserEmail).then(response => {
           resolve(response)
         }).catch(error => {
           reject(error)

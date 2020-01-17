@@ -194,6 +194,15 @@ export default {
           reject(error)
         })
       })
+    },
+    DOMAIN_REGISTRAR_NAME_VIEW_REPORT ({ commit }, params) {
+      return new Promise((resolve, reject) => {
+        api.DOMAIN_REGISTRAR_NAME_VIEW_REPORT(params).then(response => {
+          resolve(response)
+        }).catch(error => {
+          reject(error)
+        })
+      })
     }
   }
 }

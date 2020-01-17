@@ -5,23 +5,27 @@
     h4.h4T.clear
       span.t 资产概况
     Row
-      Col(span="8")
+      Col(span="6")
+        strong 自主管理域名数
+        em.num {{report[0].domainOwnerNumber}}
+      Col(span="6")
         strong 域名总数
         em.num {{report[0].domainNumber}}
-
-      Col(span="8")
+      Col(span="6")
         strong 管理公司数量
         em.num {{report[0].companyCount}}
-
-      Col(span="8")
+      Col(span="6")
         strong 管理人员
         em.num {{report[0].userCount}}
-    p 截止{{new Date() | dateformat}}，{{myUserInfo.manageCustomerName}}共拥有域名数量{{report[0].domainNumber}}个，管理公司{{report[0].companyCount}}个，管理人员{{report[0].userCount}}人。域名监控时长{{monitoringDurTime}}天，域名安全问题产生次数0次
+    p 截止{{new Date() | dateformat}}，{{myUserInfo.manageCustomerName}}共拥有域名数量{{report[0].domainNumber}}个，其中自主管理域名数{{report[0].domainOwnerNumber}}个，管理公司{{report[0].companyCount}}个，管理人员{{report[0].userCount}}人。域名监控时长{{monitoringDurTime}}天，域名安全问题产生次数0次
   .secBox.secBox2
     h4.h4T.clear
       span.t 域名所属公司
     comp-chart-report-assets-company(:charData="report[1]")
-
+  .secBox.secBox6
+    h4.h4T.clear
+      span.t 域名注册商
+    comp-chart-report-assets-registrar(:charData="report[7]")
   .secBox.secBox3
     h4.h4T.clear
       span.t 域名后缀分布
@@ -52,6 +56,7 @@ import compChartReportAssetsSuffix from '@/components/compChartReportAssetsSuffi
 import compChartReportOwnDueTime from '@/components/compChartReportOwnDueTime'
 import compChartReportAssetsSafeNormal from '@/components/compChartReportAssetsSafeNormal'
 import compChartReportAssetsSafeImportant from '@/components/compChartReportAssetsSafeImportant'
+import compChartReportAssetsRegistrar from '@/components/compChartReportAssetsRegistrar'
 import moment from 'moment'
 export default {
   components: {
@@ -59,12 +64,13 @@ export default {
     compChartReportAssetsSuffix,
     compChartReportOwnDueTime,
     compChartReportAssetsSafeNormal,
-    compChartReportAssetsSafeImportant
+    compChartReportAssetsSafeImportant,
+    compChartReportAssetsRegistrar
   },
   data () {
     return {
       companyName: '',
-      report: ['', '', '', '', '', '', '']
+      report: ['', '', '', '', '', '', '', '']
     }
   },
   methods: {
@@ -87,7 +93,8 @@ export default {
       this.$store.dispatch('DOMAIN_SAFE_NORMAL_REPORT'),
       this.$store.dispatch('DOMAIN_SAFE_IMPORTANT_REPORT'),
       this.$store.dispatch('DOMAIN_SAFE_RATE_REPORT'),
-      this.$store.dispatch('DOMAIN_MONITOR_EXPIRE_REPORT')
+      this.$store.dispatch('DOMAIN_MONITOR_EXPIRE_REPORT'),
+      this.$store.dispatch('DOMAIN_REGISTRAR_NAME_VIEW_REPORT')
     ]).then(response => {
       console.log(response)
       response.map((v, i, arr) => {
@@ -98,6 +105,7 @@ export default {
           this.$set(this.report, i, v.data.data)
         }
       })
+      console.log('====================================')
       console.log(this.report)
     }).catch(() => {})
   },
@@ -174,9 +182,11 @@ export default {
 .contAssetsDomain .secBox1 .ivu-col .ivu-icon.del{
   color: #4db321
 }
-.contAssetsDomain .secBox1 .ivu-col:nth-child(2){
-  border-left: 1px solid #ededed;
+.contAssetsDomain .secBox1 .ivu-col{
   border-right: 1px solid #ededed;
+}
+.contAssetsDomain .secBox1 .ivu-col:nth-last-child(1){
+  border-right: none;
 }
 .contAssetsDomain .secBox1 .ivu-col strong{
   font-weight: normal;

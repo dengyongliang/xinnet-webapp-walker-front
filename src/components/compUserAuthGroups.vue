@@ -39,6 +39,11 @@ export default {
   methods: {
     // 保存
     saveForm () {
+      if (!this.domainIds) {
+        this.$Message.error('请选择域名!')
+        this.loadingBtn = false
+        return false
+      }
       this.loadingBtn = true
       let result = this.getSelected()
       if (result) {

@@ -2,6 +2,8 @@
   Form.compDomainMgmtDetailInfo(:label-width="150")
     FormItem(label="域名：")
       span.text {{detailData.domainName}}
+    FormItem(label="域名注册商：", v-if="detailData.depositFlag")
+      span.text {{detailData.registrarName}}
     FormItem(label="注册时间：",)
       span.text {{detailData.applyDate}}
     FormItem(label="到期时间：",)
