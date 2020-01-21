@@ -107,6 +107,15 @@ export default {
           reject(error)
         })
       })
+    },
+    CREATE_DEPOSIT_DOMAIN ({ commit }, params) {
+      return new Promise((resolve, reject) => {
+        api.CREATE_DEPOSIT_DOMAIN(params.domainNames, params.companyId, params.groupId, params.brandId).then(response => {
+          resolve(response)
+        }).catch(error => {
+          reject(error)
+        })
+      })
     }
   }
 }

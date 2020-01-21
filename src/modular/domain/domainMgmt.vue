@@ -23,8 +23,8 @@
       span 搜索
       Input(style="width:200px",placeholder="请输入域名", name="domainName", v-model.trim="value")
       Button(type="primary", @click="searchListData",:loading="loadingBtn") 查询
-      Button(type="primary", @click="searchListData", :loading="loadingBtn") 导入域名
-      Button(type="default", @click="showModalsMultiUpdate=true", :loading="loadingBtn") 批量修改
+      Button(type="primary", @click="handleShowModalsMultiUpdate('import')", :loading="loadingBtn") 导入域名
+      Button(type="default", @click="handleShowModalsMultiUpdate('update')", :loading="loadingBtn") 批量修改
       a(href="javascript:;",class="exportOrder",@click="exportOrder") 导出域名列表
 
   .secMain(v-show="!showDetail && !showDns")
@@ -47,7 +47,7 @@
         Button(@click="domainDelFun", class="toolBtn") 删除
         Poptip(placement="bottom", width="350", v-model="visible2")
           Button(@click="", class="toolBtn") 设置所属品牌
-          comp-brand-list(slot="content", :on-parentmethod="hidePop2", :domainIds="getDomainId", @refreshData = "searchListData", :brandList="userAuthGroups", type="list")
+          comp-brand-list(slot="content", :on-parentmethod="hidePop2", :domainIds="getDomainId", @refreshData = "searchListData")
 
   <!-- 翻页区 -->
   Page(:total="page.pageItems",:current="page.pageNo",show-elevator,show-total,prev-text="上一页",next-text="下一页",@on-change="pageChange",:page-size=20, v-show="!showDetail && !showDns")
@@ -82,32 +82,50 @@
   <!-- 批量修改 -->
   Modal(
     v-model="showModalsMultiUpdate",
-    title="批量修改",
+    :title="modalUpdateDomainTitle",
     :loading="loadingModalsMultiUpdate",
     @on-visible-change="handleVisibleChange",
     @on-ok="upload",
-    :footer-hide="hideFooter"
+    :footer-hide="true"
   )
-    Upload(
-      v-if="showModalsMultiUpdate",
-      ref="upload",
-      :action="actions.BATCH_UPDATE_DEPOSIT_DOMAIN",
-      name="file",
-      accept=".xlsx",
-      :format="['xlsx']",
-      :show-upload-list="true",
-      :on-success="handleSuccess",
-      :on-error="handleError",
-      :on-format-error="handleFormatError",
-      :before-upload="handleUpload"
-    )
-      Button(type="primary", icon="ios-cloud-upload-outline") 上传文件
-      a(style="display:inline-block;margin-left: 20px;", slot="tip") 下载模板
-    div(v-if="file !== null", style="padding: 20px 0 0 0;") {{ file.name }}
+    Form(:label-width="100")
+      FormItem(label="添加方式：", v-if="modalUpdateDomainType==='import'")
+        comp-radio(:list="monthedList", ref="monthed", defaultValue="1", :on-parentmethod="setMonthedValue")
+      FormItem(label="请输入域名：", v-if="modalUpdateDomainType==='import' && method==='1'")
+        comp-input(name='domainNames',label="域名",ref="domainNames", type="textarea", styles="width:80%;", placeholder="每行一个,支持中英文数字和连字符“-”")
+      FormItem(label="管理公司：", v-if="modalUpdateDomainType==='import' && method==='1'")
+        comp-select(name='companyId',label="管理公司",ref="companyId", :list="companysList")
+      FormItem(label="分组：", v-if="modalUpdateDomainType==='import' && method==='1'")
+        comp-select(name='groupId',label="分组",ref="groupId", :list="userAuthGroupsSelect", :optionGroup="true" )
+      FormItem(label="品牌：", v-if="modalUpdateDomainType==='import' && method==='1'")
+        comp-radio(:list="brandList", ref="brandId")
+      FormItem(label="", v-if="modalUpdateDomainType==='update' || (modalUpdateDomainType==='import' && method==='2')")
+        Upload(
+          v-if="showModalsMultiUpdate",
+          ref="upload",
+          :action="uploadLink",
+          name="file",
+          accept=".xlsx",
+          :format="['xlsx']",
+          :show-upload-list="true",
+          :on-success="handleSuccess",
+          :on-error="handleError",
+          :on-format-error="handleFormatError",
+          :before-upload="handleUpload"
+        )
+          Button(type="primary", icon="ios-cloud-upload-outline") 上传文件
+          a(style="display:inline-block;margin-left: 20px;", slot="tip") 下载模板
+        div(v-if="file !== null", style="padding: 20px 0 0 0;") {{ file.name }}
+    div.ivu-modal-footer(style="padding-bottom: 20px;")
+      Button(type="primary",@click="submitForm",:loading="loadingBtn", v-if="modalUpdateDomainType==='import' && method==='1'") 立即添加
+      Button(type="primary",@click="upload",:loading="loadingBtn", v-else) 立即添加
 </template>
 
 <script>
 import { mapState } from 'vuex'
+import compInput from '@/components/compInput'
+import compSelect from '@/components/compSelect'
+import compRadio from '@/components/compRadio'
 import compDomainChange from '@/components/compDomainChange'
 import compUserAuthGroups from '@/components/compUserAuthGroups'
 import compBrandList from '@/components/compBrandList'
@@ -116,8 +134,12 @@ import compDomainModifyDns from '@/components/compDomainModifyDns'
 import compAsideFilter from '@/components/compAsideFilter'
 import * as actions from '@/actions/domain.js'
 import moment from 'moment'
+import validateFormResult from '@/global/validateForm'
 export default {
   components: {
+    compInput,
+    compSelect,
+    compRadio,
     compUserAuthGroups,
     compBrandList,
     compDomainMgmtDetail,
@@ -129,6 +151,8 @@ export default {
     return {
       value: '',
       filterTitle: '域名管理',
+      modalUpdateDomainTitle: '',
+      modalUpdateDomainType: null,
       refresh: false,
       visible1: false,
       visible2: false,
@@ -136,7 +160,6 @@ export default {
       loadingTable: true,
       loadingBtn: false,
       loadingModalsMultiUpdate: true,
-      hideFooter: true,
       showDetail: false,
       showModalsMultiUpdate: false,
       drawerDomainChange: false,
@@ -149,6 +172,7 @@ export default {
       defaultValueChange: '',
       detailData: {},
       exportLink: actions.EXPORT_DOMAIN,
+      uploadLink: actions.BATCH_UPDATE_DEPOSIT_DOMAIN,
       list: [],
       page: {
         pageNo: 1,
@@ -277,10 +301,34 @@ export default {
         expireTimeEnd: ''
       },
       file: null,
-      loadingStatus: false
+      loadingStatus: false,
+      monthedList: [
+        {
+          value: '1',
+          label: '直接添加'
+        },
+        {
+          value: '2',
+          label: '导入域名'
+        }
+      ],
+      brandList: [],
+      method: '1'
     }
   },
   methods: {
+    setMonthedValue (obj) {
+      this.method = obj.value
+    },
+    handleShowModalsMultiUpdate (type) {
+      if (type === 'import') {
+        this.modalUpdateDomainTitle = '添加非新网域名'
+      } else {
+        this.modalUpdateDomainTitle = '修改域名信息'
+      }
+      this.modalUpdateDomainType = type
+      this.showModalsMultiUpdate = true
+    },
     searchListData () {
       this.moveGroupDisabled = true
       this.$refs.asideFilter.filterSubmit()
@@ -567,6 +615,26 @@ export default {
       // console.log(sort)
       this.queryList({pageNum: 1, orderExpireDate: v.order})
     },
+    getBrandList () {
+      // 品牌列表
+      this.$store.dispatch('FOLLOW_BRAND_LIST', {pageNum: -1, pageSize: -1}).then(response => {
+        this.loadingTable = false
+        this.loadingBtn = false
+        if (!response) {
+          return false
+        }
+        if (response.data.code === '1000') {
+          this.brandList = response.data.data.list.map((v) => {
+            return {
+              label: v.brandName,
+              domainCount: v.domainCount,
+              value: v.id
+            }
+          })
+        } else {
+        }
+      }).catch(() => {})
+    },
     handleFormatError (file) {
       this.$Notice.warning({
         title: '格式错误',
@@ -575,7 +643,6 @@ export default {
     },
     handleSuccess () {
       this.file = null
-      this.hideFooter = true
       this.$Message.success('添加成功')
       // this.loadingModalsMultiUpdate = false
       this.showModalsMultiUpdate = false
@@ -587,7 +654,6 @@ export default {
     },
     handleUpload (file) {
       this.file = file
-      this.hideFooter = false
       return false
     },
     upload () {
@@ -595,7 +661,59 @@ export default {
     },
     handleVisibleChange () {
       this.file = null
-      this.hideFooter = true
+    },
+    submitForm () {
+      this.loadingBtn = true
+      let result = validateFormResult([
+        this.$refs.domainNames,
+        this.$refs.companyId,
+        this.$refs.groupId,
+        this.$refs.brandId
+      ])
+      let domains = this.$refs.domainNames.value.replace(/[\n\r]/g, ',').split(',')
+      console.log('================================')
+      console.log(domains)
+      console.log('================================')
+      if (domains.length > 500) {
+        this.$refs.domainNames.showValidateResult({text: '最多允许一次提交500个域名！'})
+        result = false
+      } else {
+        for (var i = 0; i < domains.length; i++) {
+          if (!this.GLOBALS.IS_DOMAIN_AVAILABLE(domains[i])) {
+            result = false
+            this.$refs.domainNames.showValidateResult({text: '域名格式错误！'})
+            break
+          }
+        }
+      }
+      if (result) {
+        var params = {
+          domainNames: this.$refs.domainNames.value,
+          companyId: this.$refs.companyId.value,
+          groupId: this.$refs.groupId.value,
+          brandId: this.$refs.brandId.value
+        }
+        this.$store.dispatch('CREATE_DEPOSIT_DOMAIN', params).then(response => {
+          this.loadingBtn = false
+          if (response) {
+            if (response.data.code === '1000') {
+              this.$Message.success('添加成功')
+              this.queryList(1)
+              this.showModalsMultiUpdate = false
+            } else {
+              if (response.data.code === '200') {
+                this.$Message.error('用户不存在')
+              } else if (response.data.code === '300') {
+                this.$Message.error('用户被锁定')
+              } else {
+                this.$Message.error('更新失败')
+              }
+            }
+          }
+        }).catch(() => {})
+      } else {
+        this.loadingBtn = false
+      }
     }
   },
   computed: {
@@ -622,12 +740,28 @@ export default {
           })
         }
         return arrGroups
+      },
+      userAuthGroupsSelect (state) {
+        let arrGroups = []
+        arrGroups = this.GLOBALS.CONVERT_SELECT_GROUP(state.user.userAuthGroups.companys, {
+          value: 'id',
+          label: 'name',
+          children: 'groups'
+        })
+        return arrGroups
+      },
+      companysList (state) {
+        return this.GLOBALS.CONVERT_SELECT(state.user.companys, {
+          label: 'name',
+          value: 'id'
+        })
       }
     })
   },
   beforeMount () {
   },
   mounted () {
+    this.getBrandList()
     this.queryList(1)
   },
   watch: {

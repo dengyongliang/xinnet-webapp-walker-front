@@ -27,3 +27,5 @@ export const SYNC_DEPOSIT_DOMAIN = '/client/domain/syncDepositDomain' + suffix
 export const UPDATE_DEPOSIT_DOMAIN = '/client/domain/updateDepositDomain' + suffix
 // 域名管理-批量修改托管域名
 export const BATCH_UPDATE_DEPOSIT_DOMAIN = '/client-api/client/domain/batchUpdateDepositDomain' + suffix
+// 域名管理-创建托管域名
+export const CREATE_DEPOSIT_DOMAIN = '/client/domain/createDepositDomain' + suffix

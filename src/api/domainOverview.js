@@ -3,11 +3,11 @@ import axios from '@/global/axios.js'
 import * as action from '@/actions/domainOverview'
 
 // 域名总览-域名统计
-export const DOMAIN_STATISTICS = () => {
+export const DOMAIN_STATISTICS = (depositFlag) => {
   return axios({
     url: action.DOMAIN_STATISTICS,
-    method: 'GET',
-    data: {}
+    method: 'get',
+    data: {depositFlag}
   })
 }
 // 域名总览-数量变化总览

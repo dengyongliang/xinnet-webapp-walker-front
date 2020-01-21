@@ -98,3 +98,11 @@ export const UPDATE_DEPOSIT_DOMAIN = (domainId, registrarName, applyDate, expire
     data: {domainId, registrarName, applyDate, expireDate, regUserName, regUserEmail}
   })
 }
+// 域名管理-修改托管域名
+export const CREATE_DEPOSIT_DOMAIN = (domainNames, companyId, groupId, brandId) => {
+  return axios({
+    url: action.CREATE_DEPOSIT_DOMAIN,
+    method: 'get',
+    data: {domainNames, companyId, groupId, brandId}
+  })
+}

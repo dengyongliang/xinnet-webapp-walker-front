@@ -10,6 +10,8 @@
         .secBox.secBox1
           h3.h3T.clear
             span.t 域名统计
+            Select(v-model="depositFlagValue", @on-change="depositFlagChange",placeholder="", style="width: 200px;float:right;margin-right: 15px;")
+              Option(v-for="item in depositFlagList" :value="item.value" :key="item.value") {{ item.label }}
           .hd
             a(href="javascript:;", :class="tabs===1?'active':''", @click="tabs=1") 域名所属公司
             span.line |
@@ -167,8 +169,23 @@ export default {
   data () {
     return {
       value: '',
+      depositFlagValue: '-1',
       refresh: false,
       loadingBtn: false,
+      depositFlagList: [
+        {
+          label: '全部',
+          value: '-1'
+        },
+        {
+          label: '自主域名',
+          value: '0'
+        },
+        {
+          label: '托管域名',
+          value: '1'
+        }
+      ],
       daysList: [
         {
           label: '7天',
@@ -208,6 +225,14 @@ export default {
         } else {
         }
       }).catch(() => {})
+    },
+    getDomainStatistics () {
+      this.$store.dispatch('DOMAIN_STATISTICS', {depositFlag: this.depositFlagValue}).then(response => {
+        this.overviewDomain = response.data.data
+      }).catch(() => {})
+    },
+    depositFlagChange (v) {
+      this.getDomainStatistics()
     }
   },
   computed: {
@@ -223,9 +248,7 @@ export default {
   beforeMount () {
   },
   mounted () {
-    this.$store.dispatch('DOMAIN_STATISTICS').then(response => {
-      this.overviewDomain = response.data.data
-    }).catch(() => {})
+    this.getDomainStatistics()
 
     this.getOverviewDomainCount()
 
