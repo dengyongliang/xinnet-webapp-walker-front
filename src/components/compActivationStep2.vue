@@ -20,7 +20,8 @@
       comp-input(name='userMobile',label="手机号",ref="userMobile",validate="mobile",defaultValue="",placeholder="请输入手机号",:maxLength="11")
     FormItem(label="短信验证码：")
       comp-input(name='verificationCode',label="短信验证码",ref="verificationCode",defaultValue="",placeholder="请输入短信验证码",styles="width:118px",:maxLength="6")
-        Button.verificationCode(@click="getVerificationCode", :loading="loadingBtn",slot="right") 获取短信验证码
+        Button.verificationCode(@click="getVerificationCode", :loading="loadingBtn", v-show="!success", slot="right") 获取短信验证码
+        span.tips(v-show="success", slot="right") 重新发送({{downTime}})
     FormItem.btn(label=" ")
       Button(type="primary", @click="submit", :loading="loadingBtn") 下一步
 </template>
@@ -43,6 +44,9 @@ export default {
     return {
       verificationCode: false,
       loadingBtn: false,
+      success: false,
+      textVC: '获取短信验证码',
+      downTime: 60,
       sexList: [
         {
           value: '1',
@@ -131,6 +135,8 @@ export default {
                 if (response) {
                   if (response.data.code === '1000') {
                     this.$Message.success('发送成功')
+                    this.success = true
+                    this.countDown()
                   } else {
                     if (response.data.code === '300') {
                       this.$Message.error('短信验证码已发送')
@@ -155,6 +161,17 @@ export default {
       } else {
         this.loadingBtn = false
       }
+    },
+    countDown () {
+      let clock = window.setInterval(() => {
+        this.downTime--
+        // 当倒计时小于0时清除定时器
+        if (this.downTime < 0) {
+          window.clearInterval(clock)
+          this.success = false
+          this.downTime = 60
+        }
+      }, 1000)
     }
   },
   beforeMount () {
@@ -173,5 +190,11 @@ export default {
   font-size:12px;
   height:38px;
   margin-right:5px;
+}
+.tips{
+  font-size:12px;
+  height:38px;
+  margin-right:5px;
+  color: #bcbcbc;
 }
 </style>

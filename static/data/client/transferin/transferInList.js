@@ -7,7 +7,7 @@
     "list": [{
       "id": 2,
       "createTime": 1543906565000,
-      "tansferInTime": null,
+      "tansferInTime": 1543906565000,
       "domainName": "951060.com",
       "transferStatus": 2,
       "transferFaildReason": null,

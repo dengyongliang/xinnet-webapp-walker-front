@@ -644,7 +644,7 @@ export default {
     handleSuccess () {
       this.file = null
       this.$Message.success('添加成功')
-      // this.loadingModalsMultiUpdate = false
+      this.queryList(1)
       this.showModalsMultiUpdate = false
     },
     handleError () {
@@ -670,10 +670,15 @@ export default {
         this.$refs.groupId,
         this.$refs.brandId
       ])
-      let domains = this.$refs.domainNames.value.replace(/[\n\r]/g, ',').split(',')
+      let domains = this.GLOBALS.TRIM_ALL(this.$refs.domainNames.value.replace(/[\n\r]/g, ',').replace(/www\./g, '')).split(',')
+      // 清除空项
+      domains = domains.filter((v) => {
+        return v.length > 0
+      })
       console.log('================================')
       console.log(domains)
       console.log('================================')
+      this.$refs.domainNames.value = domains.join(',').replace(/,/gm, '\n')
       if (domains.length > 500) {
         this.$refs.domainNames.showValidateResult({text: '最多允许一次提交500个域名！'})
         result = false
@@ -688,11 +693,14 @@ export default {
       }
       if (result) {
         var params = {
-          domainNames: this.$refs.domainNames.value,
+          domainNames: domains.join(','),
           companyId: this.$refs.companyId.value,
           groupId: this.$refs.groupId.value,
           brandId: this.$refs.brandId.value
         }
+        console.log('================================')
+        console.log(params)
+        console.log('================================')
         this.$store.dispatch('CREATE_DEPOSIT_DOMAIN', params).then(response => {
           this.loadingBtn = false
           if (response) {

@@ -1,7 +1,7 @@
 <template lang="pug">
   .compChartReportFocusDomainExpireTime
     div(id="chartReportFocusDomainExpireTime")
-    p 到期时间3年及以上的域名34个占比34%，今年到期的域名23个占比2%。对于到期未及时续费的域名，品牌方及时参与抢注，能够用较低的成本获得域名。
+    p 到期时间3年及以上的域名{{charData.threeYearsCount}}个占比{{charData.threeYearsRatio}}，今年到期的域名{{charData.oneYearsCount}}个占比{{charData.oneYearsRatio}}。对于到期未及时续费的域名，品牌方及时参与抢注，能够用较低的成本获得域名。
 </template>
 
 <script>
@@ -55,7 +55,7 @@ export default {
         xAxis: {
           type: 'category',
           axisTick: {alignWithLabel: true},
-          data: Object.keys(datas),
+          data: Object.keys(datas.list),
           axisLabel: {
             interval: 0,
             rotate: 20
@@ -69,7 +69,7 @@ export default {
             name: '',
             type: 'bar',
             barWidth: '30%',
-            data: Object.values(datas)
+            data: Object.values(datas.list)
           }
         ]
       })
@@ -93,7 +93,7 @@ export default {
 <style scoped>
 .compChartReportFocusDomainExpireTime{
   padding: 30px 0;
-  text-align: center;
+  text-align: left;
 }
 .compChartReportFocusDomainExpireTime p{
   text-align: center;

@@ -6,7 +6,7 @@
 		"domainCount": 10
 		},
 		{
-			"siteType": 4,
+			"siteType": 455,
 			"domainCount": 18
 		}
 	]

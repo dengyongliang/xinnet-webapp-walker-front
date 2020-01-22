@@ -8,7 +8,7 @@ const IS_PWD_AVAILABLE = (val) => {
   }
 }
 const IS_PHONE_AVAILABLE = (str) => {
-  var myreg = /^[1][3,4,5,7,8][0-9]{9}$/
+  var myreg = /^[1][0-9]{10}$/
   if (!myreg.test(str)) {
     return false
   } else {
@@ -16,7 +16,7 @@ const IS_PHONE_AVAILABLE = (str) => {
   }
 }
 const IS_DOMAIN_AVAILABLE = (val) => {
-  var reg = /^[0-9a-zA-Z\u4e00-\u9faf]+[0-9a-zA-Z\u4e00-\u9faf-]*\.[a-zA-Z\u4e00-\u9faf]{2,4}$/
+  var reg = /^[0-9a-zA-Z\u4e00-\u9faf]+[0-9a-zA-Z\u4e00-\u9faf-]*\.[a-zA-Z\u4e00-\u9faf]{2,4}(?:\.[a-zA-Z\u4e00-\u9faf]{2,4})?$/
   if (!reg.test(val)) {
     return false
   } else {
@@ -57,7 +57,25 @@ const IS_ALL_ENGLISH = (val) => {
     return false
   }
 }
-
+const IS_ALL_CHINESE = (val) => {
+  var re = new RegExp('^[\\u4E00-\\u9FFF]+$')
+  if (re.test(val)) {
+    return true
+  } else {
+    return false
+  }
+}
+const REG_CH_EN_NUM = (val) => {
+  var re = new RegExp('^[A-z0-9\\u4e00-\\u9fa5]*$')
+  if (re.test(val)) {
+    return true
+  } else {
+    return false
+  }
+}
+const TRIM_ALL = (val) => {
+  return val.replace(/\s+/g, '')
+}
 function CONVERT_TREE_CHECKED_TRUE (tree, key) {
   const result = []
   // 遍历 tree
@@ -232,7 +250,10 @@ export default
   IS_EMAIL_AVAILABLE,
   IS_HAS_CHINESE,
   IS_HAS_EN,
+  IS_ALL_CHINESE,
   IS_ALL_ENGLISH,
+  REG_CH_EN_NUM,
+  TRIM_ALL,
   CONVERT_TREE,
   CONVERT_ROLES,
   CONVERT_TREE_CHECKED_TRUE,

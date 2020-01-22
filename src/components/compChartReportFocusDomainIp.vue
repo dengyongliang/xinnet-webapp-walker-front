@@ -1,7 +1,7 @@
 <template lang="pug">
 .compChartReportFocusDomainIp
   #chartReportFocusDomainIp
-  p(v-if="charData.list && charData.list['非大陆IP']") {{((charData.list['非大陆IP'] / charData.total) * 100).toFixed(2)}}%的域名指向国内IP，{{((charData.list['大陆IP'] / charData.total) * 100).toFixed(2)}}%的域名指向国外的IP，{{((charData.list['未解析'] / charData.total) * 100).toFixed(2)}}%的域名未解析。对于域名指<br />向IP的情况需要进行监控，及时发现域名指向IP的变化情况，早做防范。
+  p(v-if="charData.list && charData.list['非大陆IP']") {{((charData.list['大陆IP'] / charData.total) * 100).toFixed(2)}}%的域名指向国内IP，{{((charData.list['非大陆IP'] / charData.total) * 100).toFixed(2)}}%的域名指向国外的IP，{{((charData.list['未解析'] / charData.total) * 100).toFixed(2)}}%的域名未解析。对于域名指<br />向IP的情况需要进行监控，及时发现域名指向IP的变化情况，早做防范。
 </template>
 
 <script>

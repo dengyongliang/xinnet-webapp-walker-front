@@ -15,12 +15,12 @@
 		{
 			"isReg": 0,
 			"domainSuffix": ".cn",
-			"domainCount": 4
+			"domainCount": 5
 		},
 		{
 			"isReg": 1,
 			"domainSuffix": ".cn",
-			"domainCount": 4
+			"domainCount": 9
 		}
 	]
 }

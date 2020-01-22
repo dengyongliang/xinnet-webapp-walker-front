@@ -1,7 +1,8 @@
 <template lang="pug">
 .compMonitorFocusDetail
   .domainName
-    h2 {{detailData.domainName}}
+    h2
+      a(:href="'http://'+detailData.domainName", target="_blank") {{detailData.domainName}}
       Icon(type="md-star", style="color:#f00")
       span.brand 品牌：{{detailData.brandName}}
       .time(v-if="detailData.syncTime") 更新时间：{{detailData.syncTime | dateformat('YYYY-MM-DD')}}
@@ -50,17 +51,17 @@
           td.td1 解析情况
           td.td2 IP地址：{{detailData.dnsIpContent}}
           td.td3 IP的物理位置：{{detailData.dnsIpAddress}}
-          td.td4
-          td.td5
+          //- td.td4
+          //- td.td5
         tr
           td.td1 备案情况
           td.td2 备案号：{{detailData.beianNum}}
-          td.td3 主办单位性质：{{detailData.beianCompanyType}}
-          td.td4 主办单位名称：{{detailData.beianCompany}}
-          td.td5 审核时间：{{detailData.beianAuditTime}}
+          //- td.td3 主办单位性质：{{detailData.beianCompanyType}}
+          td.td3 网站名称：{{detailData.beianCompany}}
+          //- td.td5 审核时间：{{detailData.beianAuditTime}}
         tr
           td.td1 网站信息
-          td.td2(colspan="4")
+          td.td2(colspan="2")
             p 网站类型：{{detailData.siteInfo}}
             p 网站标题：{{detailData.siteTitle}}
             p 关键词：{{detailData.siteKey}}
@@ -352,6 +353,9 @@ export default {
   display: inline-block;
   margin-right: 20px;
 }
+.compMonitorFocusDetail .secBox1 td.td1{
+  width: 20%;
+}
 .compMonitorFocusDetail .secBox1 .ivu-icon{
   color: #3aaafe;
 }
@@ -368,20 +372,20 @@ export default {
   font-size: 12px;
 }
 .compMonitorFocusDetail .secBox2 td.td1{
-  width: 10%;
+  width: 20%;
 }
 .compMonitorFocusDetail .secBox2 td.td2{
-  width: 25%;
+  width: 40%;
 }
 .compMonitorFocusDetail .secBox2 td.td3{
-  width: 25%;
+  width: 40%;
 }
-.compMonitorFocusDetail .secBox2 td.td4{
+/* .compMonitorFocusDetail .secBox2 td.td4{
   width: 20%;
 }
 .compMonitorFocusDetail .secBox2 td.td5{
   width: 20%;
-}
+} */
 .compMonitorFocusDetail .secBox2 p{
   line-height: 18px;
   color: #666;

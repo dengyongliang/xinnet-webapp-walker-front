@@ -1,7 +1,7 @@
 <template lang="pug">
   .compChartReportFocusDomainAnomaly
     div(id="chartReportFocusDomainAnomaly",style="width:500px;height:320px;")
-    p 已注册关注域名中，{{charData.total}}个域名存在异常情况，需要重点关注。详细异常情况可通过 <router-link to="/notice/monitoring">关注域名监控</router-link> 查看全部监控通知查看。
+    p 已注册关注域名中，{{charData.total}}个域名存在异常情况，需要重点关注。详细异常情况可通过 <router-link to="/monitor/focus">关注域名监控</router-link> 查看全部监控通知查看。
 </template>
 
 <script>

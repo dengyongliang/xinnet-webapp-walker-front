@@ -13,9 +13,8 @@
               FormItem.mobileInput
                 comp-input(name='phoneNum',ref="phoneNum",defaultValue="",placeholder="输入账号绑定手机号",styles="width:100%",:propsShow="false",:on-focusparent="onHideError",:on-errorparent="onShowError",validate="mobile")
                   Icon.iconleft(custom="i-icon i-icon-mobile",slot="left")
-                a(href="javascript:;" @click="getVerificationCode", v-if="!success") 获取短信验证码
-                span.tips
-                  i(v-if="success") 发送成功
+                a(href="javascript:;" @click="getVerificationCode",v-show="!success") {{textVC}}
+                span.tips(v-show="success") 重新发送({{downTime}})
               FormItem.verificationCodeInput
                 comp-input(name='verificationCode',ref="verificationCode",defaultValue="",placeholder="输入验证码",:maxLength="6",styles="width:100%",:propsShow="false",:on-focusparent="onHideError",)
                   Icon.iconleft(custom="i-icon i-icon-tick1",slot="left")
@@ -66,6 +65,8 @@ export default {
       showError: false,
       errorText: 'errorText',
       success: false,
+      textVC: '获取短信验证码',
+      downTime: 60,
       modalAlertInfo: {
         show: false,
         title: '',
@@ -163,7 +164,9 @@ export default {
           }
           let data = response.data
           if (data.code === '1000') {
+            this.success = true
             this.$Message.success('发送成功')
+            this.countDown()
           } else if (data.code === '100') {
             this.$refs.phoneNum.showValidateResult({})
             this.onShowError('手机号码不存在')
@@ -173,6 +176,17 @@ export default {
         this.onShowError('输入手机号格式有误')
         this.loadingBtn = false
       }
+    },
+    countDown () {
+      let clock = window.setInterval(() => {
+        this.downTime--
+        // 当倒计时小于0时清除定时器
+        if (this.downTime < 0) {
+          window.clearInterval(clock)
+          this.success = false
+          this.downTime = 60
+        }
+      }, 1000)
     }
   },
   computed: {
@@ -241,9 +255,17 @@ export default {
   text-decoration: underline;
   line-height:20px;
 }
+.pageFindPw .mobileInput .tips{
+  position:absolute;
+  right:10px;
+  top:13px;
+  line-height:20px;
+  color: #bcbcbc;
+}
 .pageFindPw .verificationCodeInput{
   margin-bottom:30px;
 }
+
 .pageFindPw .ivu-btn{
   width:180px;
   height:50px;
