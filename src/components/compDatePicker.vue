@@ -15,7 +15,6 @@ div(class="compDatePicker")
 </template>
 
 <script>
-import mixinsInput from '@/mixins/mixinsInput'
 export default {
   name: 'compDatePicker',
   props: {

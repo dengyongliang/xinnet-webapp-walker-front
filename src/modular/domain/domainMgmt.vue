@@ -114,7 +114,7 @@
           :before-upload="handleUpload"
         )
           Button(type="primary", icon="ios-cloud-upload-outline") 上传文件
-          a(style="display:inline-block;margin-left: 20px;", slot="tip") 下载模板
+          a(style="display:inline-block;margin-left: 20px;", slot="tip", :href="modalUpdateDomainType==='import'?'../../../static/doc/depositDomainImport.xlsx':'../../../static/doc/depositDomainEdit.xlsx'") 下载模板
         div(v-if="file !== null", style="padding: 20px 0 0 0;") {{ file.name }}
     div.ivu-modal-footer(style="padding-bottom: 20px;")
       Button(type="primary",@click="submitForm",:loading="loadingBtn", v-if="modalUpdateDomainType==='import' && method==='1'") 立即添加
@@ -705,7 +705,10 @@ export default {
           this.loadingBtn = false
           if (response) {
             if (response.data.code === '1000') {
-              this.$Message.success('添加成功')
+              this.$Modal.info({
+                title: '提示',
+                content: `<p>添加成功：${response.data.countSuccess}个</p><p>添加失败：${response.data.countFaild}个</p>`
+              })
               this.queryList(1)
               this.showModalsMultiUpdate = false
             } else {

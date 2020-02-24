@@ -65,7 +65,6 @@ import compChartReportFocusDomainAnomaly from '@/components/compChartReportFocus
 import compChartReportFocusDomainExpireTime from '@/components/compChartReportFocusDomainExpireTime'
 import compChartReportFocusDomainIp from '@/components/compChartReportFocusDomainIp'
 import compChartReportFocusDomainBrand from '@/components/compChartReportFocusDomainBrand'
-import moment from 'moment'
 import compSelect from '@/components/compSelect'
 import * as actions from '@/actions/followdomain.js'
 export default {
