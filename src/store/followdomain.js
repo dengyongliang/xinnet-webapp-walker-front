@@ -113,6 +113,15 @@ export default {
           reject(error)
         })
       })
+    },
+    REFRESE_DOMAIN ({ commit }, params) {
+      return new Promise((resolve, reject) => {
+        api.REFRESE_DOMAIN(params.id).then(response => {
+          resolve(response)
+        }).catch(error => {
+          reject(error)
+        })
+      })
     }
   }
 }

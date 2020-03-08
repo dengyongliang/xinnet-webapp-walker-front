@@ -87,3 +87,10 @@ export const QUERY_BRAND = (brandId) => {
     data: {brandId}
   })
 }
+export const REFRESE_DOMAIN = (id) => {
+  return axios({
+    url: action.REFRESE_DOMAIN,
+    method: 'POST',
+    data: {id}
+  })
+}

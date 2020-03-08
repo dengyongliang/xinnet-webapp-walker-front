@@ -51,7 +51,6 @@ export default {
       this.errorText = v.text ? v.text : ''
     },
     onChange () {
-      this.errorText = ''
       this.showError = false
     }
   },

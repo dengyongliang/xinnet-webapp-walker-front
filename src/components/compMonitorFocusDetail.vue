@@ -5,6 +5,7 @@
       a(:href="'http://'+detailData.domainName", target="_blank") {{detailData.domainName}}
       Icon(type="md-star", style="color:#f00")
       span.brand 品牌：{{detailData.brandName}}
+      a.refresh(@click="handleRefresh") 刷新
       .time(v-if="detailData.syncTime") 更新时间：{{detailData.syncTime | dateformat('YYYY-MM-DD')}}
       .time(v-else) 更新时间：
     span.item(v-for="item in detailData.excepInfo") <Icon type="md-information-circle" size="24" style="color:#f00" />{{item}}
@@ -189,6 +190,21 @@ export default {
     exportOrder () {
       this.$refs.exportForm.submit()
     },
+    handleRefresh () {
+      this.$store.dispatch('REFRESE_DOMAIN', {id: this.id}).then(response => {
+        this.loadingBtn = false
+        this.loadingTable = false
+        if (!response) {
+          return false
+        }
+        if (response.data.code === '1000') {
+          this.$Message.success(`刷新成功`)
+          this.queryDomainMonitorDetail()
+          this.queryDomainMonitorLog(1)
+        } else {
+        }
+      }).catch(() => {})
+    },
     getParamDetail () {
       let params = {
         id: this.id
@@ -293,6 +309,14 @@ export default {
   float: right;
   font-weight: normal;
   padding: 18px 0 0 0;
+}
+.compMonitorFocusDetail .domainName .refresh{
+  font-size: 12px;
+  float: right;
+  font-weight: normal;
+  padding: 18px 0 0 0;
+  margin-left: 20px;
+  color: #2271f4;
 }
 .compMonitorFocusDetail .domainName .brand{
   font-size: 12px;
