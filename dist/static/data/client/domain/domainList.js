@@ -11,7 +11,8 @@
       "domainName": "951060.com",
       "expireDate": "2020-01-08 00:00:00.0",
       "serviceStatus": 0,
-      "organizeNameCn": "白羽"
+      "organizeNameCn": "白羽",
+      "registrarName": "registrarName"
     }, {
       "id": 6,
       "importantFlag": 0,
@@ -19,7 +20,8 @@
       "domainName": "cedns.cn",
       "expireDate": "2020-02-23 00:00:00.0",
       "serviceStatus": 0,
-      "organizeNameCn": "白羽"
+      "organizeNameCn": "白羽",
+      "registrarName": "registrarName"
     }]
   }
 }

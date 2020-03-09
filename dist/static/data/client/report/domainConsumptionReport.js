@@ -1,14 +1,1 @@
-{
-  "msg": "query is success",
-  "code": "1000",
-  "data": {
-    "totalMoney": 0,
-    "businessList": [{
-      "register": 0,
-      "renew": 0,
-      "repurchase": 0,
-      "protection": 0,
-      "transferIn": 0
-    }]
-  }
-}
+{ "msg": "query is success", "code": "1000", "data": { "totalMoney": 2248.0, "businessList": [{ "register": 0.0 }, { "renew": 1210.0 }, { "repurchase": 1000.0 }, { "protection": 3.0 }, { "transferIn": 35.0 }] } }

@@ -8,8 +8,11 @@
     "goodsName": "英文.com",
     "domainName": "test.com",
     "domainPwd": "1231231",
-    "goodsNumAndPrice": [
-    ],
+    "goodsNumAndPrice": [{
+      "price": 60,
+      "num": 1,
+      "unit": "Y"
+    }],
     "orderGoodsType": 5,
     "orderType": 4
   }, {

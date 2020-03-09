@@ -24,6 +24,17 @@
       "ip": "ip",
       "customerId": "客户ID",
       "levelType": 1
+    },{
+      "id": 5,
+      "domainId": "域名ID",
+      "domainName": "域名222",
+      "type": 2,
+      "userId": "用户ID",
+      "content": "内容",
+      "createTime": "操作时间",
+      "ip": "ip",
+      "customerId": "客户ID",
+      "levelType": 1
     }]
   }
 }
