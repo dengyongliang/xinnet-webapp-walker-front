@@ -2,11 +2,12 @@
 div(class="compDatePicker")
   slot(name="left")
   DatePicker(
-    type="date",
+    :type="types",
     :placeholder="placeholder",
     :validate="validate",
     v-model = "value",
     :style="styles",
+    :format="format",
     @on-change="onChange",
     :class="{ 'error': showError }"
   )
@@ -22,7 +23,12 @@ export default {
       type: String,
       default: 'text'
     },
-    defaultValue: String,
+    defaultValue: {
+      type: Array,
+      default: function () {
+        return []
+      }
+    },
     maxLength: Number,
     placeholder: String,
     styles: {
@@ -36,11 +42,19 @@ export default {
     required: {
       type: Boolean,
       default: true
+    },
+    format: {
+      type: String,
+      default: 'yyyy-MM-dd'
+    },
+    types: {
+      type: String,
+      default: 'daterange'
     }
   },
   data () {
     return {
-      value: '',
+      value: this.types === 'date' ? '' : [],
       errorText: '',
       showError: false
     }
@@ -57,13 +71,24 @@ export default {
   computed: {
   },
   beforeMount () {
-    if (this.defaultValue) {
+
+  },
+  mounted () {
+    if (this.defaultValue.length > 0) {
+      console.log(this.defaultValue)
       this.value = this.defaultValue
     }
   },
   watch: {
-    defaultValue (val) {
-      this.value = val
+    defaultValue: {
+      handler (newV, oldV) {
+        if (this.types === 'date') {
+          this.value = newV.join('')
+        } else {
+          this.value = newV
+        }
+      },
+      deep: true
     }
   }
 }

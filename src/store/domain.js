@@ -11,7 +11,7 @@ export default {
         orderExpireDate: 'desc'
       }, params)
       return new Promise((resolve, reject) => {
-        api.DOMAIN_LIST(params.pageNum, params.pageSize, params.domainName, params.domainSuffixs, params.otherSuffix, params.allSuffix, params.groupIds, params.serviceState, params.createDay, params.expireDay, params.createTimeBegin, params.createTimeEnd, params.expireTimeBegin, params.expireTimeEnd, params.orderExpireDate).then(response => {
+        api.DOMAIN_LIST(params.pageNum, params.pageSize, params.domainName, params.domainSuffixs, params.otherSuffix, params.allSuffix, params.groupIds, params.serviceState, params.createDay, params.expireDay, params.createTimeBegin, params.createTimeEnd, params.expireTimeBegin, params.expireTimeEnd, params.orderExpireDate, params.depositFlag).then(response => {
           resolve(response)
         }).catch(error => {
           reject(error)

@@ -247,7 +247,7 @@ export default {
           this.$refs.domainNames,
           this.$refs.brandIds1
         ])
-        let domains = this.GLOBALS.TRIM_ALL(this.$refs.domainNames.value.replace(/[\n\r]/g, ',').replace(/www\./g, '')).split(',')
+        domains = this.GLOBALS.TRIM_ALL(this.$refs.domainNames.value.replace(/[\n\r]/g, ',').replace(/www\./g, '')).split(',')
         // 清除空项
         domains = domains.filter((v) => {
           return v.length > 0

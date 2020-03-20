@@ -3,9 +3,9 @@
     FormItem(label="注册商")
       comp-input(name='registrarName',label="注册商",ref="registrarName",:defaultValue="registrarName",:maxLength="50")
     FormItem(label="注册时间")
-      comp-date-picker(name='applyDate',label="注册时间",ref="applyDate",:defaultValue="applyDate",:maxLength="50")
+      comp-date-picker(name='applyDate',label="注册时间",ref="applyDate",:defaultValue="applyDateV",types="date",:maxLength="50")
     FormItem(label="到期时间")
-      comp-date-picker(name='expireDate',label="注册时间",ref="expireDate",:defaultValue="expireDate",:maxLength="50")
+      comp-date-picker(name='expireDate',label="到期时间",ref="expireDate",:defaultValue="expireDateV",types="date",:maxLength="50")
     FormItem(label="域名所有者")
       comp-input(name='regUserName',label="域名所有者",ref="regUserName",:defaultValue="regUserName",:maxLength="50")
     FormItem(label="所有者邮箱")
@@ -19,6 +19,7 @@
 import compInput from './compInput'
 import compDatePicker from './compDatePicker'
 import validateFormResult from '@/global/validateForm'
+import moment from 'moment'
 export default {
   components: {
     compInput,
@@ -52,11 +53,14 @@ export default {
   },
   data () {
     return {
-      loadingBtn: false
+      loadingBtn: false,
+      applyDateV: [],
+      expireDateV: []
     }
   },
   methods: {
     saveForm () {
+      console.log(typeof (this.$refs.applyDate.value))
       this.loadingBtn = true
       let result = validateFormResult([
         this.$refs.registrarName,
@@ -69,11 +73,13 @@ export default {
         var params = {
           domainId: this.domainId,
           registrarName: this.$refs.registrarName.value,
-          applyDate: this.$refs.applyDate.value,
-          expireDate: this.$refs.expireDate.value,
+          applyDate: this.$refs.applyDate.value ? moment(this.$refs.applyDate.value).format('YYYY-MM-DD') : '',
+          expireDate: this.$refs.expireDate.value ? moment(this.$refs.expireDate.value).format('YYYY-MM-DD') : '',
           regUserName: this.$refs.regUserName.value,
           regUserEmail: this.$refs.regUserEmail.value
         }
+        console.log('================')
+        console.log(params)
         this.$store.dispatch('UPDATE_DEPOSIT_DOMAIN', params).then(response => {
           this.loadingBtn = false
           if (response) {
@@ -102,6 +108,18 @@ export default {
   beforeMount () {
   },
   watch: {
+    applyDate: {
+      handler (newV, oldV) {
+        this.$set(this.applyDateV, 0, newV)
+      },
+      deep: true
+    },
+    expireDate: {
+      handler (newV, oldV) {
+        this.$set(this.expireDateV, 0, newV)
+      },
+      deep: true
+    }
   }
 }
 </script>

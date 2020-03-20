@@ -3,11 +3,11 @@ import axios from '@/global/axios.js'
 import * as action from '@/actions/domain'
 
 // 域名管理列表
-export const DOMAIN_LIST = (pageNum, pageSize, domainName, domainSuffixs, otherSuffix, allSuffix, groupIds, serviceState, createDay, expireDay, createTimeBegin, createTimeEnd, expireTimeBegin, expireTimeEnd, orderExpireDate) => {
+export const DOMAIN_LIST = (pageNum, pageSize, domainName, domainSuffixs, otherSuffix, allSuffix, groupIds, serviceState, createDay, expireDay, createTimeBegin, createTimeEnd, expireTimeBegin, expireTimeEnd, orderExpireDate, depositFlag) => {
   return axios({
     url: action.DOMAIN_LIST,
     method: 'POST',
-    data: {pageNum, pageSize, domainName, domainSuffixs, otherSuffix, allSuffix, groupIds, serviceState, createDay, expireDay, createTimeBegin, createTimeEnd, expireTimeBegin, expireTimeEnd, orderExpireDate}
+    data: {pageNum, pageSize, domainName, domainSuffixs, otherSuffix, allSuffix, groupIds, serviceState, createDay, expireDay, createTimeBegin, createTimeEnd, expireTimeBegin, expireTimeEnd, orderExpireDate, depositFlag}
   })
 }
 // 域名管理-详情管理

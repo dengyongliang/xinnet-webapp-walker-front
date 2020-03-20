@@ -19,17 +19,17 @@
       input(type="hidden", :value='this.asideFilterResult.createTimeEnd', name="createTimeEnd")
       input(type="hidden", :value='this.asideFilterResult.expireTimeBegin', name="expireTimeBegin")
       input(type="hidden", :value='this.asideFilterResult.expireTimeEnd', name="expireTimeEnd")
-
+      input(type="hidden", :value='this.asideFilterResult.depositFlag', name="depositFlag")
       span 搜索
       Input(style="width:200px",placeholder="请输入域名", name="domainName", v-model.trim="value")
       Button(type="primary", @click="searchListData",:loading="loadingBtn") 查询
       Button(type="primary", @click="handleShowModalsMultiUpdate('import')", :loading="loadingBtn") 导入域名
-      Button(type="default", @click="handleShowModalsMultiUpdate('update')", :loading="loadingBtn") 批量修改
+      Button(type="default", @click="handleShowModalsMultiUpdate('update')", :loading="loadingBtn",) 批量修改
       a(href="javascript:;",class="exportOrder",@click="exportOrder") 导出域名列表
 
   .secMain(v-show="!showDetail && !showDns")
     .filter
-      comp-aside-filter(ref="asideFilter",:show="[3,4,6,7,8]", @asideFilterSubmit="asideFilterSubmit", @asideFilterReset="asideFilterReset", :total="page.pageItems", :filterTitle="filterTitle")
+      comp-aside-filter(ref="asideFilter",:show="[3,4,6,7,8,10]", @asideFilterSubmit="asideFilterSubmit", @asideFilterReset="asideFilterReset", :total="page.pageItems", :filterTitle="filterTitle")
 
     <!-- 列表主体 -->
     .secTable(v-show="!showDetail && !showDns")
@@ -89,12 +89,12 @@
     :footer-hide="true"
   )
     Form(:label-width="100")
-      FormItem(label="添加方式：", v-if="modalUpdateDomainType==='import'")
-        comp-radio(:list="monthedList", ref="monthed", defaultValue="1", :on-parentmethod="setMonthedValue")
+      //- FormItem(label="添加方式：", v-if="modalUpdateDomainType==='import'")
+      //-   comp-radio(:list="monthedList", ref="monthed", defaultValue="1", :on-parentmethod="setMonthedValue")
       FormItem(label="请输入域名：", v-if="modalUpdateDomainType==='import' && method==='1'")
         comp-input(name='domainNames',label="域名",ref="domainNames", type="textarea", styles="width:80%;", placeholder="每行一个,支持中英文数字和连字符“-”")
-      FormItem(label="管理公司：", v-if="modalUpdateDomainType==='import' && method==='1'")
-        comp-select(name='companyId',label="管理公司",ref="companyId", :list="companysList")
+      //- FormItem(label="管理公司：", v-if="modalUpdateDomainType==='import' && method==='1'")
+      //-   comp-select(name='companyId',label="管理公司",ref="companyId", :list="companysList")
       FormItem(label="分组：", v-if="modalUpdateDomainType==='import' && method==='1'")
         comp-select(name='groupId',label="分组",ref="groupId", :list="userAuthGroupsSelect", :optionGroup="true" )
       FormItem(label="品牌：", v-if="modalUpdateDomainType==='import' && method==='1'")
@@ -248,7 +248,7 @@ export default {
           render: (h, params) => {
             return h('div', [
               h('span', {
-              }, this.DATAS.SERVICE_STATE[this.list[params.index].serviceStatus])
+              }, (this.list[params.index].serviceStatus !== -1 ? this.DATAS.SERVICE_STATE[this.list[params.index].serviceStatus] : '-'))
             ])
           }
         },
@@ -321,6 +321,7 @@ export default {
       this.method = obj.value
     },
     handleShowModalsMultiUpdate (type) {
+      this.importDomainType = type
       if (type === 'import') {
         this.modalUpdateDomainTitle = '添加非新网域名'
       } else {
@@ -550,6 +551,7 @@ export default {
       this.asideFilterResult.expireDay = result.dataTimeExpire.value === 'custom' ? '' : result.dataTimeExpire.value
       this.asideFilterResult.expireTimeBegin = result.dataTimeExpire.value === 'custom' ? (result.dataTimeExpire.time[0] + ' 00:00:00') : ''
       this.asideFilterResult.expireTimeEnd = result.dataTimeExpire.value === 'custom' ? (result.dataTimeExpire.time[1] + ' 23:59:59') : ''
+      this.asideFilterResult.depositFlag = result.dataMgmtMethod.join(',')
 
       console.log(this.asideFilterResult)
       // 加载数据
@@ -567,6 +569,7 @@ export default {
       this.asideFilterResult.createTimeEnd = ''
       this.asideFilterResult.expireTimeBegin = ''
       this.asideFilterResult.expireTimeEnd = ''
+      this.asideFilterResult.depositFlag = ''
 
       this.queryList({pageNum: 1})
     },
@@ -589,7 +592,8 @@ export default {
         createTimeBegin: this.asideFilterResult.createTimeBegin,
         createTimeEnd: this.asideFilterResult.createTimeEnd,
         expireTimeBegin: this.asideFilterResult.expireTimeBegin,
-        expireTimeEnd: this.asideFilterResult.expireTimeEnd
+        expireTimeEnd: this.asideFilterResult.expireTimeEnd,
+        depositFlag: this.asideFilterResult.depositFlag
       }
       return params
     },
@@ -666,7 +670,7 @@ export default {
       this.loadingBtn = true
       let result = validateFormResult([
         this.$refs.domainNames,
-        this.$refs.companyId,
+        // this.$refs.companyId,
         this.$refs.groupId,
         this.$refs.brandId
       ])
@@ -694,7 +698,7 @@ export default {
       if (result) {
         var params = {
           domainNames: domains.join(','),
-          companyId: this.$refs.companyId.value,
+          companyId: this.$refs.groupId.group.value,
           groupId: this.$refs.groupId.value,
           brandId: this.$refs.brandId.value
         }
