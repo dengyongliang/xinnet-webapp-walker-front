@@ -14,21 +14,6 @@ export default {
   },
   children: [
     {
-      path: 'enterprise',
-      name: 'mgmt_enterprise',
-      component (resolve) {
-        return require(['@/modular/mgmt/enterprise'], resolve)
-      },
-      meta: {
-        title: '企业管理',
-        keepAlive: true,
-        permission: 'client_user_companyManage',
-        compUrl: 'modular/mgmt/enterprise',
-        show: false,
-        isLogin: true
-      }
-    },
-    {
       path: 'myAccount',
       name: 'mgmt_my_account',
       component (resolve) {
@@ -44,21 +29,6 @@ export default {
       }
     },
     {
-      path: 'roles',
-      name: 'mgmt_roles',
-      component (resolve) {
-        return require(['@/modular/mgmt/roles'], resolve)
-      },
-      meta: {
-        title: '角色管理',
-        keepAlive: true,
-        permission: 'client_user_roleManage',
-        compUrl: 'modular/mgmt/roles',
-        show: false,
-        isLogin: true
-      }
-    },
-    {
       path: 'accountMgmt',
       name: 'mgmt_account_mgmt',
       component (resolve) {
@@ -69,6 +39,36 @@ export default {
         keepAlive: true,
         permission: 'client_user_userManage',
         compUrl: 'modular/mgmt/accountMgmt',
+        show: false,
+        isLogin: true
+      }
+    },
+    {
+      path: 'enterprise',
+      name: 'mgmt_enterprise',
+      component (resolve) {
+        return require(['@/modular/mgmt/enterprise'], resolve)
+      },
+      meta: {
+        title: '企业管理',
+        keepAlive: true,
+        permission: 'client_user_companyManage',
+        compUrl: 'modular/mgmt/enterprise',
+        show: false,
+        isLogin: true
+      }
+    },
+    {
+      path: 'roles',
+      name: 'mgmt_roles',
+      component (resolve) {
+        return require(['@/modular/mgmt/roles'], resolve)
+      },
+      meta: {
+        title: '角色管理',
+        keepAlive: true,
+        permission: 'client_user_roleManage',
+        compUrl: 'modular/mgmt/roles',
         show: false,
         isLogin: true
       }

@@ -3,11 +3,11 @@ import axios from '@/global/axios.js'
 import * as action from '@/actions/followdomain'
 
 // 域名管理-详情管理
-export const FOLLOW_DOMAIN_LIST = (domainName, siteTypes, excepType, isReg, brandIds, domainSuffixs, otherSuffixs, createTimeBegin, createTimeEnd, applyTimeBegin, applyTimeEnd, expireTimeBegin, expireTimeEnd, pageNum, pageSize) => {
+export const FOLLOW_DOMAIN_LIST = (domainName, siteTypes, excepType, isReg, brandIds, domainSuffixs, otherSuffixs, createTimeBegin, createTimeEnd, applyTimeBegin, applyTimeEnd, expireTimeBegin, expireTimeEnd, pageNum, pageSize, orderByProperty, orderByType) => {
   return axios({
     url: action.FOLLOW_DOMAIN_LIST,
     method: 'POST',
-    data: {domainName, siteTypes, excepType, isReg, brandIds, domainSuffixs, otherSuffixs, createTimeBegin, createTimeEnd, applyTimeBegin, applyTimeEnd, expireTimeBegin, expireTimeEnd, pageNum, pageSize}
+    data: {domainName, siteTypes, excepType, isReg, brandIds, domainSuffixs, otherSuffixs, createTimeBegin, createTimeEnd, applyTimeBegin, applyTimeEnd, expireTimeBegin, expireTimeEnd, pageNum, pageSize, orderByProperty, orderByType}
   })
 }
 export const FOLLOW_DOMAIN_INFO = (id) => {

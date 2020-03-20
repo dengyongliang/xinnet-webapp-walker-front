@@ -5,7 +5,7 @@ import finance from './finance'
 import notice from './notice'
 import record from './record'
 import monitor from './monitor'
-
+import brand from './brand'
 export default [{
   path: '/',
   component (resolve) {
@@ -34,7 +34,50 @@ export default [{
         isLogin: true
       }
     },
+    {
+      path: 'http://www.xinnet.com/domain/domain.html',
+      name: '',
+      meta: {
+        title: '域名注册',
+        keepAlive: true,
+        permission: '',
+        compUrl: '',
+        icon: 'i-icon i-icon-domain',
+        show: true,
+        isLogin: true,
+        blank: true
+      }
+    },
+    {
+      path: 'http://www.xinnet.com/domain/domainIntelligentRecommendation.html',
+      name: '',
+      meta: {
+        title: '域名推荐',
+        keepAlive: true,
+        permission: '',
+        compUrl: '',
+        icon: 'i-icon i-icon-Recommend',
+        show: true,
+        isLogin: true,
+        blank: true
+      }
+    },
+    {
+      path: 'http://www.xinnet.com/domain/brand.html',
+      name: '',
+      meta: {
+        title: '商标注册',
+        keepAlive: true,
+        permission: '',
+        compUrl: '',
+        icon: 'i-icon i-icon-register',
+        show: true,
+        isLogin: true,
+        blank: true
+      }
+    },
     domain,
+    brand,
     monitor,
     finance,
     order,
@@ -42,35 +85,35 @@ export default [{
     record,
     notice
   ]
-},
-{
-  path: '/domainQuery',
-  name: 'domainQuery',
-  component (resolve) {
-    return require(['@/page/domainQuery'], resolve)
-  },
-  meta: {
-    title: '域名注册',
-    keepAlive: true,
-    permission: 'client_index',
-    compUrl: 'page/domainQuery',
-    icon: 'i-icon i-icon-home',
-    show: true
-  }
-},
-{
-  path: '/domainQueryResult',
-  name: 'domainQueryResult',
-  component (resolve) {
-    return require(['@/page/domainQueryResult'], resolve)
-  },
-  meta: {
-    title: '域名注册',
-    keepAlive: true,
-    permission: 'client_index',
-    compUrl: 'page/domainQueryResult',
-    icon: 'i-icon i-icon-home',
-    show: true
-  }
 }
+// {
+//   path: '/domainQuery',
+//   name: 'domainQuery',
+//   component (resolve) {
+//     return require(['@/page/domainQuery'], resolve)
+//   },
+//   meta: {
+//     title: '域名注册',
+//     keepAlive: true,
+//     permission: 'client_index',
+//     compUrl: 'page/domainQuery',
+//     icon: 'i-icon i-icon-home',
+//     show: true
+//   }
+// },
+// {
+//   path: '/domainQueryResult',
+//   name: 'domainQueryResult',
+//   component (resolve) {
+//     return require(['@/page/domainQueryResult'], resolve)
+//   },
+//   meta: {
+//     title: '域名注册',
+//     keepAlive: true,
+//     permission: 'client_index',
+//     compUrl: 'page/domainQueryResult',
+//     icon: 'i-icon i-icon-home',
+//     show: true
+//   }
+// }
 ]

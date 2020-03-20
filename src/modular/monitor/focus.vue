@@ -17,8 +17,8 @@
     h2.h2T.clear.list 监控域名列表
       //- span.time 更新时间：2019-1-1
       .tR
-        comp-brand-set(@queryList="queryList(1)", @getBrandList="getBrandList", :list="brandList")
-        comp-add-focus-domain(@queryList="queryList(1)", @getBrandList="getBrandList", :brandList="brandList")
+        comp-brand-set(@queryList="queryList({pageNum: 1})", @getBrandList="getBrandList", :list="brandList")
+        comp-add-focus-domain(@queryList="queryList({pageNum: 1})", @getBrandList="getBrandList", :brandList="brandList")
     .secFilter()
       form.filterWrap(ref="exportForm", method="post" accept-charset="utf-8" :action="exportLink")
         table
@@ -72,7 +72,7 @@
               input(type="hidden", name="expireTimeEnd", :value="expireTimeEnd")
       <!-- 列表主体 -->
       .secTable.secTable2
-        <Table :columns="columns" ref="selection" :data="list" :loading="loadingTable"  @on-select="tableSelectChange" @on-select-cancel="tableSelectChange" @on-select-all="tableSelectChange" @on-select-all-cancel="tableSelectChange"></Table>
+        <Table :columns="columns" ref="selection" :data="list" :loading="loadingTable"  @on-select="tableSelectChange" @on-select-cancel="tableSelectChange" @on-select-all="tableSelectChange" @on-select-all-cancel="tableSelectChange" @on-sort-change="sortChange"></Table>
         .tableTool
           a(href="javascript:;", @click="handleSelectAll(true)") 全选
           a(href="javascript:;", @click="handleSelectAll(false)") 取消全选
@@ -134,10 +134,10 @@ export default {
       exportLink: actions.FOLLOW_DOMAIN_EXPORT,
       selectData: [],
       siteTypesList: [
-        // {
-        //     label: "全部",
-        //     value: "-1"
-        // },
+        {
+          label: '全部',
+          value: ''
+        },
         {
           label: '未建站',
           value: '0'
@@ -156,10 +156,10 @@ export default {
         }
       ],
       excepTypeList: [
-        // {
-        //     label: '全部',
-        //     value: '-1'
-        // },
+        {
+          label: '全部',
+          value: ''
+        },
         {
           label: '疑似非法网站',
           value: '0'
@@ -182,10 +182,10 @@ export default {
         }
       ],
       regList: [
-        // {
-        //     label: '全部',
-        //     value: '-1'
-        // },
+        {
+          label: '全部',
+          value: ''
+        },
         {
           label: '未注册',
           value: '0'
@@ -289,6 +289,7 @@ export default {
           title: '域名',
           key: 'domainName',
           className: 'col1',
+          sortable: true,
           render: (h, params) => {
             return h('div', [
               h('span', {}, this.list[params.index].domainName + '(' + (this.list[params.index].isReg === 0 ? '未注册' : (this.list[params.index].isReg === 1 ? '已注册' : '不支持')) + ')')
@@ -303,19 +304,22 @@ export default {
         {
           title: '注册商',
           key: 'registrarName',
-          className: 'col3'
+          className: 'col3',
+          sortable: true
         },
         {
           title: '注册时间',
           width: 150,
           key: 'whoisApplyTime',
-          className: 'col4'
+          className: 'col4',
+          sortable: true
         },
         {
           title: '到期时间',
           width: 150,
           key: 'whoisExpireTime',
-          className: 'col5'
+          className: 'col5',
+          sortable: true
         },
         {
           title: '建站情况',
@@ -355,10 +359,23 @@ export default {
   },
   methods: {
     searchListData () {
-      this.queryList(1)
+      this.queryList({pageNum: 1})
+    },
+    sortChange (v) {
+      let orderByProperty = ''
+      if (v.key === 'whoisApplyTime') {
+        orderByProperty = 'applyDate'
+      } else if (v.key === 'whoisExpireTime') {
+        orderByProperty = 'expireDate'
+      } else {
+        orderByProperty = v.key
+      }
+      // sort.sortValue = v.order
+      // console.log(sort)
+      this.queryList({pageNum: 1, orderByProperty: orderByProperty, orderByType: v.order})
     },
     pageChange: function (curPage) {
-      this.queryList(curPage)
+      this.queryList({pageNum: curPage})
     },
     showDetailFun (id) {
       this.id = id
@@ -385,15 +402,18 @@ export default {
         applyTimeBegin: this.timesReg[0] !== '' ? moment(this.timesReg[0]).format('YYYY-MM-DD') + ' 00:00:00' : '',
         applyTimeEnd: this.timesReg[1] !== '' ? moment(this.timesReg[1]).format('YYYY-MM-DD') + ' 23:59:59' : '',
         expireTimeBegin: this.timesExp[0] !== '' ? moment(this.timesExp[0]).format('YYYY-MM-DD') + ' 00:00:00' : '',
-        expireTimeEnd: this.timesExp[1] !== '' ? moment(this.timesExp[1]).format('YYYY-MM-DD') + ' 23:59:59' : ''
+        expireTimeEnd: this.timesExp[1] !== '' ? moment(this.timesExp[1]).format('YYYY-MM-DD') + ' 23:59:59' : '',
+        orderByProperty: '',
+        orderByType: ''
       }
+      Object.assign(params, obj)
       console.log('=======================================================')
       console.log(params)
       console.log('=======================================================')
       return params
     },
-    queryList (num) {
-      this.$store.dispatch('FOLLOW_DOMAIN_LIST', this.queryListParam({pageNum: num})).then(response => {
+    queryList (obj) {
+      this.$store.dispatch('FOLLOW_DOMAIN_LIST', this.queryListParam(obj)).then(response => {
         this.loadingBtn = false
         this.loadingTable = false
         if (!response) {
@@ -467,7 +487,7 @@ export default {
                   return false
                 }
                 if (response.data.code === '1000') {
-                  this.queryList(1)
+                  this.queryList({pageNum: 1})
                   this.$Modal.info({
                     title: '提示',
                     content: `<p>删除成功：${response.data.successCount}个</p><p>删除失败：${response.data.faildCount}个</p>`
@@ -494,12 +514,17 @@ export default {
           return false
         }
         if (response.data.code === '1000') {
-          this.brandList = response.data.data.list.map((v) => {
-            return {
+          this.brandList = [{
+            label: '全部',
+            domainCount: 0,
+            value: ''
+          }]
+          response.data.data.list.map((v) => {
+            this.brandList.push({
               label: v.brandName,
               domainCount: v.domainCount,
               value: v.id
-            }
+            })
           })
         } else {
         }
@@ -530,7 +555,7 @@ export default {
   mounted () {
     this.$nextTick(function () {
       // 域名列表
-      this.queryList(1)
+      this.queryList({pageNum: 1})
       // 监控通知
       this.getBrandList()
       let id = this.$route.params.id

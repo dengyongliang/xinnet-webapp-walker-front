@@ -21,7 +21,7 @@
       input(type="hidden", :value='this.asideFilterResult.expireTimeEnd', name="expireTimeEnd")
       input(type="hidden", :value='this.asideFilterResult.depositFlag', name="depositFlag")
       span 搜索
-      Input(style="width:200px",placeholder="请输入域名", name="domainName", v-model.trim="value")
+      Input(style="width:200px",placeholder="请输入域名", name="domainName", v-model.trim="value", @keydown.native.enter.prevent ="searchListData")
       Button(type="primary", @click="searchListData",:loading="loadingBtn") 查询
       Button(type="primary", @click="handleShowModalsMultiUpdate('import')", :loading="loadingBtn") 导入域名
       Button(type="default", @click="handleShowModalsMultiUpdate('update')", :loading="loadingBtn",) 批量修改

@@ -4,6 +4,7 @@
     h3.menuT.lv1(v-if="item.meta.show")
       Icon.fontL(:custom="item.meta.icon" size="16")
       span(v-if="item.children && item.children.length") {{item.meta.title}}
+      a(v-else-if="item.meta.blank", :href="item.path", target="_blank") {{item.meta.title}}
       router-link(v-else, :to="'/'+(item.path==='/'?'':item.path)" exact) {{item.meta.title}}
     ul.menuList(v-if="item.children && item.children.length")
       li.menuItem.lv2(v-if="child.meta.show", v-for="child in item.children")
