@@ -8,7 +8,7 @@ export default {
   actions: {
     DOMAIN_STATISTICS ({ commit }, params) {
       return new Promise((resolve, reject) => {
-        api.DOMAIN_STATISTICS(params).then(response => {
+        api.DOMAIN_STATISTICS(params.depositFlag).then(response => {
           resolve(response)
         }).catch(error => {
           reject(error)

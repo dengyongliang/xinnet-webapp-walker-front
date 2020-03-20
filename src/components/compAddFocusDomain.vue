@@ -14,7 +14,7 @@
         FormItem(label="品牌：", :required="true", v-if="methodGroup==='1'")
           comp-radio(:list="brandList", ref="brandIds1",:on-parentmethod="setBrandId")
         FormItem(label="品牌词：", :required="true", v-if="methodGroup==='2'")
-          comp-input(type="textarea", ref="brandWords", styles="width:80%",placeholder="可以取品牌英文名、中文全拼及简拼，每行一个")
+          comp-input(type="textarea", ref="brandWords", styles="width:80%",placeholder="可以取品牌英文名、中文、全拼及简拼，每行一个")
         FormItem(label="扩展词：", :required="true", v-if="methodGroup==='2'")
           span.n 正面
           comp-checkbox(:list="expPlusList", ref="expPlus",)
@@ -44,8 +44,8 @@
           comp-checkbox(:list="combMethodList", ref="combMethod",)
         FormItem(label="品牌：",:required="true", v-if="methodGroup==='2'")
           comp-radio(:list="brandList", ref="brandIds2",:on-parentmethod="setBrandId")
-        FormItem(label="智能生成域名：", :required="true", v-if="methodGroup==='2'")
-          span {{list.length}}个
+        //- FormItem(label="智能生成域名：", :required="true", v-if="methodGroup==='2'")
+        //-   span 0个
       div(slot="footer")
         Button(type="default", @click="modal1 = false") 取消
         Button(type="primary", @click="submitStep1", :loading="loadingBtn") 立即添加
@@ -241,28 +241,37 @@ export default {
     submitStep1 () {
       let result = true
       let domains = []
+      this.list = []
       if (this.methodGroup === '1') {
         result = validateFormResult([
           this.$refs.domainNames,
           this.$refs.brandIds1
         ])
-        if (this.$refs.domainNames.value.length) {
-          domains = this.$refs.domainNames.value.replace(/[\n\r]/g, ',').split(',')
+        domains = this.GLOBALS.TRIM_ALL(this.$refs.domainNames.value.replace(/[\n\r]/g, ',').replace(/www\./g, '')).split(',')
+        // 清除空项
+        domains = domains.filter((v) => {
+          return v.length > 0
+        })
+        console.log('================================')
+        console.log(domains)
+        console.log('================================')
+        this.$refs.domainNames.value = domains.join(',').replace(/,/gm, '\n')
+        if (domains.length) {
           if (domains.length > 2000) {
             this.$refs.domainNames.showValidateResult({text: '最多允许一次提交2000个域名！'})
             result = false
           } else {
             for (var i = 0; i < domains.length; i++) {
-              this.list.push({
-                domain: domains[i],
-                brandName: this.$refs.brandIds1.param.label,
-                brandId: this.$refs.brandIds1.param.value
-              })
               if (!this.GLOBALS.IS_DOMAIN_AVAILABLE(domains[i])) {
                 result = false
                 this.$refs.domainNames.showValidateResult({text: '域名格式错误！'})
                 break
               }
+              this.list.push({
+                domain: domains[i],
+                brandName: this.$refs.brandIds1.param.label,
+                brandId: this.$refs.brandIds1.param.value
+              })
             }
           }
         }
@@ -276,9 +285,14 @@ export default {
 
         if (this.$refs.brandWords.value.length) {
           // 品牌词格式校验
-          let brandWords = this.$refs.brandWords.value.replace(/[\n\r]/g, ',').split(',')
+          let brandWords = this.GLOBALS.TRIM_ALL(this.$refs.brandWords.value.replace(/[\n\r]/g, ',')).split(',')
+          // 清除空项
+          brandWords = brandWords.filter((v) => {
+            return v.length > 0
+          })
+          this.$refs.brandWords.value = brandWords.join(',').replace(/,/gm, '\n')
           for (let i = 0; i < brandWords.length; i++) {
-            if (!this.GLOBALS.IS_ALL_ENGLISH(brandWords[i])) {
+            if (!(this.GLOBALS.IS_ALL_ENGLISH(brandWords[i]) || this.GLOBALS.IS_ALL_CHINESE(brandWords[i]))) {
               result = false
               this.$refs.brandWords.showValidateResult({text: '格式错误！'})
               break
@@ -286,7 +300,7 @@ export default {
           }
         }
 
-        result = this.submitExpWordFun()
+        result = this.submitExpWordFun() && result
         if (result) {
           this.expWordsTotal = [...this.$refs.expPlus.value, ...this.$refs.expMinus.value, ...this.$refs.expIndustry.value, ...this.expWords]
           if (!this.expWordsTotal.length) {
@@ -296,12 +310,15 @@ export default {
             this.showErrorExp = false
           }
         }
-        this.suffixsTotal = [...this.$refs.suffixPlus.value, ...this.suffixs]
-        if (!this.suffixsTotal.length) {
-          this.showErrorSuffix = true
-          result = false
-        } else {
-          this.showErrorSuffix = false
+        result = this.submitSuffixFun() && result
+        if (result) {
+          this.suffixsTotal = [...this.$refs.suffixPlus.value, ...this.suffixs]
+          if (!this.suffixsTotal.length) {
+            this.showErrorSuffix = true
+            result = false
+          } else {
+            this.showErrorSuffix = false
+          }
         }
         // 计算条数
         this.suffixsTotal.map((v) => { // 后缀
@@ -359,6 +376,8 @@ export default {
       if (result) {
         this.modal1 = false
         this.modal2 = true
+        this.expWords = []
+        this.suffixs = []
       }
       this.domainNames = domains
     },
@@ -407,10 +426,16 @@ export default {
     submitExpWordFun () {
       // 扩展词格式校验
       let result = true
+      let expwords = []
       if (this.$refs.expwords.value.length) {
-        let expwords = this.$refs.expwords.value.replace(/[\n\r]/g, ',').split(',')
+        expwords = this.GLOBALS.TRIM_ALL(this.$refs.expwords.value.replace(/[\n\r]/g, ',')).split(',')
+        // 清除空项
+        expwords = expwords.filter((v) => {
+          return v.length > 0
+        })
+        this.$refs.expwords.value = expwords.join(',').replace(/,/gm, '\n')
         for (var i = 0; i < expwords.length; i++) {
-          if (!this.GLOBALS.IS_ALL_ENGLISH(expwords[i])) {
+          if (!this.GLOBALS.REG_CH_EN_NUM(expwords[i])) {
             result = false
             this.$refs.expwords.showValidateResult({text: '格式错误！'})
             break
@@ -419,7 +444,7 @@ export default {
       }
 
       if (result) {
-        this.expWords = this.$refs.expwords.value.length ? this.$refs.expwords.value.replace(/[\n\r]/g, ',').split(',') : []
+        this.expWords = expwords
         this.addExpWord = false
         return true
       } else {
@@ -427,8 +452,35 @@ export default {
       }
     },
     submitSuffixFun () {
-      this.suffixs = this.$refs.suffixs.value.length ? this.$refs.suffixs.value.replace(/[\n\r]/g, ',').split(',') : []
-      this.addSuffix = false
+      // 后缀格式校验
+      let result = true
+      let suffixs = []
+      if (this.$refs.suffixs.value.length) {
+        suffixs = this.GLOBALS.TRIM_ALL(this.$refs.suffixs.value.replace(/[\n\r]/g, ',')).split(',').map((v) => {
+          return (v.indexOf('.') === 0 ? v : ('.' + v))
+        })
+        // 清除空项
+        suffixs = suffixs.filter((v) => {
+          return v.length > 0
+        })
+        this.$refs.suffixs.value = suffixs.join(',').replace(/,/gm, '\n')
+        let reg = /^\.?[a-zA-Z\u4e00-\u9faf]{2,10}(?:\.[a-zA-Z\u4e00-\u9faf]{2,10})?$/
+        for (var i = 0; i < suffixs.length; i++) {
+          if (!reg.test(suffixs[i])) {
+            result = false
+            this.$refs.suffixs.showValidateResult({text: '格式错误！'})
+            break
+          }
+        }
+      }
+
+      if (result) {
+        this.suffixs = suffixs
+        this.addSuffix = false
+        return true
+      } else {
+        return false
+      }
     },
     // getBrandList () {
     //   // 品牌列表

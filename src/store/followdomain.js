@@ -8,7 +8,7 @@ export default {
   actions: {
     FOLLOW_DOMAIN_LIST ({ commit }, params) {
       return new Promise((resolve, reject) => {
-        api.FOLLOW_DOMAIN_LIST(params.domainName, params.siteTypes, params.excepType, params.isReg, params.brandIds, params.domainSuffixs, params.createTimeBegin, params.createTimeEnd, params.applyTimeBegin, params.applyTimeEnd, params.expireTimeBegin, params.expireTimeEnd, params.pageNum, params.pageSize).then(response => {
+        api.FOLLOW_DOMAIN_LIST(params.domainName, params.siteTypes, params.excepType, params.isReg, params.brandIds, params.domainSuffixs, params.otherSuffixs, params.createTimeBegin, params.createTimeEnd, params.applyTimeBegin, params.applyTimeEnd, params.expireTimeBegin, params.expireTimeEnd, params.pageNum, params.pageSize).then(response => {
           resolve(response)
         }).catch(error => {
           reject(error)
@@ -108,6 +108,15 @@ export default {
     QUERY_BRAND ({ commit }, params) {
       return new Promise((resolve, reject) => {
         api.QUERY_BRAND(params.brandId).then(response => {
+          resolve(response)
+        }).catch(error => {
+          reject(error)
+        })
+      })
+    },
+    REFRESE_DOMAIN ({ commit }, params) {
+      return new Promise((resolve, reject) => {
+        api.REFRESE_DOMAIN(params.id).then(response => {
           resolve(response)
         }).catch(error => {
           reject(error)

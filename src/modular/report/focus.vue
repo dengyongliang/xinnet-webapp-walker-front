@@ -1,7 +1,7 @@
 <template lang="pug">
 .contReportFocus
   h3.h3T 关注域名基本信息
-    .tR 共监控域名{{reportFocusDomainReg.total}}个，数据截止时间2018-05-31 23：59
+    .tR 共监控域名{{reportFocusDomainReg.total}}个，数据截止时间 {{new Date() | dateformat}}
       comp-select(:list="brandList", ref="", :onParentmethod="selectBrandChange" placeholder="全部关注域名监控报告",)
   Row
     Col(span="12")
@@ -221,8 +221,13 @@ export default {
         }
         if (response.data.code === '1000') {
           var obj = {}
+          obj.list = {}
+          obj.threeYearsCount = response.data.threeYearsCount
+          obj.oneYearsCount = response.data.oneYearsCount
+          obj.threeYearsRatio = response.data.threeYearsRatio
+          obj.oneYearsRatio = response.data.oneYearsRatio
           response.data.data.map((v) => {
-            obj[v.expireYear] = v.domainCount
+            obj.list[v.expireYear] = v.domainCount
           })
           this.reportFocusDomainExpireTime = obj
         } else {

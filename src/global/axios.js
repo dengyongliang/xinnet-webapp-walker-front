@@ -59,7 +59,7 @@ const successHandle = (code) => {
 }
 
 // 请求超时时间
-axios.defaults.timeout = 20000
+axios.defaults.timeout = 1000 * 60
 
 // 请求头
 axios.defaults.headers = {'Content-Type': 'application/json; charset=utf-8'}

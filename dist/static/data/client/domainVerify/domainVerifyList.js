@@ -45,7 +45,7 @@
       "verifyTime": null,
       "dnvcStatus": 1,
       "dnvcFaildReason": "dnvcFaildReason",
-      "rnvcStatus": 3,
+      "rnvcStatus": 2,
       "rnvcFaildReason": "rnvcFaildReason"
     }
     ]

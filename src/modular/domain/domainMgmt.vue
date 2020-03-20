@@ -19,29 +19,35 @@
       input(type="hidden", :value='this.asideFilterResult.createTimeEnd', name="createTimeEnd")
       input(type="hidden", :value='this.asideFilterResult.expireTimeBegin', name="expireTimeBegin")
       input(type="hidden", :value='this.asideFilterResult.expireTimeEnd', name="expireTimeEnd")
-
+      input(type="hidden", :value='this.asideFilterResult.depositFlag', name="depositFlag")
       span 搜索
       Input(style="width:200px",placeholder="请输入域名", name="domainName", v-model.trim="value")
       Button(type="primary", @click="searchListData",:loading="loadingBtn") 查询
+      Button(type="primary", @click="handleShowModalsMultiUpdate('import')", :loading="loadingBtn") 导入域名
+      Button(type="default", @click="handleShowModalsMultiUpdate('update')", :loading="loadingBtn",) 批量修改
       a(href="javascript:;",class="exportOrder",@click="exportOrder") 导出域名列表
 
   .secMain(v-show="!showDetail && !showDns")
     .filter
-      comp-aside-filter(ref="asideFilter",:show="[3,4,6,7,8]", @asideFilterSubmit="asideFilterSubmit", @asideFilterReset="asideFilterReset", :total="page.pageItems", :filterTitle="filterTitle")
+      comp-aside-filter(ref="asideFilter",:show="[3,4,6,7,8,10]", @asideFilterSubmit="asideFilterSubmit", @asideFilterReset="asideFilterReset", :total="page.pageItems", :filterTitle="filterTitle")
 
     <!-- 列表主体 -->
     .secTable(v-show="!showDetail && !showDns")
-      <Table :columns="columns" :data="list" :loading="loadingTable" ref="selection" @on-select="tableSelectChange" @on-select-cancel="tableSelectChange" @on-select-all="tableSelectChange" @on-select-all-cancel="tableSelectChange"></Table>
+      <Table :columns="columns" :data="list" :loading="loadingTable" ref="selection" @on-select="tableSelectChange" @on-select-cancel="tableSelectChange" @on-select-all="tableSelectChange" @on-select-all-cancel="tableSelectChange" @on-sort-change="sortChange"></Table>
       .tableTool
         a(href="javascript:;", @click="handleSelectAll(true)") 全选
         a(href="javascript:;", @click="handleSelectAll(false)") 取消全选
 
-        Poptip(placement="bottom", width="350", v-model="visible")
-          Button(@click="", :disabled="moveGroupDisabled", class="toolBtn") 移动至
-          comp-user-auth-groups(slot="content", :on-parentmethod="hidePop", :domainIds="getDomainId", @refreshData = "searchListData", :groupsData="userAuthGroups", type="list")
+        Poptip(placement="bottom", width="350", v-model="visible1")
+          Button(@click="", class="toolBtn") 移动至
+          comp-user-auth-groups(slot="content", :on-parentmethod="hidePop1", :domainIds="getDomainId", @refreshData = "searchListData", :groupsData="userAuthGroups", type="list")
 
-        Button(@click="renewFun", :disabled="renewDisabled", class="toolBtn") 续费
-        Button(@click="domainChangeFun", :disabled="disabledSafeLv", class="toolBtn") 过户
+        Button(@click="renewFun", class="toolBtn") 续费
+        Button(@click="domainChangeFun", class="toolBtn") 过户
+        Button(@click="domainDelFun", class="toolBtn") 删除
+        Poptip(placement="bottom", width="350", v-model="visible2")
+          Button(@click="", class="toolBtn") 设置所属品牌
+          comp-brand-list(slot="content", :on-parentmethod="hidePop2", :domainIds="getDomainId", @refreshData = "searchListData")
 
   <!-- 翻页区 -->
   Page(:total="page.pageItems",:current="page.pageNo",show-elevator,show-total,prev-text="上一页",next-text="下一页",@on-change="pageChange",:page-size=20, v-show="!showDetail && !showDns")
@@ -52,6 +58,7 @@
     @showDnsFun = "showDnsFun",
     @setVerificationCode = "setVerificationCode",
     @setDetailFun = "setDetailFun",
+    @refreshDomainDetail = "showDetailFun",
     :detailData = "detailData",
     v-if="showDetail"
   )
@@ -72,20 +79,69 @@
       @refreshData="searchListData",
       :defaultValue="defaultValueChange"
     )
+  <!-- 批量修改 -->
+  Modal(
+    v-model="showModalsMultiUpdate",
+    :title="modalUpdateDomainTitle",
+    :loading="loadingModalsMultiUpdate",
+    @on-visible-change="handleVisibleChange",
+    @on-ok="upload",
+    :footer-hide="true"
+  )
+    Form(:label-width="100")
+      //- FormItem(label="添加方式：", v-if="modalUpdateDomainType==='import'")
+      //-   comp-radio(:list="monthedList", ref="monthed", defaultValue="1", :on-parentmethod="setMonthedValue")
+      FormItem(label="请输入域名：", v-if="modalUpdateDomainType==='import' && method==='1'")
+        comp-input(name='domainNames',label="域名",ref="domainNames", type="textarea", styles="width:80%;", placeholder="每行一个,支持中英文数字和连字符“-”")
+      //- FormItem(label="管理公司：", v-if="modalUpdateDomainType==='import' && method==='1'")
+      //-   comp-select(name='companyId',label="管理公司",ref="companyId", :list="companysList")
+      FormItem(label="分组：", v-if="modalUpdateDomainType==='import' && method==='1'")
+        comp-select(name='groupId',label="分组",ref="groupId", :list="userAuthGroupsSelect", :optionGroup="true" )
+      FormItem(label="品牌：", v-if="modalUpdateDomainType==='import' && method==='1'")
+        comp-radio(:list="brandList", ref="brandId")
+      FormItem(label="", v-if="modalUpdateDomainType==='update' || (modalUpdateDomainType==='import' && method==='2')")
+        Upload(
+          v-if="showModalsMultiUpdate",
+          ref="upload",
+          :action="uploadLink",
+          name="file",
+          accept=".xlsx",
+          :format="['xlsx']",
+          :show-upload-list="true",
+          :on-success="handleSuccess",
+          :on-error="handleError",
+          :on-format-error="handleFormatError",
+          :before-upload="handleUpload"
+        )
+          Button(type="primary", icon="ios-cloud-upload-outline") 上传文件
+          a(style="display:inline-block;margin-left: 20px;", slot="tip", :href="modalUpdateDomainType==='import'?'../../../static/doc/depositDomainImport.xlsx':'../../../static/doc/depositDomainEdit.xlsx'") 下载模板
+        div(v-if="file !== null", style="padding: 20px 0 0 0;") {{ file.name }}
+    div.ivu-modal-footer(style="padding-bottom: 20px;")
+      Button(type="primary",@click="submitForm",:loading="loadingBtn", v-if="modalUpdateDomainType==='import' && method==='1'") 立即添加
+      Button(type="primary",@click="upload",:loading="loadingBtn", v-else) 立即添加
 </template>
 
 <script>
 import { mapState } from 'vuex'
+import compInput from '@/components/compInput'
+import compSelect from '@/components/compSelect'
+import compRadio from '@/components/compRadio'
 import compDomainChange from '@/components/compDomainChange'
 import compUserAuthGroups from '@/components/compUserAuthGroups'
+import compBrandList from '@/components/compBrandList'
 import compDomainMgmtDetail from '@/components/compDomainMgmtDetail'
 import compDomainModifyDns from '@/components/compDomainModifyDns'
 import compAsideFilter from '@/components/compAsideFilter'
 import * as actions from '@/actions/domain.js'
 import moment from 'moment'
+import validateFormResult from '@/global/validateForm'
 export default {
   components: {
+    compInput,
+    compSelect,
+    compRadio,
     compUserAuthGroups,
+    compBrandList,
     compDomainMgmtDetail,
     compDomainModifyDns,
     compDomainChange,
@@ -95,12 +151,17 @@ export default {
     return {
       value: '',
       filterTitle: '域名管理',
+      modalUpdateDomainTitle: '',
+      modalUpdateDomainType: null,
       refresh: false,
-      visible: false,
+      visible1: false,
+      visible2: false,
       selectData: [],
       loadingTable: true,
       loadingBtn: false,
+      loadingModalsMultiUpdate: true,
       showDetail: false,
+      showModalsMultiUpdate: false,
       drawerDomainChange: false,
       verificationCode: '',
       showDns: false,
@@ -111,6 +172,7 @@ export default {
       defaultValueChange: '',
       detailData: {},
       exportLink: actions.EXPORT_DOMAIN,
+      uploadLink: actions.BATCH_UPDATE_DEPOSIT_DOMAIN,
       list: [],
       page: {
         pageNo: 1,
@@ -163,9 +225,15 @@ export default {
           }
         },
         {
+          title: '注册商',
+          key: 'registrarName',
+          className: 'col2'
+        },
+        {
           title: '到期日期',
           key: 'expireDate',
-          className: 'col2',
+          className: 'col3',
+          sortable: true,
           render: (h, params) => {
             return h('div', [
               h('span', {
@@ -176,11 +244,11 @@ export default {
         {
           title: '服务状态',
           key: 'serviceStatus',
-          className: 'col3',
+          className: 'col4',
           render: (h, params) => {
             return h('div', [
               h('span', {
-              }, this.DATAS.SERVICE_STATE[this.list[params.index].serviceStatus])
+              }, (this.list[params.index].serviceStatus !== -1 ? this.DATAS.SERVICE_STATE[this.list[params.index].serviceStatus] : '-'))
             ])
           }
         },
@@ -188,7 +256,7 @@ export default {
           title: '域名所有者',
           width: 200,
           key: 'organizeNameCn',
-          className: 'col4'
+          className: 'col5'
         },
         {
           title: '操作',
@@ -231,16 +299,43 @@ export default {
         createTimeEnd: '',
         expireTimeBegin: '',
         expireTimeEnd: ''
-      }
+      },
+      file: null,
+      loadingStatus: false,
+      monthedList: [
+        {
+          value: '1',
+          label: '直接添加'
+        },
+        {
+          value: '2',
+          label: '导入域名'
+        }
+      ],
+      brandList: [],
+      method: '1'
     }
   },
   methods: {
+    setMonthedValue (obj) {
+      this.method = obj.value
+    },
+    handleShowModalsMultiUpdate (type) {
+      this.importDomainType = type
+      if (type === 'import') {
+        this.modalUpdateDomainTitle = '添加非新网域名'
+      } else {
+        this.modalUpdateDomainTitle = '修改域名信息'
+      }
+      this.modalUpdateDomainType = type
+      this.showModalsMultiUpdate = true
+    },
     searchListData () {
       this.moveGroupDisabled = true
       this.$refs.asideFilter.filterSubmit()
     },
     pageChange: function (curPage) {
-      this.queryList(curPage)
+      this.queryList({pageNum: curPage})
     },
     exportOrder () {
       this.$refs.exportForm.submit()
@@ -251,7 +346,6 @@ export default {
     drawerChange () {
     },
     setVerificationCode (v) {
-      alert(v)
       this.verificationCode = v
     },
     toBackList () {
@@ -272,6 +366,11 @@ export default {
       this.renewDisabled = !selected.length
     },
     renewFun () {
+      if (!this.selectData.length) {
+        this.$Message.error('请选择域名!')
+        this.loadingBtn = false
+        return false
+      }
       var newWin = window.open('')
       let depositFlag = true
       let serviceStatus = true
@@ -351,7 +450,7 @@ export default {
       }
     },
     showDetailFun (item) {
-      this.domainType = item.depositFlag
+      // this.domainType = item.depositFlag
       this.showDetail = true
       let params = {
         domainId: item.id
@@ -375,8 +474,63 @@ export default {
       this.showDetail = false
       this.showDns = true
     },
-    hidePop () {
-      this.visible = false
+    domainDelFun () {
+      let flag = true
+      if (this.selectData.length) {
+        let domainString = this.selectData.map((v) => {
+          if (v.depositFlag !== 1) {
+            flag = false
+          }
+          return v.id
+        }).join(',')
+        // flag===true 执行过户，否则提示 错误信息
+        if (flag) {
+          this.$Modal.confirm({
+            title: '确认',
+            content: '<p>请确认是否要此域名！</p>',
+            loading: true,
+            onOk: () => {
+              this.$store.dispatch('DELETE_DEPOSIT_DOMAIN', {domainIds: domainString}).then(response => {
+                this.$Modal.remove()
+                if (!response) {
+                  return false
+                }
+                if (response.data.code === '1000') {
+                  this.$Message.success('删除成功')
+                  // 删除成功，重新加载列表数据
+                  this.queryList({pageNum: 1})
+                } else {
+                  if (response.data.code === '200') {
+                    this.$Message.error('用户不存在')
+                  } else if (response.data.code === '300') {
+                    setTimeout(() => {
+                      this.$Modal.warning({
+                        title: '无法删除',
+                        content: '该账号为域名分组负责人，请将域名分组负责人设为其他账号后再删除该账号'
+                      })
+                    }, 300)
+                    // this.$Message.error('该客户下已有负责分组，请先将分组移至其它客户再删除当前客户！')
+                  } else {
+                    this.$Message.error('操作失败')
+                  }
+                }
+              }).catch(() => {})
+            },
+            onCancel: () => {
+            }
+          })
+        } else {
+          this.$Message.error('存在非托管域名，禁止删除！')
+        }
+      } else {
+        this.$Message.error('请选择要删除的域名！')
+      }
+    },
+    hidePop1 () {
+      this.visible1 = false
+    },
+    hidePop2 () {
+      this.visible2 = false
     },
     asideFilterSubmit (result) {
       console.log(result)
@@ -397,10 +551,11 @@ export default {
       this.asideFilterResult.expireDay = result.dataTimeExpire.value === 'custom' ? '' : result.dataTimeExpire.value
       this.asideFilterResult.expireTimeBegin = result.dataTimeExpire.value === 'custom' ? (result.dataTimeExpire.time[0] + ' 00:00:00') : ''
       this.asideFilterResult.expireTimeEnd = result.dataTimeExpire.value === 'custom' ? (result.dataTimeExpire.time[1] + ' 23:59:59') : ''
+      this.asideFilterResult.depositFlag = result.dataMgmtMethod.join(',')
 
       console.log(this.asideFilterResult)
       // 加载数据
-      this.queryList(1)
+      this.queryList({pageNum: 1})
     },
     asideFilterReset () {
       this.asideFilterResult.domainSuffixs = ''
@@ -414,8 +569,9 @@ export default {
       this.asideFilterResult.createTimeEnd = ''
       this.asideFilterResult.expireTimeBegin = ''
       this.asideFilterResult.expireTimeEnd = ''
+      this.asideFilterResult.depositFlag = ''
 
-      this.queryList(1)
+      this.queryList({pageNum: 1})
     },
     queryListParam (obj) {
       this.page.pageNo = obj.pageNum
@@ -436,12 +592,13 @@ export default {
         createTimeBegin: this.asideFilterResult.createTimeBegin,
         createTimeEnd: this.asideFilterResult.createTimeEnd,
         expireTimeBegin: this.asideFilterResult.expireTimeBegin,
-        expireTimeEnd: this.asideFilterResult.expireTimeEnd
+        expireTimeEnd: this.asideFilterResult.expireTimeEnd,
+        depositFlag: this.asideFilterResult.depositFlag
       }
       return params
     },
-    queryList (num) {
-      this.$store.dispatch('DOMAIN_LIST', this.queryListParam({pageNum: num})).then(response => {
+    queryList (obj) {
+      this.$store.dispatch('DOMAIN_LIST', this.queryListParam(obj)).then(response => {
         this.loadingBtn = false
         this.loadingTable = false
         if (!response) {
@@ -453,6 +610,125 @@ export default {
         } else {
         }
       }).catch(() => {})
+    },
+    sortChange (v) {
+      console.log(v)
+      // let sort = v.order
+      // sort.sortType = v.key === 'flowTime' ? 'time' : 'money'
+      // sort.sortValue = v.order
+      // console.log(sort)
+      this.queryList({pageNum: 1, orderExpireDate: v.order})
+    },
+    getBrandList () {
+      // 品牌列表
+      this.$store.dispatch('FOLLOW_BRAND_LIST', {pageNum: -1, pageSize: -1}).then(response => {
+        this.loadingTable = false
+        this.loadingBtn = false
+        if (!response) {
+          return false
+        }
+        if (response.data.code === '1000') {
+          this.brandList = response.data.data.list.map((v) => {
+            return {
+              label: v.brandName,
+              domainCount: v.domainCount,
+              value: v.id
+            }
+          })
+        } else {
+        }
+      }).catch(() => {})
+    },
+    handleFormatError (file) {
+      this.$Notice.warning({
+        title: '格式错误',
+        desc: '请下载固定格式模板'
+      })
+    },
+    handleSuccess () {
+      this.file = null
+      this.$Message.success('添加成功')
+      this.queryList(1)
+      this.showModalsMultiUpdate = false
+    },
+    handleError () {
+      // this.file = null
+      this.$Message.error('添加失败')
+      this.loadingModalsMultiUpdate = false
+    },
+    handleUpload (file) {
+      this.file = file
+      return false
+    },
+    upload () {
+      this.$refs.upload.post(this.file)
+    },
+    handleVisibleChange () {
+      this.file = null
+    },
+    submitForm () {
+      this.loadingBtn = true
+      let result = validateFormResult([
+        this.$refs.domainNames,
+        // this.$refs.companyId,
+        this.$refs.groupId,
+        this.$refs.brandId
+      ])
+      let domains = this.GLOBALS.TRIM_ALL(this.$refs.domainNames.value.replace(/[\n\r]/g, ',').replace(/www\./g, '')).split(',')
+      // 清除空项
+      domains = domains.filter((v) => {
+        return v.length > 0
+      })
+      console.log('================================')
+      console.log(domains)
+      console.log('================================')
+      this.$refs.domainNames.value = domains.join(',').replace(/,/gm, '\n')
+      if (domains.length > 500) {
+        this.$refs.domainNames.showValidateResult({text: '最多允许一次提交500个域名！'})
+        result = false
+      } else {
+        for (var i = 0; i < domains.length; i++) {
+          if (!this.GLOBALS.IS_DOMAIN_AVAILABLE(domains[i])) {
+            result = false
+            this.$refs.domainNames.showValidateResult({text: '域名格式错误！'})
+            break
+          }
+        }
+      }
+      if (result) {
+        var params = {
+          domainNames: domains.join(','),
+          companyId: this.$refs.groupId.group.value,
+          groupId: this.$refs.groupId.value,
+          brandId: this.$refs.brandId.value
+        }
+        console.log('================================')
+        console.log(params)
+        console.log('================================')
+        this.$store.dispatch('CREATE_DEPOSIT_DOMAIN', params).then(response => {
+          this.loadingBtn = false
+          if (response) {
+            if (response.data.code === '1000') {
+              this.$Modal.info({
+                title: '提示',
+                content: `<p>添加成功：${response.data.countSuccess}个</p><p>添加失败：${response.data.countFaild}个</p>`
+              })
+              this.queryList(1)
+              this.showModalsMultiUpdate = false
+            } else {
+              if (response.data.code === '200') {
+                this.$Message.error('用户不存在')
+              } else if (response.data.code === '300') {
+                this.$Message.error('用户被锁定')
+              } else {
+                this.$Message.error('更新失败')
+              }
+            }
+          }
+        }).catch(() => {})
+      } else {
+        this.loadingBtn = false
+      }
     }
   },
   computed: {
@@ -479,12 +755,28 @@ export default {
           })
         }
         return arrGroups
+      },
+      userAuthGroupsSelect (state) {
+        let arrGroups = []
+        arrGroups = this.GLOBALS.CONVERT_SELECT_GROUP(state.user.userAuthGroups.companys, {
+          value: 'id',
+          label: 'name',
+          children: 'groups'
+        })
+        return arrGroups
+      },
+      companysList (state) {
+        return this.GLOBALS.CONVERT_SELECT(state.user.companys, {
+          label: 'name',
+          value: 'id'
+        })
       }
     })
   },
   beforeMount () {
   },
   mounted () {
+    this.getBrandList()
     this.queryList(1)
   },
   watch: {

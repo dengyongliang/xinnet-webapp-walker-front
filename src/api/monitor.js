@@ -6,7 +6,7 @@ import * as action from '@/actions/monitor'
 export const MAIL_MANAGE = (pageNum, pageSize, createTimeBegin, createTimeEnd, type) => {
   return axios({
     url: action.MAIL_MANAGE,
-    method: 'post',
+    method: 'POST',
     data: {pageNum, pageSize, createTimeBegin, createTimeEnd, type}
   })
 }
@@ -14,7 +14,7 @@ export const MAIL_MANAGE = (pageNum, pageSize, createTimeBegin, createTimeEnd, t
 export const MAIL_RECORD_READ = (id) => {
   return axios({
     url: action.MAIL_RECORD_READ,
-    method: 'post',
+    method: 'POST',
     data: {id}
   })
 }
@@ -22,7 +22,7 @@ export const MAIL_RECORD_READ = (id) => {
 export const NOTIFY_SET = (notifyInfo) => {
   return axios({
     url: action.NOTIFY_SET,
-    method: 'post',
+    method: 'POST',
     data: {notifyInfo}
   })
 }
@@ -30,7 +30,7 @@ export const NOTIFY_SET = (notifyInfo) => {
 export const NOTIFY_SET_DETAIL = () => {
   return axios({
     url: action.NOTIFY_SET_DETAIL,
-    method: 'post',
+    method: 'POST',
     data: {}
   })
 }
@@ -38,7 +38,7 @@ export const NOTIFY_SET_DETAIL = () => {
 export const DOMAIN_MONITOR_MANAGE = (pageNum, pageSize, domainName, createTimeBegin, createTimeEnd, levelType) => {
   return axios({
     url: action.DOMAIN_MONITOR_MANAGE,
-    method: 'post',
+    method: 'POST',
     data: {pageNum, pageSize, domainName, createTimeBegin, createTimeEnd, levelType}
   })
 }
@@ -46,7 +46,7 @@ export const DOMAIN_MONITOR_MANAGE = (pageNum, pageSize, domainName, createTimeB
 export const USER_MONITOR_MANAGE = (pageNum, pageSize, userName, createTimeBegin, createTimeEnd, type) => {
   return axios({
     url: action.USER_MONITOR_MANAGE,
-    method: 'post',
+    method: 'POST',
     data: {pageNum, pageSize, userName, createTimeBegin, createTimeEnd, type}
   })
 }
@@ -54,7 +54,7 @@ export const USER_MONITOR_MANAGE = (pageNum, pageSize, userName, createTimeBegin
 export const EXPORT_MONITOR_LOG = () => {
   return axios({
     url: action.EXPORT_MONITOR_LOG,
-    method: 'post',
+    method: 'POST',
     data: {}
   })
 }
@@ -62,7 +62,7 @@ export const EXPORT_MONITOR_LOG = () => {
 export const EXPORT_USER_LOG = () => {
   return axios({
     url: action.EXPORT_USER_LOG,
-    method: 'post',
+    method: 'POST',
     data: {}
   })
 }
@@ -70,7 +70,7 @@ export const EXPORT_USER_LOG = () => {
 export const MAIL_MANAGE_TOP = () => {
   return axios({
     url: action.MAIL_MANAGE_TOP,
-    method: 'post',
+    method: 'POST',
     data: {}
   })
 }
@@ -78,7 +78,7 @@ export const MAIL_MANAGE_TOP = () => {
 export const DOMAIN_MONITOR = (pageNum, pageSize, domainName, groupIds, serviceState, monitorLog) => {
   return axios({
     url: action.DOMAIN_MONITOR,
-    method: 'post',
+    method: 'POST',
     data: {pageNum, pageSize, domainName, groupIds, serviceState, monitorLog}
   })
 }
@@ -86,7 +86,7 @@ export const DOMAIN_MONITOR = (pageNum, pageSize, domainName, groupIds, serviceS
 export const DOMAIN_MONITOR_DETAIL = (domainName) => {
   return axios({
     url: action.DOMAIN_MONITOR_DETAIL,
-    method: 'post',
+    method: 'POST',
     data: {domainName}
   })
 }
@@ -94,7 +94,7 @@ export const DOMAIN_MONITOR_DETAIL = (domainName) => {
 export const DOMAIN_MONITOR_LOG = (pageNum, pageSize, domainName, createTimeBegin, createTimeEnd, type) => {
   return axios({
     url: action.DOMAIN_MONITOR_LOG,
-    method: 'post',
+    method: 'POST',
     data: {pageNum, pageSize, domainName, createTimeBegin, createTimeEnd, type}
   })
 }
@@ -102,7 +102,7 @@ export const DOMAIN_MONITOR_LOG = (pageNum, pageSize, domainName, createTimeBegi
 // export const EXPORT_DOMAIN_LOG = () => {
 //   return axios({
 //     url: action.EXPORT_DOMAIN_LOG,
-//     method: 'post',
+//     method: 'POST',
 //     data: {}
 //   })
 // }
@@ -110,7 +110,7 @@ export const DOMAIN_MONITOR_LOG = (pageNum, pageSize, domainName, createTimeBegi
 export const MAIL_RECORD_DETAIL = (id) => {
   return axios({
     url: action.MAIL_RECORD_DETAIL,
-    method: 'post',
+    method: 'POST',
     data: {id}
   })
 }

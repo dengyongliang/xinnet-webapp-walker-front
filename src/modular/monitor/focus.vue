@@ -76,7 +76,7 @@
         .tableTool
           a(href="javascript:;", @click="handleSelectAll(true)") 全选
           a(href="javascript:;", @click="handleSelectAll(false)") 取消全选
-          Button(@click="delDomains", :disabled="removeDisabled", class="toolBtn") 移除关注
+          Button(@click="delDomains", class="toolBtn") 移除关注
 
   <!-- 翻页区 -->
   Page(:total="page.pageItems",:current="page.pageNo",show-elevator,show-total,prev-text="上一页",next-text="下一页",@on-change="pageChange",:page-size=20,v-show="!showDetail")
@@ -216,7 +216,7 @@ export default {
         },
         {
           value: '其他',
-          label: ''
+          label: 'other'
         }
       ],
       columnsTop: [
@@ -378,7 +378,8 @@ export default {
         excepType: this.$refs.excepType.value,
         isReg: this.$refs.isReg.value,
         brandIds: this.$refs.brandIds.value,
-        domainSuffixs: this.$refs.domainSuffixs.value.length ? this.$refs.domainSuffixs.value.join(',') : '',
+        domainSuffixs: this.$refs.domainSuffixs.value.join(',').replace(/,?other,?/g, ''),
+        otherSuffixs: this.$refs.domainSuffixs.value.join(',').indexOf('other') >= 0 ? '1' : '0',
         createTimeBegin: this.timesCreate[0] !== '' ? moment(this.timesCreate[0]).format('YYYY-MM-DD') + ' 00:00:00' : '',
         createTimeEnd: this.timesCreate[1] !== '' ? moment(this.timesCreate[1]).format('YYYY-MM-DD') + ' 23:59:59' : '',
         applyTimeBegin: this.timesReg[0] !== '' ? moment(this.timesReg[0]).format('YYYY-MM-DD') + ' 00:00:00' : '',
@@ -386,6 +387,9 @@ export default {
         expireTimeBegin: this.timesExp[0] !== '' ? moment(this.timesExp[0]).format('YYYY-MM-DD') + ' 00:00:00' : '',
         expireTimeEnd: this.timesExp[1] !== '' ? moment(this.timesExp[1]).format('YYYY-MM-DD') + ' 23:59:59' : ''
       }
+      console.log('=======================================================')
+      console.log(params)
+      console.log('=======================================================')
       return params
     },
     queryList (num) {
@@ -443,39 +447,43 @@ export default {
       this.$refs.exportForm.submit()
     },
     delDomains () {
-      this.$Modal.confirm({
-        title: '确认',
-        content: '<p>请确认是否要删除选中域名！</p>',
-        loading: true,
-        onOk: () => {
-          this.$Modal.remove()
-          setTimeout(() => {
-            let params = {
-              id: this.getDomainId
-            }
-            this.$store.dispatch('DELETE_DOMAIN', params).then(response => {
-              this.loadingTable = false
-              this.loadingBtn = false
-              if (!response) {
-                return false
+      if (!this.getDomainId.length) {
+        this.$Message.error('请选择域名')
+      } else {
+        this.$Modal.confirm({
+          title: '确认',
+          content: '<p>请确认是否要删除选中域名！</p>',
+          loading: true,
+          onOk: () => {
+            this.$Modal.remove()
+            setTimeout(() => {
+              let params = {
+                id: this.getDomainId
               }
-              if (response.data.code === '1000') {
-                this.queryList(1)
-                this.$Modal.info({
-                  title: '提示',
-                  content: `<p>删除成功：${response.data.successCount}个</p><p>删除失败：${response.data.faildCount}个</p>`
-                })
-              } else {
-                if (response.data.code === '100') {
-                  this.$Message.error('域名信息错误')
+              this.$store.dispatch('DELETE_DOMAIN', params).then(response => {
+                this.loadingTable = false
+                this.loadingBtn = false
+                if (!response) {
+                  return false
                 }
-              }
-            }).catch(() => {})
-          }, 1000)
-        },
-        onCancel: () => {
-        }
-      })
+                if (response.data.code === '1000') {
+                  this.queryList(1)
+                  this.$Modal.info({
+                    title: '提示',
+                    content: `<p>删除成功：${response.data.successCount}个</p><p>删除失败：${response.data.faildCount}个</p>`
+                  })
+                } else {
+                  if (response.data.code === '100') {
+                    this.$Message.error('域名信息错误')
+                  }
+                }
+              }).catch(() => {})
+            }, 1000)
+          },
+          onCancel: () => {
+          }
+        })
+      }
     },
     getBrandList () {
       // 品牌列表

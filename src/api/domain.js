@@ -3,11 +3,11 @@ import axios from '@/global/axios.js'
 import * as action from '@/actions/domain'
 
 // 域名管理列表
-export const DOMAIN_LIST = (pageNum, pageSize, domainName, domainSuffixs, otherSuffix, allSuffix, groupIds, serviceState, createDay, expireDay, createTimeBegin, createTimeEnd, expireTimeBegin, expireTimeEnd) => {
+export const DOMAIN_LIST = (pageNum, pageSize, domainName, domainSuffixs, otherSuffix, allSuffix, groupIds, serviceState, createDay, expireDay, createTimeBegin, createTimeEnd, expireTimeBegin, expireTimeEnd, orderExpireDate, depositFlag) => {
   return axios({
     url: action.DOMAIN_LIST,
     method: 'POST',
-    data: {pageNum, pageSize, domainName, domainSuffixs, otherSuffix, allSuffix, groupIds, serviceState, createDay, expireDay, createTimeBegin, createTimeEnd, expireTimeBegin, expireTimeEnd}
+    data: {pageNum, pageSize, domainName, domainSuffixs, otherSuffix, allSuffix, groupIds, serviceState, createDay, expireDay, createTimeBegin, createTimeEnd, expireTimeBegin, expireTimeEnd, orderExpireDate, depositFlag}
   })
 }
 // 域名管理-详情管理
@@ -64,5 +64,45 @@ export const EXPORT_DOMAIN = () => {
     url: action.EXPORT_DOMAIN,
     method: 'POST',
     data: {}
+  })
+}
+// 域名管理-删除托管域名
+export const DELETE_DEPOSIT_DOMAIN = (domainIds) => {
+  return axios({
+    url: action.DELETE_DEPOSIT_DOMAIN,
+    method: 'POST',
+    data: {domainIds}
+  })
+}
+// 域名管理-设置域名品牌
+export const SET_DOMAIN_BRAND = (domainIds, brandId) => {
+  return axios({
+    url: action.SET_DOMAIN_BRAND,
+    method: 'POST',
+    data: {domainIds, brandId}
+  })
+}
+// 域名管理-刷新托管域名
+export const SYNC_DEPOSIT_DOMAIN = (domainId) => {
+  return axios({
+    url: action.SYNC_DEPOSIT_DOMAIN,
+    method: 'POST',
+    data: {domainId}
+  })
+}
+// 域名管理-修改托管域名
+export const UPDATE_DEPOSIT_DOMAIN = (domainId, registrarName, applyDate, expireDate, regUserName, regUserEmail) => {
+  return axios({
+    url: action.UPDATE_DEPOSIT_DOMAIN,
+    method: 'POST',
+    data: {domainId, registrarName, applyDate, expireDate, regUserName, regUserEmail}
+  })
+}
+// 域名管理-修改托管域名
+export const CREATE_DEPOSIT_DOMAIN = (domainNames, companyId, groupId, brandId) => {
+  return axios({
+    url: action.CREATE_DEPOSIT_DOMAIN,
+    method: 'POST',
+    data: {domainNames, companyId, groupId, brandId}
   })
 }

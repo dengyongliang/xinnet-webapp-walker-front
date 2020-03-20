@@ -14,7 +14,7 @@ export const FOLLOW_RECORD_EXPORT = '/client-api/client/followdomain/followRecor
 // 关注域名管理-品牌列表
 export const FOLLOW_BRAND_LIST = '/client/followdomain/followBrandList' + suffix
 // 关注域名管理-统计关注域名
-export const REPORT_FOLLOW_RECORD = '/client/followdomain/reportfollowRecord' + suffix
+export const REPORT_FOLLOW_RECORD = '/client/followdomain/reportfollowRecord' + suffix // reportfollowRecord
 // 关注域名报告-异常域名清单
 export const EXCEP_FOLLOW_RECORD_LIST = '/client/followdomain/excepfollowRecordList' + suffix
 // 关注域名报告-异常域名清单
@@ -31,3 +31,5 @@ export const CREATE_DOMAIN = '/client/followdomain/createDomain' + suffix
 export const DELETE_DOMAIN = '/client/followdomain/deleteDomain' + suffix
 // 监控域名管理-查询品牌
 export const QUERY_BRAND = '/client/followdomain/queryBrand' + suffix
+// 监控域名管理-刷新域名
+export const REFRESE_DOMAIN = '/client/followdomain/refreseDomain' + suffix

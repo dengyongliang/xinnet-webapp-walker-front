@@ -32,7 +32,7 @@
           v-for="item2 in item.children",
           :value="item2.value",
           :key="item2.value",
-          @click.native="getMoreParams(item2)"
+          @click.native="getMoreParams(item2, item)"
         ) {{item2.label}}
     slot(name="right")
     Alert(type="error",show-icon, style="display:inline-block",v-show="showError") {{errorText}}
@@ -115,7 +115,8 @@ export default {
       value: '',
       showError: false,
       errorText: `请选择${this.label}！`,
-      param: {}
+      param: {},
+      group: {}
     }
   },
   methods: {
@@ -128,8 +129,12 @@ export default {
         this.onParentmethod(this.value)
       }
     },
-    getMoreParams (param) {
+    getMoreParams (param, group) {
       this.param = param
+      if (group) {
+        this.group = group
+      }
+      console.log(this.group)
     }
   },
   beforeMount () {

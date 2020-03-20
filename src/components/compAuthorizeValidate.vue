@@ -1,7 +1,7 @@
 <template lang="pug">
   div.compAuthorizeValidate()
     p.p1 域名<strong>{{detailData.domainName}}</strong>为重点保护域名，若进行解析设置/修改DNS等操作需该域名所在分组负责人授权。点击“获取验证码”按钮，将发送短信验证码至
-    p.p2 {{detailData.contactorName}}（{{detailData.regUserCode}}）绑定手机
+    p.p2 {{detailData.contactorName}}（{{detailData.contactorCode}}）绑定手机
     p.p3 {{detailData.contactorMobile}}
     div.vcode
       comp-input(name='verificationCode',label="短信验证码",ref="verificationCode",defaultValue="",placeholder="短信验证码",styles="width:200px",:maxLength="6")

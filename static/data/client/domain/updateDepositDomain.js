@@ -12,7 +12,7 @@
 		"domainName": "cedns.cn",
 		"applyDate": "2016-02-23 00:00:00.0",
 		"expireDate": "2020-02-23 00:00:00.0",
-		"organizeNameCn": "白羽222",
+		"organizeNameCn": "白羽1111",
 		"userEmail": "baiyu@xinnet.com",
     "domainStatus": null,
     "operateTime": "23 00:00:00.0",
@@ -101,8 +101,6 @@
 		"contactorEmail": "tangwenchao@xinnet.com",
 		"manageUsers": [],
 		"groupId": 9,
-    "registrarName": "registrarName",
-    "regUserName" : "regUserName",
-    "regUserEmail" : "regUserEmail"
+		"registrarName": "registrarName"
 	}
 }

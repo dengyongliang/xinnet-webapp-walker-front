@@ -6,8 +6,8 @@
 		"domainCount": 9
 		},
 		{
-			"exceptType": "类型二",
-			"domainCount": 5
+			"exceptType": "类型33",
+			"domainCount": 2
 		}
 	]
 }

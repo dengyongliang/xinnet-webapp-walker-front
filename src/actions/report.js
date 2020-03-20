@@ -19,6 +19,8 @@ export const DOMAIN_SAFE_NORMAL_REPORT = '/client/report/domainSafeNormalReport'
 export const DOMAIN_SAFE_IMPORTANT_REPORT = '/client/report/domainSafeImportantReport' + suffix // QUERY_DOMAIN_SAFE_IMPORTANT_REPORT
 // 域名资产报告(域名安全保护统计)
 export const DOMAIN_SAFE_RATE_REPORT = '/client/report/domainSafeRateReport' + suffix // QUERY_DOMAIN_SAFE_RATE_REPORT
+// 域名资产报告(域名注册商统计)
+export const DOMAIN_REGISTRAR_NAME_VIEW_REPORT = '/client/report/domainRegistrarNameViewReport' + suffix
 // 域名预算报告总览
 export const DOMAIN_BUDGET_REPORT = '/client/report/domainBudgetReport' + suffix // QUERY_DOMAIN_BUDGET_REPORT
 // 域名预算报告-域名回购

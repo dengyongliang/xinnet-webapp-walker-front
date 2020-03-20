@@ -6,7 +6,7 @@ import * as action from '@/actions/report'
 export const DOMAIN_MONITOR_CHANGE_REPORT = (cycleTime) => {
   return axios({
     url: action.DOMAIN_MONITOR_CHANGE_REPORT,
-    method: 'post',
+    method: 'POST',
     data: {cycleTime}
   })
 }
@@ -14,7 +14,7 @@ export const DOMAIN_MONITOR_CHANGE_REPORT = (cycleTime) => {
 export const DOMAIN_MONITOR_SAFE_REPORT = () => {
   return axios({
     url: action.DOMAIN_MONITOR_SAFE_REPORT,
-    method: 'post',
+    method: 'POST',
     data: {}
   })
 }
@@ -22,7 +22,7 @@ export const DOMAIN_MONITOR_SAFE_REPORT = () => {
 export const DOMAIN_MONITOR_EXPIRE_REPORT = () => {
   return axios({
     url: action.DOMAIN_MONITOR_EXPIRE_REPORT,
-    method: 'post',
+    method: 'POST',
     data: {}
   })
 }
@@ -30,7 +30,7 @@ export const DOMAIN_MONITOR_EXPIRE_REPORT = () => {
 export const DOMAIN_ASSETS_VIEW_REPORT = () => {
   return axios({
     url: action.DOMAIN_ASSETS_VIEW_REPORT,
-    method: 'post',
+    method: 'POST',
     data: {}
   })
 }
@@ -38,7 +38,7 @@ export const DOMAIN_ASSETS_VIEW_REPORT = () => {
 export const DOMAIN_COMPANY_VIEW_REPORT = () => {
   return axios({
     url: action.DOMAIN_COMPANY_VIEW_REPORT,
-    method: 'post',
+    method: 'POST',
     data: {}
   })
 }
@@ -46,7 +46,7 @@ export const DOMAIN_COMPANY_VIEW_REPORT = () => {
 export const DOMAIN_SUFFIX_VIEW_REPORT = () => {
   return axios({
     url: action.DOMAIN_SUFFIX_VIEW_REPORT,
-    method: 'post',
+    method: 'POST',
     data: {}
   })
 }
@@ -54,7 +54,7 @@ export const DOMAIN_SUFFIX_VIEW_REPORT = () => {
 export const DOMAIN_SAFE_NORMAL_REPORT = () => {
   return axios({
     url: action.DOMAIN_SAFE_NORMAL_REPORT,
-    method: 'post',
+    method: 'POST',
     data: {}
   })
 }
@@ -62,7 +62,7 @@ export const DOMAIN_SAFE_NORMAL_REPORT = () => {
 export const DOMAIN_SAFE_IMPORTANT_REPORT = () => {
   return axios({
     url: action.DOMAIN_SAFE_IMPORTANT_REPORT,
-    method: 'post',
+    method: 'POST',
     data: {}
   })
 }
@@ -70,7 +70,15 @@ export const DOMAIN_SAFE_IMPORTANT_REPORT = () => {
 export const DOMAIN_SAFE_RATE_REPORT = () => {
   return axios({
     url: action.DOMAIN_SAFE_RATE_REPORT,
-    method: 'post',
+    method: 'POST',
+    data: {}
+  })
+}
+// 域名资产报告(域名注册商统计)
+export const DOMAIN_REGISTRAR_NAME_VIEW_REPORT = () => {
+  return axios({
+    url: action.DOMAIN_REGISTRAR_NAME_VIEW_REPORT,
+    method: 'POST',
     data: {}
   })
 }
@@ -78,7 +86,7 @@ export const DOMAIN_SAFE_RATE_REPORT = () => {
 export const DOMAIN_BUDGET_REPORT = (reportId) => {
   return axios({
     url: action.DOMAIN_BUDGET_REPORT,
-    method: 'post',
+    method: 'POST',
     data: {reportId}
   })
 }
@@ -86,7 +94,7 @@ export const DOMAIN_BUDGET_REPORT = (reportId) => {
 export const DOMAIN_REPURCHASE_REPORT = (reportId, pageNum, pageSize) => {
   return axios({
     url: action.DOMAIN_REPURCHASE_REPORT,
-    method: 'post',
+    method: 'POST',
     data: {reportId, pageNum, pageSize}
   })
 }
@@ -94,7 +102,7 @@ export const DOMAIN_REPURCHASE_REPORT = (reportId, pageNum, pageSize) => {
 export const DOMAIN_RENEW_AND_SAFE_REPORT = (reportId) => {
   return axios({
     url: action.DOMAIN_RENEW_AND_SAFE_REPORT,
-    method: 'post',
+    method: 'POST',
     data: {reportId}
   })
 }
@@ -102,7 +110,7 @@ export const DOMAIN_RENEW_AND_SAFE_REPORT = (reportId) => {
 export const DOMAIN_REGISTER_REPORT = (reportId) => {
   return axios({
     url: action.DOMAIN_REGISTER_REPORT,
-    method: 'post',
+    method: 'POST',
     data: {reportId}
   })
 }
@@ -110,7 +118,7 @@ export const DOMAIN_REGISTER_REPORT = (reportId) => {
 export const DOMAIN_BUDGET_REPORT_LIST = (pageNum, pageSize) => {
   return axios({
     url: action.DOMAIN_BUDGET_REPORT_LIST,
-    method: 'post',
+    method: 'POST',
     data: {pageNum, pageSize}
   })
 }
@@ -118,7 +126,7 @@ export const DOMAIN_BUDGET_REPORT_LIST = (pageNum, pageSize) => {
 export const DOMAIN_CONSUMPTION_REPORT_LIST = (pageNum, pageSize) => {
   return axios({
     url: action.DOMAIN_CONSUMPTION_REPORT_LIST,
-    method: 'post',
+    method: 'POST',
     data: {pageNum, pageSize}
   })
 }
@@ -126,7 +134,7 @@ export const DOMAIN_CONSUMPTION_REPORT_LIST = (pageNum, pageSize) => {
 export const DOMAIN_CONSUMPTION_DETAIL_REPORT = (customerId, backCycleStart, backCycleEnd) => {
   return axios({
     url: action.DOMAIN_CONSUMPTION_DETAIL_REPORT,
-    method: 'post',
+    method: 'POST',
     data: {customerId, backCycleStart, backCycleEnd}
   })
 }
@@ -134,7 +142,7 @@ export const DOMAIN_CONSUMPTION_DETAIL_REPORT = (customerId, backCycleStart, bac
 export const DOMAIN_CONSUMPTION_REPORT = (customerId, backCycleStart, backCycleEnd) => {
   return axios({
     url: action.DOMAIN_CONSUMPTION_REPORT,
-    method: 'post',
+    method: 'POST',
     data: {customerId, backCycleStart, backCycleEnd}
   })
 }
@@ -142,7 +150,7 @@ export const DOMAIN_CONSUMPTION_REPORT = (customerId, backCycleStart, backCycleE
 export const DOMAIN_CONSUMPTION_SORT_REPORT = (customerId, backCycleStart, backCycleEnd) => {
   return axios({
     url: action.DOMAIN_CONSUMPTION_SORT_REPORT,
-    method: 'post',
+    method: 'POST',
     data: {customerId, backCycleStart, backCycleEnd}
   })
 }
@@ -150,7 +158,7 @@ export const DOMAIN_CONSUMPTION_SORT_REPORT = (customerId, backCycleStart, backC
 export const DOMAIN_CONSUMPTION_COMPANY_SORT_REPORT = (customerId, backCycleStart, backCycleEnd) => {
   return axios({
     url: action.DOMAIN_CONSUMPTION_COMPANY_SORT_REPORT,
-    method: 'post',
+    method: 'POST',
     data: {customerId, backCycleStart, backCycleEnd}
   })
 }
@@ -158,7 +166,7 @@ export const DOMAIN_CONSUMPTION_COMPANY_SORT_REPORT = (customerId, backCycleStar
 export const DOMAIN_CONSUMPTION_COMPANY_MONTH_REPORT = (customerId, backCycleStart, backCycleEnd) => {
   return axios({
     url: action.DOMAIN_CONSUMPTION_COMPANY_MONTH_REPORT,
-    method: 'post',
+    method: 'POST',
     data: {customerId, backCycleStart, backCycleEnd}
   })
 }
@@ -166,7 +174,7 @@ export const DOMAIN_CONSUMPTION_COMPANY_MONTH_REPORT = (customerId, backCycleSta
 export const DOMAIN_CONSUMPTION_COMPANY_REPORT = (customerId, backCycleStart, backCycleEnd) => {
   return axios({
     url: action.DOMAIN_CONSUMPTION_COMPANY_REPORT,
-    method: 'post',
+    method: 'POST',
     data: {customerId, backCycleStart, backCycleEnd}
   })
 }
