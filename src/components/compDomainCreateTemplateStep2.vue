@@ -50,12 +50,14 @@
     width="700",
     title="证件图例",
     v-model="modelExample",
-    :footer-hide="true"
+    :footer-hide="true",
+    :mask-closable="maskClosable"
   )
     comp-example-card(:registrantType="registrantType")
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import compInput from './compInput'
 import compSelect from './compSelect'
 import compRadio from './compRadio'
@@ -169,7 +171,11 @@ export default {
     }
   },
   computed: {
-
+    ...mapState({
+      maskClosable (state) {
+        return state.maskClosable
+      }
+    })
   },
   beforeMount () {
     this.idTypeListI = (function (vm) {

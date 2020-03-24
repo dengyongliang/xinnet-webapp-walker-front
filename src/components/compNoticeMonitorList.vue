@@ -11,12 +11,14 @@
     width="600",
     v-model="modelMailRecordDetail",
     class-name="modelMailRecordDetail",
-    :footer-hide="true"
+    :footer-hide="true",
+    :mask-closable="maskClosable"
   )
     div(v-html="modelMailContent")
 </template>
 
 <script>
+import {mapState} from 'vuex'
 export default {
   name: 'compNoticeMonitorList',
   props: {
@@ -68,7 +70,11 @@ export default {
   mounted () {
   },
   computed: {
-
+    ...mapState({
+      maskClosable (state) {
+        return state.maskClosable
+      }
+    })
   },
   watch: {
   }

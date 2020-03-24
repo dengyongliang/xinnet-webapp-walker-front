@@ -1,7 +1,7 @@
 <template lang="pug">
   div.compBrandSet
     Button(type="default", @click="modal1 = true",) 设置品牌
-    Modal(v-model="modal1",title="",:footer-hide="true", width="625px", class-name="modalBrandSet")
+    Modal(v-model="modal1",title="",:footer-hide="true", width="625px", class-name="modalBrandSet",:mask-closable="maskClosable")
       div.clear(slot="header")
         strong 设置品牌
         Button(type="default", @click="toBrandSet('','')",) 添加品牌
@@ -10,7 +10,7 @@
         <Table :columns="columns" :data="list" :loading="loadingTable"></Table>
 
     <!-- 添加品牌 -->
-    Modal(v-model="modal2",title="",width="625px", class-name="modalBrandSetForm")
+    Modal(v-model="modal2",title="",width="625px", class-name="modalBrandSetForm",:mask-closable="maskClosable")
       div.clear(slot="header")
         strong 设置品牌
       Form(:label-width="150", v-if="modal2")
@@ -273,6 +273,9 @@ export default {
           value: 'id',
           code: 'userCode'
         })
+      },
+      maskClosable (state) {
+        return state.maskClosable
       }
     })
   },

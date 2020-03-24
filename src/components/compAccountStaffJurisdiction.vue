@@ -11,7 +11,7 @@ Form.compStaffJurisdiction(:label-width="0")
         router-link.text(to="/mgmt/enterprise") 创建分组
       Tree(v-show="userAuthGroups.length", :data="userAuthGroups", show-checkbox, ref="Tree",:render="renderContent")
   Button(type="primary",@click="saveForm",:loading="loadingBtn") 保存
-  Modal(v-model="modal", title="提示")
+  Modal(v-model="modal", title="提示", :mask-closable="maskClosable")
     <p style="text-align:center;">请先在 <a style="color: #2d8cf0" @click="toRolesMgmt">角色管理</a> 中创建角色！</p>
 </template>
 
@@ -171,6 +171,9 @@ export default {
         } else {
           return []
         }
+      },
+      maskClosable (state) {
+        return state.maskClosable
       }
     })
   }

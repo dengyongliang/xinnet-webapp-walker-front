@@ -1,7 +1,7 @@
 <template lang="pug">
   div.compAddFocusDomain
     Button(type="default", @click="modal1 = true",) + 添加关注域名
-    Modal(v-model="modal1",title="", ok-text="立即添加", width="625px", class-name="modalAddFocusDomain")
+    Modal(v-model="modal1",title="", ok-text="立即添加", width="625px", class-name="modalAddFocusDomain",:mask-closable="maskClosable")
       div.clear(slot="header")
         strong 添加关注域名
       Form(:label-width="150",v-if="modal1")
@@ -50,7 +50,7 @@
         Button(type="default", @click="modal1 = false") 取消
         Button(type="primary", @click="submitStep1", :loading="loadingBtn") 立即添加
     <!-- 添加品牌 -->
-    Modal(v-model="modal2",title="",width="625px", class-name="modalAddFocusDomainList")
+    Modal(v-model="modal2",title="",width="625px", class-name="modalAddFocusDomainList",:mask-closable="maskClosable")
       div.clear(slot="header")
         strong 添加关注域名
       p(v-if="modal2") 添加关注域名：{{list.length}}个
@@ -66,6 +66,7 @@ import compInput from './compInput'
 import compRadio from './compRadio'
 import compCheckbox from './compCheckbox'
 import validateFormResult from '@/global/validateForm'
+import { mapState } from 'vuex'
 export default {
   components: {
     compInput,
@@ -511,6 +512,11 @@ export default {
   mounted () {
   },
   computed: {
+    ...mapState({
+      maskClosable (state) {
+        return state.maskClosable
+      }
+    })
   },
   watch: {
   }

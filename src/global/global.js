@@ -16,7 +16,7 @@ const IS_PHONE_AVAILABLE = (str) => {
   }
 }
 const IS_DOMAIN_AVAILABLE = (val) => {
-  var reg = /^[0-9a-zA-Z\u4e00-\u9faf]+[0-9a-zA-Z\u4e00-\u9faf-]*\.[a-zA-Z\u4e00-\u9faf]{2,4}(?:\.[a-zA-Z\u4e00-\u9faf]{2,4})?$/
+  var reg = /^[0-9a-zA-Z\u4e00-\u9faf]+[0-9a-zA-Z\u4e00-\u9faf-]*\.[a-zA-Z\u4e00-\u9faf]{2,20}(?:\.[a-zA-Z\u4e00-\u9faf]{2,20})?$/
   if (!reg.test(val)) {
     return false
   } else {

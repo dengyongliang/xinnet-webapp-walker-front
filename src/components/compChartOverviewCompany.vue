@@ -37,7 +37,7 @@ export default {
         },
         legend: {
           orient: 'vertical',
-          right: '12%',
+          right: '18%',
           top: 'center',
           itemWidth: 10,
           itemHeight: 10,
@@ -48,14 +48,14 @@ export default {
             name: '域名所属公司',
             type: 'pie',
             radius: ['50%', '85%'],
-            center: ['30%', '50%'],
+            center: ['23%', '50%'],
             avoidLabelOverlap: false,
             data: datas.company && Object.values(datas.company).length ? Object.values(datas.company) : [{'name': '无', 'value': 0}],
             label: {
               normal: {
                 show: true,
-                position: 'inner',
-                formatter: '{d}%（{c}个）'
+                position: 'inner'
+                // formatter: '{d}%（{c}个）'
               }
             },
             labelLine: {
@@ -96,7 +96,7 @@ export default {
 }
 .compChartOverviewCompany #myChart{
   height: 200px;
-  width: 500px;
+  width: 560px;
   margin: 0 auto;
 }
 </style>

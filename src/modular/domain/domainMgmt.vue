@@ -86,9 +86,10 @@
     :loading="loadingModalsMultiUpdate",
     @on-visible-change="handleVisibleChange",
     @on-ok="upload",
+    :mask-closable="maskClosable",
     :footer-hide="true"
   )
-    Form(:label-width="100")
+    Form(:label-width="100", v-if="showModalsMultiUpdate")
       //- FormItem(label="添加方式：", v-if="modalUpdateDomainType==='import'")
       //-   comp-radio(:list="monthedList", ref="monthed", defaultValue="1", :on-parentmethod="setMonthedValue")
       FormItem(label="请输入域名：", v-if="modalUpdateDomainType==='import' && method==='1'")
@@ -101,7 +102,6 @@
         comp-radio(:list="brandList", ref="brandId")
       FormItem(label="", v-if="modalUpdateDomainType==='update' || (modalUpdateDomainType==='import' && method==='2')")
         Upload(
-          v-if="showModalsMultiUpdate",
           ref="upload",
           :action="uploadLink",
           name="file",

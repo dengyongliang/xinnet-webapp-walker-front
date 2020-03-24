@@ -51,7 +51,8 @@ div.compDomainMgmtDetail
     v-model="showModals",
     title="授权验证",
     :loading="loadingBtn",
-    :footer-hide="true"
+    :footer-hide="true",
+    :mask-closable="maskClosable"
   )
     comp-authorize-validate(:onClose="closeModal", @parentEvent="parentEvent", :detailData="detailData",)
   <!-- 修改信息 -->
@@ -59,7 +60,8 @@ div.compDomainMgmtDetail
     v-model="showModalsUpdateInfo",
     title="修改信息",
     :loading="loadingBtn",
-    :footer-hide="true"
+    :footer-hide="true",
+    :mask-closable="maskClosable"
   )
     comp-update-deposit-domain(
       :domainId="detailData.id",

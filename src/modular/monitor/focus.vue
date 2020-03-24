@@ -88,7 +88,8 @@
     width="600",
     v-model="modelMailRecordDetail",
     class-name="modelMailRecordDetail",
-    :footer-hide="true"
+    :footer-hide="true",
+    :mask-closable="maskClosable"
   )
     div(v-html="modelMailContent")
 </template>
@@ -102,7 +103,7 @@ import compSelect from '@/components/compSelect'
 import compCheckbox from '@/components/compCheckbox'
 import moment from 'moment'
 import * as actions from '@/actions/followdomain.js'
-
+import { mapState } from 'vuex'
 export default {
   components: {
     compMonitorFocusDetail,
@@ -536,7 +537,12 @@ export default {
       return this.selectData.map((v) => {
         return v.id
       }).join(',')
-    }
+    },
+    ...mapState({
+      maskClosable (state) {
+        return state.maskClosable
+      }
+    })
   },
   beforeMount () {
     // 监控通知列表

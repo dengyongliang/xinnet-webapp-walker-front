@@ -14,13 +14,14 @@
 
     .unit(v-show="status==='creat' || modify") {{tips}}
       slot(name="unit")
-    Modal(title="图片预览" v-model="visible",:footer-hide="true")
+    Modal(title="图片预览" v-model="visible",:footer-hide="true",:mask-closable="maskClosable")
       img(:src="imgName",v-if="visible",style="width: 100%")
     Alert(type="error",show-icon, v-show="showError",ref="msgErrorFile") {{errorText}}
     slot(name="last")
 </template>
 
 <script>
+import {mapState} from 'vuex'
 export default {
   name: 'compImgUpload',
   props: {
@@ -136,6 +137,13 @@ export default {
       }
       return check
     }
+  },
+  computed: {
+    ...mapState({
+      maskClosable (state) {
+        return state.maskClosable
+      }
+    })
   },
   beforeMount () {
     if (this.status === 'view') {
