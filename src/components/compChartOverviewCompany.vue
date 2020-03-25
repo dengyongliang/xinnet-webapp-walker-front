@@ -37,7 +37,7 @@ export default {
         },
         legend: {
           orient: 'vertical',
-          right: '18%',
+          right: '3%',
           top: 'center',
           itemWidth: 10,
           itemHeight: 10,
@@ -53,7 +53,7 @@ export default {
             data: datas.company && Object.values(datas.company).length ? Object.values(datas.company) : [{'name': '无', 'value': 0}],
             label: {
               normal: {
-                show: true,
+                show: false,
                 position: 'inner'
                 // formatter: '{d}%（{c}个）'
               }
@@ -96,7 +96,7 @@ export default {
 }
 .compChartOverviewCompany #myChart{
   height: 200px;
-  width: 560px;
+  width: 600px;
   margin: 0 auto;
 }
 </style>
