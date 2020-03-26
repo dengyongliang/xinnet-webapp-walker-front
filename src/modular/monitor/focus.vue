@@ -134,6 +134,8 @@ export default {
       removeDisabled: true,
       exportLink: actions.FOLLOW_DOMAIN_EXPORT,
       selectData: [],
+      orderByProperty: '',
+      orderByType: '',
       siteTypesList: [
         {
           label: '全部',
@@ -363,17 +365,17 @@ export default {
       this.queryList({pageNum: 1})
     },
     sortChange (v) {
-      let orderByProperty = ''
+      this.orderByType = v.order === 'normal' ? '' : v.order
       if (v.key === 'whoisApplyTime') {
-        orderByProperty = 'applyDate'
+        this.orderByProperty = 'applyDate'
       } else if (v.key === 'whoisExpireTime') {
-        orderByProperty = 'expireDate'
+        this.orderByProperty = 'expireDate'
       } else {
-        orderByProperty = v.key
+        this.orderByProperty = v.key
       }
       // sort.sortValue = v.order
       // console.log(sort)
-      this.queryList({pageNum: 1, orderByProperty: orderByProperty, orderByType: v.order})
+      this.queryList({pageNum: 1})
     },
     pageChange: function (curPage) {
       this.queryList({pageNum: curPage})
@@ -404,13 +406,13 @@ export default {
         applyTimeEnd: this.timesReg[1] !== '' ? moment(this.timesReg[1]).format('YYYY-MM-DD') + ' 23:59:59' : '',
         expireTimeBegin: this.timesExp[0] !== '' ? moment(this.timesExp[0]).format('YYYY-MM-DD') + ' 00:00:00' : '',
         expireTimeEnd: this.timesExp[1] !== '' ? moment(this.timesExp[1]).format('YYYY-MM-DD') + ' 23:59:59' : '',
-        orderByProperty: '',
-        orderByType: ''
+        orderByProperty: this.orderByProperty,
+        orderByType: this.orderByType
       }
-      Object.assign(params, obj)
-      console.log('=======================================================')
-      console.log(params)
-      console.log('=======================================================')
+      // Object.assign(params, obj)
+      // console.log('=======================================================')
+      // console.log(params)
+      // console.log('=======================================================')
       return params
     },
     queryList (obj) {
