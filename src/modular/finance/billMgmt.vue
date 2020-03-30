@@ -68,7 +68,7 @@ export default {
               }, moment(this.list[params.index].flowTime).format('YYYY-MM-DD HH:mm:ss'))
             ])
           },
-          sortable: true,
+          sortable: 'custom',
           sortMethod: function (a, b, type) {}
         },
         {
@@ -96,7 +96,7 @@ export default {
           title: '金额(元)',
           key: 'flowMoney',
           className: 'col5',
-          sortable: true,
+          sortable: 'custom',
           sortMethod: function (a, b, type) {},
           render: (h, params) => {
             return h('div', [

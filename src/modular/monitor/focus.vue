@@ -292,7 +292,7 @@ export default {
           title: '域名',
           key: 'domainName',
           className: 'col1',
-          sortable: true,
+          sortable: 'custom',
           render: (h, params) => {
             return h('div', [
               h('span', {}, this.list[params.index].domainName + '(' + (this.list[params.index].isReg === 0 ? '未注册' : (this.list[params.index].isReg === 1 ? '已注册' : '不支持')) + ')')
@@ -308,21 +308,21 @@ export default {
           title: '注册商',
           key: 'registrarName',
           className: 'col3',
-          sortable: true
+          sortable: 'custom'
         },
         {
           title: '注册时间',
           width: 150,
           key: 'whoisApplyTime',
           className: 'col4',
-          sortable: true
+          sortable: 'custom'
         },
         {
           title: '到期时间',
           width: 150,
           key: 'whoisExpireTime',
           className: 'col5',
-          sortable: true
+          sortable: 'custom'
         },
         {
           title: '建站情况',
@@ -416,6 +416,7 @@ export default {
       return params
     },
     queryList (obj) {
+      this.list = []
       this.$store.dispatch('FOLLOW_DOMAIN_LIST', this.queryListParam(obj)).then(response => {
         this.loadingBtn = false
         this.loadingTable = false
@@ -423,11 +424,11 @@ export default {
           return false
         }
         if (response.data.code === '1000') {
-          this.list = response.data.data.list.map((v) => {
+          response.data.data.list.map((v, i) => {
             if (v.excepInfo.length) {
               v._expanded = true
             }
-            return v
+            this.$set(this.list, i, v)
           })
           this.page.pageItems = response.data.data.totalNum
         } else {

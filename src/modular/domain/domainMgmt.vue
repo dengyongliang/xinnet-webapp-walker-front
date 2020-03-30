@@ -233,7 +233,7 @@ export default {
           title: '到期日期',
           key: 'expireDate',
           className: 'col3',
-          sortable: true,
+          sortable: 'custom',
           render: (h, params) => {
             return h('div', [
               h('span', {
