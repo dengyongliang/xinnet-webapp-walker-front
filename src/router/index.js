@@ -80,6 +80,39 @@ const RouterMain = new Router({
       }
     },
     {
+      path: '/brandQuery',
+      name: 'brandQuery',
+      component (resolve) {
+        return require(['@/page/brandQuery'], resolve)
+      },
+      meta: {
+        title: '商标查询',
+        isLogin: true
+      }
+    },
+    {
+      path: '/brandQueryResult',
+      name: 'brandQueryResult',
+      component (resolve) {
+        return require(['@/page/brandQueryResult'], resolve)
+      },
+      meta: {
+        title: '商标查询结果',
+        isLogin: true
+      }
+    },
+    {
+      path: '/brandDetail',
+      name: 'brandDetail',
+      component (resolve) {
+        return require(['@/page/brandDetail'], resolve)
+      },
+      meta: {
+        title: '商标详情',
+        isLogin: true
+      }
+    },
+    {
       path: '/noAuth',
       name: 'noAuth',
       component (resolve) {

@@ -6,7 +6,7 @@ import * as action from '@/actions/domainVerify'
 export const DOMAIN_VERIFY_LIST = (pageNum, pageSize, domainName, groupIds, serviceState, rnvcStatus, dnvcStatus, verifyDay, verifyTimeBegin, verifyTimeEnd) => {
   return axios({
     url: action.DOMAIN_VERIFY_LIST,
-    method: 'POST',
+    method: 'get',
     data: {pageNum, pageSize, domainName, groupIds, serviceState, rnvcStatus, dnvcStatus, verifyDay, verifyTimeBegin, verifyTimeEnd}
   })
 }
@@ -14,7 +14,7 @@ export const DOMAIN_VERIFY_LIST = (pageNum, pageSize, domainName, groupIds, serv
 export const UPLOAD_DOMAIN_VERIFY = (domainIds, registrantType, idCode, idType, idFileUrl, idFileName, templateId) => {
   return axios({
     url: action.UPLOAD_DOMAIN_VERIFY,
-    method: 'POST',
+    method: 'get',
     data: {domainIds, registrantType, idCode, idType, idFileUrl, idFileName, templateId}
   })
 }
@@ -22,7 +22,7 @@ export const UPLOAD_DOMAIN_VERIFY = (domainIds, registrantType, idCode, idType, 
 export const UPLOAD_FILE = () => {
   return axios({
     url: action.UPLOAD_FILE,
-    method: 'POST',
+    method: 'get',
     data: {}
   })
 }
@@ -30,7 +30,7 @@ export const UPLOAD_FILE = () => {
 export const UPDATE_DOMAIN_AUDIT_STATUS = (domainIds) => {
   return axios({
     url: action.UPDATE_DOMAIN_AUDIT_STATUS,
-    method: 'POST',
+    method: 'get',
     data: {domainIds}
   })
 }
@@ -38,7 +38,7 @@ export const UPDATE_DOMAIN_AUDIT_STATUS = (domainIds) => {
 export const CHECK_UPLOAD_DOMAIN_VERIFY = (domainIds) => {
   return axios({
     url: action.CHECK_UPLOAD_DOMAIN_VERIFY,
-    method: 'POST',
+    method: 'get',
     data: {domainIds}
   })
 }

@@ -6,7 +6,7 @@ import * as action from '@/actions/user'
 export const USER_CUSTOMERS = () => {
   return axios({
     url: action.USER_CUSTOMERS,
-    method: 'POST',
+    method: 'get',
     data: {}
   })
 }
@@ -14,7 +14,7 @@ export const USER_CUSTOMERS = () => {
 export const VALID_USER = (userCode, userName) => {
   return axios({
     url: action.VALID_USER,
-    method: 'POST',
+    method: 'get',
     data: {userCode, userName}
   })
 }
@@ -22,7 +22,7 @@ export const VALID_USER = (userCode, userName) => {
 export const ACTIVATION_USER_INFO = (userCode, userSex, userTel, userMobile, verificationCode, qq, wx) => {
   return axios({
     url: action.ACTIVATION_USER_INFO,
-    method: 'POST',
+    method: 'get',
     data: {userCode, userSex, userTel, userMobile, verificationCode, qq, wx}
   })
 }
@@ -30,7 +30,7 @@ export const ACTIVATION_USER_INFO = (userCode, userSex, userTel, userMobile, ver
 export const ACTIVATION_USER_PWD = (userCode, password) => {
   return axios({
     url: action.ACTIVATION_USER_PWD,
-    method: 'POST',
+    method: 'get',
     data: {userCode, password}
   })
 }
@@ -38,7 +38,7 @@ export const ACTIVATION_USER_PWD = (userCode, password) => {
 export const LOGOUT = () => {
   return axios({
     url: action.LOGOUT,
-    method: 'POST',
+    method: 'get',
     data: {}
   })
 }
@@ -46,7 +46,7 @@ export const LOGOUT = () => {
 export const LOGIN = (account, password, verificationCode) => {
   return axios({
     url: action.LOGIN,
-    method: 'POST',
+    method: 'get',
     data: {account, password, verificationCode}
   })
 }
@@ -54,7 +54,7 @@ export const LOGIN = (account, password, verificationCode) => {
 export const MY_USER_INFO = () => {
   return axios({
     url: action.MY_USER_INFO,
-    method: 'POST',
+    method: 'get',
     data: {}
   })
 }
@@ -62,7 +62,7 @@ export const MY_USER_INFO = () => {
 export const CHANGE_CUSTOMERS = (customerId) => {
   return axios({
     url: action.CHANGE_CUSTOMERS,
-    method: 'POST',
+    method: 'get',
     data: {customerId}
   })
 }
@@ -70,7 +70,7 @@ export const CHANGE_CUSTOMERS = (customerId) => {
 export const USER_LIST = (pageNum, pageSize, domainCompanyId, domainGroupId, companyId, userCode) => {
   return axios({
     url: action.USER_LIST,
-    method: 'POST',
+    method: 'get',
     data: {pageNum, pageSize, domainCompanyId, domainGroupId, companyId, userCode}
   })
 }
@@ -78,7 +78,7 @@ export const USER_LIST = (pageNum, pageSize, domainCompanyId, domainGroupId, com
 export const UPDATE_USER_INFO = (userCode, userTel, userMobile, verificationCode) => {
   return axios({
     url: action.UPDATE_USER_INFO,
-    method: 'POST',
+    method: 'get',
     data: {userCode, userTel, userMobile, verificationCode}
   })
 }
@@ -86,7 +86,7 @@ export const UPDATE_USER_INFO = (userCode, userTel, userMobile, verificationCode
 export const UPDATE_USER_PASSWORD = (userCode, newPassword, verificationCode) => {
   return axios({
     url: action.UPDATE_USER_PASSWORD,
-    method: 'POST',
+    method: 'get',
     data: {userCode, newPassword, verificationCode}
   })
 }
@@ -94,7 +94,7 @@ export const UPDATE_USER_PASSWORD = (userCode, newPassword, verificationCode) =>
 export const USER_ROLES = () => {
   return axios({
     url: action.USER_ROLES,
-    method: 'POST',
+    method: 'get',
     data: {}
   })
 }
@@ -102,7 +102,7 @@ export const USER_ROLES = () => {
 export const USERS = () => {
   return axios({
     url: action.USERS,
-    method: 'POST',
+    method: 'get',
     data: {}
   })
 }
@@ -110,7 +110,7 @@ export const USERS = () => {
 export const COMPANYS = () => {
   return axios({
     url: action.COMPANYS,
-    method: 'POST',
+    method: 'get',
     data: {}
   })
 }
@@ -118,7 +118,7 @@ export const COMPANYS = () => {
 export const USER_AUTH_GROUPS = () => {
   return axios({
     url: action.USER_AUTH_GROUPS,
-    method: 'POST',
+    method: 'get',
     data: {}
   })
 }
@@ -126,7 +126,7 @@ export const USER_AUTH_GROUPS = () => {
 export const USER_COMPANYS = () => {
   return axios({
     url: action.USER_COMPANYS,
-    method: 'POST',
+    method: 'get',
     data: {}
   })
 }
@@ -134,7 +134,7 @@ export const USER_COMPANYS = () => {
 export const ADD_USER = (roleId, groups, userName, userEmail, companyId) => {
   return axios({
     url: action.ADD_USER,
-    method: 'POST',
+    method: 'get',
     data: {roleId, groups, userName, userEmail, companyId}
   })
 }
@@ -142,7 +142,7 @@ export const ADD_USER = (roleId, groups, userName, userEmail, companyId) => {
 export const DELETE_USER_INFO = (userCode) => {
   return axios({
     url: action.DELETE_USER_INFO,
-    method: 'POST',
+    method: 'get',
     data: {userCode}
   })
 }
@@ -150,7 +150,7 @@ export const DELETE_USER_INFO = (userCode) => {
 export const USER_INFO = (userCode) => {
   return axios({
     url: action.USER_INFO,
-    method: 'POST',
+    method: 'get',
     data: {userCode}
   })
 }
@@ -158,7 +158,7 @@ export const USER_INFO = (userCode) => {
 export const UPDATE_USER_AUTH = (userCode, roleId, groups) => {
   return axios({
     url: action.UPDATE_USER_AUTH,
-    method: 'POST',
+    method: 'get',
     data: {userCode, roleId, groups}
   })
 }
@@ -166,7 +166,7 @@ export const UPDATE_USER_AUTH = (userCode, roleId, groups) => {
 export const UPDATE_USER = (userMobile, userCode, userTel, userEmail, companyId) => {
   return axios({
     url: action.UPDATE_USER,
-    method: 'POST',
+    method: 'get',
     data: {userMobile, userCode, userTel, userEmail, companyId}
   })
 }
@@ -174,7 +174,7 @@ export const UPDATE_USER = (userMobile, userCode, userTel, userEmail, companyId)
 export const CHECK_USER_PHONE = (userMobile) => {
   return axios({
     url: action.CHECK_USER_PHONE,
-    method: 'POST',
+    method: 'get',
     data: {userMobile}
   })
 }
@@ -182,7 +182,7 @@ export const CHECK_USER_PHONE = (userMobile) => {
 export const CHECK_USER_AUTH = (authPath) => {
   return axios({
     url: action.CHECK_USER_AUTH,
-    method: 'POST',
+    method: 'get',
     data: {authPath}
   })
 }
@@ -190,7 +190,7 @@ export const CHECK_USER_AUTH = (authPath) => {
 export const RESET_USER_PWD = (userMobile, verificationCode, password) => {
   return axios({
     url: action.RESET_USER_PWD,
-    method: 'POST',
+    method: 'get',
     data: {userMobile, verificationCode, password}
   })
 }

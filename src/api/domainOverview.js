@@ -6,7 +6,7 @@ import * as action from '@/actions/domainOverview'
 export const DOMAIN_STATISTICS = (depositFlag) => {
   return axios({
     url: action.DOMAIN_STATISTICS,
-    method: 'POST',
+    method: 'get',
     data: {depositFlag}
   })
 }
@@ -14,7 +14,7 @@ export const DOMAIN_STATISTICS = (depositFlag) => {
 export const DOMAIN_COUNT_STATISTICS = (days) => {
   return axios({
     url: action.DOMAIN_COUNT_STATISTICS,
-    method: 'POST',
+    method: 'get',
     data: {days}
   })
 }

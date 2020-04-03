@@ -6,7 +6,7 @@ import * as action from '@/actions/domainSafe'
 export const DOMAIN_SAFE_LIST = (pageNum, pageSize, domainName, domainSuffixs, otherSuffix, allSuffix, groupIds, importantFlag, renewFlag, updateFlag, backendLockFlag) => {
   return axios({
     url: action.DOMAIN_SAFE_LIST,
-    method: 'POST',
+    method: 'get',
     data: {pageNum, pageSize, domainName, domainSuffixs, otherSuffix, allSuffix, groupIds, importantFlag, renewFlag, updateFlag, backendLockFlag}
   })
 }
@@ -14,7 +14,7 @@ export const DOMAIN_SAFE_LIST = (pageNum, pageSize, domainName, domainSuffixs, o
 export const SET_PROTECT_LEVEL = (protectLevel, domainIds) => {
   return axios({
     url: action.SET_PROTECT_LEVEL,
-    method: 'POST',
+    method: 'get',
     data: {protectLevel, domainIds}
   })
 }
@@ -22,7 +22,7 @@ export const SET_PROTECT_LEVEL = (protectLevel, domainIds) => {
 export const SET_AUTO_RENEW = (autoRenewFlag, domainId) => {
   return axios({
     url: action.SET_AUTO_RENEW,
-    method: 'POST',
+    method: 'get',
     data: {autoRenewFlag, domainId}
   })
 }
@@ -30,7 +30,7 @@ export const SET_AUTO_RENEW = (autoRenewFlag, domainId) => {
 export const SET_PROHIBIT_UPDATE = (prohibitUpdate, domainId) => {
   return axios({
     url: action.SET_PROHIBIT_UPDATE,
-    method: 'POST',
+    method: 'get',
     data: {prohibitUpdate, domainId}
   })
 }
@@ -38,7 +38,7 @@ export const SET_PROHIBIT_UPDATE = (prohibitUpdate, domainId) => {
 export const BUY_BACKEND_LOCK = () => {
   return axios({
     url: action.BUY_BACKEND_LOCK,
-    method: 'POST',
+    method: 'get',
     data: {}
   })
 }
@@ -46,7 +46,7 @@ export const BUY_BACKEND_LOCK = () => {
 export const RENEW_BACKEND_LOCK = () => {
   return axios({
     url: action.RENEW_BACKEND_LOCK,
-    method: 'POST',
+    method: 'get',
     data: {}
   })
 }
