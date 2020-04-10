@@ -6,7 +6,7 @@ import * as action from '@/actions/finance'
 export const PAY_STATISTICS = (startTime, endTime) => {
   return axios({
     url: action.PAY_STATISTICS,
-    method: 'get',
+    method: 'POST',
     data: {startTime, endTime}
   })
 }
@@ -14,7 +14,7 @@ export const PAY_STATISTICS = (startTime, endTime) => {
 export const PAY_STATISTICS_TREND = (startTime, endTime) => {
   return axios({
     url: action.PAY_STATISTICS_TREND,
-    method: 'get',
+    method: 'POST',
     data: {startTime, endTime}
   })
 }
@@ -22,7 +22,7 @@ export const PAY_STATISTICS_TREND = (startTime, endTime) => {
 export const GET_CUSTOMER_FLOW_LIST = (pageNum, pageSize, createTimeBegin, createTimeEnd, flowCode, payType, sortType, sortValue) => {
   return axios({
     url: action.GET_CUSTOMER_FLOW_LIST,
-    method: 'get',
+    method: 'POST',
     data: {pageNum, pageSize, createTimeBegin, createTimeEnd, flowCode, payType, sortType, sortValue}
   })
 }
@@ -30,7 +30,7 @@ export const GET_CUSTOMER_FLOW_LIST = (pageNum, pageSize, createTimeBegin, creat
 export const EXPORT_CUSTOMER_FLOW = () => {
   return axios({
     url: action.EXPORT_CUSTOMER_FLOW,
-    method: 'get',
+    method: 'POST',
     data: {}
   })
 }
@@ -38,7 +38,7 @@ export const EXPORT_CUSTOMER_FLOW = () => {
 export const PAY_STATISTICS_BALANCE = () => {
   return axios({
     url: action.PAY_STATISTICS_BALANCE,
-    method: 'get',
+    method: 'POST',
     data: {}
   })
 }
@@ -46,7 +46,7 @@ export const PAY_STATISTICS_BALANCE = () => {
 export const PAY_STATISTICS_UNBILLED = () => {
   return axios({
     url: action.PAY_STATISTICS_UNBILLED,
-    method: 'get',
+    method: 'POST',
     data: {}
   })
 }
@@ -54,7 +54,7 @@ export const PAY_STATISTICS_UNBILLED = () => {
 export const PAY_STATISTICS_HISTORY_BILL = (historyCycle) => {
   return axios({
     url: action.PAY_STATISTICS_HISTORY_BILL,
-    method: 'get',
+    method: 'POST',
     data: {historyCycle}
   })
 }

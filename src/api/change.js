@@ -5,7 +5,7 @@ import * as action from '@/actions/change'
 export const CHANGE_LIST = (pageNum, pageSize, domainName, changeStatus, createTimeBegin, createTimeEnd) => {
   return axios({
     url: action.CHANGE_LIST,
-    method: 'get',
+    method: 'POST',
     data: {pageNum, pageSize, domainName, changeStatus, createTimeBegin, createTimeEnd}
   })
 }
@@ -13,7 +13,7 @@ export const CHANGE_LIST = (pageNum, pageSize, domainName, changeStatus, createT
 export const SUBMIT_CHANGE = (templateId, domainNames) => {
   return axios({
     url: action.SUBMIT_CHANGE,
-    method: 'get',
+    method: 'POST',
     data: {templateId, domainNames}
   })
 }
@@ -21,7 +21,7 @@ export const SUBMIT_CHANGE = (templateId, domainNames) => {
 export const CHANGE_INFO = (changeId) => {
   return axios({
     url: action.CHANGE_INFO,
-    method: 'get',
+    method: 'POST',
     data: {changeId}
   })
 }

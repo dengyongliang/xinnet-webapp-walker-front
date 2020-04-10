@@ -6,7 +6,7 @@ import * as action from '@/actions/workOrder'
 export const WORK_ORDER_MANAGE = (pageNum, pageSize) => {
   return axios({
     url: action.WORK_ORDER_MANAGE,
-    method: 'get',
+    method: 'POST',
     data: {pageNum, pageSize}
   })
 }
@@ -14,7 +14,7 @@ export const WORK_ORDER_MANAGE = (pageNum, pageSize) => {
 export const WORK_ORDER_SUBMIT = (money, securityType, orderCode, updateType, questionType, domainName, description) => {
   return axios({
     url: action.WORK_ORDER_SUBMIT,
-    method: 'get',
+    method: 'POST',
     data: {money, securityType, orderCode, updateType, questionType, domainName, description}
   })
 }
@@ -22,7 +22,7 @@ export const WORK_ORDER_SUBMIT = (money, securityType, orderCode, updateType, qu
 export const WORK_ORDER_DETAIL = (id) => {
   return axios({
     url: action.WORK_ORDER_DETAIL,
-    method: 'get',
+    method: 'POST',
     data: {id}
   })
 }

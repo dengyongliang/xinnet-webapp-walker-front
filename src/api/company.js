@@ -5,7 +5,7 @@ import * as action from '@/actions/company'
 export const COMPANY_CREATE = (logoFile, name, contactor, mobile, email, tel) => {
   return axios({
     url: action.COMPANY_CREATE,
-    method: 'get',
+    method: 'POST',
     data: {logoFile, name, contactor, mobile, email, tel}
   })
 }
@@ -13,7 +13,7 @@ export const COMPANY_CREATE = (logoFile, name, contactor, mobile, email, tel) =>
 export const COMPANY_INFO = (companyId) => {
   return axios({
     url: action.COMPANY_INFO,
-    method: 'get',
+    method: 'POST',
     data: {companyId}
   })
 }
@@ -21,7 +21,7 @@ export const COMPANY_INFO = (companyId) => {
 export const UPLOAD_LOGO = () => {
   return axios({
     url: action.UPLOAD_LOGO,
-    method: 'get',
+    method: 'POST',
     data: {}
   })
 }
@@ -29,7 +29,7 @@ export const UPLOAD_LOGO = () => {
 export const GROUP_CREATE = (companyId, manageId, name) => {
   return axios({
     url: action.GROUP_CREATE,
-    method: 'get',
+    method: 'POST',
     data: {companyId, manageId, name}
   })
 }
@@ -37,7 +37,7 @@ export const GROUP_CREATE = (companyId, manageId, name) => {
 export const GROUP_UPDATE = (manageId, groupId, name) => {
   return axios({
     url: action.GROUP_UPDATE,
-    method: 'get',
+    method: 'POST',
     data: {manageId, groupId, name}
   })
 }
@@ -45,7 +45,7 @@ export const GROUP_UPDATE = (manageId, groupId, name) => {
 export const GROUP_DELETE = (groupId) => {
   return axios({
     url: action.GROUP_DELETE,
-    method: 'get',
+    method: 'POST',
     data: {groupId}
   })
 }
@@ -53,7 +53,7 @@ export const GROUP_DELETE = (groupId) => {
 export const COMPANY_UPDATE = (companyId, logoFile, name, contactor, mobile, email, tel) => {
   return axios({
     url: action.COMPANY_UPDATE,
-    method: 'get',
+    method: 'POST',
     data: {companyId, logoFile, name, contactor, mobile, email, tel}
   })
 }
@@ -61,7 +61,7 @@ export const COMPANY_UPDATE = (companyId, logoFile, name, contactor, mobile, ema
 export const COMPANY_DELETE = (companyId) => {
   return axios({
     url: action.COMPANY_DELETE,
-    method: 'get',
+    method: 'POST',
     data: {companyId}
   })
 }
@@ -69,7 +69,7 @@ export const COMPANY_DELETE = (companyId) => {
 export const COMPANY_LIST = (companyName) => {
   return axios({
     url: action.COMPANY_LIST,
-    method: 'get',
+    method: 'POST',
     data: {companyName}
   })
 }

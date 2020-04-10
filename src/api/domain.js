@@ -6,7 +6,7 @@ import * as action from '@/actions/domain'
 export const DOMAIN_LIST = (pageNum, pageSize, domainName, domainSuffixs, otherSuffix, allSuffix, groupIds, serviceState, createDay, expireDay, createTimeBegin, createTimeEnd, expireTimeBegin, expireTimeEnd, orderExpireDate, depositFlag) => {
   return axios({
     url: action.DOMAIN_LIST,
-    method: 'get',
+    method: 'POST',
     data: {pageNum, pageSize, domainName, domainSuffixs, otherSuffix, allSuffix, groupIds, serviceState, createDay, expireDay, createTimeBegin, createTimeEnd, expireTimeBegin, expireTimeEnd, orderExpireDate, depositFlag}
   })
 }
@@ -14,7 +14,7 @@ export const DOMAIN_LIST = (pageNum, pageSize, domainName, domainSuffixs, otherS
 export const DOMAIN_MANAGE = (domainId) => {
   return axios({
     url: action.DOMAIN_MANAGE,
-    method: 'get',
+    method: 'POST',
     data: {domainId}
   })
 }
@@ -22,7 +22,7 @@ export const DOMAIN_MANAGE = (domainId) => {
 export const SET_DOMAIN_GROUP = (groupId, domainIds) => {
   return axios({
     url: action.SET_DOMAIN_GROUP,
-    method: 'get',
+    method: 'POST',
     data: {groupId, domainIds}
   })
 }
@@ -30,7 +30,7 @@ export const SET_DOMAIN_GROUP = (groupId, domainIds) => {
 export const MOD_DOMAIN_REG_USER = (domainId, userNameCn, countryCode, cityCode, streetCn, zipCode, email, phoneInter, phoneArea, phoneNumber, faxInter, faxArea, faxNumber, userSureNameUk, userNameUk, streetUk) => {
   return axios({
     url: action.MOD_DOMAIN_REG_USER,
-    method: 'get',
+    method: 'POST',
     data: {domainId, userNameCn, countryCode, cityCode, streetCn, zipCode, email, phoneInter, phoneArea, phoneNumber, faxInter, faxArea, faxNumber, userSureNameUk, userNameUk, streetUk}
   })
 }
@@ -38,7 +38,7 @@ export const MOD_DOMAIN_REG_USER = (domainId, userNameCn, countryCode, cityCode,
 export const MOD_DOMAIN_ADM_USER = (domainId, organizeNameCn, userNameCn, countryCode, cityCode, streetCn, zipCode, email, phoneInter, phoneArea, phoneNumber, faxInter, faxArea, faxNumber, organizeNameUk, userSureNameUk, userNameUk, streetUk) => {
   return axios({
     url: action.MOD_DOMAIN_ADM_USER,
-    method: 'get',
+    method: 'POST',
     data: {domainId, organizeNameCn, userNameCn, countryCode, cityCode, streetCn, zipCode, email, phoneInter, phoneArea, phoneNumber, faxInter, faxArea, faxNumber, organizeNameUk, userSureNameUk, userNameUk, streetUk}
   })
 }
@@ -46,7 +46,7 @@ export const MOD_DOMAIN_ADM_USER = (domainId, organizeNameCn, userNameCn, countr
 export const SET_DOMAIN_DNS = (domainId, xinnet, verificationCode, dns) => {
   return axios({
     url: action.SET_DOMAIN_DNS,
-    method: 'get',
+    method: 'POST',
     data: {domainId, xinnet, verificationCode, dns}
   })
 }
@@ -54,7 +54,7 @@ export const SET_DOMAIN_DNS = (domainId, xinnet, verificationCode, dns) => {
 export const DOMAIN_RENEW = () => {
   return axios({
     url: action.DOMAIN_RENEW,
-    method: 'get',
+    method: 'POST',
     data: {}
   })
 }
@@ -62,7 +62,7 @@ export const DOMAIN_RENEW = () => {
 export const EXPORT_DOMAIN = () => {
   return axios({
     url: action.EXPORT_DOMAIN,
-    method: 'get',
+    method: 'POST',
     data: {}
   })
 }
@@ -70,7 +70,7 @@ export const EXPORT_DOMAIN = () => {
 export const DELETE_DEPOSIT_DOMAIN = (domainIds) => {
   return axios({
     url: action.DELETE_DEPOSIT_DOMAIN,
-    method: 'get',
+    method: 'POST',
     data: {domainIds}
   })
 }
@@ -78,7 +78,7 @@ export const DELETE_DEPOSIT_DOMAIN = (domainIds) => {
 export const SET_DOMAIN_BRAND = (domainIds, brandId) => {
   return axios({
     url: action.SET_DOMAIN_BRAND,
-    method: 'get',
+    method: 'POST',
     data: {domainIds, brandId}
   })
 }
@@ -86,7 +86,7 @@ export const SET_DOMAIN_BRAND = (domainIds, brandId) => {
 export const SYNC_DEPOSIT_DOMAIN = (domainId) => {
   return axios({
     url: action.SYNC_DEPOSIT_DOMAIN,
-    method: 'get',
+    method: 'POST',
     data: {domainId}
   })
 }
@@ -94,7 +94,7 @@ export const SYNC_DEPOSIT_DOMAIN = (domainId) => {
 export const UPDATE_DEPOSIT_DOMAIN = (domainId, registrarName, applyDate, expireDate, regUserName, regUserEmail) => {
   return axios({
     url: action.UPDATE_DEPOSIT_DOMAIN,
-    method: 'get',
+    method: 'POST',
     data: {domainId, registrarName, applyDate, expireDate, regUserName, regUserEmail}
   })
 }
@@ -102,7 +102,7 @@ export const UPDATE_DEPOSIT_DOMAIN = (domainId, registrarName, applyDate, expire
 export const CREATE_DEPOSIT_DOMAIN = (domainNames, companyId, groupId, brandId) => {
   return axios({
     url: action.CREATE_DEPOSIT_DOMAIN,
-    method: 'get',
+    method: 'POST',
     data: {domainNames, companyId, groupId, brandId}
   })
 }

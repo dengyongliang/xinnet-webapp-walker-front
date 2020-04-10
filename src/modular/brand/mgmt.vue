@@ -2,12 +2,10 @@
 .contBrandMgmt
   <!-- 标题区 -->
   h1.pageTitle.clear
-    <span @click="showDetail=false" class="backlist">商标管理</span>
-    <span v-show="showDetail"> > 域名监控详情</span>
+    <span class="backlist">商标管理</span>
     .tR
-      router-link(to="/report/focus?type=focus", target="_blank")
-        Button(type="default",) 添加商标
-  .secMain(v-show="!showDetail")
+      Button(type="default",@click="showAddBrand=true") 添加商标
+  .secMain()
     .secFilter()
       form.filterWrap(ref="exportForm")
         table
@@ -15,284 +13,171 @@
             td.td1
               span.n 搜索商标：
               .inputWrap
-                <Input v-model="value" ref="domainName" placeholder="商标名称/注册号/申请主体" />
+                <Input v-model="value" ref="keyWords" placeholder="商标名称/注册号/申请主体" />
             td.td2
               span.n 商标状态：
               .inputWrap
-                comp-select(:list="siteTypesList", ref="siteTypes", styles="width:100%",placeholder="全部")
+                Select(v-model="currentStatus", style="width:100%", ref="currentStatus", placeholder="全部")
+                  Option(v-for="item in currentStatusList", :value="item.value", :key="item.key") {{item.label}}
+
             td.td3
               span.n 品牌名称：
               .inputWrap
-                comp-select(:list="brandList",  ref="brandIds", styles="width:100%", placeholder="全部")
+                Select(v-model="brandId", style="width:100%", ref="brandId", placeholder="全部")
+                  Option(v-for="item in brandList", :value="item.value", :key="item.value") {{item.label}}
             td.tdBtn
               Button(type="primary", @click="searchListData",:loading="loadingBtn") 查询
           tr.row3
-            td(colspan="3")
-              span.n 后缀：
+            td(colspan="4")
+              span.n 国际分类：
               .inputWrap
-                comp-checkbox(:list="suffixList", ref="domainSuffixs")
-            td.tdBtn
-              Button(class="btnMore",type="default", @click="",:loading="loadingBtn") 更多
-                Icon(type="ios-arrow-down")
+                RadioGroup(v-model="facetsGroup", @on-change="handleRadioChange")
+                  Radio(label="0", key="0") 全部
+                  Radio(v-for="item in facetsList", :label="item.code", :key="item.id") {{item.code}} {{item.codeName}}
+            //- td.tdBtn
+            //-   Button(class="btnMore",type="default", @click="",:loading="loadingBtn") 更多
+            //-     Icon(type="ios-arrow-down")
 
       <!-- 列表主体 -->
       .secTable.secTable2
-        <Table :columns="columns" ref="selection" :data="list" :loading="loadingTable"  @on-select="tableSelectChange" @on-select-cancel="tableSelectChange" @on-select-all="tableSelectChange" @on-select-all-cancel="tableSelectChange" @on-sort-change="sortChange"></Table>
+        <Table :columns="columns" ref="selection" :data="list" :loading="loadingTable"  @on-select="tableSelectChange" @on-select-cancel="tableSelectChange" @on-select-all="tableSelectChange" @on-select-all-cancel="tableSelectChange"></Table>
         .tableTool
           a(href="javascript:;", @click="handleSelectAll(true)") 全选
           a(href="javascript:;", @click="handleSelectAll(false)") 取消全选
           Button(@click="delDomains", class="toolBtn") 删除商标
 
   <!-- 翻页区 -->
-  Page(:total="page.pageItems",:current="page.pageNo",show-elevator,show-total,prev-text="上一页",next-text="下一页",@on-change="pageChange",:page-size=20,v-show="!showDetail")
-
-  .pageDetail(v-show="showDetail")
-    comp-monitor-focus-detail(:id="id")
-  <!-- 通知详情 弹窗 -->
-  Modal(
-    width="600",
-    v-model="modelMailRecordDetail",
-    class-name="modelMailRecordDetail",
-    :footer-hide="true",
-    :mask-closable="maskClosable"
+  Page(:total="page.pageItems",:current="page.pageNo",show-elevator,show-total,prev-text="上一页",next-text="下一页",@on-change="pageChange",:page-size="20",)
+  Modal(v-model="showAddBrand",title="添加商标", width="625px", class-name="compAddBrand",:mask-closable="maskClosable",:footer-hide="true")
+    comp-add-brand(
+      v-if="showAddBrand",
+      @closeModal = "closeModal",
+      @queryList = "searchListData"
   )
-    div(v-html="modelMailContent")
 </template>
 
 <script>
-import compMonitorFocusDetail from '@/components/compMonitorFocusDetail'
-import compFocusDomainTableExpand from '@/components/compFocusDomainTableExpand'
-import compBrandSet from '@/components/compBrandSet'
-import compAddFocusDomain from '@/components/compAddFocusDomain'
-import compSelect from '@/components/compSelect'
-import compCheckbox from '@/components/compCheckbox'
+import compAddBrand from '@/components/compAddBrand'
 import moment from 'moment'
-import * as actions from '@/actions/followdomain.js'
 import { mapState } from 'vuex'
 export default {
   components: {
-    compMonitorFocusDetail,
-    compFocusDomainTableExpand,
-    compBrandSet,
-    compAddFocusDomain,
-    compSelect,
-    compCheckbox
+    compAddBrand
   },
   data () {
     return {
-      id: 0,
       value: '',
-      modelMailRecordDetail: false,
-      modelMailContent: '',
-      timesCreate: ['', ''],
-      timesReg: ['', ''],
-      timesExp: ['', ''],
-      createTimeBegin: '',
-      createTimeEnd: '',
-      applyTimeBegin: '',
-      applyTimeEnd: '',
-      expireTimeBegin: '',
-      expireTimeEnd: '',
-      colllapseValue: '',
-      userCompanys: [],
-      showDetail: false,
+      intCls: '0',
+      showAddBrand: false,
+      currentStatus: '',
+      brandId: '',
       removeDisabled: true,
       selectData: [],
-      orderByProperty: '',
-      orderByType: '',
-      siteTypesList: [
+      facetsGroup: '',
+      currentStatusList: [
         {
           label: '全部',
-          value: ''
+          value: '',
+          key: 0
         },
         {
-          label: '未建站',
-          value: '0'
+          label: '申请中',
+          value: '申请中',
+          key: 1
         },
         {
-          label: '正规网站',
-          value: '1'
+          label: '初审公告期',
+          value: '初审公告期',
+          key: 2
         },
         {
-          label: '疑似非法网站',
-          value: '2'
+          label: '续展/宽限期',
+          value: '续展/宽限期',
+          key: 3
         },
         {
-          label: '域名出售站',
-          value: '3'
+          label: '有效',
+          value: '有效',
+          key: 4
+        },
+        {
+          label: '已失效',
+          value: '已失效',
+          key: 5
         }
       ],
-      excepTypeList: [
-        {
-          label: '全部',
-          value: ''
-        },
-        {
-          label: '疑似非法网站',
-          value: '0'
-        },
-        {
-          label: '指向非大陆IP',
-          value: '1'
-        },
-        {
-          label: '正在出售',
-          value: '2'
-        },
-        {
-          label: '正在抢注',
-          value: '3'
-        },
-        {
-          label: '即将到期',
-          value: '4'
-        }
-      ],
-      regList: [
-        {
-          label: '全部',
-          value: ''
-        },
-        {
-          label: '未注册',
-          value: '0'
-        },
-        {
-          label: '已注册',
-          value: '1'
-        }
+      facetsList: [
       ],
       brandList: [],
-      statusList: [],
-      suffixList: [
-        {
-          value: '.com',
-          label: '.com'
-        },
-        {
-          value: '.cn',
-          label: '.cn'
-        },
-        {
-          value: '.net',
-          label: '.net'
-        },
-        {
-          value: '.com.cn',
-          label: '.com.cn'
-        },
-        {
-          value: '其他',
-          label: 'other'
-        }
-      ],
-      columnsTop: [
-        {
-          title: '时间',
-          width: 200,
-          key: 'sendTime',
-          className: 'col1',
-          render: (h, params) => {
-            return h('div', [
-              h('i', {
-                class: this.listTop[params.index].readFlag === 1 ? 'unRead' : ''
-              }, '●'),
-              h('span', {
-              }, moment(this.listTop[params.index].sendTime).format('YYYY-MM-DD'))
-            ])
-          }
-        },
-        {
-          title: '通知内容',
-          key: 'title',
-          className: 'col2',
-          render: (h, params) => {
-            return h('div', [
-              h('Icon', {
-                props: {
-                  type: 'md-alert',
-                  size: '17'
-                },
-                style: {
-                  color: '#f00',
-                  margin: '0 5px 0 0',
-                  display: this.listTop[params.index].sendType === 2 ? 'inline-block' : 'none'
-                }
-              }, ''),
-              h('a', {
-                style: {
-                  display: 'inline-block',
-                  margin: '0 100px 0 0'
-                },
-                on: {
-                  click: () => {
-                    this.handleShowDetail(this.listTop[params.index])
-                  }
-                }
-              }, this.listTop[params.index].title)
-            ])
-          }
-        }
-      ],
-      listTop: [],
       columns: [
-        {
-          type: 'expand',
-          width: 1,
-          render: (h, params) => {
-            return params.row.excepInfo.length ? h(compFocusDomainTableExpand, {
-              props: {
-                row: params.row
-              }
-            }) : ''
-          }
-        },
         {
           type: 'selection',
           width: 50,
           align: 'center'
         },
         {
-          title: '域名',
+          title: '商标图样',
           key: 'domainName',
           className: 'col1',
-          sortable: 'custom',
           render: (h, params) => {
-            return h('div', [
-              h('span', {}, this.list[params.index].domainName + '(' + (this.list[params.index].isReg === 0 ? '未注册' : (this.list[params.index].isReg === 1 ? '已注册' : '不支持')) + ')')
+            return h('div', {
+              style: {
+                width: '76px',
+                height: '35px',
+                'line-height': '33px',
+                'vertical-align': 'middle',
+                'text-align': 'center',
+                'background': '#fff',
+                border: '1px solid #f0f0f0'
+              }
+            }, [
+              h('img', {
+                attrs: {
+                  src: `http://tmpic.tmkoo.com/${this.list[params.index].tmImg}-m`
+                },
+                style: {
+                  'max-width': '74px',
+                  'max-height': '33px',
+                  'vertical-align': 'middle'
+                }
+              })
             ])
           }
         },
         {
-          title: '品牌',
-          key: 'brandName',
+          title: '商标名称',
+          key: 'tmName',
           className: 'col2'
         },
         {
-          title: '注册商',
-          key: 'registrarName',
-          className: 'col3',
-          sortable: 'custom'
+          title: '所属品牌',
+          key: 'brandName',
+          className: 'col3'
         },
         {
-          title: '注册时间',
-          width: 150,
-          key: 'whoisApplyTime',
-          className: 'col4',
-          sortable: 'custom'
+          title: '申请主体',
+          key: 'applicantCn',
+          className: 'col4'
         },
         {
-          title: '到期时间',
-          width: 150,
-          key: 'whoisExpireTime',
-          className: 'col5',
-          sortable: 'custom'
+          title: '注册号',
+          key: 'regNo',
+          className: 'col5'
         },
         {
-          title: '建站情况',
-          width: 150,
-          key: 'siteInfo',
+          title: '类别',
+          key: 'intClsInfo',
           className: 'col6'
+        },
+        {
+          title: '申请时间',
+          key: 'appDate',
+          className: 'col7'
+        },
+        {
+          title: '状态',
+          key: 'currentStatus',
+          className: 'col8'
         },
         {
           title: '操作',
@@ -301,15 +186,11 @@ export default {
           render: (h, params) => {
             return h('div', [
               h('a', {
-                props: {
-                  href: 'javascript:;'
-                },
-                on: {
-                  click: () => {
-                    this.showDetailFun(this.list[params.index].id)
-                  }
+                attrs: {
+                  target: '_blank',
+                  href: `/brandDetail?regNo=${this.list[params.index].regNo}&intCls=${this.list[params.index].intClsInfo.split('-')[0]}`
                 }
-              }, this.list[params.index].isReg === 1 ? '查看详情' : '')
+              }, '详情')
             ])
           }
         }
@@ -326,74 +207,44 @@ export default {
   },
   methods: {
     searchListData () {
-      this.queryList({pageNum: 1})
-    },
-    sortChange (v) {
-      this.orderByType = v.order === 'normal' ? '' : v.order
-      if (v.key === 'whoisApplyTime') {
-        this.orderByProperty = 'applyDate'
-      } else if (v.key === 'whoisExpireTime') {
-        this.orderByProperty = 'expireDate'
-      } else {
-        this.orderByProperty = v.key
-      }
-      // sort.sortValue = v.order
-      // console.log(sort)
-      this.queryList({pageNum: 1})
+      this.queryList(1)
     },
     pageChange: function (curPage) {
-      this.queryList({pageNum: curPage})
+      this.queryList(curPage)
     },
-    showDetailFun (id) {
-      this.id = id
-      this.showDetail = true
+    handleRadioChange (checked) {
+      this.intCls = checked
+      // this.queryList(1)
     },
     queryListParam (obj) {
       this.page.pageNo = obj.pageNum
       this.loadingBtn = true
       this.loadingTable = true
-      // console.log("=======================================================")
-      // console.log(this.$refs.siteTypes)
+
       let params = {
         pageNum: obj.pageNum,
         pageSize: 20,
-        domainName: this.value,
-        siteTypes: this.$refs.siteTypes.value,
-        excepType: this.$refs.excepType.value,
-        isReg: this.$refs.isReg.value,
-        brandIds: this.$refs.brandIds.value,
-        domainSuffixs: this.$refs.domainSuffixs.value.join(',').replace(/,?other,?/g, ''),
-        otherSuffixs: this.$refs.domainSuffixs.value.join(',').indexOf('other') >= 0 ? '1' : '0',
-        createTimeBegin: this.timesCreate[0] !== '' ? moment(this.timesCreate[0]).format('YYYY-MM-DD') + ' 00:00:00' : '',
-        createTimeEnd: this.timesCreate[1] !== '' ? moment(this.timesCreate[1]).format('YYYY-MM-DD') + ' 23:59:59' : '',
-        applyTimeBegin: this.timesReg[0] !== '' ? moment(this.timesReg[0]).format('YYYY-MM-DD') + ' 00:00:00' : '',
-        applyTimeEnd: this.timesReg[1] !== '' ? moment(this.timesReg[1]).format('YYYY-MM-DD') + ' 23:59:59' : '',
-        expireTimeBegin: this.timesExp[0] !== '' ? moment(this.timesExp[0]).format('YYYY-MM-DD') + ' 00:00:00' : '',
-        expireTimeEnd: this.timesExp[1] !== '' ? moment(this.timesExp[1]).format('YYYY-MM-DD') + ' 23:59:59' : '',
-        orderByProperty: this.orderByProperty,
-        orderByType: this.orderByType
+        keyWords: this.value,
+        currentStatus: this.currentStatus,
+        brandId: this.brandId,
+        intCls: this.facetsGroup
       }
-      // Object.assign(params, obj)
-      // console.log('=======================================================')
-      // console.log(params)
-      // console.log('=======================================================')
+
       return params
     },
-    queryList (obj) {
+    closeModal () {
+      this.showAddBrand = false
+    },
+    queryList (num) {
       this.list = []
-      this.$store.dispatch('FOLLOW_DOMAIN_LIST', this.queryListParam(obj)).then(response => {
+      this.$store.dispatch('TRADEMARK_LIST', this.queryListParam({'pageNum': num})).then(response => {
         this.loadingBtn = false
         this.loadingTable = false
         if (!response) {
           return false
         }
         if (response.data.code === '1000') {
-          response.data.data.list.map((v, i) => {
-            if (v.excepInfo.length) {
-              v._expanded = true
-            }
-            this.$set(this.list, i, v)
-          })
+          this.list = response.data.data.list
           this.page.pageItems = response.data.data.totalNum
         } else {
         }
@@ -406,41 +257,13 @@ export default {
       this.selectData = selected
       this.removeDisabled = !selected.length
     },
-    handleShowDetail (item) {
-      this.$store.dispatch('MAIL_RECORD_DETAIL', {id: item.id}).then(response => {
-        if (!response) {
-          return false
-        }
-        if (response.data.code === '1000') {
-          this.modelMailContent = response.data.data.detail
-          // 设为已读
-          this.$store.dispatch('MAIL_RECORD_READ', {id: item.id}).then(response => {
-            if (!response) {
-              return false
-            }
-            if (response.data.code === '1000') {
-              // 查找 所在 索引值
-              let idx = this.listTop.findIndex((item2) => (item2.id === item.id))
-              // 设为已读
-              this.listTop[idx].readFlag = 2
-            } else {
-            }
-          }).catch(() => {})
-        } else {
-        }
-      }).catch(() => {})
-      this.modelMailRecordDetail = true
-    },
-    exportOrder () {
-      this.$refs.exportForm.submit()
-    },
     delDomains () {
       if (!this.getDomainId.length) {
-        this.$Message.error('请选择域名')
+        this.$Message.error('请选择商标')
       } else {
         this.$Modal.confirm({
           title: '确认',
-          content: '<p>请确认是否要删除选中域名！</p>',
+          content: '<p>请确认是否删除该商标？</p>',
           loading: true,
           onOk: () => {
             this.$Modal.remove()
@@ -448,22 +271,19 @@ export default {
               let params = {
                 id: this.getDomainId
               }
-              this.$store.dispatch('DELETE_DOMAIN', params).then(response => {
+              this.$store.dispatch('DELETE_TRADEMARK', params).then(response => {
                 this.loadingTable = false
                 this.loadingBtn = false
                 if (!response) {
                   return false
                 }
                 if (response.data.code === '1000') {
-                  this.queryList({pageNum: 1})
-                  this.$Modal.info({
-                    title: '提示',
-                    content: `<p>删除成功：${response.data.successCount}个</p><p>删除失败：${response.data.faildCount}个</p>`
-                  })
+                  this.queryList(1)
+                  this.$Message.success('删除成功')
                 } else {
-                  if (response.data.code === '100') {
-                    this.$Message.error('域名信息错误')
-                  }
+                  // if (response.data.code === '100') {
+                  //   this.$Message.error('域名信息错误')
+                  // }
                 }
               }).catch(() => {})
             }, 1000)
@@ -497,6 +317,20 @@ export default {
         } else {
         }
       }).catch(() => {})
+    },
+    getIntClsList () {
+      // 品牌列表
+      this.$store.dispatch('TRADEMARK_SORT').then(response => {
+        this.loadingTable = false
+        this.loadingBtn = false
+        if (!response) {
+          return false
+        }
+        if (response.data.code === '1000') {
+          this.facetsList = response.data.data
+        } else {
+        }
+      }).catch(() => {})
     }
   },
   computed: {
@@ -512,40 +346,16 @@ export default {
     })
   },
   beforeMount () {
-    // 监控通知列表
-    this.$store.dispatch('MAIL_MANAGE_TOP').then(response => {
-      this.loadingTable = false
-      this.loadingBtn = false
-      if (!response) {
-        return false
-      }
-      if (response.data.code === '1000') {
-        this.listTop = response.data.data.list
-      } else {
-      }
-    }).catch(() => {})
   },
   mounted () {
     this.$nextTick(function () {
-      // 域名列表
-      this.queryList({pageNum: 1})
-      // 监控通知
+      this.queryList(1)
+      this.getIntClsList()
       this.getBrandList()
-      let id = this.$route.params.id
-      if (id) {
-        this.showDetailFun(id)
-      }
     })
+  },
+  watch: {
   }
-  // ,
-  // watch: {
-  //   brandList: {
-  //     handler (val, oldVal) {
-  //       this.brandList(val)
-  //     },
-  //     deep: true
-  //   }
-  // }
 }
 </script>
 
@@ -573,11 +383,34 @@ export default {
 .contBrandMgmt .secFilter .compSelect{
   width: 100%;
 }
-.contBrandMgmt .secFilter tr.row3>td:nth-child(1) .inputWrap{
+.contBrandMgmt .secFilter .inputWrap{
   background: none;
 }
-.contBrandMgmt .secFilter .compCheckbox{
-  padding: 8px 0;
+.contBrandMgmt .secFilter .ivu-radio-group{
+  overflow: hidden;
+}
+.contBrandMgmt .secFilter .ivu-radio-group-item{
+  float: left;
+  width: 100px;
+  height: 26px;
+  line-height: 26px;
+  background: none;
+  margin-right: 5px;
+  margin-bottom: 5px;
+}
+.contBrandMgmt .secFilter .ivu-radio-group-item .ivu-radio{
+  opacity: 0;
+  width: 10px;
+}
+.contBrandMgmt .secFilter .ivu-radio-group-item em{
+  color: #999;
+}
+.contBrandMgmt .secFilter .ivu-radio-wrapper-checked{
+  background: #2271f4;
+  color: #fff;
+}
+.contBrandMgmt .secFilter .ivu-radio-wrapper-checked span{
+  color: #fff;
 }
 .contBrandMgmt .table1 .col1 i{
   font-size: 14px;

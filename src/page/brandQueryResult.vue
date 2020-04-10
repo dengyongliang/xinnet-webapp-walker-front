@@ -3,106 +3,94 @@
     header-body()
     .mainBody.brandQueryResult(v-if="islogin")
       .queryCont
-        form()
-          <Input placeholder="请输入域名">
-            <Select v-model="type" slot="prepend" class="selectType">
-                <Option v-for="item in cityList" :value="item.value" :key="item.value">{{ item.label }}</Option>
+        .form()
+          <Input placeholder="" v-model="keyWords" @keydown.native.enter.prevent ="handleSearch">
+            <Select v-model="searchType" slot="prepend" class="selectType">
+                <Option v-for="item in searchTypeList" :value="item.value" :key="item.value">{{ item.label }}</Option>
             </Select>
-            <Button slot="append" icon="ios-search">立即查询</Button>
+            <Button slot="append" icon="ios-search"  @click="handleSearch" :loading="loadingBtn">立即查询</Button>
           </Input>
-      .typeCont
-        CheckboxGroup(v-model="disabledGroup")
-          Checkbox(label="香蕉")
-          Checkbox(label="苹果")
-          Checkbox(label="西瓜")
-          Checkbox(label="香蕉")
-          Checkbox(label="苹果")
-          Checkbox(label="西瓜")
-          Checkbox(label="香蕉")
-          Checkbox(label="苹果")
-          Checkbox(label="西瓜")
-          Checkbox(label="香蕉")
-          Checkbox(label="苹果")
-          Checkbox(label="西瓜")
-          Checkbox(label="香蕉")
-          Checkbox(label="苹果")
-          Checkbox(label="西瓜")
-          Checkbox(label="香蕉")
-          Checkbox(label="苹果")
-          Checkbox(label="西瓜")
+      .typeCont(v-show="list.length")
+        RadioGroup(v-model="facetsGroup", @on-change="handleRadioChange")
+          Radio(label="0", key="0") 全部
+          Radio(v-for="item in facetsList", :label="item.code", :key="item.id") 第{{item.code}}类-{{item.codeName}}
+            em ({{item.count}})
       .resultList
-        Row
-          Col.col1(span="4")
-            span.img
-          Col.col2(span="16")
-            div.tit
-              strong 天意
-              span 按时会计法拉萨大姐夫时空裂缝
-            table
-              tr
-                td 申请人：
-                  span 北京按实际法卡萨来得及发上来公司
-                td 初审公告：
-                  span 北京按实际法卡萨来得及发上来公司
-              tr
-                td 注册号：
-                  span 北京按实际法卡萨来得及发上来公司
-                td 申请日期：
-                  span 北京按实际法卡萨来得及发上来公司
-              tr
-                td
-                td 注册公告：
-                  span 北京按实际法卡萨来得及发上来公司
-          Col.col3(span="4")
-            div
-              Tag(type="success") 申请中
-            div
-              Button(icon="ios-star-outline") 关注商标
+        a(:href="'/brandDetail?regNo='+item.regNo+'&intCls='+item.intCls", target="_blank", v-for="item in list", v-show="list.length")
+          Row()
+            Col.col1(span="4")
+              span.img
+                img(:src="'http://tmpic.tmkoo.com/' + item.tmImg")
+            Col.col2(span="16")
+              div.tit
+                strong {{item.tmName}}
+                span {{item.intCls}}
+              table
+                tr
+                  td 申请人：
+                    span {{item.applicantCn}}
+                  td 初审公告：
+                    span {{item.announcementDate}}{{item.announcementIssue ? `(${item.announcementIssue})` : ''}}
+                tr
+                  td 注册号：
+                    span {{item.regNo}}
+                  td 申请日期：
+                    span {{item.appDate}}
+                tr
+                  td
+                  td 注册公告：
+                    span {{item.regDate}}{{item.regIssue ? `(${item.regIssue})` : ''}}
+            Col.col3(span="4")
+              div
+                Tag(color="success", v-if="item.currentStatus") {{item.currentStatus}}
+              //- div
+              //-   Button(icon="ios-star-outline") 关注商标
+        comp-list-none(label="没有符合条件的记录！",v-show="!list.length")
       <!-- 翻页区 -->
-      Page(:total="page.pageItems",:current="page.pageNo",show-elevator,show-total,prev-text="上一页",next-text="下一页",@on-change="pageChange",:page-size="20")
-      footer-body()
+      Page(:total="page.pageItems",:current="page.pageNo",show-elevator,show-total,prev-text="上一页",next-text="下一页",@on-change="pageChange",:page-size="20",v-show="list.length")
+      //- footer-body()
 </template>
 
 <script>
 import {mapState} from 'vuex'
 import headerBody from '../modular/header'
 import footerBody from '../modular/footer'
+import compListNone from '@/components/compListNone'
 export default {
-  name: 'DOMAIN_QUERY',
+  name: 'BRAND_QUERY_RESULT',
   components: {
     headerBody,
-    footerBody
+    footerBody,
+    compListNone
   },
   data () {
     return {
-      type: '',
-      disabledGroup: [],
-      cityList: [
+      list: [],
+      loadingBtn: false,
+      loadingTable: false,
+      facetsGroup: '',
+      searchType: '4',
+      keyWords: '',
+      intCls: '',
+      searchTypeList: [
         {
-          value: 'New York',
-          label: 'New York'
+          value: '4',
+          label: '全部'
         },
         {
-          value: 'London',
-          label: 'London'
+          value: '1',
+          label: '按商标名'
         },
         {
-          value: 'Sydney',
-          label: 'Sydney'
+          value: '2',
+          label: '按申请人'
         },
         {
-          value: 'Ottawa',
-          label: 'Ottawa'
-        },
-        {
-          value: 'Paris',
-          label: 'Paris'
-        },
-        {
-          value: 'Canberra',
-          label: 'Canberra'
+          value: '3',
+          label: '按注册号'
         }
       ],
+      facetsList: [],
       page: {
         pageNo: 1,
         pagePages: 1,
@@ -112,7 +100,52 @@ export default {
   },
   methods: {
     pageChange: function (curPage) {
-      // this.queryList({pageNum: curPage})
+      this.queryList(curPage)
+    },
+    handleSearch () {
+      if (this.GLOBALS.TRIM_ALL(this.keyWords).length) {
+        this.facetsGroup = '0'
+        this.intCls = '0'
+        this.queryList(1)
+      } else {
+        this.$Message.error('请输入要查询的商标！')
+      }
+    },
+    handleRadioChange (checked) {
+      this.intCls = checked
+      this.queryList(1)
+    },
+    queryListParam (obj) {
+      this.page.pageNo = obj.pageNum
+      this.loadingBtn = true
+      this.loadingTable = true
+
+      let params = {
+        pageNum: obj.pageNum,
+        pageSize: 20,
+        searchType: this.searchType,
+        keyWords: this.keyWords,
+        intCls: this.intCls
+      }
+      return params
+    },
+    queryList (num) {
+      this.$store.dispatch('TRADEMARK_SEARCH', this.queryListParam({pageNum: num})).then(response => {
+        this.loadingBtn = false
+        this.loadingTable = false
+        if (!response) {
+          return false
+        }
+        if (response.data.code === '1000') {
+          this.list = response.data.list
+          this.page.pageItems = response.data.totalNum
+          this.facetsList = response.data.facets
+        } else {
+          // if (response.data.code === '900') {
+          //   this.$Message.error('查询失败')
+          // }
+        }
+      }).catch(() => {})
     }
   },
   computed: {
@@ -123,6 +156,10 @@ export default {
   beforeMount () {
   },
   mounted () {
+    this.searchType = this.$route.query.type.length ? this.$route.query.type : '4'
+    this.keyWords = this.$route.query.key.length ? this.$route.query.key : ''
+    this.intCls = this.$route.query.intcls.length ? this.$route.query.intcls : '0'
+    this.queryList(1)
   }
 }
 </script>
@@ -134,7 +171,7 @@ export default {
   padding: 88px 0 38px 0;
   text-align: center;
 }
-.brandQueryResult .queryCont form{
+.brandQueryResult .queryCont .form{
   margin: 0 auto;
   width: 925px;
   position: relative;
@@ -172,9 +209,15 @@ export default {
   background: #2271f4!important;
   border-radius: 0px;
   border: none;
+  padding: 0px;
 }
 .brandQueryResult .queryCont .ivu-input-group-append button{
   padding:0px;
+  display: block;
+  height: 50px;
+  line-height: 50px;
+  width: 100%;
+  margin: 0px;
 }
 .brandQueryResult .queryCont .ivu-input-group-append .ivu-icon{
   line-height: 30px;
@@ -203,10 +246,10 @@ export default {
   -webkit-box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
   box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
 }
-.brandQueryResult .typeCont .ivu-checkbox-group{
+.brandQueryResult .typeCont .ivu-radio-group{
   overflow: hidden;
 }
-.brandQueryResult .typeCont .ivu-checkbox-group-item{
+.brandQueryResult .typeCont .ivu-radio-group-item{
   float: left;
   width: 162px;
   height: 26px;
@@ -215,16 +258,20 @@ export default {
   margin-right: 5px;
   margin-bottom: 5px;
 }
-.brandQueryResult .typeCont .ivu-checkbox-group-item .ivu-checkbox{
+.brandQueryResult .typeCont .ivu-radio-group-item .ivu-radio{
   opacity: 0;
 }
-.brandQueryResult .typeCont .ivu-checkbox-group-item:nth-child(7n){
+.brandQueryResult .typeCont .ivu-radio-group-item:nth-child(7n){
   margin-right: 0px;
 }
-.brandQueryResult .typeCont .ivu-checkbox-wrapper-checked{
-  background: #2271f4;
+.brandQueryResult .typeCont .ivu-radio-group-item em{
+  color: #999;
 }
-.brandQueryResult .typeCont .ivu-checkbox-wrapper-checked span{
+.brandQueryResult .typeCont .ivu-radio-wrapper-checked{
+  background: #2271f4;
+  color: #fff;
+}
+.brandQueryResult .typeCont .ivu-radio-wrapper-checked span{
   color: #fff;
 }
 .brandQueryResult .resultList{
@@ -242,8 +289,16 @@ export default {
 .brandQueryResult .resultList .img{
   width: 168px;
   height: 98px;
+  line-height: 95px;
   border: 1px solid #e5e5e5;
   display: inline-block;
+  text-align: center;
+  background: #fff;
+}
+.brandQueryResult .resultList img{
+  max-width: 166px;
+  max-height: 96px;
+  vertical-align: middle;
 }
 .brandQueryResult .resultList .tit{
   margin-bottom: 15px;
@@ -279,6 +334,7 @@ export default {
   right: 100%;
 }
 .brandQueryResult .resultList td{
+  width: 50%;
   padding: 5px 0;
   font-size: 12px;
   color: #666666;

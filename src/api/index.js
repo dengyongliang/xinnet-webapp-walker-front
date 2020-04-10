@@ -6,7 +6,7 @@ import * as action from '@/actions/index'
 export const MY_COMPANY = () => {
   return axios({
     url: action.MY_COMPANY,
-    method: 'get',
+    method: 'POST',
     data: {}
   })
 }
@@ -14,7 +14,7 @@ export const MY_COMPANY = () => {
 export const MY_KEEPER = () => {
   return axios({
     url: action.MY_KEEPER,
-    method: 'get',
+    method: 'POST',
     data: {}
   })
 }
@@ -22,7 +22,7 @@ export const MY_KEEPER = () => {
 export const DOMAIN_STATISTICS = () => {
   return axios({
     url: action.DOMAIN_STATISTICS,
-    method: 'get',
+    method: 'POST',
     data: {}
   })
 }
@@ -30,7 +30,7 @@ export const DOMAIN_STATISTICS = () => {
 export const COMPANY_STATISTICS = () => {
   return axios({
     url: action.COMPANY_STATISTICS,
-    method: 'get',
+    method: 'POST',
     data: {}
   })
 }
@@ -38,7 +38,7 @@ export const COMPANY_STATISTICS = () => {
 export const USER_STATISTICS = () => {
   return axios({
     url: action.USER_STATISTICS,
-    method: 'get',
+    method: 'POST',
     data: {}
   })
 }
@@ -46,7 +46,7 @@ export const USER_STATISTICS = () => {
 export const PAY_STATISTICS_UNBILLED = () => {
   return axios({
     url: action.PAY_STATISTICS_UNBILLED,
-    method: 'get',
+    method: 'POST',
     data: {}
   })
 }
@@ -54,7 +54,7 @@ export const PAY_STATISTICS_UNBILLED = () => {
 export const PAY_STATISTICS_HISTORY_BILL = () => {
   return axios({
     url: action.PAY_STATISTICS_HISTORY_BILL,
-    method: 'get',
+    method: 'POST',
     data: {}
   })
 }
@@ -62,7 +62,7 @@ export const PAY_STATISTICS_HISTORY_BILL = () => {
 export const ACCOUNT_STATISTICS = () => {
   return axios({
     url: action.ACCOUNT_STATISTICS,
-    method: 'get',
+    method: 'POST',
     data: {}
   })
 }

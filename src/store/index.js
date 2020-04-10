@@ -17,6 +17,7 @@ import transferin from './transferin.js'
 import user from './user.js'
 import workorder from './workorder.js'
 import followdomain from './followdomain.js'
+import trademark from './trademark.js'
 import * as api from '@/api/index'
 
 Vue.use(Vuex)
@@ -155,7 +156,8 @@ const store = new Vuex.Store({
     monitor,
     template,
     transferin,
-    followdomain
+    followdomain,
+    trademark
   }
 })
 export default store

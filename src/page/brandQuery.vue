@@ -3,15 +3,15 @@
     header-body()
     .mainBody.brandQuery(v-if="islogin")
       .queryCont
-        h1 域名注册
-        form()
-          <Input placeholder="请输入域名">
-            <Select v-model="type" slot="prepend" class="selectType">
-                <Option v-for="item in cityList" :value="item.value" :key="item.value">{{ item.label }}</Option>
+        h1 商标查询
+        .form()
+          <Input placeholder="" v-model="keyWords" @keydown.native.enter.prevent ="handleSearch">
+            <Select v-model="searchType" slot="prepend" class="selectType">
+                <Option v-for="item in searchTypeList" :value="item.value" :key="item.value">{{ item.label }}</Option>
             </Select>
-            <Button slot="append" icon="ios-search"></Button>
+            <Button slot="append" icon="ios-search" @click="handleSearch" :loading="loadingBtn"></Button>
           </Input>
-      footer-body()
+      //- footer-body()
 </template>
 
 <script>
@@ -26,31 +26,26 @@ export default {
   },
   data () {
     return {
-      type: '',
-      cityList: [
+      loadingBtn: false,
+      loadingTable: false,
+      searchType: '4',
+      keyWords: '',
+      searchTypeList: [
         {
-          value: 'New York',
-          label: 'New York'
+          value: '4',
+          label: '全部'
         },
         {
-          value: 'London',
-          label: 'London'
+          value: '1',
+          label: '按商标名'
         },
         {
-          value: 'Sydney',
-          label: 'Sydney'
+          value: '2',
+          label: '按申请人'
         },
         {
-          value: 'Ottawa',
-          label: 'Ottawa'
-        },
-        {
-          value: 'Paris',
-          label: 'Paris'
-        },
-        {
-          value: 'Canberra',
-          label: 'Canberra'
+          value: '3',
+          label: '按注册号'
         }
       ]
     }
@@ -60,6 +55,13 @@ export default {
   mounted () {
   },
   methods: {
+    handleSearch () {
+      if (this.GLOBALS.TRIM_ALL(this.keyWords).length) {
+        this.$router.push({path: '/brandQueryResult', query: {'type': this.searchType, 'key': this.keyWords, 'intcls': 0}})
+      } else {
+        this.$Message.error('请输入要查询的商标！')
+      }
+    }
   },
   computed: {
     ...mapState([
@@ -84,7 +86,7 @@ export default {
   font-weight: normal;
   padding-top: 140px;
 }
-.brandQuery .queryCont form{
+.brandQuery .queryCont .form{
   margin: 20px auto;
   width: 740px;
   position: relative;
@@ -122,9 +124,15 @@ export default {
   background: #ff9900!important;
   border-radius: 0px;
   border: none;
+  padding: 0px;
 }
 .brandQuery .queryCont .ivu-input-group-append button{
   padding:0px;
+  display: block;
+  height: 50px;
+  line-height: 50px;
+  width: 100%;
+  margin: 0px;
 }
 .brandQuery .queryCont .ivu-input-group-append .ivu-icon{
   line-height: 30px;

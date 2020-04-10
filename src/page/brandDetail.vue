@@ -1,98 +1,88 @@
 <template lang="pug">
   .pageMain
     header-body()
-    .mainBody.brandQueryResult(v-if="islogin")
+    .mainBody.brandDetail(v-if="islogin")
       .queryCont
-        form()
-          <Input placeholder="请输入域名">
-            <Select v-model="type" slot="prepend" class="selectType">
-                <Option v-for="item in cityList" :value="item.value" :key="item.value">{{ item.label }}</Option>
+        .form()
+          <Input placeholder="请输入域名" v-model="keyWords" @keydown.native.enter.prevent ="handleSearch">
+            <Select v-model="searchType" slot="prepend" class="selectType">
+                <Option v-for="item in searchTypeList" :value="item.value" :key="item.value">{{ item.label }}</Option>
             </Select>
-            <Button slot="append" icon="ios-search">立即查询</Button>
+            <Button slot="append" icon="ios-search" @click="handleSearch" :loading="loadingBtn">立即查询</Button>
           </Input>
       .detailCont
         .step
-          Steps(:current="step",)
-            Step(title="提交申请", content="2018-12-23")
-            Step(title="初审公告", content="2018-12-23")
-            Step(title="注册公告", content="2018-12-23")
-            Step(title="提交申请", content="2018-12-23")
+          Steps(:current="step", :status="stepStatus")
+            Step(title="提交申请", :content="objDetail.appDate")
+            Step(title="初审公告", :content="objDetail.announcementDate")
+            Step(title="注册公告", :content="objDetail.regDate")
+            Step(title="商标终止", :content="objDetail.privateDate")
         Row
           Col.col1(span="4")
             span.img
+              img(:src="'http://tmpic.tmkoo.com/' + objDetail.tmImg")
           Col.col2(span="16")
             table
               tr
                 td 申请人：
-                  span 北京按实际法卡萨来得及发上来公司
+                  span {{objDetail.applicantCn}}
                 td 初审公告：
-                  span 北京按实际法卡萨来得及发上来公司
+                  span {{objDetail.announcementIssue}}
               tr
                 td 注册号：
-                  span 北京按实际法卡萨来得及发上来公司
+                  span {{objDetail.regNo}}
                 td 申请日期：
-                  span 北京按实际法卡萨来得及发上来公司
+                  span {{objDetail.appDate}}
               tr
                 td
                 td 注册公告：
-                  span 北京按实际法卡萨来得及发上来公司
+                  span {{objDetail.regIssue}}
           Col.col3(span="4")
             div
-              Button(icon="ios-star-outline") 关注商标
+              //- Button(icon="ios-star-outline") 关注商标
         Row
           Col.col1(span="12")
             h3.h3T.clear
               span.t 商标信息
             ul
-              li 申请时间：2018-12-12
-              li 注册时间：2019-12-31
-              li 申请人名称：北京天翼文化传播有限公司
-              li 申请人地址：北京市通州区经济开发区南区鑫隅街45号
-              li 商标类型：一般
+              li 申请时间：{{objDetail.appDate}}
+              li 注册时间：{{objDetail.regDate}}
+              li 申请人名称：{{objDetail.applicantCn}}
+              li 申请人地址：{{objDetail.addressCn}}
+              li 商标类型：{{objDetail.intCls}}
 
           Col.col2(span="12")
             h3.h3T.clear
               span.t 商品/服务
               em 具体核准商品/服务以商标公告为准，
-              a 点击查看
+              a(href="http://sbj.cnipa.gov.cn/sbcx/", target="_blank") 点击查看
             ul
-              li 2025 —— 清漆
-              li 2025 —— 清漆
-              li 2025 —— 清漆
-              li 2025 —— 清漆
-              li 2025 —— 清漆
-              li 2025 —— 清漆
-              li 2025 —— 清漆
+              li(v-for="item in objDetail.goods") {{item.goodsCode}} —— {{item.goodsName}}
         Row
           Col.col1(span="12")
             h3.h3T.clear
               span.t 审核信息
             ul
-              li 初审公告期号：1025
-              li 初审公告期时间：2019-12-13
-              li 注册公告期号：1025
-              li 注册公告期时间：2019-12-13
-              li 专用权期限： 2015年05月21日至2025年05月20日
+              li 初审公告期号：{{objDetail.announcementIssue}}
+              li 初审公告期时间：{{objDetail.announcementDate}}
+              li 注册公告期号：{{objDetail.regIssue}}
+              li 注册公告期时间：{{objDetail.regDate}}
+              li 专用权期限： {{objDetail.privateDate}}
           Col.col2(span="12")
             h3.h3T.clear
               span.t 商标状态
               em 结果仅供参考，准确商标状态请进入
-              a 中国商标网>>查询
+              a(href="http://sbj.cnipa.gov.cn/sbcx/", target="_blank") 中国商标网>>查询
             ul
-              li 2014-03-24商标注册申请中
-              li 2015-05-21商标注册申请注册公告排版完成
-              li 2015-06-23商标注册申请完成
-
+              li(v-for="item in objDetail.flow") {{item.flowDate}} {{item.flowName}}
         Row
           Col.col1(span="12")
             h3.h3T.clear
               span.t 商标公告
             ul
-              li 2015-02-20 第1444期《商标初步审定公告》第1387页
-                a 查看
-              li 2015-05-20 第1456期《商标注册公告（一）》第12514页
-                a 查看
-      footer-body()
+              li(v-for="item in objDetail.gonggaos") {{item.ggDate}} 第{{item.ggQihao}}期《{{item.ggName}}》第{{item.ggPage}}页
+                a(:href="item.url", target="_blank") 查看
+      //- footer-body()
 </template>
 
 <script>
@@ -107,33 +97,31 @@ export default {
   },
   data () {
     return {
-      type: '',
+      stepStatus: 'process',
+      loadingBtn: false,
+      loadingTable: false,
       step: 2,
-      disabledGroup: [],
-      cityList: [
+      regNo: '',
+      intCls: '',
+      objDetail: {},
+      searchType: '4',
+      keyWords: '',
+      searchTypeList: [
         {
-          value: 'New York',
-          label: 'New York'
+          value: '4',
+          label: '全部'
         },
         {
-          value: 'London',
-          label: 'London'
+          value: '1',
+          label: '按商标名'
         },
         {
-          value: 'Sydney',
-          label: 'Sydney'
+          value: '2',
+          label: '按注册号'
         },
         {
-          value: 'Ottawa',
-          label: 'Ottawa'
-        },
-        {
-          value: 'Paris',
-          label: 'Paris'
-        },
-        {
-          value: 'Canberra',
-          label: 'Canberra'
+          value: '3',
+          label: '按申请人'
         }
       ],
       page: {
@@ -144,8 +132,12 @@ export default {
     }
   },
   methods: {
-    pageChange: function (curPage) {
-      // this.queryList({pageNum: curPage})
+    handleSearch () {
+      if (this.GLOBALS.TRIM_ALL(this.keyWords).length) {
+        this.$router.push({path: '/brandQueryResult', query: {'type': this.searchType, 'key': this.keyWords, 'intcls': 0}})
+      } else {
+        this.$Message.error('请输入要查询的商标！')
+      }
     }
   },
   computed: {
@@ -156,39 +148,75 @@ export default {
   beforeMount () {
   },
   mounted () {
+    console.log(this.$route.query.regNo)
+    console.log(this.$route.query.intCls)
+    this.regNo = this.$route.query.regNo ? this.$route.query.regNo : ''
+    this.intCls = this.$route.query.intCls ? this.$route.query.intCls : '0'
+    this.$store.dispatch('TRADEMARK_INFO', {'regNo': this.regNo, 'intCls': this.intCls}).then(response => {
+      this.loadingBtn = false
+      this.loadingTable = false
+      if (!response) {
+        return false
+      }
+      if (response.data.code === '1000') {
+        this.objDetail = response.data.data
+        if (!this.objDetail.appDate) {
+          this.step = 0
+        } else if (this.objDetail.appDate && !this.objDetail.announcementDate) {
+          this.step = 0
+          this.stepStatus = 'finish'
+        } else if (this.objDetail.announcementDate && !this.objDetail.regDate) {
+          this.step = 1
+          this.stepStatus = 'finish'
+        } else if (this.objDetail.regDate && !this.objDetail.terminateDate) {
+          this.step = 2
+          this.stepStatus = 'finish'
+        } else if (this.objDetail.terminateDate && !this.objDetail.isTerminate) {
+          this.step = 2
+          this.stepStatus = 'finish'
+        } else if (this.objDetail.terminateDate && this.objDetail.isTerminate) {
+          this.step = 3
+          this.stepStatus = 'finish'
+        }
+      } else {
+        // if (response.data.code === '900') {
+        //   this.$Message.error('查询失败')
+        // }
+      }
+    }).catch(() => {})
   }
 }
 </script>
 
 <style>
-.brandQueryResult .queryCont{
+.brandDetail .queryCont{
   width: 1200px;
   margin: 0 auto;
   padding: 88px 0 38px 0;
   text-align: center;
 }
-.brandQueryResult .queryCont form{
+.brandDetail .queryCont .form{
   margin: 0 auto;
   width: 925px;
   position: relative;
 }
-/* .brandQueryResult .queryCont .ivu-input-wrapper{
+/* .brandDetail .queryCont .ivu-input-wrapper{
   margin: 0px auto;
   padding: 20px 0;
   width: 740px;
 } */
-.brandQueryResult .queryCont .ivu-input-wrapper input{
+.brandDetail .queryCont .ivu-input-wrapper input{
   height: 50px;
   line-height: 50px;
   padding: 0 20px;
   font-size: 15px;
   border: none;
 }
-.brandQueryResult .queryCont .ivu-input-wrapper input:focus{
+.brandDetail .queryCont .ivu-input-wrapper input:focus{
   /* border: 2px solid #ff9900!important; */
   box-shadow:0px 0px 0px 0px #ff9900 inset;
 }
-.brandQueryResult .queryCont .ivu-input-group-prepend{
+.brandDetail .queryCont .ivu-input-group-prepend{
   width: 110px;
   background: #fff;
   border: none;
@@ -197,69 +225,76 @@ export default {
   padding-left: 0px;
   padding-right: 0px;
 }
-.brandQueryResult .queryCont .ivu-select-selected-value{
+.brandDetail .queryCont .ivu-select-selected-value{
   font-size: 16px;
 }
-.brandQueryResult .queryCont .ivu-input-group-append{
+.brandDetail .queryCont .ivu-input-group-append{
   width: 148px;
   background: #2271f4!important;
   border-radius: 0px;
   border: none;
+  padding: 0px;
 }
-.brandQueryResult .queryCont .ivu-input-group-append button{
+.brandDetail .queryCont .ivu-input-group-append button{
   padding:0px;
+  display: block;
+  height: 50px;
+  line-height: 50px;
+  width: 100%;
+  margin: 0px;
 }
-.brandQueryResult .queryCont .ivu-input-group-append .ivu-icon{
+.brandDetail .queryCont .ivu-input-group-append .ivu-icon{
   line-height: 30px;
 }
-.brandQueryResult .queryCont .ivu-input-group-append i:before{
+.brandDetail .queryCont .ivu-input-group-append i:before{
   font-size: 30px;
   color: #fff;
   vertical-align: middle;
 }
-.brandQueryResult .queryCont .ivu-input-group-append span{
+.brandDetail .queryCont .ivu-input-group-append span{
   font-size: 15px;
   line-height: 30px;
   color: #fff;
   display: inline-block;
   vertical-align: middle;
 }
-.brandQueryResult .queryCont .ivu-input-wrapper{
+.brandDetail .queryCont .ivu-input-wrapper{
   border: 1px solid #135edb;
 }
-.brandQueryResult .detailCont{
+.brandDetail .detailCont{
   width: 1200px;
   margin: 0 auto;
   padding: 38px 0;
   text-align: center;
   background: #fff;
 }
-.brandQueryResult .step{
+.brandDetail .step{
   padding-bottom: 35px;
   border-bottom: 1px solid #f7f8fa;
 }
-.brandQueryResult .ivu-steps{
+.brandDetail .ivu-steps{
   width: 665px;
   margin: 0 auto;
 }
-.brandQueryResult .ivu-steps-item{
+.brandDetail .ivu-steps-item{
   text-align: center;
 }
-.brandQueryResult .ivu-steps-item .ivu-steps-head-inner{
+
+.brandDetail .ivu-steps-item .ivu-steps-head-inner{
   width: 23px;
   height: 23px;
   line-height: 23px;
   vertical-align: middle;
 }
-.brandQueryResult .ivu-steps-item.ivu-steps-status-finish .ivu-steps-head-inner,
-.brandQueryResult .ivu-steps-item.ivu-steps-status-process .ivu-steps-head-inner{
+.brandDetail .ivu-steps-item.ivu-steps-status-finish .ivu-steps-head-inner,
+.brandDetail .ivu-steps-item.ivu-steps-status-process .ivu-steps-head-inner{
   border-color: #b8e9d4;
   border-radius: 100%;
   background: none;
 }
-.brandQueryResult .ivu-steps-item.ivu-steps-status-finish .ivu-steps-head-inner .ivu-icon,
-.brandQueryResult .ivu-steps-item.ivu-steps-status-process .ivu-steps-head-inner span,
-.brandQueryResult .ivu-steps-item.ivu-steps-status-wait .ivu-steps-head-inner span{
+.brandDetail .ivu-steps-item.ivu-steps-status-finish .ivu-steps-head-inner .ivu-icon,
+.brandDetail .ivu-steps-item.ivu-steps-status-process .ivu-steps-head-inner span,
+.brandDetail .ivu-steps-item.ivu-steps-status-wait .ivu-steps-head-inner span{
   display: inline-block;
   width: 17px;
   height: 17px;
@@ -270,82 +305,90 @@ export default {
   font-size: 17px;
   top: -2px;
 }
-.brandQueryResult .ivu-steps-item.ivu-steps-status-process .ivu-steps-head-inner span,
-.brandQueryResult .ivu-steps-item.ivu-steps-status-wait .ivu-steps-head-inner span{
+.brandDetail .ivu-steps-item.ivu-steps-status-process .ivu-steps-head-inner span,
+.brandDetail .ivu-steps-item.ivu-steps-status-wait .ivu-steps-head-inner span{
   font-size: 12px;
   position: relative;
 }
-.brandQueryResult .ivu-steps-item.ivu-steps-status-wait .ivu-steps-head-inner span{
+.brandDetail .ivu-steps-item.ivu-steps-status-wait .ivu-steps-head-inner span{
   background: #d7d7d7;
 }
 .ivu-steps-item.ivu-steps-status-finish .ivu-steps-tail>i:after{
   background: #18bf6d;
 }
 
-.brandQueryResult .ivu-steps .ivu-steps-tail{
+.brandDetail .ivu-steps .ivu-steps-tail{
   left: 75px;
 }
-.brandQueryResult .ivu-steps .ivu-steps-tail>i:after{
+.brandDetail .ivu-steps .ivu-steps-tail>i:after{
   left: 0px;
 }
-.brandQueryResult .ivu-steps .ivu-steps-head{
+.brandDetail .ivu-steps .ivu-steps-head{
   margin-left: 0px!important;
 }
-.brandQueryResult .ivu-steps .ivu-steps-main{
+.brandDetail .ivu-steps .ivu-steps-main{
   display: block;
 }
-.brandQueryResult .ivu-steps .ivu-steps-title{
+.brandDetail .ivu-steps .ivu-steps-title{
   padding: 0px;
   color: #333333;
   font-size: 12px;
   font-weight: normal;
 }
-.brandQueryResult .ivu-steps .ivu-steps-content{
+.brandDetail .ivu-steps .ivu-steps-content{
   padding: 0px;
   font-size: 12px;
 }
-.brandQueryResult .ivu-row {
+.brandDetail .ivu-row {
   padding: 30px 50px;
   border-bottom: 1px solid #f0f0f0;
+  text-align: left;
 }
-.brandQueryResult .ivu-row .img{
+.brandDetail .ivu-row .img{
   width: 168px;
   height: 98px;
+  line-height: 95px;
   border: 1px solid #e5e5e5;
   display: inline-block;
+  text-align: center;
+}
+.brandDetail .ivu-row .img img{
+  max-width: 166px;
+  max-height: 96px;
+  vertical-align: middle;
 }
 
-.brandQueryResult .ivu-row td{
+.brandDetail .ivu-row td{
   padding: 5px 0;
   font-size: 14px;
   color: #666666;
 }
-.brandQueryResult .ivu-row td span{
+.brandDetail .ivu-row td span{
   color: #333;
 }
-.brandQueryResult .ivu-row .col1{
+.brandDetail .ivu-row .col1{
   text-align: left;
 }
-.brandQueryResult .ivu-row .col3{
+.brandDetail .ivu-row .col3{
   text-align: right;
 }
-.brandQueryResult .ivu-row .ivu-btn{
+.brandDetail .ivu-row .ivu-btn{
   border: none;
   padding: 0px;
   background: none;
 }
-.brandQueryResult .ivu-row .ivu-btn span{
+.brandDetail .ivu-row .ivu-btn span{
   color: #333;
   margin: 0px;
 }
-.brandQueryResult .ivu-row .ivu-icon::before{
+.brandDetail .ivu-row .ivu-icon::before{
   font-size: 16px;
 }
-.brandQueryResult .h3T{
+.brandDetail .h3T{
   font-weight: normal;
   text-align: left;
 }
-.brandQueryResult .h3T .t{
+.brandDetail .h3T .t{
   font-size: 15px;
   line-height: 16px;
   display:inline-block;
@@ -353,42 +396,42 @@ export default {
   border-left: 3px solid #2471f5;
   margin: 8px 5px 8px 0;
 }
-.brandQueryResult .h3T em{
+.brandDetail .h3T em{
   font-size: 12px;
   color: #999;
   display:inline-block;
 }
-.brandQueryResult .h3T a{
+.brandDetail .h3T a{
   font-size: 12px;
   color: #2271f4;
   display:inline-block;
 }
-.brandQueryResult .h3T .tR{
+.brandDetail .h3T .tR{
   float: right;
   font-size: 12px;
   padding-right: 20px;
 }
-.brandQueryResult .h3T .tR a.text{
+.brandDetail .h3T .tR a.text{
   display:inline-block;
   line-height: 16px;
   margin: 8px 0;
   color: #2271f4;
 }
-.brandQueryResult .ivu-row ul{
+.brandDetail .ivu-row ul{
   text-align: left;
   padding-left: 20px;
 }
-.brandQueryResult .ivu-row ul li{
+.brandDetail .ivu-row ul li{
   color: #666;
   font-size: 12px;
   padding: 7px 0;
 }
-.brandQueryResult .ivu-row ul li a{
+.brandDetail .ivu-row ul li a{
   color: #2271f4;
   display: inline-block;
   margin-left: 5px;
 }
-.brandQueryResult .footer{
+.brandDetail .footer{
   width: 1200px;
   margin: 0 auto;
 }

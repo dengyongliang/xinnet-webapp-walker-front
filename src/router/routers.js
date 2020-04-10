@@ -76,6 +76,20 @@ export default [{
         blank: true
       }
     },
+    {
+      path: '/brandQuery',
+      name: '',
+      meta: {
+        title: '商标查询',
+        keepAlive: true,
+        permission: '',
+        compUrl: '',
+        icon: 'i-icon i-icon-query',
+        show: true,
+        isLogin: true,
+        blank: true
+      }
+    },
     domain,
     brand,
     monitor,
