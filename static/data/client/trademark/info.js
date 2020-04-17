@@ -31,6 +31,11 @@
 			"goodsCode": "1105",
 			"goodsName": "玻璃钢冷却塔",
 			"beDeleted": "false"
+		},
+		{
+			"goodsCode": "1105",
+			"goodsName": "玻璃钢冷却塔",
+			"beDeleted": "true"
 		}],
 		"flow": [{
 			"flowDate": "2011-09-23",

@@ -2,7 +2,7 @@
 .contBrandMgmt
   <!-- 标题区 -->
   h1.pageTitle.clear
-    <span class="backlist">商标管理</span>
+    <span class="backlist">商标管理 (结果仅供参考，准确商标状态请咨询管家)</span>
     .tR
       Button(type="default",@click="showAddBrand=true") 添加商标
   .secMain()
@@ -101,8 +101,8 @@ export default {
           key: 4
         },
         {
-          label: '已失效',
-          value: '已失效',
+          label: '无效',
+          value: '无效',
           key: 5
         }
       ],

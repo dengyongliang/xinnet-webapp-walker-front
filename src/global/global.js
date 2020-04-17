@@ -73,6 +73,14 @@ const REG_CH_EN_NUM = (val) => {
     return false
   }
 }
+const REG_CH_EN_NUM_MIDLINE = (val) => {
+  var re = new RegExp('^[A-z0-9-\\u4e00-\\u9fa5]*$')
+  if (re.test(val)) {
+    return true
+  } else {
+    return false
+  }
+}
 const TRIM_ALL = (val) => {
   return val.replace(/\s+/g, '')
 }
@@ -253,6 +261,7 @@ export default
   IS_ALL_CHINESE,
   IS_ALL_ENGLISH,
   REG_CH_EN_NUM,
+  REG_CH_EN_NUM_MIDLINE,
   TRIM_ALL,
   CONVERT_TREE,
   CONVERT_ROLES,

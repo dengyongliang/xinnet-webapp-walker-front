@@ -57,7 +57,7 @@
               em 具体核准商品/服务以商标公告为准，
               a(href="http://sbj.cnipa.gov.cn/sbcx/", target="_blank") 点击查看
             ul
-              li(v-for="item in objDetail.goods") {{item.goodsCode}} —— {{item.goodsName}}
+              li(v-for="item in objDetail.goods", :style="item.beDeleted==='true' ? 'text-decoration: line-through' : ''") {{item.goodsCode}} —— {{item.goodsName}}
         Row
           Col.col1(span="12")
             h3.h3T.clear
@@ -175,8 +175,9 @@ export default {
           this.step = 2
           this.stepStatus = 'finish'
         } else if (this.objDetail.terminateDate && this.objDetail.isTerminate) {
-          this.step = 3
-          this.stepStatus = 'finish'
+          this.step = 0
+          this.stepStatus = 'wait'
+          this.$set(this.objDetail, 'privateDate', '')
         }
       } else {
         // if (response.data.code === '900') {

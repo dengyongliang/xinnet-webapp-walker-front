@@ -293,7 +293,7 @@ export default {
           })
           this.$refs.brandWords.value = brandWords.join(',').replace(/,/gm, '\n')
           for (let i = 0; i < brandWords.length; i++) {
-            if (!(this.GLOBALS.IS_ALL_ENGLISH(brandWords[i]) || this.GLOBALS.IS_ALL_CHINESE(brandWords[i]))) {
+            if (!this.GLOBALS.REG_CH_EN_NUM_MIDLINE(brandWords[i])) {
               result = false
               this.$refs.brandWords.showValidateResult({text: '格式错误！'})
               break

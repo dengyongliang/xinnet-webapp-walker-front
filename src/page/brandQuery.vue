@@ -11,6 +11,7 @@
             </Select>
             <Button slot="append" icon="ios-search" @click="handleSearch" :loading="loadingBtn"></Button>
           </Input>
+          p.p1 查询结果仅供参考，准确商标状态请进入 <a href="http://sbj.cnipa.gov.cn/sbcx/" target="_blank">中国商标网》</a>查询
       //- footer-body()
 </template>
 
@@ -96,6 +97,14 @@ export default {
   padding: 20px 0;
   width: 740px;
 } */
+.brandQuery .queryCont .p1{
+  font-size: 15px;
+  color: #fff;
+  padding-top: 30px;
+}
+.brandQuery .queryCont .p1 a{
+  color: #ff9900;
+}
 .brandQuery .queryCont .ivu-input-wrapper input{
   height: 50px;
   line-height: 50px;

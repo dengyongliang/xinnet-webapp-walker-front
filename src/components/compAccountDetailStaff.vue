@@ -56,9 +56,9 @@ export default {
     this.rolesList = (function (vm) {
       let arr = []
       arr = vm.GLOBALS.CONVERT_RADIO(vm.staffData.roles, {
-        label: 'id',
+        label: 'roleName',
         code: 'roleCode',
-        value: 'roleName',
+        value: 'id',
         disabled: 'disabled'
       })
       if (vm.super) {
