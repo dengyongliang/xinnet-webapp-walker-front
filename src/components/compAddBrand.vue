@@ -22,7 +22,7 @@
       <!-- 列表主体 -->
       .secTable()
         <Table :columns="columns" :data="list" :loading="loadingTable"></Table>
-
+      div.tips 查询到该主体申请商标 {{totalNum}} 个，最多可添加1000个，超出限制请联系管家。
       div(class="ivu-modal-footer", v-if="regNos.length")
         Button(type="primary", @click="submitDomain", :loading="loadingBtn") 确定添加
 </template>
@@ -54,6 +54,7 @@ export default {
       methodGroup: '1',
       brandId: '',
       regNos: [],
+      totalNum: '0',
       columns: [
         {
           title: '商标名称',
@@ -105,7 +106,7 @@ export default {
         console.log('================================')
         this.$refs.regNos.value = regNos.join(',').replace(/,/gm, '\n')
         if (regNos.length) {
-          if (regNos.length > 2000) {
+          if (regNos.length > 200) {
             this.$refs.regNos.showValidateResult({text: '最多允许一次提交200个！'})
             result = false
           } else {
@@ -141,6 +142,7 @@ export default {
           if (response.data.code === '1000') {
             this.step = 3
             this.list = response.data.list
+            this.totalNum = response.data.totalNum
             this.regNos = response.data.list.map((v) => {
               return (v.regNo + ':' + v.intCls)
             })
@@ -249,12 +251,16 @@ export default {
   background: #f9f9f9;
 }
 .compAddBrand .secTable{
-  height: 470px;
+  height: 400px;
   overflow: auto;
 }
 .compAddBrand .ivu-modal-footer{
   margin-left: -16px;
   margin-right: -16px;
   margin-bottom: -16px;
+}
+.compAddBrand .tips{
+  text-align: center;
+  padding-top: 15px;
 }
 </style>

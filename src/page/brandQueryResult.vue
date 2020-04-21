@@ -83,11 +83,11 @@ export default {
         },
         {
           value: '2',
-          label: '按申请人'
+          label: '按注册号'
         },
         {
           value: '3',
-          label: '按注册号'
+          label: '按申请人'
         }
       ],
       facetsList: [],
