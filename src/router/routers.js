@@ -63,8 +63,11 @@ export default [{
       }
     },
     {
-      path: 'http://www.xinnet.com/domain/brand.html',
+      path: 'brandReg',
       name: '',
+      component (resolve) {
+        return require(['@/modular/brand/reg'], resolve)
+      },
       meta: {
         title: '商标注册',
         keepAlive: true,
@@ -73,7 +76,7 @@ export default [{
         icon: 'i-icon i-icon-register',
         show: true,
         isLogin: true,
-        blank: true
+        blank: false
       }
     },
     {

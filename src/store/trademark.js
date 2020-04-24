@@ -68,6 +68,15 @@ export default {
           reject(error)
         })
       })
+    },
+    APP_TRADEMARK ({ commit }, params) {
+      return new Promise((resolve, reject) => {
+        api.APP_TRADEMARK(params.tmName, params.contactor, params.phoneNum, params.email, params.description).then(response => {
+          resolve(response)
+        }).catch(error => {
+          reject(error)
+        })
+      })
     }
   }
 }

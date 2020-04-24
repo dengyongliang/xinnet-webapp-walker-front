@@ -58,3 +58,11 @@ export const CREATE_TRADEMARK = (brandId, regNos) => {
     data: {brandId, regNos}
   })
 }
+// 申请商标
+export const APP_TRADEMARK = (tmName, contactor, phoneNum, email, description) => {
+  return axios({
+    url: action.APP_TRADEMARK,
+    method: 'POST',
+    data: {tmName, contactor, phoneNum, email, description}
+  })
+}

@@ -15,3 +15,5 @@ export const DELETE_TRADEMARK = '/client/trademark/deleteTradeMark' + suffix
 export const TRADEMARK_CHECK = '/client/trademark/check' + suffix
 // 添加商标
 export const CREATE_TRADEMARK = '/client/trademark/createTradeMark' + suffix
+// 申请商标
+export const APP_TRADEMARK = '/client/trademark/appTradeMark' + suffix

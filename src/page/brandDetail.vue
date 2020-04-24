@@ -16,7 +16,7 @@
             Step(title="提交申请", :content="objDetail.appDate")
             Step(title="初审公告", :content="objDetail.announcementDate")
             Step(title="注册公告", :content="objDetail.regDate")
-            Step(title="商标终止", :content="objDetail.privateDate")
+            Step(title="商标终止", :content="objDetail.isTerminate ? '' : objDetail.privateDate")
         Row
           Col.col1(span="4")
             span.img
@@ -177,7 +177,7 @@ export default {
         } else if (this.objDetail.terminateDate && this.objDetail.isTerminate) {
           this.step = 0
           this.stepStatus = 'wait'
-          this.$set(this.objDetail, 'privateDate', '')
+          // this.$set(this.objDetail, 'privateDate', '')
         }
       } else {
         // if (response.data.code === '900') {
