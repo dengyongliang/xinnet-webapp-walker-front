@@ -13,21 +13,21 @@ export default {
     show: false
   },
   children: [
-    {
-      path: 'brandlib',
-      name: 'monitor_brandlib',
-      component (resolve) {
-        return require(['@/modular/monitor/brandlib'], resolve)
-      },
-      meta: {
-        title: '品牌库',
-        keepAlive: true,
-        permission: '',
-        compUrl: 'modular/monitor/brandlib',
-        show: true,
-        isLogin: true
-      }
-    },
+    // {
+    //   path: 'brandlib',
+    //   name: 'monitor_brandlib',
+    //   component (resolve) {
+    //     return require(['@/modular/monitor/brandlib'], resolve)
+    //   },
+    //   meta: {
+    //     title: '品牌库',
+    //     keepAlive: true,
+    //     permission: '',
+    //     compUrl: 'modular/monitor/brandlib',
+    //     show: true,
+    //     isLogin: true
+    //   }
+    // },
     {
       path: 'own',
       name: 'monitor_own',
@@ -58,21 +58,21 @@ export default {
         isLogin: true
       }
     },
-    {
-      path: 'brand',
-      name: 'monitor_brand',
-      component (resolve) {
-        return require(['@/modular/monitor/brand'], resolve)
-      },
-      meta: {
-        title: '商标监控',
-        keepAlive: true,
-        permission: '',
-        compUrl: 'modular/monitor/brand',
-        show: true,
-        isLogin: true
-      }
-    },
+    // {
+    //   path: 'brand',
+    //   name: 'monitor_brand',
+    //   component (resolve) {
+    //     return require(['@/modular/monitor/brand'], resolve)
+    //   },
+    //   meta: {
+    //     title: '商标监控',
+    //     keepAlive: true,
+    //     permission: '',
+    //     compUrl: 'modular/monitor/brand',
+    //     show: true,
+    //     isLogin: true
+    //   }
+    // },
     {
       path: 'tmch',
       name: 'monitor_tmch',
