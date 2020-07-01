@@ -189,6 +189,7 @@ export default {
           title: '域名',
           width: 250,
           key: 'domainName',
+          sortable: 'custom',
           className: 'col1',
           render: (h, params) => {
             return h('div', [
@@ -227,12 +228,25 @@ export default {
         {
           title: '注册商',
           key: 'registrarName',
+          sortable: 'custom',
           className: 'col2'
+        },
+        {
+          title: '注册时间',
+          key: 'applyDate',
+          className: 'col3',
+          sortable: 'custom',
+          render: (h, params) => {
+            return h('div', [
+              h('span', {
+              }, moment(this.list[params.index].applyDate).format('YYYY-MM-DD'))
+            ])
+          }
         },
         {
           title: '到期日期',
           key: 'expireDate',
-          className: 'col3',
+          className: 'col4',
           sortable: 'custom',
           render: (h, params) => {
             return h('div', [
@@ -244,7 +258,7 @@ export default {
         {
           title: '服务状态',
           key: 'serviceStatus',
-          className: 'col4',
+          className: 'col5',
           render: (h, params) => {
             return h('div', [
               h('span', {
@@ -253,10 +267,15 @@ export default {
           }
         },
         {
+          title: '管理邮箱',
+          key: 'regUserEmail',
+          className: 'col6'
+        },
+        {
           title: '域名所有者',
           width: 200,
           key: 'organizeNameCn',
-          className: 'col5'
+          className: 'col7'
         },
         {
           title: '操作',
@@ -593,7 +612,9 @@ export default {
         createTimeEnd: this.asideFilterResult.createTimeEnd,
         expireTimeBegin: this.asideFilterResult.expireTimeBegin,
         expireTimeEnd: this.asideFilterResult.expireTimeEnd,
-        depositFlag: this.asideFilterResult.depositFlag
+        depositFlag: this.asideFilterResult.depositFlag,
+        orderByType: obj.orderByType ? obj.orderByType : '',
+        orderByProperty: obj.orderByProperty ? obj.orderByProperty : ''
       }
       return params
     },
@@ -612,12 +633,11 @@ export default {
       }).catch(() => {})
     },
     sortChange (v) {
-      console.log(v)
-      // let sort = v.order
-      // sort.sortType = v.key === 'flowTime' ? 'time' : 'money'
-      // sort.sortValue = v.order
-      // console.log(sort)
-      this.queryList({pageNum: 1, orderExpireDate: v.order})
+      // console.log(v)
+      let orderByType = v.order === 'normal' ? '' : v.order;
+      console.log(v.key)
+      console.log(orderByType)
+      this.queryList({pageNum: 1, orderByType: orderByType, orderByProperty: v.key})
     },
     getBrandList () {
       // 品牌列表
@@ -648,7 +668,7 @@ export default {
     handleSuccess () {
       this.file = null
       this.$Message.success('添加成功')
-      this.queryList(1)
+      this.queryList({pageNum: 1})
       this.showModalsMultiUpdate = false
     },
     handleError () {
@@ -713,7 +733,7 @@ export default {
                 title: '提示',
                 content: `<p>添加成功：${response.data.countSuccess}个</p><p>添加失败：${response.data.countFaild}个</p>`
               })
-              this.queryList(1)
+              this.queryList({pageNum: 1})
               this.showModalsMultiUpdate = false
             } else {
               if (response.data.code === '200') {
@@ -777,7 +797,7 @@ export default {
   },
   mounted () {
     this.getBrandList()
-    this.queryList(1)
+    this.queryList({pageNum: 1})
   },
   watch: {
     userAuthGroups: {
