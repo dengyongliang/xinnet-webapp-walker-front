@@ -29,7 +29,9 @@
     "client_log_domain",
     "client_log_user",
     "client_notice",
-    "client_notice_monitor"
+    "client_notice_monitor",
+    "client_brand",
+    "client_tm_monitor"
   ],
   "keeperFlag": 1
 }

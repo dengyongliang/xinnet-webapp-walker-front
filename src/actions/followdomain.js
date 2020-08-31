@@ -33,3 +33,9 @@ export const DELETE_DOMAIN = '/client/followdomain/deleteDomain' + suffix
 export const QUERY_BRAND = '/client/followdomain/queryBrand' + suffix
 // 监控域名管理-刷新域名
 export const REFRESE_DOMAIN = '/client/followdomain/refreseDomain' + suffix
+// 品牌-品牌列表详情
+export const FOLLOW_BRAND_DETAIL = '/client/followdomain/followBrandDetail' + suffix
+// LOGO上传
+export const FOLLOW_BRAND_UPLOAD_FILE = '/client-api/client/followbrand/uploadfile' + suffix
+// 品牌列表简版
+export const SEARCH_FOLLOW_BRAND_LIST = '/client/followdomain/searchFollowBrandList' + suffix

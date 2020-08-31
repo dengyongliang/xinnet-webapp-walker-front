@@ -156,6 +156,7 @@ export default {
   },
   watch: {
     file (val) {
+      this.defaultList[0].url = this.file
       this.uploadList = [
         {
           percentage: 100,

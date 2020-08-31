@@ -17,7 +17,7 @@
     h2.h2T.clear.list 监控域名列表
       //- span.time 更新时间：2019-1-1
       .tR
-        comp-brand-set(@queryList="queryList({pageNum: 1})", @getBrandList="getBrandList", :list="brandList")
+        //- comp-brand-set(@queryList="queryList({pageNum: 1})", @getBrandList="getBrandList", :list="brandList")
         comp-add-focus-domain(@queryList="queryList({pageNum: 1})", @getBrandList="getBrandList", :brandList="brandList")
     .secFilter()
       form.filterWrap(ref="exportForm", method="post" accept-charset="utf-8" :action="exportLink")
@@ -425,7 +425,7 @@ export default {
         }
         if (response.data.code === '1000') {
           response.data.data.list.map((v, i) => {
-            if (v.excepInfo.length) {
+            if (v.excepInfo && v.excepInfo.length) {
               v._expanded = true
             }
             this.$set(this.list, i, v)

@@ -557,6 +557,7 @@ export default {
 .modalAddFocusDomain p.result{
   border: 1px solid #e1e1e1;
   padding: 0 10px;
+  overflow: auto;
 }
 .modalAddFocusDomainList th{
   background: #f9f9f9;

@@ -25,6 +25,7 @@ export const FOLLOW_RECORD_LIST = (domainId, pageNum, pageSize, createDateBegin,
   })
 }
 export const FOLLOW_BRAND_LIST = (pageNum, pageSize) => {
+  // pageNum, pageSize, brandName, brandLevel, order, orderType
   return axios({
     url: action.FOLLOW_BRAND_LIST,
     method: 'POST',
@@ -45,18 +46,18 @@ export const EXCEP_FOLLOW_RECORD_LIST = (pageNum, pageSize, brandId) => {
     data: {pageNum, pageSize, brandId}
   })
 }
-export const CREATE_BRAND = (brandName, notifyUsers, notifyWay) => {
+export const CREATE_BRAND = (params) => {
   return axios({
     url: action.CREATE_BRAND,
     method: 'POST',
-    data: {brandName, notifyUsers, notifyWay}
+    data: params
   })
 }
-export const UPDATE_BRAND = (id, brandName, notifyUsers, notifyWay) => {
+export const UPDATE_BRAND = (params) => {
   return axios({
     url: action.UPDATE_BRAND,
     method: 'POST',
-    data: {id, brandName, notifyUsers, notifyWay}
+    data: params
   })
 }
 export const DELETE_BRAND = (id) => {
@@ -94,3 +95,32 @@ export const REFRESE_DOMAIN = (id) => {
     data: {id}
   })
 }
+export const FOLLOW_BRAND_DETAIL = (id) => {
+  return axios({
+    url: action.FOLLOW_BRAND_DETAIL,
+    method: 'POST',
+    data: {id}
+  })
+}
+export const SEARCH_FOLLOW_BRAND_LIST = (params) => {
+  return axios({
+    url: action.SEARCH_FOLLOW_BRAND_LIST,
+    method: 'POST',
+    data: params
+  })
+}
+
+// export const FOLLOW_DOMAIN_CREATE_BRAND = (brandName, companyId, brandLevel, brandKeyword, brandLogo, notifyUsers, notifyWay) => {
+//   return axios({
+//     url: action.FOLLOW_DOMAIN_CREATE_BRAND,
+//     method: 'POST',
+//     data: {brandName, companyId, brandLevel, brandKeyword, brandLogo, notifyUsers, notifyWay}
+//   })
+// }
+// export const FOLLOW_DOMAIN_UPDATE_BRAND = (id, brandName, companyId, brandLevel, brandKeyword, brandLogo, notifyUsers, notifyWay) => {
+//   return axios({
+//     url: action.FOLLOW_DOMAIN_UPDATE_BRAND,
+//     method: 'POST',
+//     data: {id, brandName, companyId, brandLevel, brandKeyword, brandLogo, notifyUsers, notifyWay}
+//   })
+// }

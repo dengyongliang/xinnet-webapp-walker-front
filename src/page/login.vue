@@ -153,6 +153,7 @@ export default {
           this.$store.commit('SET_MENUS', pageMenus)
           // localStorage 存储 menus 数据
           localStorage.setItem('menus', JSON.stringify(pageMenus))
+          // alert(JSON.stringify(pageMenus))
           setTimeout(() => {
             if (keeperFlag * 1) {
               this.$router.replace({path: '/client'})

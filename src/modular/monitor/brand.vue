@@ -4,253 +4,114 @@
   h1.pageTitle.clear
     <span>商标监控</span>
     .tR
-      Button(type="default", class="btnTop" @click="",:loading="loadingBtn", v-if="tabIdx==='name1'") 通知设置
-      Button(type="default", class="btnTop" @click="",:loading="loadingBtn", v-if="tabIdx==='name2'") 添加关键词
-      Button(type="default", class="btnTop" @click="",:loading="loadingBtn", v-if="tabIdx==='name3'") 添加监控主体
+      Button(type="default", class="btnTop" @click="showModalBody",:loading="loadingBtn",) 通知设置
   .secMain()
-    Tabs(value="name1", :animated="false", @on-click="handleTabChange")
+    Tabs(value="name1", :animated="false", @on-click="handleTabChange",)
       TabPane(label="关注的商标", name="name1", class="tabCont1")
-        .secFilter()
-          form.filterWrap(ref="exportForm")
-            table
-              tr.row1
-                td.td1
-                  span.n 搜索商标：
-                  .inputWrap
-                    <Input v-model="value" ref="domainName" placeholder="商标名称/注册号/申请主体" />
-                td.td2
-                  span.n 商标状态：
-                  .inputWrap
-                    comp-select(:list="siteTypesList", ref="siteTypes", styles="width:100%",placeholder="全部")
-                td.td3
-
-                td.tdBtn
-                  Button(type="primary", @click="searchListData",:loading="loadingBtn") 查询
-              tr.row3
-                td(colspan="3")
-                  span.n 后缀：
-                  .inputWrap
-                    comp-checkbox(:list="suffixList", ref="domainSuffixs")
-                td.tdBtn
-                  Button(class="btnMore",type="default", @click="",:loading="loadingBtn") 更多
-                    Icon(type="ios-arrow-down")
-
-        <!-- 列表主体 -->
-        .secTable.secTable2
-          <Table :columns="columns" ref="selection" :data="list" :loading="loadingTable"  @on-select="tableSelectChange" @on-select-cancel="tableSelectChange" @on-select-all="tableSelectChange" @on-select-all-cancel="tableSelectChange" @on-sort-change="sortChange"></Table>
-          .tableTool
-            a(href="javascript:;", @click="handleSelectAll(true)") 全选
-            a(href="javascript:;", @click="handleSelectAll(false)") 取消全选
-            Button(@click="delDomains", class="toolBtn") 取消关注
-
-        <!-- 翻页区 -->
-        Page(:total="page.pageItems",:current="page.pageNo",show-elevator,show-total,prev-text="上一页",next-text="下一页",@on-change="pageChange",:page-size="20")
-
+        comp-trademark-follow(ref="compTrademarkFollow", :currentStatusList="currentStatusList",:brandList="brandList")
       TabPane(label="近似商标监控", name="name2", class="tabCont2")
-        .secFilter()
-          form.filterWrap(ref="exportForm")
-            table
-              tr.row1
-                td.td1
-                  span.n 搜索商标：
-                  .inputWrap
-                    <Input v-model="value" ref="domainName" placeholder="商标名称/注册号/申请主体" />
-                td.td2
-                  span.n 商标状态：
-                  .inputWrap
-                    comp-select(:list="siteTypesList", ref="siteTypes", styles="width:100%",placeholder="全部")
-                td.td3
-                  span.n 品牌名称：
-                  .inputWrap
-                    comp-select(:list="brandList",  ref="brandIds", styles="width:100%", placeholder="全部")
-                td.tdBtn
-                  Button(type="primary", @click="searchListData",:loading="loadingBtn") 查询
-
-          <!-- 列表主体 -->
-          .secTable.secTable2
-            <Table :columns="columns" ref="selection" :data="list" :loading="loadingTable"  @on-select="tableSelectChange" @on-select-cancel="tableSelectChange" @on-select-all="tableSelectChange" @on-select-all-cancel="tableSelectChange" @on-sort-change="sortChange"></Table>
-            .tableTool
-              a(href="javascript:;", @click="handleSelectAll(true)") 全选
-              a(href="javascript:;", @click="handleSelectAll(false)") 取消全选
-              Button(@click="delDomains", class="toolBtn") 取消监控
-
-        <!-- 翻页区 -->
-        Page(:total="page2.pageItems",:current="page2.pageNo",show-elevator,show-total,prev-text="上一页",next-text="下一页",@on-change="pageChange2",:page-size="20")
-
+        comp-trademark-similar(ref="compTrademarkSimilar", :brandList="brandList")
       TabPane(label="按申请主体监控", name="name3", class="tabCont3")
-        .secFilter()
-          form.filterWrap(ref="exportForm")
-            table
-              tr.row1
-                td.td1
-                td.td2
-                td.td3
-                  span.n 申请主体：
-                  .inputWrap
-                    <Input v-model="value" ref="domainName" placeholder="" />
-                td.tdBtn
-                  Button(type="primary", @click="searchListData",:loading="loadingBtn") 查询
-
-          <!-- 列表主体 -->
-          .secTable.secTable2
-            <Table :columns="columns" ref="selection" :data="list" :loading="loadingTable"  @on-select="tableSelectChange" @on-select-cancel="tableSelectChange" @on-select-all="tableSelectChange" @on-select-all-cancel="tableSelectChange" @on-sort-change="sortChange"></Table>
-            .tableTool
-              a(href="javascript:;", @click="handleSelectAll(true)") 全选
-              a(href="javascript:;", @click="handleSelectAll(false)") 取消全选
-              Button(@click="delDomains", class="toolBtn") 取消监控
-
-        <!-- 翻页区 -->
-        Page(:total="page3.pageItems",:current="page3.pageNo",show-elevator,show-total,prev-text="上一页",next-text="下一页",@on-change="pageChange3",:page-size="20")
-
+        comp-trademark-body(ref="compTrademarkBody")
+    comp-trademark-notify-set(ref="compTrademarkNotifySet", :notifyData="notifyData")
 </template>
 <script>
-import compSelect from '@/components/compSelect'
-import compCheckbox from '@/components/compCheckbox'
+import compTrademarkFollow from '@/components/compTrademarkFollow'
+import compTrademarkSimilar from '@/components/compTrademarkSimilar'
+import compTrademarkBody from '@/components/compTrademarkBody'
+import compTrademarkNotifySet from '@/components/compTrademarkNotifySet'
+
 import moment from 'moment'
 import { mapState } from 'vuex'
 export default {
   components: {
-    compSelect,
-    compCheckbox
+    compTrademarkFollow,
+    compTrademarkSimilar,
+    compTrademarkBody,
+    compTrademarkNotifySet
   },
   data () {
     return {
       id: 0,
-      value: '',
       tabIdx: 'name1',
-      columns: [
+      currentStatusList: [
         {
-          type: 'expand',
-          width: 1,
-          render: (h, params) => {
-            return params.row.excepInfo.length ? h(compFocusDomainTableExpand, {
-              props: {
-                row: params.row
-              }
-            }) : ''
-          }
+          label: '全部',
+          value: '',
+          key: 0
         },
         {
-          type: 'selection',
-          width: 50,
-          align: 'center'
+          label: '申请中',
+          value: '申请中',
+          key: 1
         },
         {
-          title: '域名',
-          key: 'domainName',
-          className: 'col1',
-          sortable: 'custom',
-          render: (h, params) => {
-            return h('div', [
-              h('span', {}, this.list[params.index].domainName + '(' + (this.list[params.index].isReg === 0 ? '未注册' : (this.list[params.index].isReg === 1 ? '已注册' : '不支持')) + ')')
-            ])
-          }
+          label: '初审公告期',
+          value: '初审公告期',
+          key: 2
         },
         {
-          title: '品牌',
-          key: 'brandName',
-          className: 'col2'
+          label: '续展/宽限期',
+          value: '续展/宽限期',
+          key: 3
         },
         {
-          title: '注册商',
-          key: 'registrarName',
-          className: 'col3',
-          sortable: 'custom'
+          label: '有效',
+          value: '有效',
+          key: 4
         },
         {
-          title: '注册时间',
-          width: 150,
-          key: 'whoisApplyTime',
-          className: 'col4',
-          sortable: 'custom'
-        },
-        {
-          title: '到期时间',
-          width: 150,
-          key: 'whoisExpireTime',
-          className: 'col5',
-          sortable: 'custom'
-        },
-        {
-          title: '建站情况',
-          width: 150,
-          key: 'siteInfo',
-          className: 'col6'
-        },
-        {
-          title: '操作',
-          key: 'operate',
-          className: 'operate',
-          render: (h, params) => {
-            return h('div', [
-              h('a', {
-                props: {
-                  href: 'javascript:;'
-                },
-                on: {
-                  click: () => {
-                    this.showDetailFun(this.list[params.index].id)
-                  }
-                }
-              }, this.list[params.index].isReg === 1 ? '查看详情' : '')
-            ])
-          }
+          label: '无效',
+          value: '无效',
+          key: 5
         }
       ],
-      list: [],
-      suffixList: [
-        {
-          value: '.com',
-          label: '.com'
-        },
-        {
-          value: '.cn',
-          label: '.cn'
-        },
-        {
-          value: '.net',
-          label: '.net'
-        },
-        {
-          value: '.com.cn',
-          label: '.com.cn'
-        },
-        {
-          value: '其他',
-          label: 'other'
-        }
-      ],
+      brandList: [],
       loadingTable: true,
       loadingBtn: false,
-      page: {
-        pageNo: 1,
-        pagePages: 1,
-        pageItems: 1
-      },
-      page2: {
-        pageNo: 1,
-        pagePages: 1,
-        pageItems: 1
-      },
-      page3: {
-        pageNo: 1,
-        pagePages: 1,
-        pageItems: 1
-      }
+      applicantCn: '',
+      notifyData: {}
     }
   },
   methods: {
-    pageChange: function (curPage) {
-      // this.queryList({pageNum: curPage})
-    },
-    pageChange2: function (curPage) {
-      // this.queryList({pageNum: curPage})
-    },
-    pageChange3: function (curPage) {
-      // this.queryList({pageNum: curPage})
-    },
     handleTabChange: function (name) {
       this.tabIdx = name
+    },
+    getBrandList () {
+      this.$store.dispatch('FOLLOW_BRAND_LIST', {pageNum: -1, pageSize: -1}).then(response => {
+        this.loadingTable = false
+        this.loadingBtn = false
+        if (!response) {
+          return false
+        }
+        if (response.data.code === '1000') {
+          this.brandList = []
+          response.data.data.list.map((v) => {
+            this.brandList.push({
+              label: v.brandName,
+              domainCount: v.domainCount,
+              value: v.id
+            })
+          })
+        } else {
+        }
+      }).catch(() => {})
+    },
+    getNotify () {
+      this.$store.dispatch('FOLLOW_TRADEMARK_SEARCH_NOTIFY', {}).then(response => {
+        this.loadingTable = false
+        this.loadingBtn = false
+        if (!response) {
+          return false
+        }
+        if (response.data.code === '1000') {
+          this.notifyData = response.data.data
+        } else {
+        }
+      }).catch(() => {})
+    },
+    showModalBody (num) {
+      this.$refs.compTrademarkNotifySet.handleShowModal()
     }
   },
   computed: {
@@ -265,7 +126,27 @@ export default {
   },
   mounted () {
     this.$nextTick(function () {
+      this.getBrandList()
+      this.getNotify()
     })
+    // alert(this.$route.query.id)
+    // alert(this.$route.query.issueNumber)
+    // alert(this.$route.query.intClass)
+    // alert(this.$route.query.order)
+    // alert(this.$route.query.orderType)
+    // alert(this.$route.query.pageNum)
+    // alert(this.$route.query.pageSize)
+    // alert(this.$route.query.monitorBodyId)
+    // alert(this.$route.query.keyWords)
+    // if (this.$route.query.id) {
+    //   this.show = 2
+    // } else if (this.$route.query.monitorBodyId) {
+    //   this.show = 3
+    // } else {
+    //   this.$nextTick(function () {
+    //     this.getBrandList()
+    //   })
+    // }
   },
   watch: {
   }
@@ -274,6 +155,9 @@ export default {
 <style>
 .contBrand .secMain {
     background: none!important;
+}
+.contBrand .ivu-tabs{
+  overflow: visible;
 }
 .contBrand .ivu-tabs-bar{
   background: #fff;
@@ -312,7 +196,10 @@ export default {
 .contBrand .filterWrap .tdBtn{
   width: 10%;
 }
-
+.contBrand .tabCont2 .filterWrap td,
+.contBrand .tabCont3 .filterWrap td{
+  width: 25%!important;
+} 
 .contBrand .secFilter .compSelect{
   width: 100%;
 }
@@ -321,6 +208,36 @@ export default {
 }
 .contBrand .secFilter .inputWrap{
   background: none;
+}
+.contBrand .secFilter .inputWrap{
+  background: none;
+}
+.contBrand .secFilter .ivu-radio-group{
+  overflow: hidden;
+}
+.contBrand .secFilter .ivu-radio-group-item{
+  float: left;
+  width: 100px;
+  height: 26px;
+  line-height: 26px;
+  background: none;
+  margin-right: 5px;
+  margin-bottom: 2.5px;
+  margin-top: 2.5px;
+}
+.contBrand .secFilter .ivu-radio-group-item .ivu-radio{
+  opacity: 0;
+  width: 10px;
+}
+.contBrand .secFilter .ivu-radio-group-item em{
+  color: #999;
+}
+.contBrand .secFilter .ivu-radio-wrapper-checked{
+  background: #2271f4;
+  color: #fff;
+}
+.contBrand .secFilter .ivu-radio-wrapper-checked span{
+  color: #fff;
 }
 .contBrand .tableTool {
   background:#fff;
@@ -335,5 +252,9 @@ export default {
 .contBrand .tableTool a{
   display:inline-block;
   margin: 0 10px;
+}
+.contBrand .intClsInfoDiv{
+  max-height: 200px;
+  overflow: auto;
 }
 </style>

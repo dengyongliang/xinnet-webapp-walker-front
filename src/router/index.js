@@ -87,6 +87,10 @@ const RouterMain = new Router({
       },
       meta: {
         title: '商标查询',
+        keepAlive: true,
+        permission: 'client_tm_search',
+        compUrl: 'page/brandQuery',
+        show: true,
         isLogin: true
       }
     },

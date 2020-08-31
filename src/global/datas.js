@@ -208,6 +208,13 @@ const ORDER_MODE = {
   2: '系统下单',
   3: '线下下单'
 }
+const BRAND_LEVEL = {
+  1: '集团名称/核心品牌',
+  2: '主要产品品牌',
+  3: '次要产品品牌/内部使用',
+  4: '防御性品牌',
+  5: '其他'
+}
 
 export default
 {
@@ -238,5 +245,6 @@ export default
   SECURITY_TYPE,
   ORDER_PAY_TYPE,
   ORDER_MODE,
-  RECORD_FOCUS_DOMAIN_EVENT_TYPE
+  RECORD_FOCUS_DOMAIN_EVENT_TYPE,
+  BRAND_LEVEL
 }

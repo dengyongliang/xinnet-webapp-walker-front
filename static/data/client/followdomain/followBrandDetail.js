@@ -1,0 +1,32 @@
+{
+  "msg": "操作成功",
+  "code": "1000",
+  "data": {
+      "id": 50,
+      "brandName": "百度",
+      "brandKeyword":"搜索;大数据",
+      "brandLogo": "https://xingzhe.xinnet.com/walker/brand/778b747eb30d4b6990ec104ebb13268d.png",
+      "companyName": "行者集团股份有限公司",
+      "brandLevel": 1,
+      "brandSafeMark": 100,
+      "domainCount": 0,
+      "tradeMarkCount": 0,
+      "ddServiceCount": 10,
+      "ddRenewCount": 20,
+      "ddPaybackCount": 50,
+      "ddExpireCount": 0,
+      "fdIllegalWebsiteCount": 0,
+      "fdNonContinentalCount": 0,
+      "fdOnSaleCount": 0,
+      "fdToRegisterCount": 0,
+      "fdExpireCount": 0,
+      "ftAnnouncementCount": 0,
+      "ttExtensionCount": 40,
+      "ftExtensionCount": 0,
+      "ttAnnouncementCount": 0,
+      "ttApplyCount": 30,
+      "ttInvalidCount": 50,
+      "ttValidCount": 20,
+      "similars": "数码(25/18),搜狗(1/1)"
+  }
+}

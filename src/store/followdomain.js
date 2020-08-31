@@ -34,6 +34,12 @@ export default {
       })
     },
     FOLLOW_BRAND_LIST ({ commit }, params) {
+      // params = Object.assign({
+      //   brandName: '',
+      //   brandLevel: '',
+      //   order: '',
+      //   orderType: ''
+      // }, params)
       return new Promise((resolve, reject) => {
         api.FOLLOW_BRAND_LIST(params.pageNum, params.pageSize).then(response => {
           resolve(response)
@@ -62,7 +68,7 @@ export default {
     },
     CREATE_BRAND ({ commit }, params) {
       return new Promise((resolve, reject) => {
-        api.CREATE_BRAND(params.brandName, params.notifyUsers, params.notifyWay).then(response => {
+        api.CREATE_BRAND(params).then(response => {
           resolve(response)
         }).catch(error => {
           reject(error)
@@ -71,7 +77,7 @@ export default {
     },
     UPDATE_BRAND ({ commit }, params) {
       return new Promise((resolve, reject) => {
-        api.UPDATE_BRAND(params.id, params.brandName, params.notifyUsers, params.notifyWay).then(response => {
+        api.UPDATE_BRAND(params).then(response => {
           resolve(response)
         }).catch(error => {
           reject(error)
@@ -117,6 +123,24 @@ export default {
     REFRESE_DOMAIN ({ commit }, params) {
       return new Promise((resolve, reject) => {
         api.REFRESE_DOMAIN(params.id).then(response => {
+          resolve(response)
+        }).catch(error => {
+          reject(error)
+        })
+      })
+    },
+    FOLLOW_BRAND_DETAIL ({ commit }, params) {
+      return new Promise((resolve, reject) => {
+        api.FOLLOW_BRAND_DETAIL(params.id).then(response => {
+          resolve(response)
+        }).catch(error => {
+          reject(error)
+        })
+      })
+    },
+    SEARCH_FOLLOW_BRAND_LIST ({ commit }, params) {
+      return new Promise((resolve, reject) => {
+        api.SEARCH_FOLLOW_BRAND_LIST(params).then(response => {
           resolve(response)
         }).catch(error => {
           reject(error)

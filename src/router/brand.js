@@ -22,9 +22,9 @@ export default {
       meta: {
         title: '商标管理',
         keepAlive: true,
-        permission: '',
+        permission: 'client_tm_list',
         compUrl: 'modular/brand/mgmt',
-        show: true,
+        show: false,
         isLogin: true
       }
     },
@@ -37,9 +37,9 @@ export default {
       meta: {
         title: '我注册的商标',
         keepAlive: true,
-        permission: '',
+        permission: 'client_tm_my',
         compUrl: 'modular/brand/my',
-        show: true,
+        show: false,
         isLogin: true
       }
     }
