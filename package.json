@@ -20,7 +20,7 @@
     "es6-shim": "^0.35.4",
     "iview": "^3.1.5",
     "microevent": "^1.0.0",
-    "moment": "^2.24.0",
+    "moment": "^2.29.2",
     "nprogress": "^0.2.0",
     "vue": "^2.5.2",
     "vue-router": "^3.0.1",
